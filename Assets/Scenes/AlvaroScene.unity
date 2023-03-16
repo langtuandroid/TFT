@@ -673,7 +673,7 @@ MonoBehaviour:
   _groundTile: {fileID: 0}
   _wallTile: {fileID: 0}
   _roomTex: {fileID: 2800000, guid: 15986648d9d59844db205cbf6666b762, type: 3}
-  _roomControllerPrefab: {fileID: 0}
+  _roomControllerPrefab: {fileID: 9113138669029962605, guid: 611e3648a0f992848b1e44df3998fa8d, type: 3}
   _roomOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &2101418932
 MonoBehaviour:
