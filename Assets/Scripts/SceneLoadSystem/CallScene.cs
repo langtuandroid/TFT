@@ -13,5 +13,13 @@ namespace SceneLoadSystem
         {
             SceneLoader.Load(_sceneToLoadName);
         }
+        
+        /// <summary>
+        /// Load the Scene pass as argument
+        /// </summary>
+        public void LoadScene( string sceneToLoad )
+        {
+            SceneLoader.Load( sceneToLoad );
+        }
     }
 }
