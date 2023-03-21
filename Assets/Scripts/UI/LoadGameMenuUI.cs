@@ -1,18 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-
 namespace UI
 {
-    public class LoadGameMenu : MonoBehaviour
+    public class LoadGameMenuUI : MonoBehaviour
     {
+        public static LoadGameMenuUI Instance { get; private set; }
+
+
         [Header("Load Game Buttons")]
         [SerializeField] private Button _firstSlotButton;
         [SerializeField] private Button _secondSlotButton;
         [SerializeField] private Button _thirdSlotButton;
+        [SerializeField] private Button _returnButton;
 
         [Header("Save Slots Panel")]
         [SerializeField] private GameObject _firstSaveSlotPanel;
@@ -20,17 +22,45 @@ namespace UI
         [SerializeField] private GameObject _thirdSaveSlotPanel;
 
 
+        private Action _onMainMenuReturn;
+
+
         private void Awake()
+        {
+            Instance = this;
+            SetButtonEvents();
+            Hide();
+        }
+
+        private void SetButtonEvents()
         {
             _firstSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
             _secondSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
             _thirdSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
-        }
 
+            _returnButton.onClick.AddListener( () =>
+            {
+                Hide();
+                _onMainMenuReturn();
+            } );
+        }
 
         private void OpenSaveSlotPanel()
         {
             _firstSaveSlotPanel.SetActive( true );
+        }
+
+
+        public void Show( Action onMainMenuReturn )
+        {
+            gameObject.SetActive( true );
+            _firstSlotButton.Select();
+            _onMainMenuReturn = onMainMenuReturn;
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive( false );
         }
     }
 }
