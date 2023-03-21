@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using SceneLoadSystem;
-
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -14,9 +14,12 @@ namespace UI
         [SerializeField] private Button _optionButton;
         [SerializeField] private Button _quitButton;
 
+        private Button _selectedButton;
+
 
         private void Awake()
         {
+            _selectedButton = _newGameButton;
             Show();
             SetButtonEvents();
         }
@@ -43,10 +46,14 @@ namespace UI
         private void Show()
         {
             gameObject.SetActive( true );
-            _newGameButton.Select();
+            _selectedButton.Select();
         }
 
-        private void Hide() => gameObject.SetActive( false );
+        private void Hide() 
+        { 
+            _selectedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>(); 
+            gameObject.SetActive( false ); 
+        }
 
 
         private void QuitGame()
