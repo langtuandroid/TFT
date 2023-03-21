@@ -22,7 +22,7 @@ namespace UI
         [SerializeField] private GameObject _thirdSaveSlotPanel;
 
 
-        private Action _onMainMenuReturn;
+        private Action _onReturn;
 
 
         private void Awake()
@@ -38,11 +38,7 @@ namespace UI
             _secondSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
             _thirdSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
 
-            _returnButton.onClick.AddListener( () =>
-            {
-                Hide();
-                _onMainMenuReturn();
-            } );
+            _returnButton.onClick.AddListener( () => Hide() );
         }
 
         private void OpenSaveSlotPanel()
@@ -51,16 +47,17 @@ namespace UI
         }
 
 
-        public void Show( Action onMainMenuReturn )
+        public void Show( Action onReturn )
         {
             gameObject.SetActive( true );
             _firstSlotButton.Select();
-            _onMainMenuReturn = onMainMenuReturn;
+            _onReturn = onReturn;
         }
 
-        private void Hide()
+        public void Hide()
         {
             gameObject.SetActive( false );
+            _onReturn?.Invoke();
         }
     }
 }

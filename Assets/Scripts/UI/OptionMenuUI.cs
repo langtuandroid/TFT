@@ -3,43 +3,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class OptionMenuUI : MonoBehaviour
+namespace UI
 {
-    public static OptionMenuUI Instance { get; private set; }
-
-
-    [Header("Option Buttons")]
-    [SerializeField] private Button _firstSlotButton;
-    [SerializeField] private Button _returnButton;
-
-
-    private Action _onMainMenuReturn;
-
-
-    private void Awake()
+    public class OptionMenuUI : MonoBehaviour
     {
-        Instance = this;
-        SetButtonEvents();
-        Hide();
-    }
+        public static OptionMenuUI Instance { get; private set; }
 
-    private void SetButtonEvents()
-    {
-        _returnButton.onClick.AddListener( () => {
+
+        [Header("Option Buttons")]
+        [SerializeField] private Button _firstSlotButton;
+        [SerializeField] private Button _returnButton;
+
+
+        private Action _onReturn;
+
+
+        private void Awake()
+        {
+            Instance = this;
+            SetButtonEvents();
             Hide();
-            _onMainMenuReturn();
-        } );
-    }
+        }
 
-    public void Show( Action onMainMenuReturn )
-    {
-        gameObject.SetActive( true );
-        _returnButton.Select();
-        _onMainMenuReturn = onMainMenuReturn;
-    }
+        private void SetButtonEvents()
+        {
+            _returnButton.onClick.AddListener( () => Hide() );
+        }
 
-    private void Hide()
-    {
-        gameObject.SetActive( false );
+        public void Show( Action onReturn )
+        {
+            gameObject.SetActive( true );
+            _returnButton.Select();
+            _onReturn = onReturn;
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive( false );
+            _onReturn?.Invoke();
+        }
     }
 }
