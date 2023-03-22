@@ -19,14 +19,14 @@ namespace UI
         private void SetSliderEvents()
         {
             _musicVolumeSlider.onValueChanged.AddListener( delegate { ChangeMusicVolume(); } );
-            //_sfxVolumeSlider.onValueChanged.AddListener( delegate { ChangeSfxVolume(); } );
+            _sfxVolumeSlider.onValueChanged.AddListener( delegate { ChangeSfxVolume(); } );
             //_uIVolumeSlider.onValueChanged.AddListener( delegate { ChangeUIVolume(); } );
         }
 
         private void InitSliders()
         {
             _musicVolumeSlider.value = AudioManager.Instance.MusicVolume();
-            //_sfxVolumeSlider.value = AudioManager.Instance.SfxVolume();
+            _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume();
             //_uIVolumeSlider.value = AudioManager.Instance.UIVolume();
         }
 
