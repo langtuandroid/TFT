@@ -289,6 +289,45 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerGround"",
+            ""id"": ""4b8cf53c-b6e3-4e79-b2ba-dfc553beb705"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""07ff2902-d2cf-4794-b553-5d7f1b888e60"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""8950f129-87ac-40ed-bd4c-20608193cddc"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5533479-9c49-422e-86fb-01ba4d4c39fd"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -326,6 +365,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
+        // PlayerGround
+        m_PlayerGround = asset.FindActionMap("PlayerGround", throwIfNotFound: true);
+        m_PlayerGround_Pause = m_PlayerGround.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -485,6 +527,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // PlayerGround
+    private readonly InputActionMap m_PlayerGround;
+    private List<IPlayerGroundActions> m_PlayerGroundActionsCallbackInterfaces = new List<IPlayerGroundActions>();
+    private readonly InputAction m_PlayerGround_Pause;
+    public struct PlayerGroundActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public PlayerGroundActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_PlayerGround_Pause;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerGround; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerGroundActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerGroundActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerGroundActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerGroundActionsCallbackInterfaces.Add(instance);
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
+        }
+
+        private void UnregisterCallbacks(IPlayerGroundActions instance)
+        {
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
+        }
+
+        public void RemoveCallbacks(IPlayerGroundActions instance)
+        {
+            if (m_Wrapper.m_PlayerGroundActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerGroundActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerGroundActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerGroundActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerGroundActions @PlayerGround => new PlayerGroundActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -513,5 +601,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnScrollWheel(InputAction.CallbackContext context);
+    }
+    public interface IPlayerGroundActions
+    {
+        void OnPause(InputAction.CallbackContext context);
     }
 }

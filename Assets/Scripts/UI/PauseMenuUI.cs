@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -5,27 +7,27 @@ using UnityEngine.EventSystems;
 
 namespace UI
 {
-    public class MainMenuUI : MonoBehaviour
+    public class PauseMenuUI : MonoBehaviour
     {
         [Header("Main Menu Buttons")]
-        [SerializeField] private Button _newGameButton;
+        [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _loadButton;
         [SerializeField] private Button _optionButton;
-        [SerializeField] private Button _quitButton;
+        [SerializeField] private Button _returnMainMenuButton;
 
         private Button _selectedButton;
 
 
         private void Awake()
         {
-            _selectedButton = _newGameButton;
-            Show();
+            _selectedButton = _resumeButton;
             SetButtonEvents();
+            Hide();
         }
 
         private void SetButtonEvents()
         {
-            _newGameButton.onClick.AddListener( () => {
+            _resumeButton.onClick.AddListener( () => {
                 SceneLoadSystem.SceneLoader.Load( "SampleScene" );
             } );
 
@@ -39,7 +41,7 @@ namespace UI
                 OptionMenuUI.Instance.Show( Show );
             } );
 
-            _quitButton.onClick.AddListener( () => QuitGame() );
+            _returnMainMenuButton.onClick.AddListener( () => QuitGame() );
         }
 
         private void Show()
@@ -48,20 +50,16 @@ namespace UI
             _selectedButton.Select();
         }
 
-        private void Hide() 
-        { 
-            _selectedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>(); 
-            gameObject.SetActive( false ); 
+        private void Hide()
+        {
+            _selectedButton = EventSystem.current.currentSelectedGameObject.GetComponent<Button>();
+            gameObject.SetActive( false );
         }
 
 
         private void QuitGame()
         {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
+            Debug.Log( "Return no Main Menu" );
         }
     }
 }

@@ -15,7 +15,7 @@ namespace UI
         [SerializeField] private Button _returnButton;
 
 
-        private Action _onReturn;
+        private event Action OnReturnButtonClicked;
 
 
         private void Awake()
@@ -25,22 +25,33 @@ namespace UI
             Hide();
         }
 
+        private void Start()
+        {
+            GameInputs.Instance.OnCancelPerformed += GameInputs_OnCancelPerformed;
+        }
+
+        private void GameInputs_OnCancelPerformed()
+        {
+            if (gameObject.activeSelf)
+                Hide();
+        }
+
         private void SetButtonEvents()
         {
             _returnButton.onClick.AddListener( () => Hide() );
         }
 
-        public void Show( Action onReturn )
+        public void Show( Action OnReturnButtonClicked )
         {
             gameObject.SetActive( true );
             _returnButton.Select();
-            _onReturn = onReturn;
+            this.OnReturnButtonClicked = OnReturnButtonClicked;
         }
 
         public void Hide()
         {
             gameObject.SetActive( false );
-            _onReturn?.Invoke();
+            OnReturnButtonClicked?.Invoke();
         }
     }
 }
