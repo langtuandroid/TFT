@@ -71,9 +71,9 @@ public class AudioManager : MonoBehaviour
         RuntimeManager.PlayOneShot( _fireBallCast );
     }
 
-    public void PlayOneShotAt( Vector3 position )
+    public void PlayOneShot( Vector3 soundOrigin )
     {
-        RuntimeManager.PlayOneShot( _fireBallCast , position );
+        RuntimeManager.PlayOneShot( _fireBallCast , soundOrigin );
     }
 
 

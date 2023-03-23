@@ -6,7 +6,7 @@ namespace SceneLoadSystem
 {
     public class LoaderCallback : MonoBehaviour
     {
-        private float _secondsLoading = 5f;
+        private float _secondsLoading = 1f;
 
         private void Start() => StartCoroutine(AsyncSceneLoading());
 
@@ -16,14 +16,17 @@ namespace SceneLoadSystem
             asyncLoadScene.allowSceneActivation = false;
             bool isLoaded = false;
 
-            while (!isLoaded && _secondsLoading > 0)
+            while ( !isLoaded )
             {
-                _secondsLoading -= Time.deltaTime;
+                while ( _secondsLoading > 0 )
+                {
+                    _secondsLoading -= Time.deltaTime;
 
-                if ( asyncLoadScene.progress >= 0.9f )
-                    isLoaded = true;
+                    if ( asyncLoadScene.progress >= 0.9f )
+                        isLoaded = true;
 
-                yield return null;
+                    yield return null;
+                }
             }
             asyncLoadScene.allowSceneActivation = true;
         }
