@@ -32,7 +32,8 @@ namespace UI
 
         private void OnDestroy()
         {
-            GameInputs.Instance.OnCancelPerformed -= GameInputs_OnCancelPerformed;
+            if ( GameInputs.Instance != null )
+                GameInputs.Instance.OnCancelPerformed -= GameInputs_OnCancelPerformed;
         }
 
         private void GameInputs_OnCancelPerformed()
