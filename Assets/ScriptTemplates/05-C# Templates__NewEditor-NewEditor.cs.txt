@@ -1,0 +1,9 @@
+using UnityEngine;
+using UnityEditor;
+
+    #ROOTNAMESPACEBEGIN#
+public class #SCRIPTNAME# :Editor
+{
+    #NOTRIM#
+}
+#ROOTNAMESPACEEND#
