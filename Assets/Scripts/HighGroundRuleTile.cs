@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu]
+[CreateAssetMenu( fileName = "HighGround RuleTile", menuName = "2D/Tiles/High Ground Rule Tile" )]
 public class HighGroundRuleTile : RuleTile<HighGroundRuleTile.Neighbor> {
     public TileBase caveRuleTile;
     public TileBase fifthRuleTile;
