@@ -17,8 +17,8 @@ public class HighGroundRuleTile : RuleTile<HighGroundRuleTile.Neighbor> {
     {
         switch ( neighbor )
         {
-            case Neighbor.This:    return tile == this 
-                                       || tile == caveRuleTile;
+            case Neighbor.This:    return tile == this;
+                                       //|| tile == caveRuleTile;
             case Neighbor.Nothing: return tile == null;
             case Neighbor.Any:     return tile != null;
             case Neighbor.FifthRuleTile: return fifthRuleTile == tile
