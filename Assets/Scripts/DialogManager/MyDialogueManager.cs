@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 using Doublsb.Dialog;
 using Honeti;
-
 
 public class MyDialogueManager : MonoBehaviour
 {
