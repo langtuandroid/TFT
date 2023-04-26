@@ -13,7 +13,7 @@ namespace SceneLoadSystem
 
         private IEnumerator AsyncSceneLoading()
         {
-            AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync(SceneLoader.SceneToLoad);
+            AsyncOperation asyncLoadScene = SceneManager.LoadSceneAsync( SceneLoader.SceneToLoad );
             asyncLoadScene.allowSceneActivation = false;
             bool isLoaded = false;
 
