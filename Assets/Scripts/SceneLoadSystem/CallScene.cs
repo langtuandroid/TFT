@@ -11,7 +11,7 @@ namespace SceneLoadSystem
         /// </summary>
         public void LoadScene()
         {
-            SceneLoader.Load(_sceneToLoadName);
+            SceneLoader.Load( _sceneToLoadName );
         }
         
         /// <summary>

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using SceneLoadSystem;
 
 namespace UI
 {
@@ -27,7 +28,7 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                SceneLoadSystem.SceneLoader.Load( "SampleScene" );
+                SceneLoader.Load( SceneName.S_Pruebas );
             } );
 
             _loadButton.onClick.AddListener( () => {
