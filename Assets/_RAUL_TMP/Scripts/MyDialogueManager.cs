@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Doublsb.Dialog;
 using Honeti;
@@ -5,10 +6,28 @@ using Honeti;
 
 public class MyDialogueManager : MonoBehaviour
 {
-    public DialogManager dialogManager;
+    public static MyDialogueManager Instance;
+    
+    private DialogManager dialogManager;
     private string text = "";
     private string textFromi18n = "";
     private string characterName = "Link";
+
+    private void Awake()
+    {
+        dialogManager = FindObjectOfType<DialogManager>();
+        
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);   
+        }
+    }
+
     void Start()
     {
         //Ejemplo para demo

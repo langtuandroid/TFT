@@ -48,6 +48,21 @@ namespace Honeti
     /// </summary>
     public class I18N : MonoBehaviour
     {
+        public static I18N Instance;
+
+        private void Awake()
+        {
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);   
+            }
+        }
+
         #region STATIC
 
         /// <summary>
