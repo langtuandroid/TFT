@@ -1,10 +1,11 @@
+// ************ @autor: Álvaro Repiso Romero *************
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GameInputs : MonoBehaviour
+public class GameInputs
 {
-    public static GameInputs Instance { get; private set; }
+    //public static GameInputs Instance { get; private set; }
 
 
     public event Action OnCancelPerformed;
@@ -13,14 +14,21 @@ public class GameInputs : MonoBehaviour
 
     private PlayerInputActions _playerInputActions;
 
-    private void Awake()
+    public GameInputs() 
     {
-        Instance = this;
         _playerInputActions = new PlayerInputActions();
-
         PlayerGroundMode();
         MenuModeEnable();
     }
+
+    //private void Awake()
+    //{
+    //    Instance = this;
+    //    _playerInputActions = new PlayerInputActions();
+
+    //    PlayerGroundMode();
+    //    MenuModeEnable();
+    //}
 
     private void PlayerGroundMode()
     {

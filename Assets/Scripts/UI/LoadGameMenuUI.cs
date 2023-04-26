@@ -35,13 +35,15 @@ namespace UI
 
         private void Start()
         {
-            GameInputs.Instance.OnCancelPerformed += GameInputs_OnCancelPerformed;
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
+            //GameInputs.Instance.OnCancelPerformed += GameInputs_OnCancelPerformed;
         }
 
         private void OnDestroy()
         {
-            if ( GameInputs.Instance != null )
-                GameInputs.Instance.OnCancelPerformed -= GameInputs_OnCancelPerformed;
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
+            //if ( GameInputs.Instance != null )
+            //    GameInputs.Instance.OnCancelPerformed -= GameInputs_OnCancelPerformed;
         }
 
         private void GameInputs_OnCancelPerformed()
