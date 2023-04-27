@@ -195,9 +195,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.084545456
+    x: 0.057405278
     y: 0
-    width: 0.8307071
+    width: 0.88582724
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -388,6 +388,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 430131367225449841, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 698504609, guid: 8f50d303103f539468e5e73b03e8d0cc, type: 3}
+    - target: {fileID: 430131367225449841, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1007482090118453924, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
       propertyPath: m_RootOrder
       value: 2

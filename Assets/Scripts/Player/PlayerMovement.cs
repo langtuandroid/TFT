@@ -173,8 +173,6 @@ public class PlayerMovement : MonoBehaviour
         {
             _anim.SetFloat("x", _horizontal);
             _anim.SetFloat("y", _vertical);
-
-            _spriteRend.flipX = _horizontal < 0f;
         }
 
 
@@ -212,15 +210,15 @@ public class PlayerMovement : MonoBehaviour
     //}
 
 
-    private void ChangeWalkAnimation()
-    {
-        // Cambiamos el flip del sprite en caso de que movimiento horizontal
-        // sea negativo
-        _spriteRend.flipX = _horizontal < 0f;
+    //private void ChangeWalkAnimation()
+    //{
+    //    // Cambiamos el flip del sprite en caso de que movimiento horizontal
+    //    // sea negativo
+    //    _spriteRend.flipX = _horizontal < 0f;
 
 
 
-    }
+    //}
 
     /// <summary>
     /// Cambia el estado de la variable de movimiento
