@@ -9,7 +9,6 @@ namespace UI
     {
         [SerializeField] private Slider _musicVolumeSlider;
         [SerializeField] private Slider _sfxVolumeSlider;
-        [SerializeField] private Slider _uIVolumeSlider;
 
         private void Start()
         {
@@ -21,14 +20,12 @@ namespace UI
         {
             _musicVolumeSlider.onValueChanged.AddListener( delegate { ChangeMusicVolume(); } );
             _sfxVolumeSlider.onValueChanged.AddListener( delegate { ChangeSfxVolume(); } );
-            //_uIVolumeSlider.onValueChanged.AddListener( delegate { ChangeUIVolume(); } );
         }
 
         private void InitSliders()
         {
             _musicVolumeSlider.value = AudioManager.Instance.MusicVolume();
             _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume();
-            //_uIVolumeSlider.value = AudioManager.Instance.UIVolume();
         }
 
         private void ChangeMusicVolume()
@@ -41,12 +38,6 @@ namespace UI
         {
             float volume = _sfxVolumeSlider.value;
             AudioManager.Instance.SetSfxVolume( volume );
-        }
-        
-        private void ChangeUIVolume()
-        {
-            float volume = _uIVolumeSlider.value;
-            AudioManager.Instance.SetUIVolume( volume );
         }
     }
 }
