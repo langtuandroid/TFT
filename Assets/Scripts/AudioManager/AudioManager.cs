@@ -1,14 +1,14 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
 using FMODUnity;
+using Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
 
-    [SerializeField] private EventReference _fireBallCast;
-    [SerializeField] private EventReference _tecnoMusic;
+    [SerializeField] private GameMusicSO _gameMusicSO;
 
     [Header("Music currently playing")]
     private static FMOD.Studio.EventInstance _musicEventInstance;
@@ -44,7 +44,7 @@ public class AudioManager : MonoBehaviour
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _tecnoMusic );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.TecnoMusic );
         _musicEventInstance.start();
         _musicEventInstance.release();
 
@@ -58,13 +58,13 @@ public class AudioManager : MonoBehaviour
     private void ChangeMusic()
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        _musicEventInstance = RuntimeManager.CreateInstance( _fireBallCast );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.TestMusic );
         _musicEventInstance.start();
     }
 
     public void PlayOneShot( Vector3 soundOrigin = new() )
     {
-        RuntimeManager.PlayOneShot( _fireBallCast , soundOrigin );
+        RuntimeManager.PlayOneShot( _gameMusicSO.TestMusic , soundOrigin );
     }
 
 

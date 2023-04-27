@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d411a2432d7198541914f3c8b142d0aa, type: 3}
+  m_Name: GameMusicSO
+  m_EditorClassIdentifier: 
+  TecnoMusic:
+    Guid:
+      Data1: -1715364381
+      Data2: 1264832484
+      Data3: 1510036159
+      Data4: -1725166958
+    Path: event:/Tecno_Music
+  TestMusic:
+    Guid:
+      Data1: -1998152685
+      Data2: 1297817317
+      Data3: -7870589
+      Data4: 992459901
+    Path: event:/Fire_Ball_Cast
