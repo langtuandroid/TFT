@@ -24,19 +24,19 @@ namespace UI
 
         private void InitSliders()
         {
-            _musicVolumeSlider.value = AudioManager.Instance.MusicVolume();
-            _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume();
+            _musicVolumeSlider.value = AudioManager.Instance.MusicVolume() * _musicVolumeSlider.maxValue;
+            _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume() * _sfxVolumeSlider.maxValue;
         }
 
         private void ChangeMusicVolume()
         {
-            float volume = _musicVolumeSlider.value;
+            float volume = _musicVolumeSlider.value / _musicVolumeSlider.maxValue;
             AudioManager.Instance.SetMusicVolume( volume );
         }        
         
         private void ChangeSfxVolume()
         {
-            float volume = _sfxVolumeSlider.value;
+            float volume = _sfxVolumeSlider.value / _sfxVolumeSlider.maxValue;
             AudioManager.Instance.SetSfxVolume( volume );
         }
     }
