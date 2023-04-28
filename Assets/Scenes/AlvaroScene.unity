@@ -202,20 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31293dc2580045942887aba045237f8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fireBallCast:
-    Guid:
-      Data1: -1998152685
-      Data2: 1297817317
-      Data3: -7870589
-      Data4: 992459901
-    Path: event:/Fire_Ball_Cast
-  _tecnoMusic:
-    Guid:
-      Data1: -1715364381
-      Data2: 1264832484
-      Data3: 1510036159
-      Data4: -1725166958
-    Path: event:/Tecno_Music
+  _gameMusicSO: {fileID: 11400000, guid: ad33af7b93b2cce4680805cefccf95d9, type: 2}
 --- !u!4 &366591148
 Transform:
   m_ObjectHideFlags: 0
