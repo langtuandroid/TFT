@@ -10058,6 +10058,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Alex
       objectReference: {fileID: 0}
+    - target: {fileID: 1007482090118453926, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
 --- !u!1 &867285150
@@ -23557,7 +23561,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2101418931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23570,13 +23574,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0b529514b827c7409fe5a8e27899823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallsTileMap: {fileID: 0}
-  _groundTileMap: {fileID: 445121311}
+  _wallsTileMap: {fileID: 1564223458}
+  _groundTileMap: {fileID: 1899340994}
   _groundTile: {fileID: 11400000, guid: 1b04b3771f3e02e4cb1194be5e80cc86, type: 2}
-  _wallTile: {fileID: 0}
+  _wallTile: {fileID: 11400000, guid: 88eb0059456ae954dac4730a2dfaf66c, type: 2}
   _roomTex: {fileID: 2800000, guid: 15986648d9d59844db205cbf6666b762, type: 3}
   _roomControllerPrefab: {fileID: 9113138669029962605, guid: 611e3648a0f992848b1e44df3998fa8d, type: 3}
-  _roomOffset: {x: 0, y: 0, z: 0}
+  _roomOffset: {x: 10, y: 5.5, z: 0}
 --- !u!114 &2101418932
 MonoBehaviour:
   m_ObjectHideFlags: 0

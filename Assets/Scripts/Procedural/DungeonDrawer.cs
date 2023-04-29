@@ -16,12 +16,10 @@ namespace Procedural
         [Header("Rooms Related:")]
         [SerializeField] private Texture2D _roomTex;
         [SerializeField] private GameObject _roomControllerPrefab;
-        [SerializeField] private Vector3 _roomOffset;
+        [SerializeField] private Vector3 _roomOffset = new Vector3( 10 , 5.5f );
 
         private int _roomWidth;
         private int _roomHeight;
-
-        private List<GameObject> _roomControllerObjList;
 
 
         private readonly Color[] _doorSideColor = {
@@ -40,17 +38,6 @@ namespace Procedural
 
             _groundTileMap.hideFlags = HideFlags.None;
             _groundTileMap.ClearAllTiles();
-
-
-
-            // test: destroy gameobject on inspector
-            if ( _roomControllerObjList != null)
-                foreach ( GameObject item in _roomControllerObjList )
-                    DestroyImmediate( item );
-
-            _roomControllerObjList = new();
-
-
 
             // Init variables
             _roomHeight = _roomTex.height;
@@ -84,7 +71,6 @@ namespace Procedural
             Vector3 worldPos = startRoomPos + _roomOffset;
 
             GameObject roomControllerObj = Instantiate( _roomControllerPrefab , worldPos , Quaternion.identity );
-            _roomControllerObjList.Add( roomControllerObj );
 
             roomControllerObj.GetComponent<RoomController>().SetRoom( room );
         }
