@@ -28,7 +28,7 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                SceneLoader.Load( SceneName.S_Pruebas );
+                SceneLoader.Load( SceneName.S10_WOODS_Z0 );
             } );
 
             _loadButton.onClick.AddListener( () => {
