@@ -1,115 +1,108 @@
-using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using Utils;
 
-public class EnemyWillOWisp : MonoBehaviour
+namespace AI
 {
+    public class EnemyWillOWisp : MonoBehaviour
+    {
     #region CONFIGURATION
     [Header("Configuration")]
     [SerializeField]
-    private ContactFilter2D contactFilter = new ContactFilter2D();
+    private float _listenRadio;
     
     [SerializeField]
-    private LayerMask playerLayer;
+    private float _playerFollowDistance;
+    
+    [SerializeField]
+    private float _sightAware;
+
+    [SerializeField] private float _resetSeconds;
+    
+    [SerializeField] private float _resetEarSenseSeconds;
 
     [SerializeField]
-    private float listenRadio;
-    
-    [SerializeField]
-    private float playerFollowDistance;
-    
-    [SerializeField]
-    private float sightAware;
-
-    [SerializeField] private float resetSeconds;
-    
-    [SerializeField] private float resetEarSenseSeconds;
-
-    [SerializeField]
-    private Transform playerInitialPosition;
+    private Transform _playerInitialPosition;
 
     public Transform PlayerInitialPosition
     {
-        get => playerInitialPosition;
+        get => _playerInitialPosition;
     }
     
-    [SerializeField] private float secondsListening;
+    [SerializeField] private float _secondsListening;
 
-    private float secondsListeningSaved;
+    private float _secondsListeningSaved;
     public float SecondsListening
     {
-        get => secondsListening;
-        set => secondsListening = value;
+        get => _secondsListening;
+        set => _secondsListening = value;
     }
 
     #endregion
     
     #region WAYPOINTS
     [Header("WayPoints")]
-    public Transform wayPoint1;
-    public Transform wayPoint2;
-    public Transform wayPoint3;
-    public Transform wayPoint4;
-    public int actualWayPoint;
-    private GameObject[] torch;
-    //private List<Torch> torchScript;
+    [SerializeField] private List<Transform> _wayPointsList;
+    
+    private int _actualWayPoint;
+    
+    private List<GameObject> _torch;
+    
+    private List<Torch> _torchScript;
     #endregion
     
     #region IA
-    private FsmEnemyWillOWisp actualState;
+    private FsmEnemyWillOWisp _actualState;
 
     public NavMeshAgent _navMeshAgent;
+    
+    private bool _canListen;
 
-    public bool playerCollision;
+    public bool CanListen
+    {
+        get => _canListen;
 
-    [HideInInspector]
-    public bool canListen;
+        set => _canListen = value;
+    }
     #endregion
     
     #region REFERENCIAS
-    [HideInInspector]
-    public Rigidbody2D rb2D;
+    private readonly ContactFilter2D _contactFilter = new ContactFilter2D();
     
-    [HideInInspector]
-    public bool facingRight;
+    private LayerMask _playerLayer;
     
-    [HideInInspector]
-    public GameObject player;
+    private GameObject _player;
+    public GameObject Player
+    {
+        get => _player;
+    }
     
-    private Rigidbody2D playerRB;
+    private Rigidbody2D _playerRB;
 
-    private Vector2 direction;
+    private Vector2 _direction;
 
-    [HideInInspector] public bool isTorchAction;
-
-    [HideInInspector] public List<Transform> torchOnList;
+    private bool _isTorchAction;
+    public bool IsTorchAction
+    {
+        get => _isTorchAction;
+        set => _isTorchAction = value;
+    }
+    
+    private List<Transform> _torchOnList;
+    
+    public List<Transform> TorchOnList
+    {
+        get => _torchOnList;
+    }
     
     #endregion
     
+    #region UNITY METHODS
     private void Awake()
     {
-        rb2D = GetComponent<Rigidbody2D>();
-        if(player == null)
-            player = GameObject.FindGameObjectWithTag("Player");
-        playerRB = player.GetComponent<Rigidbody2D>();
-        _navMeshAgent = GetComponent<NavMeshAgent>();
-        torch = GameObject.FindGameObjectsWithTag("Torch");
-        /*if (torch != null)
-        {
-            torchScript = new List<Torch>();
-            for (int i = 0; i < torch.Length; i++)
-            {
-                Torch torchComponent = torch[i].GetComponent<Torch>();
-                if (torchComponent != null)
-                {
-                    torchScript.Add(torchComponent);
-                }
-            }
-        }*/
-
-    
+        PrepareComponent();
     }
 
     void Start()
@@ -119,21 +112,55 @@ public class EnemyWillOWisp : MonoBehaviour
     
     void Update()
     {
-        actualState.Execute(this);
+        _actualState.Execute(this);
+    }
+    
+    private void PrepareComponent()
+    {
+        //Player
+        if (_player == null)
+            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
+        
+        _playerRB = _player.GetComponent<Rigidbody2D>();
+        
+        //NavMesh
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        
+        //Torch
+        _torch = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_TORCH));
+        
+        if (_torch != null)
+        {
+            _torchScript = new List<Torch>();
+            for (int i = 0; i < _torch.Count; i++)
+            {
+                Torch torchComponent = _torch[i].GetComponent<Torch>();
+                if (torchComponent != null)
+                {
+                    _torchScript.Add(torchComponent);
+                }
+            }
+        }
+        
+        //WayPoints
+        List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
+        
+        foreach (var wayPoint in wayPointsObjectList)
+        {
+            _wayPointsList.Add(wayPoint.GetComponent<Transform>());   
+        }
     }
 
     private void Init()
     {
-        if (transform.localScale.x < 0f) facingRight = false;
-        else if (transform.localScale.x > 0f) facingRight = true;
-
-        secondsListeningSaved = secondsListening; //  Guardo los segundos configurados por el jugador 
+        _secondsListeningSaved = _secondsListening; //  Guardo los segundos configurados por el jugador 
         
-        canListen = true; //Activo el sentido del oído
+        _canListen = true; //Activo el sentido del oído
         
-        actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
+        _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
     }
-
+    #endregion
+    
     #region MOVEMENT
     
     //Patrulla waypoints
@@ -141,25 +168,30 @@ public class EnemyWillOWisp : MonoBehaviour
     {
         _navMeshAgent.destination = waypoint.position;
     }
-
-    //Está el jugadorn moviendose?
-    public bool IsPlayerMoving()
+    
+    public Transform GetNextWayPoint()
     {
-        return playerRB.velocity.magnitude > 0f;
+        _actualWayPoint = (_actualWayPoint + 1) % _wayPointsList.Count;
+        return _wayPointsList[_actualWayPoint];
+    }
+
+    public Transform ActualWayPoint()
+    {
+        return _wayPointsList[_actualWayPoint];
     }
 
     //Método que lanza un raycast para detectar si tenemos delante
     //al jugador o una pared
     public bool PlayerDetection()
     {
-        Vector3 playerPos = player.transform.position;
+        Vector3 playerPos = _player.transform.position;
         Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos); //Necesario debido al navmesh y la rotacion del eje x
         Vector3 direction = transform.TransformDirection(localPlayerPos);
         
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, playerLayer);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _playerLayer);
 
         
-        return hit.collider.CompareTag("Player");
+        return hit.collider.CompareTag(Constants.TAG_PLAYER);
 
     }
     
@@ -168,45 +200,36 @@ public class EnemyWillOWisp : MonoBehaviour
     //Sacamos al jugador del nivel
     public bool CheckPlayerDistance()
     {
-        return Vector3.Distance(transform.position, player.transform.position) < playerFollowDistance;
+        return Vector3.Distance(transform.position, _player.transform.position) < _playerFollowDistance;
     }
 
     //Persigo Jugador
     public void FollowPlayer()
     {
-        UpdatePatrolWayPoint(player.transform);
+        UpdatePatrolWayPoint(_player.transform);
     }
+
     
-    // Volteo el sprite si cambio de dirección
-    public void Flip()
-    {
-        facingRight = !facingRight;
-        float localScaleX = transform.localScale.x;
-        localScaleX = localScaleX * -1f;
-        transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
-    }
-    
-    /*
     // Patrullo por las antorchas
     public void TorchPatrol(){
-        if (torchOnList.Count > 0)
+        if (_torchOnList.Count > 0)
         {
-            UpdatePatrolWayPoint(torchOnList[0]);
+            UpdatePatrolWayPoint(_torchOnList[0]);
 
             // Si llegamos a nuestro destino, cambiamos nuestro destino al siguiente waypoint
-            if (Vector3.Distance(transform.position, torchOnList[0].position) < 1f)
+            if (Vector3.Distance(transform.position, _torchOnList[0].position) < 1f)
             {
-                for (int i = 0; i < torchScript.Count; i++)
+                for (int i = 0; i < _torchScript.Count; i++)
                 {
-                 if(torchOnList[0] == torchScript[i].gameObject.transform)
-                     torchScript[i].Activated = false;
+                 if(_torchOnList[0] == _torchScript[i].gameObject.transform)
+                     _torchScript[i].Activated = false;
                 }
                
-                torchOnList.RemoveAt(0);
+                _torchOnList.RemoveAt(0);
 
-                if (torchOnList.Count > 0)
+                if (_torchOnList.Count > 0)
                 {
-                    UpdatePatrolWayPoint(torchOnList[0]);
+                    UpdatePatrolWayPoint(_torchOnList[0]);
                 }
             }
         }
@@ -214,12 +237,12 @@ public class EnemyWillOWisp : MonoBehaviour
 
     public void TorchReset()
     {
-        for (int i = 0; i < torchScript.Count; i++)
+        for (int i = 0; i < _torchScript.Count; i++)
         {
-            torchScript[i].Activated = false;
+            _torchScript[i].Activated = false;
         }
     }
-*/
+
     #endregion
     
     #region SENSES
@@ -230,7 +253,7 @@ public class EnemyWillOWisp : MonoBehaviour
         
         Collider2D[] colliders = new Collider2D[5];
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, listenRadio, contactFilter, colliders);
+        int objectsDetected = Physics2D.OverlapCircle(transform.position, _listenRadio, _contactFilter, colliders);
 
         if (objectsDetected > 0)
         {
@@ -238,7 +261,7 @@ public class EnemyWillOWisp : MonoBehaviour
             {
                 if (item != null)
                 {
-                    if (item.CompareTag("Player") && canListen)
+                    if (item.CompareTag(Constants.TAG_PLAYER) && _canListen)
                     {
                         result = true;
                         break;
@@ -254,7 +277,7 @@ public class EnemyWillOWisp : MonoBehaviour
     //Veo al jugador?
     public bool SeePlayer()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) < sightAware)
+        if (Vector3.Distance(transform.position, _player.transform.position) < _sightAware)
         {
                 return PlayerDetection();
         }
@@ -269,21 +292,19 @@ public class EnemyWillOWisp : MonoBehaviour
     {
         bool result = false;
         
-        torchOnList = new List<Transform>();
-        if (torch != null)
+        _torchOnList = new List<Transform>();
+        if (_torch != null)
         {
-            /*
             //Compruebo si hay alguna antorcha encendida
-            for (int i = 0; i < torchScript.Count; i++)
+            for (int i = 0; i < _torchScript.Count; i++)
             {
-                if (torchScript[i].Activated)
+                if (_torchScript[i].Activated)
                 {
                     //Guardo las posiciones de las antorchas encendidas
-                    torchOnList.Add(torchScript[i].gameObject.transform);
+                    _torchOnList.Add(_torchScript[i].gameObject.transform);
                     result = true;
                 }
-         
-            }*/
+            }
         }
         return result;
     }
@@ -292,7 +313,7 @@ public class EnemyWillOWisp : MonoBehaviour
     #region LOGIC
     public void ChangeState(FsmEnemyWillOWisp newState)
     {
-        actualState = newState;
+        _actualState = newState;
     }
     
     public void ResetTimer()
@@ -302,11 +323,11 @@ public class EnemyWillOWisp : MonoBehaviour
     
     private IEnumerator WaitUntilResetTimer()
     {
-        yield return new WaitForSeconds(resetEarSenseSeconds);
+        yield return new WaitForSeconds(_resetEarSenseSeconds);
         
-        secondsListening = secondsListeningSaved;
+        _secondsListening = _secondsListeningSaved;
 
-        canListen = true;
+        _canListen = true;
     }
 
     public void Reset()
@@ -316,11 +337,11 @@ public class EnemyWillOWisp : MonoBehaviour
 
     private IEnumerator WaitUntilReset()
     {
-        yield return new WaitForSeconds(resetSeconds);
+        yield return new WaitForSeconds(_resetSeconds);
         
-        player.transform.position = PlayerInitialPosition.position;
+        _player.transform.position = PlayerInitialPosition.position;
         
-        actualWayPoint = 1;
+        _actualWayPoint = 1;
         
         ChangeState(new EnemyWillOWispPatrolState());
     }
@@ -328,12 +349,12 @@ public class EnemyWillOWisp : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, listenRadio);
+        Gizmos.DrawWireSphere(transform.position, _listenRadio);
         
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, sightAware);
+        Gizmos.DrawWireSphere(transform.position, _sightAware);
         
-        Vector3 playerPos = player.transform.position;
+        Vector3 playerPos = _player.transform.position;
         Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos);
         Vector3 direction = transform.TransformDirection(localPlayerPos);
 
@@ -342,4 +363,5 @@ public class EnemyWillOWisp : MonoBehaviour
 
     }
     #endregion
+    }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 
-public class EnemyWillOWispPatrolState : FsmEnemyWillOWisp
+namespace AI
+{
+  public class EnemyWillOWispPatrolState : FsmEnemyWillOWisp
 {
     public override void Execute(EnemyWillOWisp agent)
     {
@@ -20,43 +22,17 @@ public class EnemyWillOWispPatrolState : FsmEnemyWillOWisp
         //Si detecto alguna antorcha encendida
         else if (agent.CheckTorchOn())
         {
-            agent.isTorchAction = true;
+            agent.IsTorchAction = true;
             agent.ChangeState(new EnemyWillOWispActionState());
         }
         //Movimiento de patrulla
-        else if (!agent.ListenPlayer() && !agent.SeePlayer()) //TODO cambiar por una lista
+        else if (!agent.ListenPlayer() && !agent.SeePlayer())
         {
-            if (agent.actualWayPoint == 1)
+            if (Vector3.Distance(agent.transform.position, agent.ActualWayPoint().position) < 0.1f)
             {
-                agent.UpdatePatrolWayPoint(agent.wayPoint2);
-                if (Vector3.Distance(agent.transform.position, agent.wayPoint2.transform.position) < 0.1f)
-                {
-                    agent.actualWayPoint = 2;
-                }
-            } else if (agent.actualWayPoint == 2)
-            {
-                agent.UpdatePatrolWayPoint(agent.wayPoint3);
-                if (Vector3.Distance(agent.transform.position, agent.wayPoint3.transform.position) < 0.1f)
-                {
-                    agent.actualWayPoint = 3;
-                }
-            }
-            else if (agent.actualWayPoint == 3)
-            {
-                agent.UpdatePatrolWayPoint(agent.wayPoint4);
-                if (Vector3.Distance(agent.transform.position, agent.wayPoint4.transform.position) < 0.1f)
-                {
-                    agent.actualWayPoint = 4;
-                }
-            }
-            else if (agent.actualWayPoint == 4)
-            {
-                agent.UpdatePatrolWayPoint(agent.wayPoint1);
-                if (Vector3.Distance(agent.transform.position, agent.wayPoint1.transform.position) < 0.1f)
-                {
-                    agent.actualWayPoint = 1;
-                }
+                agent.UpdatePatrolWayPoint(agent.GetNextWayPoint());
             }
         } 
     }
+}  
 }

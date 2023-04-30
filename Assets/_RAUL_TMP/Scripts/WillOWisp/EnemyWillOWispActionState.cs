@@ -1,39 +1,32 @@
 using UnityEngine;
 
-public class EnemyWillOWispActionState : FsmEnemyWillOWisp
+namespace AI
 {
-    public override void Execute(EnemyWillOWisp agent)
+    public class EnemyWillOWispActionState : FsmEnemyWillOWisp
     {
-        //Si alcanzo al jugador
-        if (!agent.isTorchAction)
+        public override void Execute(EnemyWillOWisp agent)
         {
-            TransitionManager.instance.CrossFade();
-            agent.Reset();
-        }
-        //Peligro: apagar antorchas
-        else
-        {
-            if (agent.SeePlayer())
+            //Si alcanzo al jugador
+            if (!agent.IsTorchAction)
             {
-                agent.isTorchAction = false;
+                TransitionManager.instance.CrossFade();
+                agent.Reset();
             }
+            //Peligro: apagar antorchas
             else
             {
-                if (agent.torchOnList.Count > 0)
+                if (agent.SeePlayer())
                 {
-                    //agent.TorchPatrol();
+                    agent.IsTorchAction = false;
                 }
                 else
                 {
-                    //agent.TorchReset();
                     agent.ChangeState(new EnemyWillOWispPatrolState());
                 }
-                
-                    
-            }
       
-        }
+            }
 
       
-    }
+        }
+    } 
 }
