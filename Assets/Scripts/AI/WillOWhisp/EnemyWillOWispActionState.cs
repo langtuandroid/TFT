@@ -9,7 +9,7 @@ namespace AI
             //Si alcanzo al jugador
             if (!agent.IsTorchAction)
             {
-                TransitionManager.instance.CrossFade();
+                //TransitionManager.instance.CrossFade();
                 agent.Reset();
             }
             //Peligro: apagar antorchas

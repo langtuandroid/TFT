@@ -20,7 +20,7 @@ namespace AI
     private float _listenRadio;
     
     [SerializeField]
-    [Tooltip("Radio del sentido vista.")]
+    [Tooltip("Distancia a la que vemos al player.")]
     private float _sightAware;
     
     [SerializeField]
@@ -76,8 +76,15 @@ namespace AI
     
     #region REFERENCIAS
     private readonly ContactFilter2D _contactFilter = new ContactFilter2D();
+
+    private Transform _renderTransform;
+
+    public Transform RenderTransform
+    {
+        get => _renderTransform;
+    }
     
-    private LayerMask _playerLayer;
+    //private LayerMask _playerLayer = 0;
     
     private GameObject _player;
     
@@ -137,6 +144,9 @@ namespace AI
             _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
         
         _playerRB = _player.GetComponent<Rigidbody2D>();
+        
+        //Render Transform
+        _renderTransform = GetComponentInChildren<Transform>();
         
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -209,14 +219,29 @@ namespace AI
     //al jugador o una pared
     public bool PlayerDetection()
     {
-        Vector3 playerPos = _player.transform.position;
-        Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos); //Necesario debido al navmesh y la rotacion del eje x
-        Vector3 direction = transform.TransformDirection(localPlayerPos);
-        
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, _playerLayer);
+        Collider2D[] colliders = new Collider2D[5];
 
+        var result = false;
         
-        return hit.collider.CompareTag(Constants.TAG_PLAYER);
+        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightAware, _contactFilter, colliders);
+
+        if (objectsDetected > 0)
+        {
+            foreach (var item in colliders)
+            {
+                if (item != null)
+                {
+                    if (item.CompareTag(Constants.TAG_PLAYER))
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        return result;
 
     }
     
@@ -365,10 +390,8 @@ namespace AI
         yield return new WaitForSeconds(_resetSeconds);
         
         _player.transform.position = PlayerInitialPosition.position;
-        
-        _actualWayPoint = 1;
-        
-        ChangeState(new EnemyWillOWispPatrolState());
+
+        Init();
     }
 
     private void OnDrawGizmos()
