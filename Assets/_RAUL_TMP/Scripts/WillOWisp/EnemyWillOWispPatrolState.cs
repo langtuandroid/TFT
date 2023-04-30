@@ -22,7 +22,7 @@ namespace AI
         //Si detecto alguna antorcha encendida
         else if (agent.CheckTorchOn())
         {
-            agent.isTorchAction = true;
+            agent.IsTorchAction = true;
             agent.ChangeState(new EnemyWillOWispActionState());
         }
         //Movimiento de patrulla

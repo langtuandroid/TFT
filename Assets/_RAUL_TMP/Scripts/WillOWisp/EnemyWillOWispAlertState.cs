@@ -26,7 +26,7 @@ namespace AI
                     }
                     else
                     {
-                        agent.canListen = false;
+                        agent.CanListen = false;
                         agent.ResetTimer();
                         agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
                     }

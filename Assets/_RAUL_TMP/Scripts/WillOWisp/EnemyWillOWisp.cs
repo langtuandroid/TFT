@@ -63,6 +63,8 @@ namespace AI
     public bool CanListen
     {
         get => _canListen;
+
+        set => _canListen = value;
     }
     #endregion
     
@@ -82,7 +84,11 @@ namespace AI
     private Vector2 _direction;
 
     private bool _isTorchAction;
-    public bool IsTorchAction { get; set; }
+    public bool IsTorchAction
+    {
+        get => _isTorchAction;
+        set => _isTorchAction = value;
+    }
     
     private List<Transform> _torchOnList;
     

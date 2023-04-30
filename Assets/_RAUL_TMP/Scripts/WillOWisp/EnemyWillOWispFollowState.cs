@@ -17,7 +17,7 @@ namespace AI
                     agent.FollowPlayer();
                 else //Si le alcanzo le transporto
                 {
-                    agent.isTorchAction = false;
+                    agent.IsTorchAction = false;
                     agent.ChangeState(new EnemyWillOWispActionState());  
                 }
             } else if(!agent.SeePlayer() && !agent.ListenPlayer())  //Si dejo de verle y escucharle

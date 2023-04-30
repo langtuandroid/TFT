@@ -7,7 +7,7 @@ namespace AI
         public override void Execute(EnemyWillOWisp agent)
         {
             //Si alcanzo al jugador
-            if (!agent.isTorchAction)
+            if (!agent.IsTorchAction)
             {
                 TransitionManager.instance.CrossFade();
                 agent.Reset();
@@ -17,21 +17,11 @@ namespace AI
             {
                 if (agent.SeePlayer())
                 {
-                    agent.isTorchAction = false;
+                    agent.IsTorchAction = false;
                 }
                 else
                 {
-                    if (agent.torchOnList.Count > 0)
-                    {
-                        //agent.TorchPatrol();
-                    }
-                    else
-                    {
-                        //agent.TorchReset();
-                        agent.ChangeState(new EnemyWillOWispPatrolState());
-                    }
-                
-                    
+                    agent.ChangeState(new EnemyWillOWispPatrolState());
                 }
       
             }

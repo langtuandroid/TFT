@@ -6,5 +6,4 @@ namespace AI
     {
         public abstract void Execute(EnemyWillOWisp agent);
     }
-  
 }
