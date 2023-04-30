@@ -28,6 +28,7 @@ namespace AI
         //Movimiento de patrulla
         else if (!agent.ListenPlayer() && !agent.SeePlayer())
         {
+            
             if (Vector3.Distance(agent.transform.position, agent.ActualWayPoint().position) < 0.1f)
             {
                 agent.UpdatePatrolWayPoint(agent.GetNextWayPoint());

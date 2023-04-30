@@ -6,7 +6,7 @@ namespace AI
     {
         public override void Execute(EnemyWillOWisp agent)
         {
-            agent._navMeshAgent.speed = 3.5f;
+            agent.ChangeNavMeshAgentSpeed(3.5f);
             if (agent.SeePlayer() && agent.ListenPlayer()) // Si veo y escucho al jugador
             {
                 agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo 
@@ -21,7 +21,7 @@ namespace AI
                 {
                     if (agent.SecondsListening > 0) //Mientras espero para patrullar 
                     {
-                        agent._navMeshAgent.speed = 0;
+                        agent.ChangeNavMeshAgentSpeed(0f);
                         agent.SecondsListening -= Time.deltaTime;
                     }
                     else

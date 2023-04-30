@@ -9,29 +9,35 @@ namespace AI
     public class EnemyWillOWisp : MonoBehaviour
     {
     #region CONFIGURATION
-    [Header("Configuration")]
+    
+    [Header("Tags Necesarios:\n" +
+            "Player: Transform del Player.\n" +
+            "WayPoint: Transform de cada punto de platrulla.\n" +
+            "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
+    
     [SerializeField]
+    [Tooltip("Radio del sentido escucha.")]
     private float _listenRadio;
     
     [SerializeField]
+    [Tooltip("Radio del sentido vista.")]
+    private float _sightAware;
+    
+    [SerializeField]
+    [Tooltip("Distancia mínima para ser alcanzado.")]
     private float _playerFollowDistance;
     
-    [SerializeField]
-    private float _sightAware;
-
-    [SerializeField] private float _resetSeconds;
+    [SerializeField] 
+    [Tooltip("Tiempo que tarda en volver a patrulla desde cualquier sentido.")]
+    private float _resetSeconds;
     
-    [SerializeField] private float _resetEarSenseSeconds;
-
-    [SerializeField]
-    private Transform _playerInitialPosition;
-
-    public Transform PlayerInitialPosition
-    {
-        get => _playerInitialPosition;
-    }
+    [SerializeField] 
+    [Tooltip("Tiempo que tardo en resetar el sentido del oído.")]
+    private float _resetEarSenseSeconds;
     
-    [SerializeField] private float _secondsListening;
+    [SerializeField] 
+    [Tooltip("Tiempo que tardo en patrullar desde que he escuchado al player.")]
+    private float _secondsListening;
 
     private float _secondsListeningSaved;
     public float SecondsListening
@@ -44,9 +50,9 @@ namespace AI
     
     #region WAYPOINTS
     [Header("WayPoints")]
-    [SerializeField] private List<Transform> _wayPointsList;
+    private List<Transform> _wayPointsList = new List<Transform>();
     
-    private int _actualWayPoint;
+    private int _actualWayPoint = 0;
     
     private List<GameObject> _torch;
     
@@ -56,7 +62,7 @@ namespace AI
     #region IA
     private FsmEnemyWillOWisp _actualState;
 
-    public NavMeshAgent _navMeshAgent;
+    private NavMeshAgent _navMeshAgent;
     
     private bool _canListen;
 
@@ -74,6 +80,7 @@ namespace AI
     private LayerMask _playerLayer;
     
     private GameObject _player;
+    
     public GameObject Player
     {
         get => _player;
@@ -84,6 +91,7 @@ namespace AI
     private Vector2 _direction;
 
     private bool _isTorchAction;
+
     public bool IsTorchAction
     {
         get => _isTorchAction;
@@ -97,6 +105,13 @@ namespace AI
         get => _torchOnList;
     }
     
+    private Transform _playerInitialPosition;
+
+    public Transform PlayerInitialPosition
+    {
+        get => _playerInitialPosition;
+    }
+
     #endregion
     
     #region UNITY METHODS
@@ -144,11 +159,14 @@ namespace AI
         
         //WayPoints
         List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
-        
+
         foreach (var wayPoint in wayPointsObjectList)
         {
             _wayPointsList.Add(wayPoint.GetComponent<Transform>());   
         }
+        
+        //Posición Inicial del Player
+        _playerInitialPosition = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_INITIAL_POSITION).GetComponent<Transform>();
     }
 
     private void Init()
@@ -158,10 +176,12 @@ namespace AI
         _canListen = true; //Activo el sentido del oído
         
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
+        
+        UpdatePatrolWayPoint(GetNextWayPoint());
     }
     #endregion
     
-    #region MOVEMENT
+    #region MOVEMENT & NAVMESH
     
     //Patrulla waypoints
     public void UpdatePatrolWayPoint(Transform waypoint)
@@ -178,6 +198,11 @@ namespace AI
     public Transform ActualWayPoint()
     {
         return _wayPointsList[_actualWayPoint];
+    }
+
+    public void ChangeNavMeshAgentSpeed(float vel)
+    {
+        _navMeshAgent.speed = vel;
     }
 
     //Método que lanza un raycast para detectar si tenemos delante
@@ -353,13 +378,18 @@ namespace AI
         
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _sightAware);
-        
-        Vector3 playerPos = _player.transform.position;
-        Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos);
-        Vector3 direction = transform.TransformDirection(localPlayerPos);
 
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawRay(transform.position, direction);
+        if (_player != null)
+        {
+            Vector3 playerPos = _player.transform.position;
+            Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos);
+            Vector3 direction = transform.TransformDirection(localPlayerPos);
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(transform.position, direction);
+        }
+
+     
+
 
     }
     #endregion

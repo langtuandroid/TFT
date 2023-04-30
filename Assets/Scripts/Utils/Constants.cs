@@ -11,12 +11,18 @@ namespace Utils
         
         #region WillOWhisp
         public const string TAG_WAYPOINT = "Waypoint";
-        public const string TAG_TORCH = "Torch";
+        
         #endregion
         
         #region Player
         public const string TAG_PLAYER = "Player";
+        public const string TAG_PLAYER_INITIAL_POSITION = "PlayerInitialPosition";
         
+        #endregion
+        
+        #region References
+        public const string TAG_TORCH = "Torch";
+
         #endregion
         #endregion
     }
