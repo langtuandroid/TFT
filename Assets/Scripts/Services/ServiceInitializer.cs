@@ -1,5 +1,6 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
+using static ServiceLocator;
 
 namespace Services
 {
@@ -7,10 +8,11 @@ namespace Services
     {
         private void OnEnable()
         {
-            if ( !ServiceLocator.IsInitialized )
+            if ( !IsInitialized )
             {
-                ServiceLocator.AddService( new GameInputs() );
-                ServiceLocator.IsInitialized = true;
+                AddService( new GameInputs() );
+
+                IsInitialized = true;
             }
             Destroy( gameObject );
         }

@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
         if ( Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad( gameObject );
             Init();
         }
         else
@@ -36,35 +36,46 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if ( Input.GetKeyUp( KeyCode.Escape ) )
         {
             ChangeMusic();
+        }
+        
+        if ( Input.GetKeyUp( KeyCode.V ) )
+        {
+            ChangeParameter( "Woods_Dungeon_M" , 1 );
         }
     }
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.TecnoMusic );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.MainMenu );
         _musicEventInstance.start();
         _musicEventInstance.release();
 
         _musicMixer = RuntimeManager.GetBus( "bus:/Music" );
-        _sfxMixer = RuntimeManager.GetBus( "bus:/Sfx" );
+        _sfxMixer   = RuntimeManager.GetBus( "bus:/Sfx" );
 
         _musicMixer.getVolume( out _musicVolume );
         _sfxMixer.getVolume( out _sfxVolume );
     }
 
-    private void ChangeMusic()
+    public void ChangeMusic()
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.TestMusic );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.WoodsDungeon );
         _musicEventInstance.start();
+        _musicEventInstance.release();
+    }
+
+    public void ChangeParameter( string name , float newValue)
+    {
+        _musicEventInstance.setParameterByName( name , newValue );
     }
 
     public void PlayOneShot( Vector3 soundOrigin = new() )
     {
-        RuntimeManager.PlayOneShot( _gameMusicSO.TestMusic , soundOrigin );
+        RuntimeManager.PlayOneShot( _gameMusicSO.WoodsDungeon , soundOrigin );
     }
 
 

@@ -4,10 +4,15 @@ using FMODUnity;
 
 namespace Audio
 {
-    //[CreateAssetMenu( fileName = "GameMusicSO" , menuName = "Audio/GameMusicSO" )]
+    [CreateAssetMenu( fileName = "GameMusicSO" , menuName = "Audio/GameMusicSO" )]
     public class GameMusicSO : ScriptableObject
     {
-        public EventReference TecnoMusic;
-        public EventReference TestMusic;
+        public EventReference MainMenu;
+        public EventReference Woods;
+        public EventReference WoodsDungeon;
+        public EventReference Volcan;
+        public EventReference VolcanDungeon;
+        public EventReference WaterRuin;
+        public EventReference WaterRuinDungeon;
     }
 }
