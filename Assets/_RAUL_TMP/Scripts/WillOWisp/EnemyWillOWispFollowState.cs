@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class EnemyWillOWispFollowState : FsmEnemyWillOWisp
+namespace AI
 {
-    public override void Execute(EnemyWillOWisp agent)
+    public class EnemyWillOWispFollowState : FsmEnemyWillOWisp
     {
-        //Si veo o escucho al jugador mientras le persigo
-        if (agent.SeePlayer() || agent.ListenPlayer())
+        public override void Execute(EnemyWillOWisp agent)
         {
-            if (!agent.SeePlayer())
+            //Si veo o escucho al jugador mientras le persigo
+            if (agent.SeePlayer() || agent.ListenPlayer())
             {
-                agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo al estado de patrulla
-            } 
-            else if (!agent.CheckPlayerDistance()) //Continuo siguiendole si estoy dentro del rango y no le he alcanzado
-                agent.FollowPlayer();
-            else //Si le alcanzo le transporto
+                if (!agent.SeePlayer())
+                {
+                    agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo al estado de patrulla
+                } 
+                else if (!agent.CheckPlayerDistance()) //Continuo siguiendole si estoy dentro del rango y no le he alcanzado
+                    agent.FollowPlayer();
+                else //Si le alcanzo le transporto
+                {
+                    agent.isTorchAction = false;
+                    agent.ChangeState(new EnemyWillOWispActionState());  
+                }
+            } else if(!agent.SeePlayer() && !agent.ListenPlayer())  //Si dejo de verle y escucharle
             {
-                agent.isTorchAction = false;
-                agent.ChangeState(new EnemyWillOWispActionState());  
+                agent.ResetTimer();
+                agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
             }
-        } else if(!agent.SeePlayer() && !agent.ListenPlayer())  //Si dejo de verle y escucharle
-        {
-            agent.ResetTimer();
-            agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
         }
-    }
     
+    }  
 }

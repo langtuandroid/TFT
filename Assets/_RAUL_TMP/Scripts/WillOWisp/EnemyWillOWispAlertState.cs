@@ -1,38 +1,41 @@
 using UnityEngine;
 
-public class EnemyWillOWispAlertState : FsmEnemyWillOWisp
+namespace AI
 {
-    public override void Execute(EnemyWillOWisp agent)
+    public class EnemyWillOWispAlertState : FsmEnemyWillOWisp
     {
-        agent._navMeshAgent.speed = 3.5f;
-        if (agent.SeePlayer() && agent.ListenPlayer()) // Si veo y escucho al jugador
+        public override void Execute(EnemyWillOWisp agent)
         {
-            agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo 
-        } else if (agent.ListenPlayer() && !agent.SeePlayer()) // Si escucho al jugador y no lo veo
-        {
-            if (agent.CheckTorchOn()) //Voy a por las antorchas si hay alguna encendida
+            agent._navMeshAgent.speed = 3.5f;
+            if (agent.SeePlayer() && agent.ListenPlayer()) // Si veo y escucho al jugador
             {
-                agent.isTorchAction = true;
-                agent.ChangeState(new EnemyWillOWispActionState());
-            }
-            else // Espero y entonces voy a patrulla
+                agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo 
+            } else if (agent.ListenPlayer() && !agent.SeePlayer()) // Si escucho al jugador y no lo veo
             {
-                if (agent.SecondsListening > 0) //Mientras espero para patrullar 
+                if (agent.CheckTorchOn()) //Voy a por las antorchas si hay alguna encendida
                 {
-                    agent._navMeshAgent.speed = 0;
-                    agent.SecondsListening -= Time.deltaTime;
+                    agent.IsTorchAction = true;
+                    agent.ChangeState(new EnemyWillOWispActionState());
                 }
-                else
+                else // Espero y entonces voy a patrulla
                 {
-                    agent.canListen = false;
-                    agent.ResetTimer();
-                    agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
-                }
+                    if (agent.SecondsListening > 0) //Mientras espero para patrullar 
+                    {
+                        agent._navMeshAgent.speed = 0;
+                        agent.SecondsListening -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        agent.canListen = false;
+                        agent.ResetTimer();
+                        agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
+                    }
                    
-            }
-        } else if (!agent.SeePlayer() && !agent.ListenPlayer()) //Si no veo ni escucho al jugador
-        {
-            agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
-        } 
+                }
+            } else if (!agent.SeePlayer() && !agent.ListenPlayer()) //Si no veo ni escucho al jugador
+            {
+                agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
+            } 
+        }
     }
 }

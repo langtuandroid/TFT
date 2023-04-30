@@ -1,6 +1,10 @@
 using UnityEngine;
 
-public abstract class FsmEnemyWillOWisp
+namespace AI
 {
-    public abstract void Execute(EnemyWillOWisp agent);
+    public abstract class FsmEnemyWillOWisp
+    {
+        public abstract void Execute(EnemyWillOWisp agent);
+    }
+  
 }
