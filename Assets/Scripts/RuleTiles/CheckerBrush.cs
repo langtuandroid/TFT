@@ -32,8 +32,6 @@ namespace UnityEditor.Tilemaps
             Undo.RegisterCompleteObjectUndo( tilemap , "Checker Tile Placement" );
             tilemap.SetTile( position , choice );
         }
-        // there are many other methods you can override
-        // to get an idea how to implement, see the examples brushes in that github link
     }
 
     [CustomEditor( typeof( CheckerBrush ) )]
