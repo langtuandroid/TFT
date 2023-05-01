@@ -15,9 +15,7 @@ namespace UI
         [SerializeField] private Button _firstSlotButton;
         [SerializeField] private Button _returnButton;
 
-
         private event Action OnReturnButtonClicked;
-
 
         private void Awake()
         {
