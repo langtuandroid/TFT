@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1007482090118453922}
   - component: {fileID: 5808022070241722488}
   - component: {fileID: 1007482090118453921}
+  - component: {fileID: 178666607}
   m_Layer: 0
   m_Name: Alex
   m_TagString: Player
@@ -86,6 +87,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+--- !u!114 &178666607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007482090118453926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cae27d1cc924ff849b26a57d9bec471b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerVisuals: {fileID: 7210885595455203032}
+  _jumpSpeed: 3
+  _fallSpeed: 4
+  _maxJumpHeight: 1
 --- !u!1 &1023130494312011597
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,16 +175,16 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_SortingOrder: -1
+  m_Sprite: {fileID: 21300000, guid: b8f54b9c1870169438efe6a57ff911a1, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.49019608}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4699134203570822570
