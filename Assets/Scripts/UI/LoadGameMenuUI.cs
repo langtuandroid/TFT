@@ -31,23 +31,7 @@ namespace UI
             Instance = this;
             SetButtonEvents();
             Hide();
-        }
-
-        private void Start()
-        {
-            ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
-        }
-
-        private void OnDestroy()
-        {
-            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
-        }
-
-        private void GameInputs_OnCancelPerformed()
-        {
-            if ( gameObject.activeSelf )
-                Hide();
-        }
+        }        
 
         private void SetButtonEvents()
         {
@@ -67,6 +51,7 @@ namespace UI
         public void Show( Action OnReturnButtonClicked )
         {
             gameObject.SetActive( true );
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
             _firstSlotButton.Select();
             this.OnReturnButtonClicked = OnReturnButtonClicked;
         }
@@ -74,7 +59,14 @@ namespace UI
         public void Hide()
         {
             gameObject.SetActive( false );
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
             OnReturnButtonClicked?.Invoke();
+        }
+
+        private void GameInputs_OnCancelPerformed()
+        {
+            if ( gameObject.activeSelf )
+                Hide();
         }
     }
 }
