@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
@@ -12,7 +13,7 @@ namespace UI
 
 
         [Header("Option Buttons")]
-        [SerializeField] private Button _firstSlotButton;
+        [SerializeField] private GameObject _firstSelectedObj;
         [SerializeField] private Button _returnButton;
 
         private event Action OnReturnButtonClicked;
@@ -20,7 +21,7 @@ namespace UI
         private void Awake()
         {
             Instance = this;
-            SetButtonEvents();
+            _returnButton.onClick.AddListener( () => Hide() );
             Hide();
         }
 
@@ -36,20 +37,15 @@ namespace UI
 
         private void GameInputs_OnCancelPerformed()
         {
-            if (gameObject.activeSelf)
+            if ( gameObject.activeSelf )
                 Hide();
         }
 
-        private void SetButtonEvents()
-        {
-            _returnButton.onClick.AddListener( () => Hide() );
-        }
-
-        public void Show( Action OnReturnButtonClicked )
+        public void Show( Action onReturnButtonClicked )
         {
             gameObject.SetActive( true );
-            _returnButton.Select();
-            this.OnReturnButtonClicked = OnReturnButtonClicked;
+            OnReturnButtonClicked = onReturnButtonClicked;
+            EventSystem.current.SetSelectedGameObject( _firstSelectedObj );
         }
 
         public void Hide()

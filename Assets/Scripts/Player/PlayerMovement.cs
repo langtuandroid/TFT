@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using Player;
+using Player;
 using TMPro;
 using System;
 
@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Move Settings")]
     [SerializeField] private float _speed; // Velocidad de movimiento del personaje
 
-    //[Header("Jump")]
-    //private Jump _jump;
+    [Header("Jump")]
+    private Jump _jump;
 
     //[Header("Attack")]
     //private PlayerAttackExtra _attack;
@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
 
         // Inicializamos variables
         _rb = GetComponent<Rigidbody2D>();
-        //_jump = GetComponent<Jump>();
+        _jump = GetComponent<Jump>();
         _anim = GetComponentInChildren<Animator>();
         _spriteRend = GetComponentInChildren<SpriteRenderer>();
         //_attack = GetComponent<PlayerAttackExtra>();
@@ -100,11 +100,11 @@ public class PlayerMovement : MonoBehaviour
         // Obtenemos el vector de direcci�n
         GetDirection();
 
-        //if (_jump != null)
-        //    if (Input.GetKey(KeyCode.Space))
-        //        _jump.JumpAction();
-        //    else
-        //        _jump.Fall();
+        if ( _jump != null )
+            if ( Input.GetKey( KeyCode.Space ) )
+                _jump.JumpAction();
+            else
+                _jump.Fall();
     }
 
     private void FixedUpdate()
