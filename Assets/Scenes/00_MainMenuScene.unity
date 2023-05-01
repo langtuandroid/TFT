@@ -2601,10 +2601,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0021097045
     y: 0
-    width: 1
-    height: 1
+    width: 0.9976558
+    height: 0.9984985
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -6112,7 +6112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6597291, g: 0.7830189, b: 0.30582055, a: 1}
+  m_Color: {r: 0.2901961, g: 0.85490197, b: 0.8666667, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7054,7 +7054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.209655, g: 0.2924528, b: 0.14733, a: 1}
+  m_Color: {r: 0.2901961, g: 0.85490197, b: 0.8666667, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7150,7 +7150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.31227192, g: 0.5283019, b: 0.2761125, a: 1}
+  m_Color: {r: 0.2901961, g: 0.85490197, b: 0.8666667, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

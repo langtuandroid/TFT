@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 namespace UnityEditor.Tilemaps
 {
+#if UNITY_EDITOR
     [CustomGridBrush( true , false , false , "Checker Brush" )]
     public class CheckerBrush : GridBrushBase
     {
@@ -48,5 +49,6 @@ namespace UnityEditor.Tilemaps
             }
         }
     }
+#endif
 }
 

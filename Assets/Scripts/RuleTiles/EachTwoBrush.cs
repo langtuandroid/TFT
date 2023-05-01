@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 
 namespace UnityEditor.Tilemaps
 {
+#if UNITY_EDITOR
     [CustomGridBrush( true , false , false , "Each Two Brush" )]
     public class EachTwoBrush : GridBrushBase
     {
@@ -46,4 +47,5 @@ namespace UnityEditor.Tilemaps
             }
         }
     }
+#endif
 }
