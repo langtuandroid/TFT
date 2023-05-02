@@ -28,9 +28,18 @@ namespace Utils
 
         #region Animations
 
+        #region Player
+        public const string ANIM_PLAYER_JUMP = "Jump";
         public const string ANIM_PLAYER_WALKING = "IsWalking";
+        public const string ANIM_PLAYER_DIRX = "x";
+        public const string ANIM_PLAYER_DIRY = "y";
 
+        #endregion
+
+        #region References
         public const string ANIM_CHEST_OPENED = "Opened";
+
+        #endregion
 
         #endregion
 
