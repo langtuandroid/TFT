@@ -179,9 +179,18 @@ public class EnemySlime : MonoBehaviour
         Vector2 targetPosition = (Vector2)transform.position + randomDirection;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(targetPosition, out hit, _wanderRadius, NavMesh.AllAreas))
+
+        Collider2D targetArea = Physics2D.OverlapCircle(targetPosition, 0.1f, 7);
+        if (targetArea != null)
         {
-            UpdatePatrolMovement(hit.position);
+            if (NavMesh.SamplePosition(targetPosition, out hit, _wanderRadius, 7))
+            {
+                UpdatePatrolMovement(hit.position);
+            }
+        }
+        else
+        {
+            Patrol();
         }
     }
 

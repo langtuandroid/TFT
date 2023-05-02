@@ -17,6 +17,7 @@ namespace Utils
         #region Player
         public const string TAG_PLAYER = "Player";
         public const string TAG_PLAYER_INITIAL_POSITION = "PlayerInitialPosition";
+        public const string TAG_PLAYER_PICKUP_POSITION = "PickUp";
 
         #endregion
 

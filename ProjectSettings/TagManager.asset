@@ -10,6 +10,7 @@ TagManager:
   - NavMesh
   - Torch
   - PlayerInitialPosition
+  - PickUp
   layers:
   - Default
   - TransparentFX
