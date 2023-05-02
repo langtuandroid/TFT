@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f23b14f506f075c4d8b600343d39a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _icon: {fileID: 2354756946939411290}
 --- !u!1 &2354756946939411290
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,7 +242,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2354756948472667006}
   - component: {fileID: 2354756948472667007}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -202,7 +202,11 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< HEAD
     width: 0.99963886
+=======
+    width: 1
+>>>>>>> f5fb19ca04ba184a7ff2f3efef50c9012888f065
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
