@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Chest : MonoBehaviour, IInteractable
@@ -12,11 +10,18 @@ public class Chest : MonoBehaviour, IInteractable
     private const string OPENED = "Opened";
 
     private bool _canBeOpened = true;
+    private bool _isAlreadyOpened = false;
     private Animator _anim;
 
     public void Interact()
     {
-        throw new System.NotImplementedException();
+        if ( _canBeOpened && !_isAlreadyOpened )
+        {
+            _canBeOpened = false;
+            _isAlreadyOpened = false;
+            _icon.SetActive( false );
+            _anim.SetBool( OPENED , true );
+        }
     }
 
     private void Awake()
@@ -25,27 +30,21 @@ public class Chest : MonoBehaviour, IInteractable
         _anim = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D( Collider2D collision )
     {
-        if (_canBeOpened && collision.CompareTag("Player"))
-            _icon.SetActive(true);
-
+        if ( collision.CompareTag( "Player" ) )
+        {
+            _canBeOpened = true;
+            _icon.SetActive( true );
+        }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D( Collider2D collision )
     {
-        if (collision.CompareTag("Player"))
-            _icon.SetActive(false);
-    }
-
-    private void Update()
-    {
-        if (_canBeOpened &&
-            Input.GetKeyDown(KeyCode.E))
+        if ( collision.CompareTag( "Player" ) )
         {
             _canBeOpened = false;
-            _icon.SetActive(false);
-            _anim.SetBool(OPENED, true);
+            _icon.SetActive( false );
         }
     }
 }

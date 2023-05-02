@@ -6,7 +6,7 @@ namespace Services
 {
     public class ServiceInitializer : MonoBehaviour
     {
-        private void OnEnable()
+        private void Awake()
         {
             if ( !IsInitialized )
             {

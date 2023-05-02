@@ -17,6 +17,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Jump")]
     private Jump _jump;
 
+    [Header("Interactable")]
+    [SerializeField] private LayerMask _interactableLayer;
+
     //[Header("Attack")]
     //private PlayerAttackExtra _attack;
 
@@ -48,19 +51,24 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region Private Variables
+    // SERVICIOS
+    private GameInputs _gameInputs;
+
     // COMPONENTES DEL GAMEOBJECT
     private Rigidbody2D _rb; // RigidBody del personaje
     private Animator _anim; // Animator del personaje
     private SpriteRenderer _spriteRend; // SpriteRenderer del personaje
 
     // MOVIMIENTO
-    private float _horizontal; // Movimiento horizontal
-    private float _vertical; // Movimiento vertical
     private Vector2 _direction; // Direcci�n de movimiento del personaje
+    private Vector2 _lookDirection;
 
     // ANIMATOR
     private AnimationLayers _layer; // Layer en ese momento
     //private AnimationLayers _jumpLayer; // Layer para el salto
+
+    private bool _isJumping = false;
+    private bool _isInteracting = false;
 
     #endregion
 
@@ -69,14 +77,13 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         //Hacemos Singleton a la clase
-        if (Instance == null)
+        if ( Instance == null )
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad( gameObject );
         }
         else
-            Destroy(gameObject);
-
+            Destroy( gameObject );
 
         // Inicializamos variables
         _rb = GetComponent<Rigidbody2D>();
@@ -91,6 +98,20 @@ public class PlayerMovement : MonoBehaviour
         //_jumpLayer = AnimationLayers.Null;
     }
 
+    private void Start()
+    {
+        _gameInputs = ServiceLocator.GetService<GameInputs>();
+        _gameInputs.OnSouthButtonStarted  += GameInputs_OnSouthButtonStarted;
+        _gameInputs.OnSouthButtonCanceled += GameInputs_OnSouthButtonCanceled;
+        _gameInputs.OnEastButtonPerformed += GameInputs_OnEastButtonPerformed;
+    }
+
+    private void OnDestroy()
+    {
+        _gameInputs.OnSouthButtonStarted  -= GameInputs_OnSouthButtonStarted;
+        _gameInputs.OnSouthButtonCanceled -= GameInputs_OnSouthButtonCanceled;
+        _gameInputs.OnEastButtonPerformed -= GameInputs_OnEastButtonPerformed;
+    }
 
     private void Update()
     {
@@ -100,11 +121,32 @@ public class PlayerMovement : MonoBehaviour
         // Obtenemos el vector de direcci�n
         GetDirection();
 
-        if ( _jump != null )
-            if ( Input.GetKey( KeyCode.Space ) )
-                _jump.JumpAction();
-            else
-                _jump.Fall();
+        // INTERACT
+        Debug.DrawRay( transform.position , _lookDirection );
+        if ( _isInteracting )
+        {
+            float comprovationDistance = 1;
+            RaycastHit2D hit = Physics2D.Raycast( transform.position ,
+                _lookDirection , 
+                comprovationDistance , _interactableLayer );
+
+            if ( hit )
+            {
+                hit.collider.GetComponent<IInteractable>()?.Interact();
+            }
+
+            _isInteracting = false;
+        }
+
+        // JUMP
+        if ( _isJumping )
+        {
+            _jump.JumpAction();
+            if ( !_jump.IsJumping )
+                _isJumping = false;
+        }
+        else
+            _jump.Fall();
     }
 
     private void FixedUpdate()
@@ -125,29 +167,29 @@ public class PlayerMovement : MonoBehaviour
 
     #region Private Methods
 
-    /// <summary>
-    /// Obtiene el valor de movimiento en los ejes
-    /// </summary>
-    private void GetAxis()
+    private void GameInputs_OnEastButtonPerformed()
     {
-        // Obtenemos los valores en los ejes
-        _horizontal = Input.GetAxisRaw("Horizontal");
-        _vertical = Input.GetAxisRaw("Vertical");
+        _isInteracting = true;
     }
+
+    private void GameInputs_OnSouthButtonCanceled() => _isJumping = false;
+    private void GameInputs_OnSouthButtonStarted()
+    {
+        if ( _jump.CanJump )
+            _isJumping = true;
+    }
+
 
     /// <summary>
     /// Obtiene el vector de direcci�n final (normalizado para que se mueva en la misma direcci�n en todos los ejes)
     /// </summary>
     private void GetDirection()
     {
-        // Obtenemos los ejes
-        GetAxis();
         // Obtenemos el vector de direcci�n
-        _direction = new Vector2(_horizontal, _vertical);
+        _direction = _gameInputs.GetDirectionNormalized();
 
-
-        // Lo normalizamos
-        _direction.Normalize();
+        if ( _direction.magnitude > 0.05f )
+            _lookDirection = _direction;
     }
 
     /// <summary>
@@ -171,8 +213,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (isWalking)
         {
-            _anim.SetFloat("x", _horizontal);
-            _anim.SetFloat("y", _vertical);
+            _anim.SetFloat("x", _direction.x);
+            _anim.SetFloat("y", _direction.y);
         }
 
 

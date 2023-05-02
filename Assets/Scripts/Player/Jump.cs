@@ -79,6 +79,7 @@ namespace Player
             }
         }
 
-        public bool IsJumping => !_canJump;
+        public bool IsJumping => _isJumping;
+        public bool CanJump => _canJump;
     }
 }
