@@ -77,13 +77,6 @@ namespace AI
     #region REFERENCIAS
     private readonly ContactFilter2D _contactFilter = new ContactFilter2D();
 
-    private Transform _renderTransform;
-
-    public Transform RenderTransform
-    {
-        get => _renderTransform;
-    }
-    
     //private LayerMask _playerLayer = 0;
     
     private GameObject _player;
@@ -144,10 +137,7 @@ namespace AI
             _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
         
         _playerRB = _player.GetComponent<Rigidbody2D>();
-        
-        //Render Transform
-        _renderTransform = GetComponentInChildren<Transform>();
-        
+
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
         
