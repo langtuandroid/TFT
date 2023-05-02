@@ -200,9 +200,9 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.29303277
+    x: 0
     y: 0
-    width: 0.41408622
+    width: 0.99963886
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -863,6 +863,14 @@ PrefabInstance:
     - target: {fileID: 2354756946539683758, guid: 229551801d7c11643959cbcbdf28c0b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2354756948472666977, guid: 229551801d7c11643959cbcbdf28c0b8, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2354756948472667007, guid: 229551801d7c11643959cbcbdf28c0b8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 229551801d7c11643959cbcbdf28c0b8, type: 3}

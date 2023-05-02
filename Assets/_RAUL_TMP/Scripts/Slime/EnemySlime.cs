@@ -11,9 +11,8 @@ public class EnemySlime : MonoBehaviour
 
     [SerializeField]
     private float wallAware = 0.5f;
-
-    [SerializeField]
-    private LayerMask layer;
+    
+    private LayerMask layer = 0;
 
     [SerializeField]
     private float secondsToChangeDirection;
@@ -21,10 +20,20 @@ public class EnemySlime : MonoBehaviour
     [SerializeField]
     private float earRadious;
     
-    [SerializeField]
     private ContactFilter2D contactFilter = new ContactFilter2D();
 
     //Referencias
+    #region WAYPOINTS
+    [Header("WayPoints")]
+    private List<Transform> _wayPointsList = new List<Transform>();
+    
+    private int _actualWayPoint = 0;
+    
+    private List<GameObject> _torch;
+    
+    private List<Torch> _torchScript;
+    #endregion
+    
     [HideInInspector]
     public Rigidbody2D rb2D;
     
@@ -148,6 +157,22 @@ public class EnemySlime : MonoBehaviour
     {
 
     }
+    
+    public void UpdatePatrolWayPoint(Transform waypoint)
+    {
+        _navMeshAgent.destination = waypoint.position;
+    }
+    
+    public Transform GetNextWayPoint()
+    {
+        _actualWayPoint = (_actualWayPoint + 1) % _wayPointsList.Count;
+        return _wayPointsList[_actualWayPoint];
+    }
+
+    public Transform ActualWayPoint()
+    {
+        return _wayPointsList[_actualWayPoint];
+    }
 
     public void Follow()
     {
@@ -175,13 +200,17 @@ public class EnemySlime : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, earRadious);
 
-        Gizmos.color = Color.blue;
-        Vector3 direction = transform.TransformDirection(player.transform.position - transform.position);
-        Gizmos.DrawRay(transform.position, direction);
+        if (player != null)
+        {
+            Gizmos.color = Color.blue;
+            Vector3 direction = transform.TransformDirection(player.transform.position - transform.position);
+            Gizmos.DrawRay(transform.position, direction);
         
-        Gizmos.color = Color.green;
-        Vector3 direction2 = transform.TransformDirection(player.transform.position - transform.position);
-        Gizmos.DrawRay(transform.position, direction2 * 1.5f);
+            Gizmos.color = Color.green;
+            Vector3 direction2 = transform.TransformDirection(player.transform.position - transform.position);
+            Gizmos.DrawRay(transform.position, direction2 * 1.5f);
+        }
+   
 
     }
 }
