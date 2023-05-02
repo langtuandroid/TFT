@@ -20,45 +20,11 @@ namespace Player
         private float _z = 0; // jump virtual axis
 
 
-        private GameInputs _gameInputs;
-
-
         private void Awake()
         {
             _yOffset = _playerVisuals.localPosition.y;
             _z = _yOffset;
         }
-
-        private void Start()
-        {
-            _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnSouthButtonStarted += GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled += GameInputs_OnSouthButtonCanceled;
-        }
-
-        private void OnDestroy()
-        {
-            _gameInputs.OnSouthButtonStarted -= GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled -= GameInputs_OnSouthButtonCanceled;
-        }
-
-        private void Update()
-        {
-            if (_isJumping)
-                JumpAction();            
-            else
-                Fall();
-        }
-
-
-        private void GameInputs_OnSouthButtonCanceled() => _isJumping = false;
-        private void GameInputs_OnSouthButtonStarted()
-        {
-            if (_canJump)
-                _isJumping = true;
-        }
-
-
 
         public void JumpAction()
         {

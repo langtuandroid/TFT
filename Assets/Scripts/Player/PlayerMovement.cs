@@ -17,7 +17,6 @@ namespace Player
         #endregion
 
         #region Const Variables
-        //private const string WALKING = "IsWalking";
 
         public enum AnimationLayers
         {
@@ -37,9 +36,7 @@ namespace Player
 
         #region Public Variables
 
-        public Vector2 Direction => _direction;
         public AnimationLayers Layer => _layer; // Da la capa de animación en la que estamos
-                                                //public bool IsJumping => _jump.IsJumping; // Devuelve si está saltando o no
         public bool HorizontalFlip => _spriteRend.flipX; // Devuelve si está volteado el sprite o no
         #endregion
 
@@ -49,20 +46,13 @@ namespace Player
 
         // COMPONENTES DEL GAMEOBJECT
         private Rigidbody2D _rb; // RigidBody del personaje
-        private Animator _anim; // Animator del personaje
         private SpriteRenderer _spriteRend; // SpriteRenderer del personaje
         private Collider2D _collider;
         private Interaction _interaction;
 
-        // MOVIMIENTO
-        private Vector2 _direction; // Direcci�n de movimiento del personaje
-        private Vector2 _lookDirection;
-
         // ANIMATOR
         private AnimationLayers _layer; // Layer en ese momento
-                                        //private AnimationLayers _jumpLayer; // Layer para el salto
 
-        private bool _isInteracting = false;
 
         #endregion
 
@@ -81,7 +71,6 @@ namespace Player
 
             // Inicializamos variables
             _rb = GetComponent<Rigidbody2D>();
-            _anim = GetComponentInChildren<Animator>();
             _spriteRend = GetComponentInChildren<SpriteRenderer>();
             _collider = GetComponent<Collider2D>();
             _interaction = GetComponent<Interaction>();
@@ -93,74 +82,23 @@ namespace Player
             //_jumpLayer = AnimationLayers.Null;
         }
 
-        private void Start()
-        {
-            _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnEastButtonPerformed += GameInputs_OnEastButtonPerformed;
-        }
-
-        private void OnDestroy()
-        {
-            _gameInputs.OnEastButtonPerformed -= GameInputs_OnEastButtonPerformed;
-        }
-
-        private void Update()
-        {
-            // Obtenemos el vector de direcci�n
-            GetDirection();
-
-            // INTERACT
-            if (_isInteracting)
-            {
-                _interaction.Interact(_collider.offset, _lookDirection);
-                _isInteracting = false;
-            }
-
-        }
-
-        private void FixedUpdate()
-        {
-            // Nos movemos con el RigidBody
-            Move();
-        }
-
         #endregion
 
 
-        #region Private Methods
-
-        private void GameInputs_OnEastButtonPerformed()
-        {
-            _isInteracting = true;
-        }
-
-
-        /// <summary>
-        /// Obtiene el vector de direcci�n final (normalizado para que se mueva en la misma direcci�n en todos los ejes)
-        /// </summary>
-        private void GetDirection()
-        {
-            // Obtenemos el vector de direcci�n
-            _direction = _gameInputs.GetDirectionNormalized();
-
-            if (_direction.magnitude > 0.05f)
-                _lookDirection = _direction;
-        }
+        #region Public Methods
 
         /// <summary>
         /// Mueve el GameObject del personaje
         /// </summary>
-        private void Move()
+        public void Move(Vector2 direction)
         {
             // Y movemos el RigidBody
-            _rb.MovePosition(_rb.position + Time.deltaTime * _speed * _direction);
+            _rb.MovePosition(_rb.position + Time.deltaTime * _speed * direction);
         }
 
-        #endregion
-
-        #region Public Methods
-
-        //Método que cambia la ubicación del personaje
+        /// <summary>
+        /// Método que cambia la ubicación del personaje
+        /// </summary>        
         public void ChangeWorldPosition(Transform _destinyTransform)
         {
             transform.position =
