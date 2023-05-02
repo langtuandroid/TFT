@@ -4,14 +4,16 @@ public class Interaction : MonoBehaviour
 {
     [Header("Interactable")]
     [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private float _checkDistance = 1.0f;
 
-    public void Interact( Vector2 origin , Vector2 lookDirection )
+    public void Interact( Vector2 colliderOffset , Vector2 lookDirection )
     {
-        float comprovationDistance = 1;
-        origin = new Vector2( origin.x + transform.position.x , origin.y + transform.position.y );
+        Vector2 origin = new Vector2( colliderOffset.x + transform.position.x , 
+                                      colliderOffset.y + transform.position.y );
+
         RaycastHit2D hit = Physics2D.Raycast( origin ,
                 lookDirection ,
-                comprovationDistance , _interactableLayer );
+                _checkDistance , _interactableLayer );
 
         if ( hit )
         {
