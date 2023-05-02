@@ -13,7 +13,7 @@ public class Chest : MonoBehaviour, IInteractable
     private bool _isAlreadyOpened = false;
     private Animator _anim;
 
-    public void Interact()
+    public void Interact( Vector2 lookDirection )
     {
         if ( _canBeOpened && !_isAlreadyOpened )
         {

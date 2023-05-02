@@ -4,6 +4,7 @@ using UnityEngine;
 using Player;
 using TMPro;
 using System;
+using UnityEditor.ShaderKeywordFilter;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,9 +17,6 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jump")]
     private Jump _jump;
-
-    [Header("Interactable")]
-    [SerializeField] private LayerMask _interactableLayer;
 
     //[Header("Attack")]
     //private PlayerAttackExtra _attack;
@@ -58,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rb; // RigidBody del personaje
     private Animator _anim; // Animator del personaje
     private SpriteRenderer _spriteRend; // SpriteRenderer del personaje
+    private Collider2D _collider;
+    private Interaction _interaction;
 
     // MOVIMIENTO
     private Vector2 _direction; // Direcci�n de movimiento del personaje
@@ -90,6 +90,8 @@ public class PlayerMovement : MonoBehaviour
         _jump = GetComponent<Jump>();
         _anim = GetComponentInChildren<Animator>();
         _spriteRend = GetComponentInChildren<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
+        _interaction = GetComponent<Interaction>();
         //_attack = GetComponent<PlayerAttackExtra>();
 
         // Establecemos como layer inicial el primero (Walkdown)
@@ -122,19 +124,9 @@ public class PlayerMovement : MonoBehaviour
         GetDirection();
 
         // INTERACT
-        Debug.DrawRay( transform.position , _lookDirection );
         if ( _isInteracting )
         {
-            float comprovationDistance = 1;
-            RaycastHit2D hit = Physics2D.Raycast( transform.position ,
-                _lookDirection , 
-                comprovationDistance , _interactableLayer );
-
-            if ( hit )
-            {
-                hit.collider.GetComponent<IInteractable>()?.Interact();
-            }
-
+            _interaction.Interact( _collider.offset , _lookDirection );
             _isInteracting = false;
         }
 

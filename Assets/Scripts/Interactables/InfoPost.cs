@@ -4,14 +4,27 @@ public class InfoPost : MonoBehaviour, IInteractable
 {
     [SerializeField] private string InfoPostMessage;
 
-    private bool canRead = false;
+    [SerializeField] private bool canRead = false;
 
-    public void Interact()
+    public void Interact( Vector2 lookDirection )
     {
-        if ( canRead )
+        Debug.Log( lookDirection );
+        if ( canRead && lookDirection.y > 1 )
             Debug.Log( InfoPostMessage );
         else
             Debug.Log( "Cannot Read From Here" );
+    }
+
+    private void OnCollisionEnter2D( Collision2D collision )
+    {
+        if ( collision.transform.CompareTag( "Player" ) )
+            canRead = true;
+    }
+
+    private void OnCollisionExit2D( Collision2D collision )
+    {
+        if ( collision.transform.CompareTag( "Player" ) )
+            canRead = false;
     }
 
     private void OnTriggerEnter2D( Collider2D collision )

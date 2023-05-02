@@ -4430,10 +4430,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.10135135
+    x: 0
     y: 0
-    width: 0.7987988
-    height: 0.9984985
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
