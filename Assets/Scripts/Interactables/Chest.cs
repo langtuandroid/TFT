@@ -1,14 +1,8 @@
 using UnityEngine;
+using Utils;
 
 public class Chest : MonoBehaviour, IInteractable
 {
-
-    [SerializeField]
-    [Tooltip("Icono que aparece para indicar que puedes abrir el cofre.")]
-    private GameObject _icon;
-
-    private const string OPENED = "Opened";
-
     private bool _canBeOpened = true;
     private bool _isAlreadyOpened = false;
     private Animator _anim;
@@ -18,35 +12,16 @@ public class Chest : MonoBehaviour, IInteractable
         if ( _canBeOpened && !_isAlreadyOpened )
         {
             _canBeOpened = false;
-            _isAlreadyOpened = false;
-            _icon.SetActive( false );
-            _anim.SetBool( OPENED , true );
+            _isAlreadyOpened = true;
+            _anim.SetBool( Constants.ANIM_CHEST_OPENED , true );
         }
     }
 
     private void Awake()
     {
-        _icon.SetActive(false);
         _anim = GetComponent<Animator>();
     }
 
-    private void OnTriggerEnter2D( Collider2D collision )
-    {
-        if ( collision.CompareTag( "Player" ) )
-        {
-            _canBeOpened = true;
-            _icon.SetActive( true );
-        }
-    }
-
-    private void OnTriggerExit2D( Collider2D collision )
-    {
-        if ( collision.CompareTag( "Player" ) )
-        {
-            _canBeOpened = false;
-            _icon.SetActive( false );
-        }
-    }
 }
 
 
