@@ -26,7 +26,7 @@ namespace Utils
         #endregion
         #endregion
 
-        #region Animations
+        #region Animations variables
 
         #region Player
         public const string ANIM_PLAYER_JUMP = "Jump";
@@ -40,6 +40,24 @@ namespace Utils
         public const string ANIM_CHEST_OPENED = "Opened";
 
         #endregion
+
+        #endregion
+
+
+        #region Attack variables
+
+        #region Fire attack
+
+        public const float TIME_TO_FLAMETHROWER = .3f;
+        public const float TIME_FIRE_STRONG_ATTACK = 2f;
+
+        #endregion
+
+        #endregion
+
+        #region Health variables
+
+        public const int MAX_QUANTITY_OF_HEARTS = 32;
 
         #endregion
 

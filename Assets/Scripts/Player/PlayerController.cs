@@ -1,6 +1,3 @@
-using Player;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
@@ -8,10 +5,17 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        #region Public variables
+
+        public Vector2 LookDirection => _lookDirection;
+
+        #endregion
+
 
         #region Private variables
-        // INPUTS
+        // SERVICES
         private GameInputs _gameInputs;
+        private MagicEvents _magicEvents;
 
         // SCRIPTS DEL JUGADOR
         // Script de movimiento del personaje
@@ -20,13 +24,15 @@ namespace Player
         private Interaction _interaction;
         // Script de salto del personaje
         private Jump _jump;
+        // Script de ataque del personaje
+        private PlayerMagicAttack _magicAttack;
 
 
         // COMPONENTES
         // Animator del player
-        private Animator _anim;
+        private Animator _anim; // Animator del personaje
         // Colider del player
-        private Collider2D _collider;
+        private Collider2D _collider; // Collider del personaje
 
         // VARIABLES
         // Jump state
@@ -38,6 +44,11 @@ namespace Player
         // Interact state
         private bool _isInteracting;
         private Vector2 _lookDirection;
+
+        // Attack states
+        private bool _isPhysicAttacking;
+        private bool _isMagicAttacking;
+        private bool _powerEffectActivated;
 
         // Axis (for animator)
         private float _lastX;
@@ -53,6 +64,7 @@ namespace Player
             _movement = GetComponent<PlayerMovement>();
             _interaction = GetComponent<Interaction>();
             _jump = GetComponent<Jump>();
+            _magicAttack = GetComponent<PlayerMagicAttack>();
 
             _anim = GetComponentInChildren<Animator>();
             _collider = GetComponent<Collider2D>();
@@ -62,6 +74,11 @@ namespace Player
             _isJumping = false;
             // Interact state
             _isInteracting = false;
+            // Attack states
+            _isPhysicAttacking = false;
+            _isMagicAttacking = false;
+            // Power effect
+            _powerEffectActivated = false;
 
             // Axis
             _lastX = 0f;
@@ -74,14 +91,22 @@ namespace Player
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnSouthButtonStarted += GameInputs_OnSouthButtonStarted;
             _gameInputs.OnSouthButtonCanceled += GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnEastButtonPerformed += GameInputs_OnEastButtonPerformed;
+            _gameInputs.OnNorthButtonPerformed += GameInputs_OnNorthButtonPerformed;
+            _gameInputs.OnEastButtonStarted += GameInputs_OnEastButtonStarted;
+            _gameInputs.OnEastButtonCanceled += GameInputs_OnEastButtonCanceled;
+            _gameInputs.OnWestButtonPerformed += GameInputs_OnWestButtonPerformed;
+            _gameInputs.OnPowerButtonPerformed += GameInputs_OnPowerButtonPerformed;
         }
 
         private void OnDestroy()
         {
             _gameInputs.OnSouthButtonStarted -= GameInputs_OnSouthButtonStarted;
             _gameInputs.OnSouthButtonCanceled -= GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnEastButtonPerformed -= GameInputs_OnEastButtonPerformed;
+            _gameInputs.OnNorthButtonPerformed -= GameInputs_OnNorthButtonPerformed;
+            _gameInputs.OnEastButtonStarted -= GameInputs_OnEastButtonStarted;
+            _gameInputs.OnEastButtonCanceled -= GameInputs_OnEastButtonCanceled;
+            _gameInputs.OnWestButtonPerformed += GameInputs_OnWestButtonPerformed;
+            _gameInputs.OnPowerButtonPerformed += GameInputs_OnPowerButtonPerformed;
         }
 
         private void Update()
@@ -122,6 +147,8 @@ namespace Player
             DoJump();
             // Realizamos interacción
             DoInteraction();
+            // Atacamos con magia
+            DoMagicAttack();
         }
 
         private void DoFixedUpdateActions()
@@ -155,6 +182,9 @@ namespace Player
 
         private void DoJump()
         {
+            if (IsAttacking())
+                return;
+
             if (_isJumping)
                 _jump.JumpAction();
             else
@@ -165,7 +195,7 @@ namespace Player
 
         #region Interact
 
-        private void GameInputs_OnEastButtonPerformed() => _isInteracting = true;
+        private void GameInputs_OnNorthButtonPerformed() => _isInteracting = true;
 
         private void GetInteraction()
         {
@@ -175,7 +205,7 @@ namespace Player
 
         private void DoInteraction()
         {
-            if (_isJumping)
+            if (_isJumping || IsAttacking())
                 return;
 
             if (_isInteracting)
@@ -185,6 +215,41 @@ namespace Player
             }
         }
 
+        #endregion
+
+        #region Attack
+
+        private bool IsAttacking()
+        {
+            return _isPhysicAttacking || _isMagicAttacking;
+        }
+
+        #region Physic Attack
+
+        private void GameInputs_OnWestButtonPerformed() => _isPhysicAttacking = true;
+
+        #endregion
+
+        #region Magic attack
+
+        private void GameInputs_OnEastButtonStarted() => _isMagicAttacking = true;
+
+        private void GameInputs_OnEastButtonCanceled() => _isMagicAttacking = false;
+
+        private void GameInputs_OnPowerButtonPerformed() => _powerEffectActivated = !_powerEffectActivated;
+
+        private void DoMagicAttack()
+        {
+            if (_isJumping)
+            {
+                _magicAttack.ResetValues();
+                return;
+            }
+
+            _magicAttack.Attack();
+        }
+
+        #endregion
 
         #endregion
 
@@ -276,8 +341,6 @@ namespace Player
         }
 
         #endregion
-
-
 
         #endregion
     }

@@ -329,6 +329,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""North"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0be4666-4eec-4804-ba88-31f8752910dc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""West"",
+                    ""type"": ""Button"",
+                    ""id"": ""2c319926-2f74-43e3-a455-89e12a3b3e8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PowerEffect"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8ed9e92-31ea-41f6-914b-c6b43df3acd4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -467,11 +494,77 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ecb74435-68ca-445e-8adf-2787e6b44283"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""East"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""816c7a43-2369-4ad8-b5f3-dfc4b49ccd6e"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""North"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f832ba8c-9a7b-48c4-a9d5-bb6a0c37617d"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""North"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44bca716-62e4-4f51-b776-c2b9dc9f1a83"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""West"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec6e0ef6-14c3-4597-a681-029b15fc43ee"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""West"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05ab4d3b-aea8-496b-9f86-de81b45f3f8e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PowerEffect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4f3cc48-0410-4d97-b987-8d44e2422a04"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PowerEffect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -519,6 +612,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerGround_Move = m_PlayerGround.FindAction("Move", throwIfNotFound: true);
         m_PlayerGround_South = m_PlayerGround.FindAction("South", throwIfNotFound: true);
         m_PlayerGround_East = m_PlayerGround.FindAction("East", throwIfNotFound: true);
+        m_PlayerGround_North = m_PlayerGround.FindAction("North", throwIfNotFound: true);
+        m_PlayerGround_West = m_PlayerGround.FindAction("West", throwIfNotFound: true);
+        m_PlayerGround_PowerEffect = m_PlayerGround.FindAction("PowerEffect", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -686,6 +782,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerGround_Move;
     private readonly InputAction m_PlayerGround_South;
     private readonly InputAction m_PlayerGround_East;
+    private readonly InputAction m_PlayerGround_North;
+    private readonly InputAction m_PlayerGround_West;
+    private readonly InputAction m_PlayerGround_PowerEffect;
     public struct PlayerGroundActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -694,6 +793,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerGround_Move;
         public InputAction @South => m_Wrapper.m_PlayerGround_South;
         public InputAction @East => m_Wrapper.m_PlayerGround_East;
+        public InputAction @North => m_Wrapper.m_PlayerGround_North;
+        public InputAction @West => m_Wrapper.m_PlayerGround_West;
+        public InputAction @PowerEffect => m_Wrapper.m_PlayerGround_PowerEffect;
         public InputActionMap Get() { return m_Wrapper.m_PlayerGround; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -715,6 +817,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @East.started += instance.OnEast;
             @East.performed += instance.OnEast;
             @East.canceled += instance.OnEast;
+            @North.started += instance.OnNorth;
+            @North.performed += instance.OnNorth;
+            @North.canceled += instance.OnNorth;
+            @West.started += instance.OnWest;
+            @West.performed += instance.OnWest;
+            @West.canceled += instance.OnWest;
+            @PowerEffect.started += instance.OnPowerEffect;
+            @PowerEffect.performed += instance.OnPowerEffect;
+            @PowerEffect.canceled += instance.OnPowerEffect;
         }
 
         private void UnregisterCallbacks(IPlayerGroundActions instance)
@@ -731,6 +842,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @East.started -= instance.OnEast;
             @East.performed -= instance.OnEast;
             @East.canceled -= instance.OnEast;
+            @North.started -= instance.OnNorth;
+            @North.performed -= instance.OnNorth;
+            @North.canceled -= instance.OnNorth;
+            @West.started -= instance.OnWest;
+            @West.performed -= instance.OnWest;
+            @West.canceled -= instance.OnWest;
+            @PowerEffect.started -= instance.OnPowerEffect;
+            @PowerEffect.performed -= instance.OnPowerEffect;
+            @PowerEffect.canceled -= instance.OnPowerEffect;
         }
 
         public void RemoveCallbacks(IPlayerGroundActions instance)
@@ -783,5 +903,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnSouth(InputAction.CallbackContext context);
         void OnEast(InputAction.CallbackContext context);
+        void OnNorth(InputAction.CallbackContext context);
+        void OnWest(InputAction.CallbackContext context);
+        void OnPowerEffect(InputAction.CallbackContext context);
     }
 }

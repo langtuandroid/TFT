@@ -11,6 +11,7 @@ namespace Services
             if ( !IsInitialized )
             {
                 AddService( new GameInputs() );
+                AddService(new MagicEvents());
 
                 IsInitialized = true;
             }
