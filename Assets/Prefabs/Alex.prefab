@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1007482090118453921}
   - component: {fileID: 178666607}
   - component: {fileID: 1745679572097344107}
+  - component: {fileID: 2237069225626846976}
   m_Layer: 0
   m_Name: Alex
   m_TagString: Player
@@ -88,9 +89,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
-  _interactableLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!114 &178666607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +120,20 @@ MonoBehaviour:
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 64
+  _checkDistance: 0.6
+  _rayCastOffset: {x: 0.2, y: 0.2}
+--- !u!114 &2237069225626846976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007482090118453926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ad3f34afe714e1c8084f971bda15f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1023130494312011597
 GameObject:
   m_ObjectHideFlags: 0
