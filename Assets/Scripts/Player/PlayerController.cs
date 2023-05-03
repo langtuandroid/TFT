@@ -1,4 +1,3 @@
-using Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,8 +24,6 @@ namespace Player
         // COMPONENTES
         // Animator del player
         private Animator _anim;
-        // Colider del player
-        private Collider2D _collider;
 
         // VARIABLES
         // Jump state
@@ -55,7 +52,6 @@ namespace Player
             _jump = GetComponent<Jump>();
 
             _anim = GetComponentInChildren<Animator>();
-            _collider = GetComponent<Collider2D>();
 
             // Inicializamos variables
             // Jump state
@@ -180,7 +176,7 @@ namespace Player
 
             if (_isInteracting)
             {
-                _interaction.Interact(_collider.offset, _lookDirection);
+                _interaction.Interact(_lookDirection);
                 _isInteracting = false;
             }
         }

@@ -7,14 +7,18 @@ public class Interaction : MonoBehaviour
     [SerializeField] private float _checkDistance = 0.6f;
     [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
 
-    public void Interact( Vector2 colliderOffset , Vector2 lookDirection )
+    private Vector2 _collider_offset;
+
+    private void Awake() => _collider_offset = GetComponent<Collider2D>().offset;
+
+    public void Interact( Vector2 lookDirection )
     {
         float xRayOffset = lookDirection.y != 0 ? _rayCastOffset.x : 0;
         float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
 
-        Vector2 origin = new Vector2( colliderOffset.x + transform.position.x + xRayOffset, 
-                                      colliderOffset.y + transform.position.y + yRayOffset );
+        Vector2 origin = new Vector2( _collider_offset.x + transform.position.x + xRayOffset,
+                                      _collider_offset.y + transform.position.y + yRayOffset );
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
@@ -25,8 +29,8 @@ public class Interaction : MonoBehaviour
         }
 
 
-        origin = new Vector2( colliderOffset.x + transform.position.x - xRayOffset,
-                              colliderOffset.y + transform.position.y - yRayOffset );
+        origin = new Vector2( _collider_offset.x + transform.position.x - xRayOffset,
+                              _collider_offset.y + transform.position.y - yRayOffset );
 
         hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
