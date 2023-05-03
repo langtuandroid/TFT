@@ -11,6 +11,7 @@ TagManager:
   - Torch
   - PlayerInitialPosition
   - PickUp
+  - PatrolCollider
   layers:
   - Default
   - TransparentFX

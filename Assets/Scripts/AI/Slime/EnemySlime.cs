@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -11,8 +8,11 @@ public class EnemySlime : MonoBehaviour
     #region CONFIGURATION
     [Header("Tags Necesarios:\n" +
             "Player: Transform del Player.\n" +
-            "WayPoint: Transform de cada punto de platrulla.\n" +
-            "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
+            "PatrolCollider: Área de patrulla.\n\n" +
+            "1.- Añade un objeto vacío a la escena.\n" +
+            "2.- Asigna el tag: 'PatrolCollider' a este objeto.\n" +
+            "3.- Añade un BoxCollider2D.\n" +
+            "4.- Marca el checkbox 'isTrigger'.\n\n\n")]
     
     [SerializeField]
     [Tooltip("Velocidad a la que se mueve el slime.")]
@@ -33,20 +33,11 @@ public class EnemySlime : MonoBehaviour
     #endregion
     
     #region REFERENCES
-    
-    private List<GameObject> _torch;
-    
-    private List<Torch> _torchScript;
-    
-    private LayerMask _layer = 0;
-    
     private ContactFilter2D _contactFilter = new ContactFilter2D();
     
-    private Rigidbody2D _playerRB;
-    
+    private LayerMask _layer = 0;
+
     private GameObject _player;
-    
-    private bool _facingRight;
 
     private float _timer;
     
@@ -61,8 +52,8 @@ public class EnemySlime : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     
     private float _nextWanderTime;
-    
-    private float _wanderRadius = 5f;
+
+    private Collider2D boundsCollider;
 
     private FsmEnemySlime _actualState;
     public FsmEnemySlime ActualState
@@ -94,21 +85,20 @@ public class EnemySlime : MonoBehaviour
         //Player
         if (_player == null)
             _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-        
-        _playerRB = _player.GetComponent<Rigidbody2D>();
 
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
+        
+        //Collider donde patrulla el slime
+        boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
     }
 
     private void Init()
-    {
-        if (transform.localScale.x < 0f) _facingRight = false;
-        else if (transform.localScale.x > 0f) _facingRight = true;
-
+    { 
         _navMeshAgent.speed = _speed;
 
         _actualState =  new EnemySlimePatrolState();
+        
         Patrol();
     }
     
@@ -120,7 +110,7 @@ public class EnemySlime : MonoBehaviour
     #endregion
     
     #region SENSES
-
+    
     public bool CanSeePlayer()
     {
         _canSeePlayer = false;
@@ -135,7 +125,7 @@ public class EnemySlime : MonoBehaviour
             {
                 if (item != null)
                 {
-                    if (item.CompareTag("Player"))
+                    if (item.CompareTag(Constants.TAG_PLAYER))
                     {
                         _canSeePlayer = true;
                         break;
@@ -147,15 +137,7 @@ public class EnemySlime : MonoBehaviour
 
         return _canSeePlayer;
     }
-    
-    bool CanChangeDirection()
-    {
-        _timer += Time.deltaTime;
 
-        if (_timer >= _secondsToChangeDirection) return true;
-        else return false;
-    }
-    
     public bool ObstacleAware()
     {
         bool result = false;
@@ -175,49 +157,38 @@ public class EnemySlime : MonoBehaviour
 
     public void Patrol()
     {
-        Vector2 randomDirection = Random.insideUnitCircle * _wanderRadius;
-        Vector2 targetPosition = (Vector2)transform.position + randomDirection;
-
-        NavMeshHit hit;
-
-        Collider2D targetArea = Physics2D.OverlapCircle(targetPosition, 0.1f, 7);
-        if (targetArea != null)
+        if (TimeToChangeDirection())
         {
-            if (NavMesh.SamplePosition(targetPosition, out hit, _wanderRadius, 7))
-            {
-                UpdatePatrolMovement(hit.position);
-            }
-        }
-        else
-        {
-            Patrol();
+            UpdatePatrolMovement(GetRandomPosition());
         }
     }
 
-    public bool CanChangePatrolDirection()
+    public void ChangeDirectionAndPatrol()
+    {
+        UpdatePatrolMovement(GetRandomPosition());
+    }
+    
+    private Vector3 GetRandomPosition()
+    {
+        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        Vector3 targetPosition = new Vector3(boundsCollider.bounds.center.x + randomPoint.x, boundsCollider.bounds.center.y + randomPoint.y, 0);
+
+        return targetPosition;
+    }
+
+    public bool TimeToChangeDirection()
     {
         var result = false;
-        
-        if (Time.time >= _secondsToChangeDirection)
+
+        if (Time.time >= _nextWanderTime)
         {
             result = true;
-            _secondsToChangeDirection = Time.time + _secondsToChangeDirection;
+            _nextWanderTime = Time.time + _secondsToChangeDirection;
         }
 
         return result;
     }
     
-    
-    
-    public void Flip()
-    {
-        _timer = 0f;
-        _facingRight = !_facingRight;
-        float localScaleX = transform.localScale.x;
-        localScaleX = localScaleX * -1f;
-        transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
-    }
-
     public void UpdatePatrolMovement(Vector3 waypoint)
     {
         _navMeshAgent.destination = waypoint;
@@ -227,22 +198,8 @@ public class EnemySlime : MonoBehaviour
     {
         _navMeshAgent.destination = _player.transform.position;
     }
-    
-    public void PatrolDirection()
-    {
-        Vector2 direction = Vector2.right;
 
-        if (CanChangeDirection())
-            Flip();
-
-        if (!_facingRight)
-            direction = Vector2.left;
-
-        if (Physics2D.Raycast(transform.position, direction, _wallAware, _layer))
-            Flip();
-    }
-
-   #endregion
+    #endregion
     
     void OnDrawGizmos()
     {

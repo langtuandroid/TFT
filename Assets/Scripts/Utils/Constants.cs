@@ -9,8 +9,9 @@ namespace Utils
 
         #endregion
 
-        #region WillOWhisp
+        #region Enemies
         public const string TAG_WAYPOINT = "Waypoint";
+        public const string TAG_PATROL_COLLIDER = "PatrolCollider";
 
         #endregion
 
