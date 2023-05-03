@@ -3,6 +3,8 @@ using Utils;
 
 public class Chest : MonoBehaviour, IInteractable
 {
+    [SerializeField] private GameObject _exclamationIcon;
+
     private bool _canBeOpened = true;
     private Animator _anim;
 
@@ -20,5 +22,10 @@ public class Chest : MonoBehaviour, IInteractable
             _anim.SetBool( Constants.ANIM_CHEST_OPENED , true );
             _canBeOpened = false;
         }
+    }
+
+    public void ShowCanInteract( bool show )
+    {
+        _exclamationIcon.SetActive( show );
     }
 }

@@ -174,10 +174,17 @@ namespace Player
             if (_isJumping)
                 return;
 
-            if (_isInteracting)
+            if ( _interaction.CanInteract( _lookDirection ) )
             {
-                _interaction.Interact(_lookDirection);
-                _isInteracting = false;
+                if (_isInteracting)
+                {
+                    _interaction.Interact( _lookDirection );
+                    _isInteracting = false;
+                }
+            }
+            else
+            {
+                _interaction.StopInteracting();
             }
         }
 
