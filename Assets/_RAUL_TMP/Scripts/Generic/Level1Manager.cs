@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Player;
 
 public class Level1Manager : MonoBehaviour
 {

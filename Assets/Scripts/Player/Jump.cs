@@ -19,6 +19,7 @@ namespace Player
 
         private float _z = 0; // jump virtual axis
 
+
         private void Awake()
         {
             _yOffset = _playerVisuals.localPosition.y;

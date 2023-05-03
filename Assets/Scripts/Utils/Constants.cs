@@ -17,6 +17,7 @@ namespace Utils
         #region Player
         public const string TAG_PLAYER = "Player";
         public const string TAG_PLAYER_INITIAL_POSITION = "PlayerInitialPosition";
+        public const string TAG_PLAYER_PICKUP_POSITION = "PickUp";
 
         #endregion
 
@@ -28,9 +29,18 @@ namespace Utils
 
         #region Animations
 
+        #region Player
+        public const string ANIM_PLAYER_JUMP = "Jump";
         public const string ANIM_PLAYER_WALKING = "IsWalking";
+        public const string ANIM_PLAYER_DIRX = "x";
+        public const string ANIM_PLAYER_DIRY = "y";
 
+        #endregion
+
+        #region References
         public const string ANIM_CHEST_OPENED = "Opened";
+
+        #endregion
 
         #endregion
 
