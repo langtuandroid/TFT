@@ -15,7 +15,7 @@ namespace Player
         // SCRIPTS DEL JUGADOR
         // Script de movimiento del personaje
         private PlayerMovement _movement;
-        // Script de interacción del personaje
+        // Script de interacciÃ³n del personaje
         private Interaction _interaction;
         // Script de salto del personaje
         private Jump _jump;
@@ -88,7 +88,7 @@ namespace Player
             // Realizamos acciones
             DoUpdateActions();
 
-            // Cambiamos la animación según corresponda
+            // Cambiamos la animaciÃ³n segÃºn corresponda
             SetAnimations();
         }
 
@@ -105,7 +105,7 @@ namespace Player
 
         private void GetActionsInformation()
         {
-            // Obtenemos la dirección
+            // Obtenemos la direcciÃ³n
             GetDirection();
 
             // Vemos si interactuamos
@@ -116,7 +116,7 @@ namespace Player
         {
             // Realizamos salto
             DoJump();
-            // Realizamos interacción
+            // Realizamos interacciÃ³n
             DoInteraction();
         }
 
@@ -130,7 +130,7 @@ namespace Player
 
         private void GetDirection()
         {
-            // Obtenemos el vector de dirección
+            // Obtenemos el vector de direcciÃ³n
             _direction = _gameInputs.GetDirectionNormalized();
         }
 
@@ -192,7 +192,7 @@ namespace Player
         {
             // Controlamos los saltos
             _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _isJumping);
-            // Si está saltando
+            // Si estÃ¡ saltando
             if (_isJumping)
                 // Volvemos
                 return;
