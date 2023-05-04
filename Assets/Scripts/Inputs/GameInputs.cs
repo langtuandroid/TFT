@@ -11,7 +11,8 @@ public class GameInputs
     public event Action OnPhysicActionButtonPerformed;
     public event Action OnMediumAttackButtonStarted;
     public event Action OnMediumAttackButtonCanceled;
-    public event Action OnWeakAttackButtonPerformed;
+    public event Action OnWeakAttackButtonStarted;
+    public event Action OnWeakAttackButtonCanceled;
 
     public event Action OnStrongAttackPerformed;
 
@@ -23,7 +24,7 @@ public class GameInputs
     private PlayerInputActions _playerInputActions;
     private InputAction _moveAction;
 
-    public GameInputs() 
+    public GameInputs()
     {
         _playerInputActions = new PlayerInputActions();
         PlayerGroundMode();
@@ -46,18 +47,19 @@ public class GameInputs
         _playerInputActions.PlayerGround.PhysicAction.performed += PhysicAction_performed;
         _playerInputActions.PlayerGround.MediumAttack.started += MediumAttack_started;
         _playerInputActions.PlayerGround.MediumAttack.canceled += MediumAttack_canceled;
-        _playerInputActions.PlayerGround.WeakAttack.performed += WeakAttack_performed;
+        _playerInputActions.PlayerGround.WeakAttack.started += WeakAttack_started;
+        _playerInputActions.PlayerGround.WeakAttack.canceled += WeakAttack_canceled;
         _playerInputActions.PlayerGround.Pause.performed += Pause_performed;
 
         _playerInputActions.PlayerGround.StrongAttack.performed += StrongAttack_performed;
     }
 
-    private void StrongAttack_performed (InputAction.CallbackContext ctx)
+    private void StrongAttack_performed(InputAction.CallbackContext ctx)
     {
         OnStrongAttackPerformed?.Invoke();
     }
 
-    private void PhysicAction_performed( InputAction.CallbackContext ctx )
+    private void PhysicAction_performed(InputAction.CallbackContext ctx)
     {
         OnPhysicActionButtonPerformed?.Invoke();
     }
@@ -72,22 +74,27 @@ public class GameInputs
         OnMediumAttackButtonCanceled?.Invoke();
     }
 
-    private void WeakAttack_performed (InputAction.CallbackContext ctx)
+    private void WeakAttack_started(InputAction.CallbackContext ctx)
     {
-        OnWeakAttackButtonPerformed?.Invoke();
+        OnWeakAttackButtonStarted?.Invoke();
     }
-    
-    private void Jump_canceled( InputAction.CallbackContext ctx )
+
+    private void WeakAttack_canceled(InputAction.CallbackContext ctx)
+    {
+        OnWeakAttackButtonCanceled?.Invoke();
+    }
+
+    private void Jump_canceled(InputAction.CallbackContext ctx)
     {
         OnJumpButtonCanceled?.Invoke();
     }
 
-    private void Jump_started( InputAction.CallbackContext ctx )
+    private void Jump_started(InputAction.CallbackContext ctx)
     {
         OnJumpButtonStarted?.Invoke();
     }
 
-    private void Pause_performed( InputAction.CallbackContext ctx )
+    private void Pause_performed(InputAction.CallbackContext ctx)
     {
         OnPausePerformed?.Invoke();
         // TODO: if game is paused -> MenuMode()
@@ -105,7 +112,7 @@ public class GameInputs
         _playerInputActions.UI.Disable();
     }
 
-    private void Cancel_Performed( InputAction.CallbackContext ctx )
+    private void Cancel_Performed(InputAction.CallbackContext ctx)
     {
         OnCancelPerformed?.Invoke();
     }

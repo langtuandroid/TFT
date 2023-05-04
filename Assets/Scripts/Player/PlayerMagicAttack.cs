@@ -86,78 +86,14 @@ namespace Player
 
         private void Awake()
         {
-            // Obtenemos componentes
-            AssignPower(new FireAttack(), Color.red);
-
-        }
-
-        private void Start()
-        {
-            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _attack = new FireAttack();
+            _timer = _cooldownTime;
         }
 
         #endregion
 
         #region Private Methods
 
-        #region Assignment of powers
-
-        /// <summary>
-        /// Método para asignar un tipo de poder de ataque.
-        /// Devuelve true en caso de existir cambios.
-        /// </summary>
-        private bool AssignTypeOfAttack()
-        {
-            // Si pulsamos la tecla "R" -> Cambio de poder
-            bool res = Input.GetKeyDown(KeyCode.L);
-            // CAMBIO DE PODERES
-            if (res)
-            {
-                var type = _attack.GetType();
-                // CAMBIO A PODER DE LUZ
-                // Si tenía el poder de fuego asignado
-                if (type == typeof(FireAttack))
-                    // Asignamos el poder de luz
-                    AssignPower(new LightAttack());
-                // Si por el contrario, tiene poder de luz
-                else if (type == typeof(LightAttack))
-                    // Asignamos poder de fuego (con panel rojo)
-                    AssignPower(new FireAttack(), Color.red);
-
-                //MyUIManager.Instance.ChangeIcon(_attack);
-            }
-
-            return res;
-        }
-
-        /// <summary>
-        /// Asigna un tipo de poder dado
-        /// </summary>
-        /// <param name="power"></param>
-        private void AssignPower(IAttack power)
-        {
-            // Asignamos el poder en cuestión
-            _attack = power;
-            // Y desactivamos la opción de que el poder esté pulsado
-            _isAttackButtonPressed = false;
-        }
-
-        /// <summary>
-        /// Asigna un tipo de poder dado
-        /// y configura el panel del poder con el color dado
-        /// </summary>
-        /// <param name="power"></param>
-        /// <param name="color"></param>
-        private void AssignPower(IAttack power, Color color)
-        {
-            // Asignamos el poder
-            AssignPower(power);
-
-            // TODO: Configurar panel.
-            // Y configuramos el panel del poder
-            //_panelImage.color = color;
-            //_panelImage.SetImageAlpha(0f);
-        }
 
         #endregion
 
@@ -183,6 +119,8 @@ namespace Player
         /// </summary>
         public void Attack(Vector2 direction)
         {
+            _attack = new FireAttack();
+
             _attack.SetOriginAndDirection(transform, direction);
 
             if (_attack.GetType() == typeof(FireAttack))
@@ -191,8 +129,6 @@ namespace Player
             // del botón de atacar
             //AttackPressing();
         }
-
-        #endregion
 
         #endregion
 
@@ -222,7 +158,7 @@ namespace Player
         public void ResetValues()
         {
             // Reseteamos las variables intrínsecas del ataque
-            //_attack.ResetValues();
+            _attack.ResetValues();
             // Y pulsamos el botón de ataque
             _isAttackButtonPressed = false;
             _timer = 0f;

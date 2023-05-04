@@ -23,40 +23,11 @@ namespace Attack
         //private Coroutine _flameCoroutine;
 
         private Vector2 _direction;
-        private Transform _origin;
+        private Vector2 _origin;
 
         #endregion
 
         #region Interface Methods
-
-        public void Execute(bool pressed)
-        {
-            //// Si hemos pulsado el botón de disparo
-            //if (pressed)
-            //{
-            //    // Si hemos pulsado para usar el ataque fuerte
-            //    if (_isStrongAttackActive)
-            //        // Lo utilizamos
-            //        StrongAttack();
-            //    // Si no
-            //    else
-            //        // Usamos el medio
-            //        MediumAttack();
-
-            //}
-            //// Si no, en caso de soltarlo
-            //else
-            //{
-            //    // Si no se ha llegado a pulsar el botón lo suficiente
-            //    // como para activar el ataque medio
-            //    //if (_timer < Constants.TIME_TO_FLAMETHROWER)
-            //    //    // Usamos el ataque débil
-            //    //    WeakAttack();
-
-            //    // Finalmente, reseteamos valores
-            //    ResetValues();
-            //}
-        }
 
         /// <summary>
         /// Lanza una bola de fuego
@@ -66,9 +37,11 @@ namespace Attack
             // Instanciamos bola de fuego
             GameObject fireball = Instantiate(
                 prefab, // Prefab de la bola
-                _origin.position,
+                _origin,
                 Quaternion.identity // Quaternion identity
                 );
+
+            fireball.GetComponent<Fireball>().SetDirection(_direction);
 
             //// Y modificamos su dirección
             ChangeFireBallDirection(fireball.GetComponent<Fireball>());
@@ -161,7 +134,7 @@ namespace Attack
 
         public void SetOriginAndDirection(Transform origin, Vector2 direction)
         {
-            _origin = origin;
+            _origin = origin.position;
             _direction = direction;
         }
 

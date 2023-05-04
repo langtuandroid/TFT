@@ -9,15 +9,7 @@ namespace Attack
         private Transform _origin;
 
 
-        #region Interface Methods
-
-        public void Execute(bool pressed)
-        {
-            // Para el caso de la bola de luz,
-            // solo tenemos el poder débil
-            //if (!pressed)
-            //    WeakAttack();
-        }
+        #region Interface Methodss
 
         /// <summary>
         /// Lanza el hechizo de la bola de luz

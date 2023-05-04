@@ -6,10 +6,6 @@ namespace Attack
 {
     public interface IAttack
     {
-        /// <summary>
-        /// Ejecuta ataques
-        /// </summary>
-        void Execute(bool pressed);
 
         /// <summary>
         /// Ataque débil
