@@ -9,6 +9,7 @@ public class AudioManager : MonoBehaviour
 
 
     [SerializeField] private GameMusicSO _gameMusicSO;
+    [SerializeField] private SfxGroupSO _sfxGroupSO;
 
     [Header("Music currently playing")]
     private static FMOD.Studio.EventInstance _musicEventInstance;
@@ -73,9 +74,9 @@ public class AudioManager : MonoBehaviour
         _musicEventInstance.setParameterByName( name , newValue );
     }
 
-    public void PlayOneShot( Vector3 soundOrigin = new() )
+    public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {
-        RuntimeManager.PlayOneShot( _gameMusicSO.WoodsDungeon , soundOrigin );
+        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].Sounds[soundId] , soundOrigin );
     }
 
 
