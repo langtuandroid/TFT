@@ -291,7 +291,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "South",
+                    "name": "Jump",
                     "type": "Button",
                     "id": "ceb242f5-8027-4388-84a5-92cabdaf548a",
                     "expectedControlType": "Button",
@@ -300,7 +300,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "East",
+                    "name": "PhysicAction",
                     "type": "Button",
                     "id": "3e66ce91-2754-4137-a4bb-bd8607e223e4",
                     "expectedControlType": "Button",
@@ -309,7 +309,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "North",
+                    "name": "MediumAttack",
                     "type": "Button",
                     "id": "d0be4666-4eec-4804-ba88-31f8752910dc",
                     "expectedControlType": "Button",
@@ -318,7 +318,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "West",
+                    "name": "WeakAttack",
                     "type": "Button",
                     "id": "2c319926-2f74-43e3-a455-89e12a3b3e8c",
                     "expectedControlType": "Button",
@@ -327,13 +327,49 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PowerEffect",
+                    "name": "StrongAttack",
                     "type": "Button",
                     "id": "b8ed9e92-31ea-41f6-914b-c6b43df3acd4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Secondary",
+                    "type": "Button",
+                    "id": "fb02ef30-3651-4ff1-a0e1-3ac5e21107b0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "7ad5e0ff-956c-44a1-a1d8-bfd5e79f1ed3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SelectionModifier",
+                    "type": "Button",
+                    "id": "09741c3a-8154-4978-8986-ab68880dc995",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Selection",
+                    "type": "PassThrough",
+                    "id": "bb882979-8d64-40b0-91a3-28a60662abb3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -443,7 +479,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "South",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -454,7 +490,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "South",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -465,18 +501,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "East",
+                    "action": "PhysicAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ecb74435-68ca-445e-8adf-2787e6b44283",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "East",
+                    "action": "PhysicAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -487,18 +523,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "North",
+                    "action": "MediumAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "f832ba8c-9a7b-48c4-a9d5-bb6a0c37617d",
-                    "path": "<Keyboard>/e",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "North",
+                    "action": "MediumAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -509,40 +545,95 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "West",
+                    "action": "WeakAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "ec6e0ef6-14c3-4597-a681-029b15fc43ee",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "West",
+                    "action": "WeakAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "05ab4d3b-aea8-496b-9f86-de81b45f3f8e",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "PowerEffect",
+                    "action": "StrongAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "b4f3cc48-0410-4d97-b987-8d44e2422a04",
-                    "path": "<Keyboard>/r",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "PowerEffect",
+                    "action": "StrongAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fda190f5-a45c-48f6-99c8-44906cf879ce",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Secondary",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a5143c3c-1024-4da6-83cc-8dee8458bb3b",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71a09b91-227e-41ca-9e44-1ebaa4fbf87d",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8738364d-6b83-4e2d-9293-504a5b2d0a65",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectionModifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f473a499-a7f4-4a23-9a44-e44ad6302ee4",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "Gamepad",
+                    "action": "Selection",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

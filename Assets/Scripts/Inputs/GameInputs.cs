@@ -6,14 +6,14 @@ using UnityEngine.InputSystem;
 public class GameInputs
 {
     // Gameplay
-    public event Action OnSouthButtonStarted;
-    public event Action OnSouthButtonCanceled;
-    public event Action OnNorthButtonPerformed;
-    public event Action OnEastButtonStarted;
-    public event Action OnEastButtonCanceled;
-    public event Action OnWestButtonPerformed;
+    public event Action OnJumpButtonStarted;
+    public event Action OnJumpButtonCanceled;
+    public event Action OnPhysicActionButtonPerformed;
+    public event Action OnMediumAttackButtonStarted;
+    public event Action OnMediumAttackButtonCanceled;
+    public event Action OnWeakAttackButtonPerformed;
 
-    public event Action OnPowerButtonPerformed;
+    public event Action OnStrongAttackPerformed;
 
     // UI
     public event Action OnCancelPerformed;
@@ -41,50 +41,50 @@ public class GameInputs
     {
         _playerInputActions.PlayerGround.Enable();
         _moveAction = _playerInputActions.PlayerGround.Move;
-        _playerInputActions.PlayerGround.South.started += South_started;
-        _playerInputActions.PlayerGround.South.canceled += South_canceled;
-        _playerInputActions.PlayerGround.North.performed += North_performed;
-        _playerInputActions.PlayerGround.East.started += East_started;
-        _playerInputActions.PlayerGround.East.canceled += East_canceled;
-        _playerInputActions.PlayerGround.West.performed += West_performed;
+        _playerInputActions.PlayerGround.Jump.started += Jump_started;
+        _playerInputActions.PlayerGround.Jump.canceled += Jump_canceled;
+        _playerInputActions.PlayerGround.PhysicAction.performed += PhysicAction_performed;
+        _playerInputActions.PlayerGround.MediumAttack.started += MediumAttack_started;
+        _playerInputActions.PlayerGround.MediumAttack.canceled += MediumAttack_canceled;
+        _playerInputActions.PlayerGround.WeakAttack.performed += WeakAttack_performed;
         _playerInputActions.PlayerGround.Pause.performed += Pause_performed;
 
-        _playerInputActions.PlayerGround.PowerEffect.performed += PowerButton_performed;
+        _playerInputActions.PlayerGround.StrongAttack.performed += StrongAttack_performed;
     }
 
-    private void PowerButton_performed (InputAction.CallbackContext ctx)
+    private void StrongAttack_performed (InputAction.CallbackContext ctx)
     {
-        OnPowerButtonPerformed?.Invoke();
+        OnStrongAttackPerformed?.Invoke();
     }
 
-    private void North_performed( InputAction.CallbackContext ctx )
+    private void PhysicAction_performed( InputAction.CallbackContext ctx )
     {
-        OnNorthButtonPerformed?.Invoke();
+        OnPhysicActionButtonPerformed?.Invoke();
     }
 
-    private void East_started(InputAction.CallbackContext ctx)
+    private void MediumAttack_started(InputAction.CallbackContext ctx)
     {
-        OnEastButtonStarted?.Invoke();
+        OnMediumAttackButtonStarted?.Invoke();
     }
 
-    private void East_canceled(InputAction.CallbackContext ctx)
+    private void MediumAttack_canceled(InputAction.CallbackContext ctx)
     {
-        OnEastButtonCanceled?.Invoke();
+        OnMediumAttackButtonCanceled?.Invoke();
     }
 
-    private void West_performed (InputAction.CallbackContext ctx)
+    private void WeakAttack_performed (InputAction.CallbackContext ctx)
     {
-        OnWestButtonPerformed?.Invoke();
+        OnWeakAttackButtonPerformed?.Invoke();
     }
     
-    private void South_canceled( InputAction.CallbackContext ctx )
+    private void Jump_canceled( InputAction.CallbackContext ctx )
     {
-        OnSouthButtonCanceled?.Invoke();
+        OnJumpButtonCanceled?.Invoke();
     }
 
-    private void South_started( InputAction.CallbackContext ctx )
+    private void Jump_started( InputAction.CallbackContext ctx )
     {
-        OnSouthButtonStarted?.Invoke();
+        OnJumpButtonStarted?.Invoke();
     }
 
     private void Pause_performed( InputAction.CallbackContext ctx )

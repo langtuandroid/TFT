@@ -47,7 +47,9 @@ namespace Player
 
         // Attack states
         private bool _isPhysicAttacking;
-        private bool _isMagicAttacking;
+        private bool _isUsingWeakMagic;
+        private bool _isUsingMediumMagic;
+        private bool _isUsingStrongMagic;
         private bool _powerEffectActivated;
 
         // Axis (for animator)
@@ -75,7 +77,7 @@ namespace Player
             _isInteracting = false;
             // Attack states
             _isPhysicAttacking = false;
-            _isMagicAttacking = false;
+            _isUsingWeakMagic = false;
             // Power effect
             _powerEffectActivated = false;
 
@@ -88,24 +90,24 @@ namespace Player
         private void Start()
         {
             _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnSouthButtonStarted += GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled += GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnNorthButtonPerformed += GameInputs_OnNorthButtonPerformed;
-            _gameInputs.OnEastButtonStarted += GameInputs_OnEastButtonStarted;
-            _gameInputs.OnEastButtonCanceled += GameInputs_OnEastButtonCanceled;
-            _gameInputs.OnWestButtonPerformed += GameInputs_OnWestButtonPerformed;
-            _gameInputs.OnPowerButtonPerformed += GameInputs_OnPowerButtonPerformed;
+            _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnPhysicActionButtonPerformed += GameInputs_OnPhysicActionButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonPerformed += GameInputs_OnWeakAttackButtonPerformed;
+            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
         }
 
         private void OnDestroy()
         {
-            _gameInputs.OnSouthButtonStarted -= GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled -= GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnNorthButtonPerformed -= GameInputs_OnNorthButtonPerformed;
-            _gameInputs.OnEastButtonStarted -= GameInputs_OnEastButtonStarted;
-            _gameInputs.OnEastButtonCanceled -= GameInputs_OnEastButtonCanceled;
-            _gameInputs.OnWestButtonPerformed += GameInputs_OnWestButtonPerformed;
-            _gameInputs.OnPowerButtonPerformed += GameInputs_OnPowerButtonPerformed;
+            _gameInputs.OnJumpButtonStarted -= GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled -= GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnPhysicActionButtonPerformed -= GameInputs_OnPhysicActionButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonPerformed += GameInputs_OnWeakAttackButtonPerformed;
+            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
         }
 
         private void Update()
@@ -172,8 +174,8 @@ namespace Player
         #endregion
 
         #region Jump
-        private void GameInputs_OnSouthButtonCanceled() => _isJumping = false;
-        private void GameInputs_OnSouthButtonStarted()
+        private void GameInputs_OnJumpButtonCanceled() => _isJumping = false;
+        private void GameInputs_OnJumpButtonStarted()
         {
             if (_jump.CanJump)
                 _isJumping = true;
@@ -194,7 +196,7 @@ namespace Player
 
         #region Interact
 
-        private void GameInputs_OnNorthButtonPerformed() => _isInteracting = true;
+        private void GameInputs_OnPhysicActionButtonPerformed() => _isInteracting = true;
 
         private void GetInteraction()
         {
@@ -227,22 +229,22 @@ namespace Player
 
         private bool IsAttacking()
         {
-            return _isPhysicAttacking || _isMagicAttacking;
+            return _isPhysicAttacking || _isUsingWeakMagic
+                || _isUsingMediumMagic || _isUsingStrongMagic;
         }
 
         #region Physic Attack
 
-        private void GameInputs_OnWestButtonPerformed() => _isPhysicAttacking = true;
 
         #endregion
 
         #region Magic attack
 
-        private void GameInputs_OnEastButtonStarted() => _isMagicAttacking = true;
+        private void GameInputs_OnWeakAttackButtonPerformed() => _isUsingWeakMagic = true;
+        private void GameInputs_OnMediumAttackButtonStarted() => _isUsingMediumMagic = true;
+        private void GameInputs_OnMediumAttackButtonCanceled() => _isUsingMediumMagic = false;
 
-        private void GameInputs_OnEastButtonCanceled() => _isMagicAttacking = false;
-
-        private void GameInputs_OnPowerButtonPerformed()
+        private void GameInputs_OnStrongAttackButtonPerformed()
         {
             _magicAttack.ChangeStrongAttackState();
             // Estas variables quiz�s se cambien en el futuro
@@ -257,14 +259,11 @@ namespace Player
                 return;
             }
 
-            if (_isMagicAttacking && _magicAttack.CanAttack())
+            if (_isUsingWeakMagic && _magicAttack.CanAttack())
             {
                 _magicAttack.Attack(new Vector2(_lastX, _lastY));
                 _magicAttack.ResetValues();
-                _isMagicAttacking = false;
-            }
-            else if (!_isMagicAttacking)
-            {
+                _isUsingWeakMagic = false;
                 _magicAttack.ResetValues();
             }
         }

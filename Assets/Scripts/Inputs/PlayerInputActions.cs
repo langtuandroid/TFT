@@ -313,7 +313,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""South"",
+                    ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""ceb242f5-8027-4388-84a5-92cabdaf548a"",
                     ""expectedControlType"": ""Button"",
@@ -322,7 +322,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""East"",
+                    ""name"": ""PhysicAction"",
                     ""type"": ""Button"",
                     ""id"": ""3e66ce91-2754-4137-a4bb-bd8607e223e4"",
                     ""expectedControlType"": ""Button"",
@@ -331,7 +331,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""North"",
+                    ""name"": ""MediumAttack"",
                     ""type"": ""Button"",
                     ""id"": ""d0be4666-4eec-4804-ba88-31f8752910dc"",
                     ""expectedControlType"": ""Button"",
@@ -340,7 +340,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""West"",
+                    ""name"": ""WeakAttack"",
                     ""type"": ""Button"",
                     ""id"": ""2c319926-2f74-43e3-a455-89e12a3b3e8c"",
                     ""expectedControlType"": ""Button"",
@@ -349,13 +349,49 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""PowerEffect"",
+                    ""name"": ""StrongAttack"",
                     ""type"": ""Button"",
                     ""id"": ""b8ed9e92-31ea-41f6-914b-c6b43df3acd4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Secondary"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb02ef30-3651-4ff1-a0e1-3ac5e21107b0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""7ad5e0ff-956c-44a1-a1d8-bfd5e79f1ed3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectionModifier"",
+                    ""type"": ""Button"",
+                    ""id"": ""09741c3a-8154-4978-8986-ab68880dc995"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Selection"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bb882979-8d64-40b0-91a3-28a60662abb3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -465,7 +501,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""South"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -476,7 +512,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""South"",
+                    ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -487,18 +523,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""East"",
+                    ""action"": ""PhysicAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""ecb74435-68ca-445e-8adf-2787e6b44283"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""East"",
+                    ""action"": ""PhysicAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -509,18 +545,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""North"",
+                    ""action"": ""MediumAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""f832ba8c-9a7b-48c4-a9d5-bb6a0c37617d"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""North"",
+                    ""action"": ""MediumAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -531,40 +567,95 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""West"",
+                    ""action"": ""WeakAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""ec6e0ef6-14c3-4597-a681-029b15fc43ee"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""West"",
+                    ""action"": ""WeakAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""05ab4d3b-aea8-496b-9f86-de81b45f3f8e"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""PowerEffect"",
+                    ""action"": ""StrongAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""b4f3cc48-0410-4d97-b987-8d44e2422a04"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""PowerEffect"",
+                    ""action"": ""StrongAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fda190f5-a45c-48f6-99c8-44906cf879ce"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Secondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a5143c3c-1024-4da6-83cc-8dee8458bb3b"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71a09b91-227e-41ca-9e44-1ebaa4fbf87d"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8738364d-6b83-4e2d-9293-504a5b2d0a65"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectionModifier"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f473a499-a7f4-4a23-9a44-e44ad6302ee4"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": ""StickDeadzone"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Selection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -610,11 +701,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerGround = asset.FindActionMap("PlayerGround", throwIfNotFound: true);
         m_PlayerGround_Pause = m_PlayerGround.FindAction("Pause", throwIfNotFound: true);
         m_PlayerGround_Move = m_PlayerGround.FindAction("Move", throwIfNotFound: true);
-        m_PlayerGround_South = m_PlayerGround.FindAction("South", throwIfNotFound: true);
-        m_PlayerGround_East = m_PlayerGround.FindAction("East", throwIfNotFound: true);
-        m_PlayerGround_North = m_PlayerGround.FindAction("North", throwIfNotFound: true);
-        m_PlayerGround_West = m_PlayerGround.FindAction("West", throwIfNotFound: true);
-        m_PlayerGround_PowerEffect = m_PlayerGround.FindAction("PowerEffect", throwIfNotFound: true);
+        m_PlayerGround_Jump = m_PlayerGround.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerGround_PhysicAction = m_PlayerGround.FindAction("PhysicAction", throwIfNotFound: true);
+        m_PlayerGround_MediumAttack = m_PlayerGround.FindAction("MediumAttack", throwIfNotFound: true);
+        m_PlayerGround_WeakAttack = m_PlayerGround.FindAction("WeakAttack", throwIfNotFound: true);
+        m_PlayerGround_StrongAttack = m_PlayerGround.FindAction("StrongAttack", throwIfNotFound: true);
+        m_PlayerGround_Secondary = m_PlayerGround.FindAction("Secondary", throwIfNotFound: true);
+        m_PlayerGround_Dash = m_PlayerGround.FindAction("Dash", throwIfNotFound: true);
+        m_PlayerGround_SelectionModifier = m_PlayerGround.FindAction("SelectionModifier", throwIfNotFound: true);
+        m_PlayerGround_Selection = m_PlayerGround.FindAction("Selection", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -780,22 +875,30 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerGroundActions> m_PlayerGroundActionsCallbackInterfaces = new List<IPlayerGroundActions>();
     private readonly InputAction m_PlayerGround_Pause;
     private readonly InputAction m_PlayerGround_Move;
-    private readonly InputAction m_PlayerGround_South;
-    private readonly InputAction m_PlayerGround_East;
-    private readonly InputAction m_PlayerGround_North;
-    private readonly InputAction m_PlayerGround_West;
-    private readonly InputAction m_PlayerGround_PowerEffect;
+    private readonly InputAction m_PlayerGround_Jump;
+    private readonly InputAction m_PlayerGround_PhysicAction;
+    private readonly InputAction m_PlayerGround_MediumAttack;
+    private readonly InputAction m_PlayerGround_WeakAttack;
+    private readonly InputAction m_PlayerGround_StrongAttack;
+    private readonly InputAction m_PlayerGround_Secondary;
+    private readonly InputAction m_PlayerGround_Dash;
+    private readonly InputAction m_PlayerGround_SelectionModifier;
+    private readonly InputAction m_PlayerGround_Selection;
     public struct PlayerGroundActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerGroundActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Pause => m_Wrapper.m_PlayerGround_Pause;
         public InputAction @Move => m_Wrapper.m_PlayerGround_Move;
-        public InputAction @South => m_Wrapper.m_PlayerGround_South;
-        public InputAction @East => m_Wrapper.m_PlayerGround_East;
-        public InputAction @North => m_Wrapper.m_PlayerGround_North;
-        public InputAction @West => m_Wrapper.m_PlayerGround_West;
-        public InputAction @PowerEffect => m_Wrapper.m_PlayerGround_PowerEffect;
+        public InputAction @Jump => m_Wrapper.m_PlayerGround_Jump;
+        public InputAction @PhysicAction => m_Wrapper.m_PlayerGround_PhysicAction;
+        public InputAction @MediumAttack => m_Wrapper.m_PlayerGround_MediumAttack;
+        public InputAction @WeakAttack => m_Wrapper.m_PlayerGround_WeakAttack;
+        public InputAction @StrongAttack => m_Wrapper.m_PlayerGround_StrongAttack;
+        public InputAction @Secondary => m_Wrapper.m_PlayerGround_Secondary;
+        public InputAction @Dash => m_Wrapper.m_PlayerGround_Dash;
+        public InputAction @SelectionModifier => m_Wrapper.m_PlayerGround_SelectionModifier;
+        public InputAction @Selection => m_Wrapper.m_PlayerGround_Selection;
         public InputActionMap Get() { return m_Wrapper.m_PlayerGround; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -811,21 +914,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @South.started += instance.OnSouth;
-            @South.performed += instance.OnSouth;
-            @South.canceled += instance.OnSouth;
-            @East.started += instance.OnEast;
-            @East.performed += instance.OnEast;
-            @East.canceled += instance.OnEast;
-            @North.started += instance.OnNorth;
-            @North.performed += instance.OnNorth;
-            @North.canceled += instance.OnNorth;
-            @West.started += instance.OnWest;
-            @West.performed += instance.OnWest;
-            @West.canceled += instance.OnWest;
-            @PowerEffect.started += instance.OnPowerEffect;
-            @PowerEffect.performed += instance.OnPowerEffect;
-            @PowerEffect.canceled += instance.OnPowerEffect;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @PhysicAction.started += instance.OnPhysicAction;
+            @PhysicAction.performed += instance.OnPhysicAction;
+            @PhysicAction.canceled += instance.OnPhysicAction;
+            @MediumAttack.started += instance.OnMediumAttack;
+            @MediumAttack.performed += instance.OnMediumAttack;
+            @MediumAttack.canceled += instance.OnMediumAttack;
+            @WeakAttack.started += instance.OnWeakAttack;
+            @WeakAttack.performed += instance.OnWeakAttack;
+            @WeakAttack.canceled += instance.OnWeakAttack;
+            @StrongAttack.started += instance.OnStrongAttack;
+            @StrongAttack.performed += instance.OnStrongAttack;
+            @StrongAttack.canceled += instance.OnStrongAttack;
+            @Secondary.started += instance.OnSecondary;
+            @Secondary.performed += instance.OnSecondary;
+            @Secondary.canceled += instance.OnSecondary;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
+            @SelectionModifier.started += instance.OnSelectionModifier;
+            @SelectionModifier.performed += instance.OnSelectionModifier;
+            @SelectionModifier.canceled += instance.OnSelectionModifier;
+            @Selection.started += instance.OnSelection;
+            @Selection.performed += instance.OnSelection;
+            @Selection.canceled += instance.OnSelection;
         }
 
         private void UnregisterCallbacks(IPlayerGroundActions instance)
@@ -836,21 +951,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @South.started -= instance.OnSouth;
-            @South.performed -= instance.OnSouth;
-            @South.canceled -= instance.OnSouth;
-            @East.started -= instance.OnEast;
-            @East.performed -= instance.OnEast;
-            @East.canceled -= instance.OnEast;
-            @North.started -= instance.OnNorth;
-            @North.performed -= instance.OnNorth;
-            @North.canceled -= instance.OnNorth;
-            @West.started -= instance.OnWest;
-            @West.performed -= instance.OnWest;
-            @West.canceled -= instance.OnWest;
-            @PowerEffect.started -= instance.OnPowerEffect;
-            @PowerEffect.performed -= instance.OnPowerEffect;
-            @PowerEffect.canceled -= instance.OnPowerEffect;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @PhysicAction.started -= instance.OnPhysicAction;
+            @PhysicAction.performed -= instance.OnPhysicAction;
+            @PhysicAction.canceled -= instance.OnPhysicAction;
+            @MediumAttack.started -= instance.OnMediumAttack;
+            @MediumAttack.performed -= instance.OnMediumAttack;
+            @MediumAttack.canceled -= instance.OnMediumAttack;
+            @WeakAttack.started -= instance.OnWeakAttack;
+            @WeakAttack.performed -= instance.OnWeakAttack;
+            @WeakAttack.canceled -= instance.OnWeakAttack;
+            @StrongAttack.started -= instance.OnStrongAttack;
+            @StrongAttack.performed -= instance.OnStrongAttack;
+            @StrongAttack.canceled -= instance.OnStrongAttack;
+            @Secondary.started -= instance.OnSecondary;
+            @Secondary.performed -= instance.OnSecondary;
+            @Secondary.canceled -= instance.OnSecondary;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
+            @SelectionModifier.started -= instance.OnSelectionModifier;
+            @SelectionModifier.performed -= instance.OnSelectionModifier;
+            @SelectionModifier.canceled -= instance.OnSelectionModifier;
+            @Selection.started -= instance.OnSelection;
+            @Selection.performed -= instance.OnSelection;
+            @Selection.canceled -= instance.OnSelection;
         }
 
         public void RemoveCallbacks(IPlayerGroundActions instance)
@@ -901,10 +1028,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     {
         void OnPause(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
-        void OnSouth(InputAction.CallbackContext context);
-        void OnEast(InputAction.CallbackContext context);
-        void OnNorth(InputAction.CallbackContext context);
-        void OnWest(InputAction.CallbackContext context);
-        void OnPowerEffect(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnPhysicAction(InputAction.CallbackContext context);
+        void OnMediumAttack(InputAction.CallbackContext context);
+        void OnWeakAttack(InputAction.CallbackContext context);
+        void OnStrongAttack(InputAction.CallbackContext context);
+        void OnSecondary(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnSelectionModifier(InputAction.CallbackContext context);
+        void OnSelection(InputAction.CallbackContext context);
     }
 }
