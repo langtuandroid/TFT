@@ -1,4 +1,7 @@
 
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Attack
 {
     public interface IAttack
@@ -11,7 +14,7 @@ namespace Attack
         /// <summary>
         /// Ataque débil
         /// </summary>
-        void WeakAttack();
+        void WeakAttack(GameObject prefab);
 
         /// <summary>
         /// Ataque medio
@@ -32,6 +35,8 @@ namespace Attack
         /// Resetea los valores de las variables que contiene
         /// </summary>
         void ResetValues();
+
+        void SetOriginAndDirection(Transform origin, Vector2 direction);
     }
 
 }

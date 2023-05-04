@@ -5,32 +5,34 @@ namespace Attack
 {
     public class LightAttack : MonoBehaviour, IAttack
     {
+        private Vector2 _direction;
+        private Transform _origin;
+
+
         #region Interface Methods
 
         public void Execute(bool pressed)
         {
             // Para el caso de la bola de luz,
             // solo tenemos el poder débil
-            if (!pressed)
-                WeakAttack();
+            //if (!pressed)
+            //    WeakAttack();
         }
 
         /// <summary>
         /// Lanza el hechizo de la bola de luz
         /// </summary>
-        public void WeakAttack()
+        public void WeakAttack(GameObject prefab)
         {
             // Instanciamos bola de luz
-            GameObject lightBall = new GameObject();
-            //GameObject lightBall = Instantiate(
-            //    PlayerAttack.Instance.LightBall, // Prefab de la bola
-            //    PlayerAttack.Instance.
-            //    Transform.position, // Posición del jugador
-            //    Quaternion.identity // Quaternion identity
-            //    );
+            GameObject lightBall = Instantiate(
+                prefab, // Prefab de la bola
+                transform.position, // Posición del jugador
+                Quaternion.identity // Quaternion identity
+                );
 
-            // Y modificamos su dirección
-            //SetBallDirection(lightBall.GetComponent<LightMovement>());
+            //Y modificamos su dirección
+            SetBallDirection(lightBall.GetComponent<LightMovement>());
 
         }
 
@@ -58,41 +60,16 @@ namespace Attack
         /// Cambia la dirección de la bola de luz conforme a la dirección
         /// a la que mira el jugador
         /// </summary>
-        /// <param name="_lightScript"></param>
-        private void SetBallDirection(LightMovement _lightScript)
+        /// <param name="lightScript"></param>
+        private void SetBallDirection(LightMovement lightScript)
         {
-            //switch (PlayerMovement.Instance.Layer)
-            //{
-            //    // Si miramos hacia abajo
-            //    case PlayerMovement.AnimationLayers.WalkDown:
-            //        _lightScript.transform.SetY(PlayerAttack.Instance.
-            //            Transform.position.y - 2);
-            //        _lightScript.HandleMovement(Vector3.down);
-            //        break;
-            //    // Si miramos en el eje horizontal
-            //    case PlayerMovement.AnimationLayers.WalkHorizontal:
-            //        // Si mira hacia la izquierda
-            //        if (PlayerMovement.Instance.HorizontalFlip)
-            //        {
-            //            _lightScript.transform.SetX(PlayerAttack.Instance.
-            //                Transform.position.x - 2);
-            //            _lightScript.HandleMovement(Vector3.left);
-            //        }
-            //        // En caso contrario (derecha)
-            //        else
-            //        {
-            //            _lightScript.transform.SetX(PlayerAttack.Instance.
-            //                Transform.position.x + 2);
-            //            _lightScript.HandleMovement(Vector3.right);
-            //        }
-            //        break;
-            //    // Si miramos hacia arriba
-            //    case PlayerMovement.AnimationLayers.WalkUp:
-            //        _lightScript.transform.SetY(PlayerAttack.Instance.
-            //            Transform.position.y + 2);
-            //        _lightScript.HandleMovement(Vector3.up);
-            //        break;
-            //}
+            lightScript.HandleMovement(_direction);
+        }
+
+        public void SetOriginAndDirection(Transform origin,Vector2 direction)
+        {
+            _origin = origin;
+            _direction = direction;
         }
 
         #endregion

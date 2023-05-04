@@ -27,24 +27,21 @@ namespace Player
         [SerializeField]
         private GameObject _fireBallPrefab; // Prefab de la bola de fuego
 
-        [SerializeField]
-        private GameObject[] _flamesUp; // Lanzallamas hacia arriba
-        [SerializeField]
-        private GameObject[] _flamesRight; // Lanzallamas hacia la derecha
-        [SerializeField]
-        private GameObject[] _flamesDown; // Lanzallamas hacia abajo
-        [SerializeField]
-        private GameObject[] _flamesLeft; // Lanzallamas hacia la izda
+        //[SerializeField]
+        //private GameObject[] _flamesUp; // Lanzallamas hacia arriba
+        //[SerializeField]
+        //private GameObject[] _flamesRight; // Lanzallamas hacia la derecha
+        //[SerializeField]
+        //private GameObject[] _flamesDown; // Lanzallamas hacia abajo
+        //[SerializeField]
+        //private GameObject[] _flamesLeft; // Lanzallamas hacia la izda
 
-        [SerializeField]
-        private GameObject[] _fireOrbs; // Bolas del ataque fuerte de fuego
+        //[SerializeField]
+        //private GameObject[] _fireOrbs; // Bolas del ataque fuerte de fuego
 
         #endregion
 
         #region Public Variables
-
-        // Transformada del player
-        public Transform Transform => transform;
 
         // Indica si está atacando
         public bool IsAttacking => _isAttackButtonPressed;
@@ -58,29 +55,17 @@ namespace Player
 
         #region Fire Power
 
-        // Prefab de la bola de fuego
-        public GameObject FireBall => _fireBallPrefab;
-
         // Partes del lanzallamas
-        public List<GameObject[]> Flames => new List<GameObject[]>
-    {
-        // Va en sentido de las agujas del reloj
-        _flamesUp,
-        _flamesRight,
-        _flamesDown,
-        _flamesLeft
-    };
-
-        // Orbes para el poder final de fuego
-        public GameObject[] FireOrbs => _fireOrbs;
+        //    public List<GameObject[]> Flames => new List<GameObject[]>
+        //{
+        //    // Va en sentido de las agujas del reloj
+        //    _flamesUp,
+        //    _flamesRight,
+        //    _flamesDown,
+        //    _flamesLeft
+        //};
 
         #endregion
-
-        // Panel para el poder final
-        //public GameObject PowerPanel => _powerPanel;
-
-        // Imagen del panel (para colorear)
-        public Image PanelImage => _panelImage;
 
         #endregion
 
@@ -90,7 +75,6 @@ namespace Player
 
         private IAttack _attack; // Tipo de ataque que se usa
         private bool _isAttackButtonPressed; // Comprobador de si se ha pulsado el botón de ataque
-        private Image _panelImage; // Imagen del panel
         private float _timer; // Temporizador para el cooldown
 
         // CORRUTINAS (para más adelante)
@@ -103,11 +87,7 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
-            //_panelImage = _powerPanel.GetComponent<Image>();
-            // Inicializamos variables
-            // Asignamos el poder de fuego (con botón de poder no pulsado)
             AssignPower(new FireAttack(), Color.red);
-            //MyUIManager.Instance.SelectPower(0);
 
         }
 
@@ -116,43 +96,11 @@ namespace Player
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
         }
 
-        private void Update()
-        {
-            // Si el juego está "parado"
-            //if (MyGameManager.Instance.Stoped)
-            //    // Volvemos
-            //    return;
-
-            // Controlamos ataque
-            if (CanAttack())
-                Attack();
-        }
-
         #endregion
 
         #region Private Methods
 
         #region Assignment of powers
-
-        private bool SelectTypeOfAttack()
-        {
-            bool res = false;
-
-            //// Flecha arriba
-            //if (res = Input.GetKeyDown(KeyCode.Keypad8))
-            //    MyUIManager.Instance.SelectPower(0);
-            //// Flecha derecha
-            //else if (res = Input.GetKeyDown(KeyCode.Keypad6))
-            //    MyUIManager.Instance.SelectPower(1);
-            //// Flecha abajo
-            //else if (res = Input.GetKeyDown(KeyCode.Keypad2))
-            //    MyUIManager.Instance.SelectPower(2);
-            //// Flecha izda
-            //else if (res = Input.GetKeyDown(KeyCode.Keypad4))
-            //    MyUIManager.Instance.SelectPower(3);
-
-            return res;
-        }
 
         /// <summary>
         /// Método para asignar un tipo de poder de ataque.
@@ -204,6 +152,8 @@ namespace Player
         {
             // Asignamos el poder
             AssignPower(power);
+
+            // TODO: Configurar panel.
             // Y configuramos el panel del poder
             //_panelImage.color = color;
             //_panelImage.SetImageAlpha(0f);
@@ -218,15 +168,12 @@ namespace Player
         /// incrementa un contador de tiempo
         /// </summary>
         /// <returns></returns>
-        private bool CanAttack()
+        public bool CanAttack()
         {
-            bool res = true;
+            bool res = _timer >= _cooldownTime;
 
-            if (_timer < _cooldownTime)
-            {
+            if (!res)
                 _timer += Time.deltaTime;
-                res = false;
-            }
 
             return res;
         }
@@ -234,65 +181,15 @@ namespace Player
         /// <summary>
         /// Gestiona los ataques
         /// </summary>
-        public void Attack()
+        public void Attack(Vector2 direction)
         {
-            return;
-            //// Si seleccionamos un tipo de ataque
-            //if (SelectTypeOfAttack())
-            //    // Volvemos
-            //    return;
+            _attack.SetOriginAndDirection(transform, direction);
 
-            //// Miramos un tipo de ataque en función de la tecla que pulses
-            //if (AssignTypeOfAttack())
-            //    // En caso de hacerlo, volvemos
-            //    return;
-
-
-            //// Controlamos el estado del ataque fuerte
-            //SetStrongAttackState();
-
-            //// Finalmente, controlamos las pulsaciones
-            //// del botón de atacar
+            if (_attack.GetType() == typeof(FireAttack))
+                _attack.WeakAttack(_fireBallPrefab);
+            // Finalmente, controlamos las pulsaciones
+            // del botón de atacar
             //AttackPressing();
-        }
-
-        /// <summary>
-        /// Controla las pulsaciones del botón de ataque
-        /// </summary>
-        private void AttackPressing()
-        {
-            // En caso de pulsar el botón de ataque
-            if (Input.GetMouseButtonDown(0))
-                // Activamos su variable
-                _isAttackButtonPressed = true;
-            // Si no, si se suelta
-            else if (Input.GetMouseButtonUp(0)
-                && _isAttackButtonPressed)
-            {
-                // Desactivamos su variable
-                _isAttackButtonPressed = false;
-                _attack.Execute(false);
-                // Reiniciamos el contador
-                _timer = 0f;
-            }
-
-            // Si se ha pulsado el botón de atacar
-            if (_isAttackButtonPressed)
-                // Ejecutamos el ataque
-                _attack.Execute(true);
-        }
-
-        /// <summary>
-        /// Cambia el estado del ataque fuerte según
-        /// se pulse (o no) el botón de ataque
-        /// </summary>
-        private void SetStrongAttackState()
-        {
-            // Si pulsamos el botón de ataque final
-            if (Input.GetKeyDown(KeyCode.R))
-                // Cambiamos el estado a ataque fuerte
-                ChangeStrongAttackState();
-
         }
 
         #endregion
@@ -328,6 +225,7 @@ namespace Player
             //_attack.ResetValues();
             // Y pulsamos el botón de ataque
             _isAttackButtonPressed = false;
+            _timer = 0f;
         }
 
         #endregion

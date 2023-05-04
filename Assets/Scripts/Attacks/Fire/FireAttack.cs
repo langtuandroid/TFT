@@ -11,16 +11,19 @@ namespace Attack
 
         // Temporizador para ver si usar el lanzallamas
         private float _timer = 0f;
-        // Booleano que te indica si se ha pulsado el botón de poder fuerte
-        private bool _isStrongAttackActive = false;
-        // Booleano que indica si se ha activado ya el lanzallamas
-        private bool _isFlamethrowerActive = false;
-        // Lista que apunta a la lista actual de llamas
-        private GameObject[] _flames;
-        // Índice de la llama activa en ese instante
-        private int _flameIndex = 0;
-        // Corrutina del lanzallamas
-        private Coroutine _flameCoroutine;
+        //// Booleano que te indica si se ha pulsado el botón de poder fuerte
+        //private bool _isStrongAttackActive = false;
+        //// Booleano que indica si se ha activado ya el lanzallamas
+        //private bool _isFlamethrowerActive = false;
+        //// Lista que apunta a la lista actual de llamas
+        //private GameObject[] _flames;
+        //// Índice de la llama activa en ese instante
+        //private int _flameIndex = 0;
+        //// Corrutina del lanzallamas
+        //private Coroutine _flameCoroutine;
+
+        private Vector2 _direction;
+        private Transform _origin;
 
         #endregion
 
@@ -28,48 +31,47 @@ namespace Attack
 
         public void Execute(bool pressed)
         {
-            // Si hemos pulsado el botón de disparo
-            if (pressed)
-            {
-                // Si hemos pulsado para usar el ataque fuerte
-                if (_isStrongAttackActive)
-                    // Lo utilizamos
-                    StrongAttack();
-                // Si no
-                else
-                    // Usamos el medio
-                    MediumAttack();
+            //// Si hemos pulsado el botón de disparo
+            //if (pressed)
+            //{
+            //    // Si hemos pulsado para usar el ataque fuerte
+            //    if (_isStrongAttackActive)
+            //        // Lo utilizamos
+            //        StrongAttack();
+            //    // Si no
+            //    else
+            //        // Usamos el medio
+            //        MediumAttack();
 
-            }
-            // Si no, en caso de soltarlo
-            else
-            {
-                // Si no se ha llegado a pulsar el botón lo suficiente
-                // como para activar el ataque medio
-                if (_timer < Constants.TIME_TO_FLAMETHROWER)
-                    // Usamos el ataque débil
-                    WeakAttack();
+            //}
+            //// Si no, en caso de soltarlo
+            //else
+            //{
+            //    // Si no se ha llegado a pulsar el botón lo suficiente
+            //    // como para activar el ataque medio
+            //    //if (_timer < Constants.TIME_TO_FLAMETHROWER)
+            //    //    // Usamos el ataque débil
+            //    //    WeakAttack();
 
-                // Finalmente, reseteamos valores
-                ResetValues();
-            }
+            //    // Finalmente, reseteamos valores
+            //    ResetValues();
+            //}
         }
 
         /// <summary>
         /// Lanza una bola de fuego
         /// </summary>
-        public void WeakAttack()
+        public void WeakAttack(GameObject prefab)
         {
             // Instanciamos bola de fuego
-            //GameObject fireball = MonoBehaviour.Instantiate(
-            //    PlayerAttack.Instance.FireBall, // Prefab de la bola
-            //    PlayerAttack.Instance.
-            //    Transform.position, // Posición del jugador
-            //    Quaternion.identity // Quaternion identity
-            //    );
+            GameObject fireball = Instantiate(
+                prefab, // Prefab de la bola
+                _origin.position,
+                Quaternion.identity // Quaternion identity
+                );
 
-            ////// Y modificamos su dirección
-            //ChangeFireBallDirection(fireball.GetComponent<Fireball>());
+            //// Y modificamos su dirección
+            ChangeFireBallDirection(fireball.GetComponent<Fireball>());
         }
 
         /// <summary>
@@ -84,37 +86,37 @@ namespace Attack
                 _timer += Time.deltaTime;
             // En caso contrario,
             // si el lanzallamas no ha sido activado aún
-            else if (!_isFlamethrowerActive)
-            {
-                // Activamos el lanzallamas, teniendo en cuenta la dirección
-                // de la animación de movimiento
-                //switch (PlayerMovement.Instance.Layer)
-                //{
-                //    // Si nos movemos hacia abajo
-                //    case PlayerMovement.AnimationLayers.WalkDown:
-                //        AsignNewList(PlayerAttack.Instance.Flames[2]);
-                //        break;
-                //    // Si nos movemos en horizontal
-                //    case PlayerMovement.AnimationLayers.WalkHorizontal:
-                //        // Si se mueve a la izquierda, se activa el de la izquierda
-                //        // en otro caso, el de la derecha
-                //        GameObject[] list = PlayerMovement.Instance.HorizontalFlip ?
-                //            PlayerAttack.Instance.Flames[3] :
-                //            PlayerAttack.Instance.Flames[1];
-                //        AsignNewList(list);
-                //        break;
-                //    // Si nos movemos hacia arriba
-                //    case PlayerMovement.AnimationLayers.WalkUp:
-                //        AsignNewList(PlayerAttack.Instance.Flames[0]);
-                //        break;
-                //}
+            //else if (!_isFlamethrowerActive)
+            //{
+            //    // Activamos el lanzallamas, teniendo en cuenta la dirección
+            //    // de la animación de movimiento
+            //    //switch (PlayerMovement.Instance.Layer)
+            //    //{
+            //    //    // Si nos movemos hacia abajo
+            //    //    case PlayerMovement.AnimationLayers.WalkDown:
+            //    //        AsignNewList(PlayerAttack.Instance.Flames[2]);
+            //    //        break;
+            //    //    // Si nos movemos en horizontal
+            //    //    case PlayerMovement.AnimationLayers.WalkHorizontal:
+            //    //        // Si se mueve a la izquierda, se activa el de la izquierda
+            //    //        // en otro caso, el de la derecha
+            //    //        GameObject[] list = PlayerMovement.Instance.HorizontalFlip ?
+            //    //            PlayerAttack.Instance.Flames[3] :
+            //    //            PlayerAttack.Instance.Flames[1];
+            //    //        AsignNewList(list);
+            //    //        break;
+            //    //    // Si nos movemos hacia arriba
+            //    //    case PlayerMovement.AnimationLayers.WalkUp:
+            //    //        AsignNewList(PlayerAttack.Instance.Flames[0]);
+            //    //        break;
+            //    //}
 
-                //// Activamos una nueva corrutina
-                //_flameCoroutine = PlayerAttack.Instance.
-                //    ActivateCoroutine(ActivateFlames());
-                //// E indicamos que ha sido activado el lanzallamas
-                //_isFlamethrowerActive = true;
-            }
+            //    //// Activamos una nueva corrutina
+            //    //_flameCoroutine = PlayerAttack.Instance.
+            //    //    ActivateCoroutine(ActivateFlames());
+            //    //// E indicamos que ha sido activado el lanzallamas
+            //    //_isFlamethrowerActive = true;
+            //}
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace Attack
         public void StrongAttack()
         {
             // Activamos la corrutina del poder definitivo de fuego
-            StartCoroutine(FinalPower());
+            //StartCoroutine(FinalPower());
             //// Cambiamos el estado de ataque fuerte
             //PlayerAttack.Instance.ChangeStrongAttackState();
             //// Y tras ello, ponemos a 0 la parte de poder máximo en el HUD
@@ -133,7 +135,7 @@ namespace Attack
         public void ChangeStrongAttackState()
         {
             // Cambiamos el estado del booleano
-            _isStrongAttackActive = !_isStrongAttackActive;
+            //_isStrongAttackActive = !_isStrongAttackActive;
         }
 
         public void ResetValues()
@@ -141,20 +143,26 @@ namespace Attack
             // Reiniciamos variables
             _timer = 0f;
 
-            // Si está activado el lanzallamas
-            if (_isFlamethrowerActive)
-            {
-                // Si tenemos una corrutina activa
-                if (_flameCoroutine != null)
-                    // La desactivamos
-                    StopCoroutine(_flameCoroutine);
+            //// Si está activado el lanzallamas
+            //if (_isFlamethrowerActive)
+            //{
+            //    // Si tenemos una corrutina activa
+            //    if (_flameCoroutine != null)
+            //        // La desactivamos
+            //        StopCoroutine(_flameCoroutine);
 
-                // Y activamos la corrutina de desactivar las llamas
-                _flameCoroutine = StartCoroutine(DeactivateFlames());
+            //    // Y activamos la corrutina de desactivar las llamas
+            //    _flameCoroutine = StartCoroutine(DeactivateFlames());
 
-                // Finalmente, indicamos que está inactivo
-                _isFlamethrowerActive = false;
-            }
+            //    // Finalmente, indicamos que está inactivo
+            //    _isFlamethrowerActive = false;
+            //}
+        }
+
+        public void SetOriginAndDirection(Transform origin, Vector2 direction)
+        {
+            _origin = origin;
+            _direction = direction;
         }
 
         #endregion
@@ -168,48 +176,10 @@ namespace Attack
         /// </summary>
         /// <param name="fireball"></param>
         /// <param name="script"></param>
-        //private void ChangeFireBallDirection(Fireball script)
-        //{
-        //    // Realizamos el cambio de dirección según la dirección de movimiento
-        //    switch (PlayerMovement.Instance.Layer)
-        //    {
-        //        case PlayerMovement.AnimationLayers.WalkDown:
-        //            // Establecemos una posición un poco más baja
-        //            script.transform.SetY(PlayerAttack.Instance.
-        //                Transform.position.y - 1);
-        //            // Y establecemos movimiento hacia abajo
-        //            script.SetDirection(Vector3.down);
-        //            break;
-        //        // Si miramos en horizontal
-        //        case PlayerMovement.AnimationLayers.WalkHorizontal:
-        //            // Si está mirando a la izquierda
-        //            if (PlayerMovement.Instance.HorizontalFlip)
-        //            {
-        //                // Establecemos una posición algo ms a la izquierda
-        //                script.transform.SetX(PlayerAttack.Instance.
-        //                    Transform.position.x - 1);
-        //                // Y lo dirigimos hacia la izquierda
-        //                script.SetDirection(Vector3.left);
-        //            }
-        //            // En otro caso
-        //            else
-        //            {
-        //                // Establecemos una posición algo más a la derecha
-        //                script.transform.SetX(PlayerAttack.Instance.
-        //                    Transform.position.x + 1);
-        //                // Y lo dirigimos hacia la derecha
-        //                script.SetDirection(Vector3.right);
-        //            }
-        //            break;
-        //        // Si miramos hacia arriba
-        //        case PlayerMovement.AnimationLayers.WalkUp:
-        //            script.transform.SetY(PlayerAttack.Instance.
-        //                Transform.position.y + 1);
-        //            // Y lo dirigimos hacia arriba
-        //            script.SetDirection(Vector3.up);
-        //            break;
-        //    }
-        //}
+        private void ChangeFireBallDirection(Fireball script)
+        {
+            script.SetDirection(_direction);
+        }
 
         #endregion
 
@@ -222,10 +192,10 @@ namespace Attack
         /// <param name="list"></param>
         private void AsignNewList(GameObject[] list)
         {
-            if (_flames != list)
-                _flames = list;
-            else if (_flameCoroutine != null)
-                StopCoroutine(_flameCoroutine);
+            //if (_flames != list)
+            //    _flames = list;
+            //else if (_flameCoroutine != null)
+            //    StopCoroutine(_flameCoroutine);
         }
 
         #endregion
@@ -254,12 +224,12 @@ namespace Attack
         /// <returns></returns>
         private IEnumerator ActivateFlames()
         {
-            for (int i = _flameIndex; i < _flames.Length; i++)
-            {
-                _flameIndex = i;
-                _flames[_flameIndex].SetActive(true);
-                yield return new WaitForSeconds(0.02f);
-            }
+            //for (int i = _flameIndex; i < _flames.Length; i++)
+            //{
+            //    _flameIndex = i;
+            //    _flames[_flameIndex].SetActive(true);
+            yield return new WaitForSeconds(0.02f);
+            //}
         }
 
         /// <summary>
@@ -268,13 +238,13 @@ namespace Attack
         /// <returns></returns>
         private IEnumerator DeactivateFlames()
         {
-            for (int i = _flameIndex; i >= 0; i--)
-            {
-                _flameIndex = i;
-                _flames[_flameIndex].SetActive(false);
+            //for (int i = _flameIndex; i >= 0; i--)
+            //{
+            //    _flameIndex = i;
+            //    _flames[_flameIndex].SetActive(false);
 
-                yield return new WaitForSeconds(0.02f);
-            }
+            yield return new WaitForSeconds(0.02f);
+            //}
         }
 
         #endregion

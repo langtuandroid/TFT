@@ -686,9 +686,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cooldownTime: 0
-  _powerPanel: {fileID: 0}
   _lightPrefab: {fileID: 0}
-  _fireBallPrefab: {fileID: 0}
+  _fireBallPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
   _flamesUp: []
   _flamesRight: []
   _flamesDown: []

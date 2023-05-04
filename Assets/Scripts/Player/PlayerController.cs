@@ -82,7 +82,7 @@ namespace Player
 
             // Axis
             _lastX = 0f;
-            _lastY = 0f;
+            _lastY = -1f; // Al principio mira hacia abajo
 
         }
 
@@ -236,7 +236,12 @@ namespace Player
 
         private void GameInputs_OnEastButtonCanceled() => _isMagicAttacking = false;
 
-        private void GameInputs_OnPowerButtonPerformed() => _powerEffectActivated = !_powerEffectActivated;
+        private void GameInputs_OnPowerButtonPerformed()
+        {
+            _magicAttack.ChangeStrongAttackState();
+            // Estas variables quizás se cambien en el futuro
+            _powerEffectActivated = !_powerEffectActivated;
+        }
 
         private void DoMagicAttack()
         {
@@ -246,12 +251,33 @@ namespace Player
                 return;
             }
 
-            _magicAttack.Attack();
+            if (_isMagicAttacking && _magicAttack.CanAttack())
+            {
+                _magicAttack.Attack(new Vector2(_lastX, _lastY));
+                _magicAttack.ResetValues();
+                _isMagicAttacking = false;
+            }
+            else if (!_isMagicAttacking)
+            {
+                _magicAttack.ResetValues();
+            }
+        }
+
+
+        #endregion
+
+        #endregion
+
+        #region Selections
+
+        // TODO: Selección de tipo de acción
+        private void SelectElement()
+        {
+
         }
 
         #endregion
 
-        #endregion
 
         #endregion
 

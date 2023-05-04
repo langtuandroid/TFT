@@ -1,7 +1,6 @@
 using Attack;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MagicEvents : MonoBehaviour
@@ -10,9 +9,9 @@ public class MagicEvents : MonoBehaviour
     #region Events
 
     // Eventos para recarga de los poderes máximos
-    public event Action<float> FireValue; // Fuego
-    public event Action<float> LeafValue; // Planta
-    public event Action<float> WaterValue; // Agua
+    public event Action<float> OnFireValueChange; // Fuego
+    public event Action<float> OnLeafValueChange; // Planta
+    public event Action<float> OnWaterValueChange; // Agua
 
     #endregion
 
@@ -25,7 +24,7 @@ public class MagicEvents : MonoBehaviour
     /// </summary>
     public void FirePowerActivated()
     {
-        StartCoroutine(IncrementFillAmount(FireValue));
+        StartCoroutine(IncrementFillAmount(OnFireValueChange));
     }
 
     public void ChangePowerValue(float value, IAttack attack)
@@ -34,7 +33,7 @@ public class MagicEvents : MonoBehaviour
 
         // Si tenemos el poder de fuego
         if (type == typeof(FireAttack))
-            ChangeFillAmount(FireValue, value);
+            ChangeFillAmount(OnFireValueChange, value);
     }
 
     #endregion
