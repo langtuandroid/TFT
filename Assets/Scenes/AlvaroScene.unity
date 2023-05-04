@@ -12842,6 +12842,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Info Post
       objectReference: {fileID: 0}
+    - target: {fileID: 2577113497058421116, guid: aca4e5ba5bcc03643ab8975ac197c4b5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2577113497058421117, guid: aca4e5ba5bcc03643ab8975ac197c4b5, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -20987,11 +20991,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3913097296414591188, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.14
+      value: 6.21
       objectReference: {fileID: 0}
     - target: {fileID: 3913097296414591188, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.76
+      value: -1.33
       objectReference: {fileID: 0}
     - target: {fileID: 3913097296414591188, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.z
