@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameMusicSO: {fileID: 11400000, guid: ad33af7b93b2cce4680805cefccf95d9, type: 2}
+  _sfxGroupSO: {fileID: 11400000, guid: ee777e7402dde8e44bf6ea6fa614da00, type: 2}

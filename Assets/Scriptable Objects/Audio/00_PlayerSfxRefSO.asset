@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9082e7d3b8a2a4d4b912d690bb9a2655, type: 3}
-  m_Name: PlayerSfxRefSO
+  m_Name: 00_PlayerSfxRefSO
   m_EditorClassIdentifier: 
   Sounds:
   - Guid:
@@ -25,6 +25,24 @@ MonoBehaviour:
       Data3: -2004598605
       Data4: -1717238658
     Path: event:/Sfx/Player/Jump_Land
+  - Guid:
+      Data1: -308835466
+      Data2: 1192407389
+      Data3: 1602640287
+      Data4: -454761511
+    Path: event:/Sfx/Player/Jump
+  - Guid:
+      Data1: 69745454
+      Data2: 1341407982
+      Data3: -2004598605
+      Data4: -1717238658
+    Path: event:/Sfx/Player/Jump_Land
+  - Guid:
+      Data1: 1087421646
+      Data2: 1227109464
+      Data3: 1188981898
+      Data4: 1516262500
+    Path: event:/Sfx/Player/Throw
   - Guid:
       Data1: 1087421646
       Data2: 1227109464
