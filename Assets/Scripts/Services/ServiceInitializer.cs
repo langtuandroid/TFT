@@ -1,4 +1,4 @@
-// ************ @autor: ¡lvaro Repiso Romero *************
+// ************ @autor: √Ålvaro Repiso Romero *************
 using UnityEngine;
 using static ServiceLocator;
 
@@ -12,6 +12,7 @@ namespace Services
             {
                 AddService( new GameInputs() );
                 AddService(new MagicEvents());
+                AddService( new AudioSpeaker() );
 
                 IsInitialized = true;
             }

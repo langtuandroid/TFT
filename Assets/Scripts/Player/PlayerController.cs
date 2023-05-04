@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
@@ -20,7 +22,7 @@ namespace Player
         // SCRIPTS DEL JUGADOR
         // Script de movimiento del personaje
         private PlayerMovement _movement;
-        // Script de interacción del personaje
+        // Script de interacciÃ³n del personaje
         private Interaction _interaction;
         // Script de salto del personaje
         private Jump _jump;
@@ -30,9 +32,7 @@ namespace Player
 
         // COMPONENTES
         // Animator del player
-        private Animator _anim; // Animator del personaje
-        // Colider del player
-        private Collider2D _collider; // Collider del personaje
+        private Animator _anim;
 
         // VARIABLES
         // Jump state
@@ -67,7 +67,6 @@ namespace Player
             _magicAttack = GetComponent<PlayerMagicAttack>();
 
             _anim = GetComponentInChildren<Animator>();
-            _collider = GetComponent<Collider2D>();
 
             // Inicializamos variables
             // Jump state
@@ -117,7 +116,7 @@ namespace Player
             // Realizamos acciones
             DoUpdateActions();
 
-            // Cambiamos la animación según corresponda
+            // Cambiamos la animaciÃ³n segÃºn corresponda
             SetAnimations();
         }
 
@@ -134,7 +133,7 @@ namespace Player
 
         private void GetActionsInformation()
         {
-            // Obtenemos la dirección
+            // Obtenemos la direcciÃ³n
             GetDirection();
 
             // Vemos si interactuamos
@@ -145,7 +144,7 @@ namespace Player
         {
             // Realizamos salto
             DoJump();
-            // Realizamos interacción
+            // Realizamos interacciÃ³n
             DoInteraction();
             // Atacamos con magia
             DoMagicAttack();
@@ -161,7 +160,7 @@ namespace Player
 
         private void GetDirection()
         {
-            // Obtenemos el vector de dirección
+            // Obtenemos el vector de direcciÃ³n
             _direction = _gameInputs.GetDirectionNormalized();
         }
 
@@ -208,10 +207,17 @@ namespace Player
             if (_isJumping || IsAttacking())
                 return;
 
-            if (_isInteracting)
+            if ( _interaction.CanInteract( _lookDirection ) )
             {
-                _interaction.Interact(_collider.offset, _lookDirection);
-                _isInteracting = false;
+                if (_isInteracting)
+                {
+                    _interaction.Interact( _lookDirection );
+                    _isInteracting = false;
+                }
+            }
+            else
+            {
+                _interaction.StopInteracting();
             }
         }
 
@@ -239,7 +245,7 @@ namespace Player
         private void GameInputs_OnPowerButtonPerformed()
         {
             _magicAttack.ChangeStrongAttackState();
-            // Estas variables quizás se cambien en el futuro
+            // Estas variables quizï¿½s se cambien en el futuro
             _powerEffectActivated = !_powerEffectActivated;
         }
 
@@ -270,7 +276,7 @@ namespace Player
 
         #region Selections
 
-        // TODO: Selección de tipo de acción
+        // TODO: Selecciï¿½n de tipo de acciï¿½n
         private void SelectElement()
         {
 
@@ -287,7 +293,7 @@ namespace Player
         {
             // Controlamos los saltos
             _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _isJumping);
-            // Si está saltando
+            // Si estÃ¡ saltando
             if (_isJumping)
                 // Volvemos
                 return;

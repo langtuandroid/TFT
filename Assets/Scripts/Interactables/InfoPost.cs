@@ -1,41 +1,21 @@
+// ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
 
 public class InfoPost : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string InfoPostMessage;
-
-    [SerializeField] private bool canRead = false;
+    [SerializeField] private GameObject _exclamationIcon;
+    [SerializeField] private string _infoPostMessage;
 
     public void Interact( Vector2 lookDirection )
     {
-        Debug.Log( lookDirection );
-        if ( canRead && lookDirection.y > 1 )
-            Debug.Log( InfoPostMessage );
+        if ( lookDirection.y > 0 )
+            Debug.Log( _infoPostMessage );
         else
             Debug.Log( "Cannot Read From Here" );
     }
 
-    private void OnCollisionEnter2D( Collision2D collision )
+    public void ShowCanInteract( bool show )
     {
-        if ( collision.transform.CompareTag( "Player" ) )
-            canRead = true;
-    }
-
-    private void OnCollisionExit2D( Collision2D collision )
-    {
-        if ( collision.transform.CompareTag( "Player" ) )
-            canRead = false;
-    }
-
-    private void OnTriggerEnter2D( Collider2D collision )
-    {
-        if ( collision.CompareTag( "Player" ) )
-            canRead = true;
-    }
-
-    private void OnTriggerExit2D( Collider2D collision )
-    {
-        if ( collision.CompareTag( "Player" ) )
-            canRead = false;
+        _exclamationIcon.SetActive( show );
     }
 }
