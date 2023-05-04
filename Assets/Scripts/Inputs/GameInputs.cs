@@ -8,7 +8,13 @@ public class GameInputs
     // Gameplay
     public event Action OnSouthButtonStarted;
     public event Action OnSouthButtonCanceled;
-    public event Action OnEastButtonPerformed;
+    public event Action OnNorthButtonPerformed;
+    public event Action OnEastButtonStarted;
+    public event Action OnEastButtonCanceled;
+    public event Action OnWestButtonPerformed;
+
+    public event Action OnPowerButtonPerformed;
+
     // UI
     public event Action OnCancelPerformed;
     public event Action OnPausePerformed;
@@ -37,13 +43,38 @@ public class GameInputs
         _moveAction = _playerInputActions.PlayerGround.Move;
         _playerInputActions.PlayerGround.South.started += South_started;
         _playerInputActions.PlayerGround.South.canceled += South_canceled;
-        _playerInputActions.PlayerGround.East.performed += East_performed;
+        _playerInputActions.PlayerGround.North.performed += North_performed;
+        _playerInputActions.PlayerGround.East.started += East_started;
+        _playerInputActions.PlayerGround.East.canceled += East_canceled;
+        _playerInputActions.PlayerGround.West.performed += West_performed;
         _playerInputActions.PlayerGround.Pause.performed += Pause_performed;
+
+        _playerInputActions.PlayerGround.PowerEffect.performed += PowerButton_performed;
     }
 
-    private void East_performed( InputAction.CallbackContext ctx )
+    private void PowerButton_performed (InputAction.CallbackContext ctx)
     {
-        OnEastButtonPerformed?.Invoke();
+        OnPowerButtonPerformed?.Invoke();
+    }
+
+    private void North_performed( InputAction.CallbackContext ctx )
+    {
+        OnNorthButtonPerformed?.Invoke();
+    }
+
+    private void East_started(InputAction.CallbackContext ctx)
+    {
+        OnEastButtonStarted?.Invoke();
+    }
+
+    private void East_canceled(InputAction.CallbackContext ctx)
+    {
+        OnEastButtonCanceled?.Invoke();
+    }
+
+    private void West_performed (InputAction.CallbackContext ctx)
+    {
+        OnWestButtonPerformed?.Invoke();
     }
     
     private void South_canceled( InputAction.CallbackContext ctx )

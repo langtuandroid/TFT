@@ -41,14 +41,10 @@ namespace Player
         #endregion
 
         #region Private Variables
-        // SERVICIOS
-        private GameInputs _gameInputs;
 
         // COMPONENTES DEL GAMEOBJECT
         private Rigidbody2D _rb; // RigidBody del personaje
         private SpriteRenderer _spriteRend; // SpriteRenderer del personaje
-        private Collider2D _collider;
-        private Interaction _interaction;
 
         // ANIMATOR
         private AnimationLayers _layer; // Layer en ese momento
@@ -72,8 +68,6 @@ namespace Player
             // Inicializamos variables
             _rb = GetComponent<Rigidbody2D>();
             _spriteRend = GetComponentInChildren<SpriteRenderer>();
-            _collider = GetComponent<Collider2D>();
-            _interaction = GetComponent<Interaction>();
             //_attack = GetComponent<PlayerAttackExtra>();
 
             // Establecemos como layer inicial el primero (Walkdown)
