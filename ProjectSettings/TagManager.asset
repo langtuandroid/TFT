@@ -49,6 +49,9 @@ TagManager:
   - name: Ground
     uniqueID: 3456483117
     locked: 0
+  - name: Bounds
+    uniqueID: 818653879
+    locked: 0
   - name: 1st Floor
     uniqueID: 1244275949
     locked: 0
