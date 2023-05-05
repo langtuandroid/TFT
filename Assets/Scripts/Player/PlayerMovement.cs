@@ -60,6 +60,7 @@ namespace Player
 
         private void Awake()
         {
+            Instance = this;
             //Hacemos Singleton a la clase
             //if (Instance == null)
             //{
