@@ -41,41 +41,12 @@ namespace Player
 
         #endregion
 
-        #region Public Variables
-
-        // Indica si está atacando
-        public bool IsAttacking => _isAttackButtonPressed;
-
-        #region Light Power
-
-        // Prefab de la bola de luz
-        public GameObject LightBall => _lightPrefab;
-
-        #endregion
-
-        #region Fire Power
-
-        // Partes del lanzallamas
-        //    public List<GameObject[]> Flames => new List<GameObject[]>
-        //{
-        //    // Va en sentido de las agujas del reloj
-        //    _flamesUp,
-        //    _flamesRight,
-        //    _flamesDown,
-        //    _flamesLeft
-        //};
-
-        #endregion
-
-        #endregion
-
         #region Private Variables
 
-        private MagicEvents _magicEvents;
-
         private IAttack _attack; // Tipo de ataque que se usa
-        private bool _isAttackButtonPressed; // Comprobador de si se ha pulsado el botón de ataque
         private float _timer; // Temporizador para el cooldown
+
+        private MagicEvents _magicEvents;
 
         // CORRUTINAS (para más adelante)
         //private Coroutine _firePowerCoroutine; // Corrutina del poder de fuego
@@ -86,8 +57,15 @@ namespace Player
 
         private void Awake()
         {
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
             _attack = new FireAttack();
             _timer = _cooldownTime;
+        }
+
+        private void Update()
+        {
+            if (_timer < _cooldownTime)
+                _timer += Time.deltaTime;
         }
 
         #endregion
@@ -106,18 +84,13 @@ namespace Player
         /// <returns></returns>
         public bool CanAttack()
         {
-            bool res = _timer >= _cooldownTime;
-
-            if (!res)
-                _timer += Time.deltaTime;
-
-            return res;
+            return _timer >= _cooldownTime;
         }
 
         /// <summary>
-        /// Gestiona los ataques
+        /// Realiza el ataque débil
         /// </summary>
-        public void Attack(Vector2 direction)
+        public void WeakAttack(Vector2 direction)
         {
             _attack = new FireAttack();
 
@@ -125,42 +98,34 @@ namespace Player
 
             if (_attack.GetType() == typeof(FireAttack))
                 _attack.WeakAttack(_fireBallPrefab);
-            // Finalmente, controlamos las pulsaciones
-            // del botón de atacar
-            //AttackPressing();
         }
+
+        /// <summary>
+        /// Realiza el ataque medio
+        /// </summary>
+        public void MediumAttack()
+        {
+
+        }
+
+
+        /// <summary>
+        /// Realiza el ataque fuerte
+        /// </summary>
+        public void StrongAttack()
+        {
+            _magicEvents.SetPanelColor(_attack);
+        }
+
 
         #endregion
 
         #region Public Methods
 
-        /// <summary>
-        /// Cambia el estado a ataque fuerte
-        /// </summary>
-        public void ChangeStrongAttackState()
-        {
-            // TODO: Tener en cuenta si se puede
-            // (p. ej. si está cargado el ataque y demás)
-            if (_attack.GetType() == typeof(FireAttack)
-                //&& MyUIManager.Instance.FireValue == 1f
-                )
-            {
-                // Cambiamos el estado de uso de poder fuerte
-                //_attack.ChangeStrongAttackState();
-                // Desactivamos el botón de ataque
-                _isAttackButtonPressed = false;
-                // Y reseteamos los valores de ataque
-                //_attack.ResetValues();
-            }
-
-        }
-
         public void ResetValues()
         {
             // Reseteamos las variables intrínsecas del ataque
             _attack.ResetValues();
-            // Y pulsamos el botón de ataque
-            _isAttackButtonPressed = false;
             _timer = 0f;
         }
 

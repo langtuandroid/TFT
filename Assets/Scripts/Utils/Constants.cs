@@ -48,6 +48,14 @@ namespace Utils
 
         #region Attack variables
 
+        #region Magic maxpower panel names
+
+        public const string PANEL_FIRE = "FirePower";
+        public const string PANEL_LEAF = "LeafPower";
+        public const string PANEL_WATER = "WaterPower";
+
+        #endregion
+
         #region Fire attack
 
         public const float TIME_TO_FLAMETHROWER = .3f;

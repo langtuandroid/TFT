@@ -8,15 +8,15 @@ namespace Services
     {
         private void Awake()
         {
-            if ( !IsInitialized )
+            if (!IsInitialized)
             {
-                AddService( new GameInputs() );
+                AddService(new GameInputs());
                 AddService(new MagicEvents());
-                AddService( new AudioSpeaker() );
+                AddService(new AudioSpeaker());
 
                 IsInitialized = true;
             }
-            Destroy( gameObject );
+            Destroy(gameObject);
         }
     }
 }
