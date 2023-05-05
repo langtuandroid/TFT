@@ -70,6 +70,9 @@ namespace Player
 
             _anim = GetComponentInChildren<Animator>();
 
+            _jump.Init();
+            _interaction.Init();
+
             // Inicializamos variables
             // Jump state
             _isJumping = false;
