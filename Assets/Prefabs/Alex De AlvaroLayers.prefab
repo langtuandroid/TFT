@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 5680709177882448353}
   - component: {fileID: 6126499950577664429}
   m_Layer: 0
-  m_Name: Alex De Alvaro
+  m_Name: Alex De AlvaroLayers
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
