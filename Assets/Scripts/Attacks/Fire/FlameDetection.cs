@@ -17,14 +17,12 @@ public class FlameDetection : MonoBehaviour
         Up, Down, Left, Right
     }
 
-
     private List<GameObject> _collisions;
 
     private ParticleSystem _particles;
 
     private float _lifeTime;
     private float _stopTime;
-
 
     private void Awake()
     {
@@ -46,8 +44,14 @@ public class FlameDetection : MonoBehaviour
 
     private void Update()
     {
+        if (_stopTime >= _maxDistance)
+            return;
+
         if (_lifeTime < _maxDistance)
             _lifeTime += Time.deltaTime;
+
+        if (_particles.isStopped)
+            _stopTime += Time.deltaTime;
 
         CheckCollisions();
     }
@@ -57,10 +61,9 @@ public class FlameDetection : MonoBehaviour
         foreach (GameObject hit in _collisions)
         {
             float distance = Vector2.Distance(hit.transform.position, transform.position);
-            Debug.Log($"Distancia: {distance}");
-            Debug.Log($"Ángulo: {AngleWith(hit)}");
 
             if (distance <= Mathf.Min(_lifeTime, _maxDistance) &&
+                distance >= _stopTime &&
                 hit.CompareTag(Constants.TAG_TORCH)
                 && AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER)
             {

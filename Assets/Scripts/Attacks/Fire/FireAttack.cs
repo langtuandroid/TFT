@@ -15,6 +15,7 @@ namespace Attack
 
         // Objeto del lanzallamas
         private GameObject _flame;
+        private List<GameObject> _flamesToDestroy = new List<GameObject>();
 
         #endregion
 
@@ -56,8 +57,8 @@ namespace Attack
             // Y lo paramos
             _flame.GetComponent<ParticleSystem>().Stop();
 
-            // Y lo destruimos
-            Destroy(_flame, 4f);
+            _flamesToDestroy.Add(_flame);
+            Invoke(nameof(DisableAndDestroy), 4f);
         }
 
         /// <summary>
@@ -77,6 +78,16 @@ namespace Attack
         #endregion
 
         #region Private Methods
+
+        #region Medium Attack
+
+        private void DisableAndDestroy()
+        {
+            GameObject obj = _flamesToDestroy[0];
+            Destroy(obj);
+        }
+
+        #endregion
 
         #region Strong Attack
 
