@@ -58,6 +58,7 @@ namespace Utils
 
         #region Fire attack
 
+        public const float ANGLE_FLAMETHROWER = 45f;
         public const float TIME_TO_FLAMETHROWER = .3f;
         public const float TIME_FIRE_STRONG_ATTACK = 2f;
 

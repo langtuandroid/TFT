@@ -36,9 +36,7 @@ public class Torch : MonoBehaviour
         {
             // Destruimos la bola de fuego
             Destroy(collision.gameObject);
-
-            if (!_activated)
-                ActivateTorch();
+            ActivateTorch();
         }
         else if (!_activated &&
             collision.gameObject.CompareTag(Constants.TAG_FLAMES))
@@ -55,6 +53,9 @@ public class Torch : MonoBehaviour
     /// </summary>
     public void ActivateTorch()
     {
+        if (_activated)
+            return;
+
         // Cambiamos el sprite a encendido
         _fire.SetActive(true);
         // E indicamos que se ha activado
