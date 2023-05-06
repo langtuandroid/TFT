@@ -1,5 +1,3 @@
-using Audio;
-using FMOD;
 using UnityEngine;
 
 namespace Player
