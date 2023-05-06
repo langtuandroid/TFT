@@ -25,3 +25,22 @@ MonoBehaviour:
       Data3: 1987998902
       Data4: 1639661670
     Path: event:/Sfx/Magic/Fire_Weak_Hit
+  SfxRef:
+  - SoundName: Fire Ball
+    Id: 0
+    Sound:
+      Guid:
+        Data1: 65194241
+        Data2: 1260443222
+        Data3: 1114857652
+        Data4: -403713491
+      Path: event:/Sfx/Magic/Fire_Weak
+  - SoundName: Fire Ball Hit
+    Id: 1
+    Sound:
+      Guid:
+        Data1: -1014883429
+        Data2: 1261173637
+        Data3: 1987998902
+        Data4: 1639661670
+      Path: event:/Sfx/Magic/Fire_Weak_Hit

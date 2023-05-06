@@ -30,9 +30,7 @@ public class AudioManager : MonoBehaviour
             Init();
         }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     private void Update()
