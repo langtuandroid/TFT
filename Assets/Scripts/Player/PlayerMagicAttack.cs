@@ -16,8 +16,6 @@ namespace Player
         [Header("Attack Settings")]
         [SerializeField]
         private float _cooldownTime; // Tiempo entre ataques
-        //[SerializeField]
-        //private GameObject _powerPanel; // Panel para el poder final
 
         [Header("Light Power")]
         [SerializeField]
@@ -25,6 +23,7 @@ namespace Player
 
         [Header("Fire Power")]
         [SerializeField]
+        [Tooltip("Prefab de la bola de fuego.")]
         private GameObject _fireBallPrefab; // Prefab de la bola de fuego
 
         //[SerializeField]
@@ -36,8 +35,9 @@ namespace Player
         //[SerializeField]
         //private GameObject[] _flamesLeft; // Lanzallamas hacia la izda
 
-        //[SerializeField]
-        //private GameObject[] _fireOrbs; // Bolas del ataque fuerte de fuego
+        [SerializeField]
+        [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
+        private List<GameObject> _fireOrbs; // Bolas del ataque fuerte de fuego
 
         #endregion
 
@@ -58,7 +58,8 @@ namespace Player
         private void Awake()
         {
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
-            _attack = new FireAttack();
+            _attack = gameObject.AddComponent<FireAttack>();
+            
             _timer = _cooldownTime;
         }
 
@@ -92,8 +93,6 @@ namespace Player
         /// </summary>
         public void WeakAttack(Vector2 direction)
         {
-            _attack = new FireAttack();
-
             _attack.SetOriginAndDirection(transform, direction);
 
             if (_attack.GetType() == typeof(FireAttack))
@@ -114,7 +113,7 @@ namespace Player
         /// </summary>
         public void StrongAttack()
         {
-            _magicEvents.SetPanelColor(_attack);
+            _attack.StrongAttack(_fireOrbs);
         }
 
 
@@ -125,7 +124,6 @@ namespace Player
         public void ResetValues()
         {
             // Reseteamos las variables intrínsecas del ataque
-            _attack.ResetValues();
             _timer = 0f;
         }
 

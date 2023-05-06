@@ -40,7 +40,7 @@ namespace Attack
         {
         }
 
-        public void StrongAttack()
+        public void StrongAttack(System.Object element)
         {
         }
 
@@ -58,7 +58,7 @@ namespace Attack
             lightScript.HandleMovement(_direction);
         }
 
-        public void SetOriginAndDirection(Transform origin,Vector2 direction)
+        public void SetOriginAndDirection(Transform origin, Vector2 direction)
         {
             _origin = origin;
             _direction = direction;

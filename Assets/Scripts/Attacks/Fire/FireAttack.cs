@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
@@ -35,7 +36,7 @@ namespace Attack
         public void WeakAttack(GameObject prefab)
         {
             // Instanciamos bola de fuego
-            GameObject fireball = Instantiate(
+            GameObject fireball = MonoBehaviour.Instantiate(
                 prefab, // Prefab de la bola
                 _origin,
                 Quaternion.identity // Quaternion identity
@@ -95,41 +96,10 @@ namespace Attack
         /// <summary>
         /// Activa una ráfaga de bolas de fuego que afecta a toda la pantalla
         /// </summary>
-        public void StrongAttack()
+        public void StrongAttack(System.Object element)
         {
-            // Activamos la corrutina del poder definitivo de fuego
-            //StartCoroutine(FinalPower());
-            //// Cambiamos el estado de ataque fuerte
-            //PlayerAttack.Instance.ChangeStrongAttackState();
-            //// Y tras ello, ponemos a 0 la parte de poder máximo en el HUD
-            //PlayerAttack.Instance.ChangePowerValue(0f, this);
-        }
-
-        public void ChangeStrongAttackState()
-        {
-            // Cambiamos el estado del booleano
-            //_isStrongAttackActive = !_isStrongAttackActive;
-        }
-
-        public void ResetValues()
-        {
-            // Reiniciamos variables
-            _timer = 0f;
-
-            //// Si está activado el lanzallamas
-            //if (_isFlamethrowerActive)
-            //{
-            //    // Si tenemos una corrutina activa
-            //    if (_flameCoroutine != null)
-            //        // La desactivamos
-            //        StopCoroutine(_flameCoroutine);
-
-            //    // Y activamos la corrutina de desactivar las llamas
-            //    _flameCoroutine = StartCoroutine(DeactivateFlames());
-
-            //    // Finalmente, indicamos que está inactivo
-            //    _isFlamethrowerActive = false;
-            //}
+            // Activamos el poder
+            StartCoroutine(FinalPower((List<GameObject>)element));
         }
 
         public void SetOriginAndDirection(Transform origin, Vector2 direction)
@@ -175,12 +145,12 @@ namespace Attack
 
         #region Strong Attack
 
-        private void ChangeOrbsState()
+        private void ChangeOrbsState(List<GameObject> fireOrbs)
         {
-            //// Para cada orbe de la lista
-            //foreach (GameObject obj in PlayerAttack.Instance.FireOrbs)
-            //    // Se cambia el estado al opuesto que tiene en ese momento
-            //    obj.SetActive(!obj.activeSelf);
+            // Para cada orbe de la lista
+            foreach (GameObject obj in fireOrbs)
+                // Se cambia el estado al opuesto que tiene en ese momento
+                obj.SetActive(!obj.activeSelf);
         }
 
         #endregion
@@ -228,32 +198,65 @@ namespace Attack
         /// Aplica el poder final
         /// </summary>
         /// <returns></returns>
-        private IEnumerator FinalPower()
+        private IEnumerator FinalPower(List<GameObject> fireOrbs)
         {
-            // "Paramos" el juego
-            //MyGameManager.Instance.ChangeStopedValue(true);
+            // TODO: Detener el juego
 
             // Configuramos el panel
             StartCoroutine(ChangePanel());
             // Rotamos los orbes
-            yield return RotateOrbs();
+            yield return RotateOrbs(fireOrbs);
 
-            //// Devolvemos el juego a su curso
-            //MyGameManager.Instance.ChangeStopedValue(false);
-            //// Desactivamos el panel
-            //PlayerAttack.Instance.PowerPanel.SetActive(false);
-            //// Finalmente, actualizamos en la UI
-            //PlayerAttack.Instance.FirePowerActivated();
+            // TODO: Dejar de detener el juego
+        }
+
+        /// <summary>
+        /// Cambia el alfa del poder máximo
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator ChangePanel()
+        {
+            PowerPanelsManager.Instance.ChangePanelColor(this);
+            float alpha = 25 / 255f;
+            // Cambiamos el alfa de la imagen del panel a 25
+            PowerPanelsManager.Instance.SetAlpha(alpha);
+            // Indicamos que debe crecer
+            bool grow = true;
+
+            // Cada cierto tiempo hasta llegar al tiempo de duración del ataque final
+            for (float t = 0f; t < Constants.TIME_FIRE_STRONG_ATTACK; t += 0.002f)
+            {
+                // Según deba crecer o no, aumentamos o decrementamos su valor
+                alpha += grow ?
+                    0.1f / 255f : -0.1f / 255f;
+
+                // Si el alfa llega a un tope por arriba
+                if (alpha >= 100f / 255f)
+                    // Indicamos que decrezca
+                    grow = false;
+                // En caso contrario, si llega a un tope por debajo
+                else if (alpha <= 25f / 255f)
+                    // Indicamos que crezca
+                    grow = true;
+
+                // Cambiamos el alfa de la imagen del panel
+                PowerPanelsManager.Instance.SetAlpha(alpha);
+
+                // Y esperamos un tiempo
+                yield return new WaitForSecondsRealtime(0.002f);
+            }
+
+            PowerPanelsManager.Instance.SetAlpha(0f);
         }
 
         /// <summary>
         /// Aplica rotación circular a los orbes del poder final
         /// </summary>
         /// <returns></returns>
-        private IEnumerator RotateOrbs()
+        private IEnumerator RotateOrbs(List<GameObject> fireOrbs)
         {
             // Cambiamos el estado de los orbes (para activarlos)
-            ChangeOrbsState();
+            ChangeOrbsState(fireOrbs);
 
             // Tiempo a esperar
             float timeToWait = 0.002f;
@@ -276,98 +279,57 @@ namespace Attack
                 posInCircle.x = Mathf.Cos(radians);
                 posInCircle.y = Mathf.Sin(radians);
 
-                //// Para cada objeto de la lista de orbes
-                //for (int j = 0; j < PlayerAttack.Instance.FireOrbs.Length; j++)
-                //{
-                //    GameObject obj = PlayerAttack.Instance.FireOrbs[j];
-                //    int n = j + 1;
+                // Para cada objeto de la lista de orbes
+                for (int j = 0; j < fireOrbs.Count; j++)
+                {
+                    GameObject obj = fireOrbs[j];
+                    int n = j + 1;
 
-                //    // Aplicamos la transformación de su posición local
-                //    switch (n % 8)
-                //    {
-                //        case 0:
-                //            obj.transform.localPosition = new Vector2
-                //                (posInCircle[0], -posInCircle[1]);
-                //            break;
-                //        case 1:
-                //            obj.transform.localPosition = posInCircle;
-                //            break;
-                //        case 2:
-                //            obj.transform.localPosition = new Vector2
-                //                (-posInCircle[0], posInCircle[1]);
-                //            break;
-                //        case 3:
-                //            obj.transform.localPosition = -posInCircle;
-                //            break;
-                //        case 4:
-                //            obj.transform.localPosition = new Vector2
-                //                (posInCircle[1], posInCircle[0]);
-                //            break;
-                //        case 5:
-                //            obj.transform.localPosition = new Vector2
-                //                (-posInCircle[1], posInCircle[0]);
-                //            break;
-                //        case 6:
-                //            obj.transform.localPosition = new Vector2
-                //                (-posInCircle[1], -posInCircle[0]);
-                //            break;
-                //        case 7:
-                //            obj.transform.localPosition = new Vector2
-                //                (posInCircle[1], -posInCircle[0]);
-                //            break;
-                //    }
+                    // Aplicamos la transformación de su posición local
+                    switch (n % 8)
+                    {
+                        case 0:
+                            obj.transform.localPosition = new Vector2
+                                (posInCircle[0], -posInCircle[1]);
+                            break;
+                        case 1:
+                            obj.transform.localPosition = posInCircle;
+                            break;
+                        case 2:
+                            obj.transform.localPosition = new Vector2
+                                (-posInCircle[0], posInCircle[1]);
+                            break;
+                        case 3:
+                            obj.transform.localPosition = -posInCircle;
+                            break;
+                        case 4:
+                            obj.transform.localPosition = new Vector2
+                                (posInCircle[1], posInCircle[0]);
+                            break;
+                        case 5:
+                            obj.transform.localPosition = new Vector2
+                                (-posInCircle[1], posInCircle[0]);
+                            break;
+                        case 6:
+                            obj.transform.localPosition = new Vector2
+                                (-posInCircle[1], -posInCircle[0]);
+                            break;
+                        case 7:
+                            obj.transform.localPosition = new Vector2
+                                (posInCircle[1], -posInCircle[0]);
+                            break;
+                    }
 
-                //    // Y multiplicamos según su distancia
-                //    obj.transform.localPosition *= n;
-                //}
+                    // Y multiplicamos según su distancia
+                    obj.transform.localPosition *= n;
+                }
 
                 // Esperamos el tiempo estipulado
                 yield return new WaitForSecondsRealtime(timeToWait);
             }
 
             // Cambiamos el estado de los orbes (para desactivarlos)
-            ChangeOrbsState();
-        }
-
-        /// <summary>
-        /// Modifica el panel de ataque final
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator ChangePanel()
-        {
-            //// Activamos el panel 
-            //PlayerAttack.Instance.PowerPanel.SetActive(true);
-            //// Cambiamos el alfa de la imagen del panel a 25
-            //PlayerAttack.Instance.PanelImage.SetImageAlpha(25f / 255f);
-            // Indicamos que debe crecer
-            bool grow = true;
-
-            // Cada cierto tiempo hasta llegar al tiempo de duración del ataque final
-            for (float t = 0f; t < Constants.TIME_FIRE_STRONG_ATTACK; t += 0.002f)
-            {
-                // Cogemos el alfa de la imagen
-                //float alpha = PlayerAttack.Instance.
-                //    PanelImage.color.a;
-                // Según deba crecer o no, aumentamos o decrementamos su valor
-                //alpha += grow ?
-                //    0.1f / 255f : -0.1f / 255f;
-
-                //// Si el alfa llega a un tope por arriba
-                //if (alpha >= 100f / 255f)
-                //    // Indicamos que decrezca
-                //    grow = false;
-                //// En caso contrario, si llega a un tope por debajo
-                //else if (alpha <= 25f / 255f)
-                //    // Indicamos que crezca
-                //    grow = true;
-
-                // Cambiamos el alfa de la imagen del panel
-                //PlayerAttack.Instance.PanelImage.
-                //    SetImageAlpha(alpha);
-
-                // Y esperamos un tiempo
-                yield return new WaitForSecondsRealtime(0.002f);
-            }
+            ChangeOrbsState(fireOrbs);
         }
 
         #endregion

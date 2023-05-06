@@ -1,5 +1,5 @@
 
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Attack
@@ -20,18 +20,13 @@ namespace Attack
         /// <summary>
         /// Ataque fuerte
         /// </summary>
-        void StrongAttack();
+        void StrongAttack(System.Object element);
 
         /// <summary>
-        /// Método para indicar que se pasa a ataque fuerte
+        /// Establece el origen y la dirección de los ataques
         /// </summary>
-        void ChangeStrongAttackState();
-
-        /// <summary>
-        /// Resetea los valores de las variables que contiene
-        /// </summary>
-        void ResetValues();
-
+        /// <param name="origin"></param>
+        /// <param name="direction"></param>
         void SetOriginAndDirection(Transform origin, Vector2 direction);
     }
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MagicEvents : MonoBehaviour
+public class MagicEvents
 {
 
     #region Events
@@ -18,14 +18,15 @@ public class MagicEvents : MonoBehaviour
     public void SetPanelColor(IAttack attack)
     {
         PowerPanelsManager.Instance.ChangePanelColor(attack);
+        PowerPanelsManager.Instance.SetAlpha(0f);
     }
 
     #region Coroutines
 
-    public void MaxPowerActivated(IAttack attack)
-    {
-        StartCoroutine(IncrementFillAmount(attack));
-    }
+    //public void MaxPowerActivated(IAttack attack)
+    //{
+    //    StartCoroutine(IncrementFillAmount(attack));
+    //}
 
     public void ChangeMaxPowerValue(float value, IAttack attack)
     {
@@ -49,23 +50,23 @@ public class MagicEvents : MonoBehaviour
         OnMaxPowerValueChange?.Invoke(maxPower);
     }
 
-    /// <summary>
-    /// Bucle que va incrementando un fillAmount
-    /// de un evento
-    /// </summary>
-    /// <param name="action"></param>
-    /// <returns></returns>
-    private IEnumerator IncrementFillAmount(IAttack attack)
-    {
-        for (float i = 0f; i < 1f; i += 0.001f)
-        {
-            ChangeFillAmount(new MaxPowerValues(i, attack));
-            yield return new WaitForSeconds(0.005f);
-        }
+    ///// <summary>
+    ///// Bucle que va incrementando un fillAmount
+    ///// de un evento
+    ///// </summary>
+    ///// <param name="action"></param>
+    ///// <returns></returns>
+    //private IEnumerator IncrementFillAmount(IAttack attack)
+    //{
+    //    for (float i = 0f; i < 1f; i += 0.001f)
+    //    {
+    //        ChangeFillAmount(new MaxPowerValues(i, attack));
+    //        yield return new WaitForSeconds(0.005f);
+    //    }
 
-        // Finalmente, se pone a 1 exacto
-        ChangeFillAmount(new MaxPowerValues(1f, attack));
-    }
+    //    // Finalmente, se pone a 1 exacto
+    //    ChangeFillAmount(new MaxPowerValues(1f, attack));
+    //}
 
     #endregion
 
