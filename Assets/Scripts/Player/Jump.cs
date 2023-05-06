@@ -1,3 +1,5 @@
+using Audio;
+using FMOD;
 using UnityEngine;
 
 namespace Player
@@ -15,7 +17,7 @@ namespace Player
 
         private bool _canJump = true;
         private bool _isJumping = false;
-        private bool _canPlayLandSound = true;
+        private bool _canPlayLandSound = false;
 
         private float _timer = 0;
         private float _cooldownSeconds = 0.1f;
@@ -63,10 +65,10 @@ namespace Player
                 _isJumping = false;
                 _z += - Time.deltaTime * _fallSpeed;
             }
-            else
+            else 
             {
                 _z = 0;
-                if ( _canPlayLandSound )
+                if (_canPlayLandSound )
                 {
                     _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_LANDING );
                     _canPlayLandSound = false;
