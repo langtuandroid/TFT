@@ -9,7 +9,7 @@ public class AudioManager : MonoBehaviour
 
 
     [SerializeField] private GameMusicSO _gameMusicSO;
-    [SerializeField] private SfxGroupSO _sfxGroupSO;
+    [SerializeField] private SfxGroupSO  _sfxGroupSO;
 
     [Header("Music currently playing")]
     private static FMOD.Studio.EventInstance _musicEventInstance;
@@ -30,9 +30,7 @@ public class AudioManager : MonoBehaviour
             Init();
         }
         else
-        {
             Destroy(gameObject);
-        }
     }
 
     private void Update()
@@ -69,14 +67,16 @@ public class AudioManager : MonoBehaviour
         _musicEventInstance.release();
     }
 
-    public void ChangeParameter( string name , float newValue)
+    public void ChangeParameter( string name , float newValue )
     {
         _musicEventInstance.setParameterByName( name , newValue );
     }
 
     public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {
-        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].Sounds[soundId] , soundOrigin );
+        Debug.Log( "[Play Sound]: " + _sfxGroupSO.list[groupId].SfxRef[soundId].SoundName + 
+            ", IDSend: " + soundId + " = ID: " + _sfxGroupSO.list[groupId].SfxRef[soundId].Id );
+        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].SfxRef[soundId].Sound , soundOrigin );
     }
 
 

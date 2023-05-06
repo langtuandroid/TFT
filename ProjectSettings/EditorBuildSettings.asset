@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/AlvaroScene.unity
+    guid: 5001a07db8397ac41883c192ed9a5899
+  - enabled: 1
     path: Assets/Scenes/00_MainMenuScene.unity
     guid: 2b6b1e64bb52ae345b4b1c6a3921d059
   - enabled: 1
