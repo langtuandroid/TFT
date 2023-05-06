@@ -62,10 +62,15 @@ namespace Player
 
         private void Awake()
         {
+
+        }
+
+        private void Start()
+        {
             // Obtenemos componentes
             _movement = GetComponent<PlayerMovement>();
-            _interaction = GetComponent<Interaction>();
             _jump = GetComponent<Jump>();
+            _interaction = GetComponent<Interaction>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
 
             _anim = GetComponentInChildren<Animator>();
@@ -88,10 +93,6 @@ namespace Player
             _lastX = 0f;
             _lastY = -1f; // Al principio mira hacia abajo
 
-        }
-
-        private void Start()
-        {
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
@@ -152,7 +153,7 @@ namespace Player
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
-            DoMagicAttack();
+            //DoMagicAttack();
         }
 
         private void DoFixedUpdateActions()
@@ -190,7 +191,7 @@ namespace Player
                 return;
 
             if (_isJumping)
-                _jump.JumpAction();
+                _isJumping = _jump.JumpAction();
             else
                 _jump.Fall();
         }
@@ -209,7 +210,7 @@ namespace Player
 
         private void DoInteraction()
         {
-            if (_isJumping || IsAttacking())
+            if ( _jump.IsPerformingJump || IsAttacking())
                 return;
 
             if ( _interaction.CanInteract( _lookDirection ) )
@@ -256,7 +257,7 @@ namespace Player
 
         private void DoMagicAttack()
         {
-            if (_isJumping)
+            if ( _jump.IsPerformingJump )
             {
                 _magicAttack.ResetValues();
                 return;
@@ -294,9 +295,9 @@ namespace Player
         private void SetAnimations()
         {
             // Controlamos los saltos
-            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _isJumping);
+            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _jump.IsPerformingJump );
             // Si está saltando
-            if (_isJumping)
+            if ( _jump.IsPerformingJump )
                 // Volvemos
                 return;
 

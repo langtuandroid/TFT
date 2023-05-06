@@ -5,6 +5,13 @@ public class AudioSpeaker
 {
     private bool isDevelop = true;
 
+    public AudioSpeaker()
+    {
+#if !UNITY_EDITOR
+        isDevelop = false;
+#endif
+    }
+
     public void PlaySound( int groupId , int soundId )
     {
         if ( isDevelop ) return;
