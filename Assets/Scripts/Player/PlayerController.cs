@@ -49,6 +49,8 @@ namespace Player
         private bool _isUsingWeakMagic;
         private bool _isUsingMediumMagic;
         private bool _isUsingStrongMagic;
+        private bool _mediumMagicUsed;
+
 
         // Axis (for animator)
         private float _lastX;
@@ -78,6 +80,7 @@ namespace Player
             _isUsingWeakMagic = false;
             _isUsingMediumMagic = false;
             _isUsingStrongMagic = false;
+            _mediumMagicUsed = false;
 
             // Axis
             _lastX = 0f;
@@ -274,8 +277,11 @@ namespace Player
 
             else
             {
+                // Ponemos a false todas las variables de magia
                 _isUsingWeakMagic = false;
-                _magicAttack.ResetValues();
+                _isUsingMediumMagic = false;
+                _isUsingStrongMagic = false;
+                _magicAttack.ResetTimer();
                 _magicAttack.WeakAttack(new Vector2(_lastX, _lastY));
             }
         }
@@ -286,8 +292,21 @@ namespace Player
         private void DoMediumMagicAttack()
         {
             if (!_isUsingMediumMagic)
+            {
+                if (_mediumMagicUsed)
+                {
+                    _mediumMagicUsed = false;
+                    _magicAttack.StopMediumAttack();
+                    _magicAttack.ResetTimer();
+                }
+                return;
+            }
+            if (_mediumMagicUsed)
                 return;
 
+            // Ponemos a false todas las variables de magia
+            _mediumMagicUsed = true;
+            _magicAttack.MediumAttack(new Vector2(_lastX, _lastY));
 
         }
 
@@ -299,10 +318,17 @@ namespace Player
             if (!_isUsingStrongMagic)
                 return;
 
+            if (_mediumMagicUsed)
+            {
+                _isUsingStrongMagic = false;
+                return;
+            }
+
+            // Ponemos a false todas las variables de magia
             _isUsingStrongMagic = false;
+            _magicAttack.ResetTimer();
             _magicAttack.StrongAttack();
         }
-
 
         #endregion
 
@@ -326,9 +352,9 @@ namespace Player
         private void SetAnimations()
         {
             // Controlamos los saltos
-            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _isJumping);
+            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _jump.IsJumping);
             // Si está saltando
-            if (_isJumping)
+            if (_jump.IsJumping)
                 // Volvemos
                 return;
 
@@ -340,6 +366,9 @@ namespace Player
         {
             bool isWalking = _direction.magnitude > 0f;
             _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
+
+            if (_mediumMagicUsed)
+                return;
 
             if (isWalking)
             {
@@ -366,6 +395,9 @@ namespace Player
         {
             bool isWalking = _direction.magnitude > 0f;
             _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
+
+            if (_mediumMagicUsed)
+                return;
 
             if (isWalking)
             {

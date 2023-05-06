@@ -26,14 +26,14 @@ namespace Player
         [Tooltip("Prefab de la bola de fuego.")]
         private GameObject _fireBallPrefab; // Prefab de la bola de fuego
 
-        //[SerializeField]
-        //private GameObject[] _flamesUp; // Lanzallamas hacia arriba
-        //[SerializeField]
-        //private GameObject[] _flamesRight; // Lanzallamas hacia la derecha
-        //[SerializeField]
-        //private GameObject[] _flamesDown; // Lanzallamas hacia abajo
-        //[SerializeField]
-        //private GameObject[] _flamesLeft; // Lanzallamas hacia la izda
+        [SerializeField]
+        private GameObject _flamesUp; // Lanzallamas hacia arriba
+        [SerializeField]
+        private GameObject _flamesRight; // Lanzallamas hacia la derecha
+        [SerializeField]
+        private GameObject _flamesDown; // Lanzallamas hacia abajo
+        [SerializeField]
+        private GameObject _flamesLeft; // Lanzallamas hacia la izda
 
         [SerializeField]
         [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
@@ -59,7 +59,7 @@ namespace Player
         {
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
             _attack = gameObject.AddComponent<FireAttack>();
-            
+
             _timer = _cooldownTime;
         }
 
@@ -93,7 +93,7 @@ namespace Player
         /// </summary>
         public void WeakAttack(Vector2 direction)
         {
-            _attack.SetOriginAndDirection(transform, direction);
+            _attack.SetDirection(direction);
 
             if (_attack.GetType() == typeof(FireAttack))
                 _attack.WeakAttack(_fireBallPrefab);
@@ -102,18 +102,38 @@ namespace Player
         /// <summary>
         /// Realiza el ataque medio
         /// </summary>
-        public void MediumAttack()
+        public void MediumAttack(Vector2 direction)
         {
+            _attack.SetDirection(direction);
 
+            if (_attack.GetType() == typeof(FireAttack))
+            {
+                GameObject flame = null;
+                if (direction.Equals(Vector2.up))
+                    flame = _flamesUp;
+                else if (direction.Equals(Vector2.down))
+                    flame = _flamesDown;
+                else if (direction.Equals(Vector2.left))
+                    flame = _flamesLeft;
+                else if (direction.Equals(Vector2.right))
+                    flame = _flamesRight;
+
+                _attack.MediumAttack(flame);
+            }
         }
 
+        public void StopMediumAttack()
+        {
+            _attack.StopMediumAttack();
+        }
 
         /// <summary>
         /// Realiza el ataque fuerte
         /// </summary>
         public void StrongAttack()
         {
-            _attack.StrongAttack(_fireOrbs);
+            if (_attack.GetType() == typeof(FireAttack))
+                _attack.StrongAttack(_fireOrbs);
         }
 
 
@@ -121,7 +141,7 @@ namespace Player
 
         #region Public Methods
 
-        public void ResetValues()
+        public void ResetTimer()
         {
             // Reseteamos las variables intrínsecas del ataque
             _timer = 0f;

@@ -10,21 +10,11 @@ namespace Attack
     {
         #region Private Variables
 
-        // Temporizador para ver si usar el lanzallamas
-        private float _timer = 0f;
-        //// Booleano que te indica si se ha pulsado el botón de poder fuerte
-        //private bool _isStrongAttackActive = false;
-        //// Booleano que indica si se ha activado ya el lanzallamas
-        //private bool _isFlamethrowerActive = false;
-        //// Lista que apunta a la lista actual de llamas
-        //private GameObject[] _flames;
-        //// Índice de la llama activa en ese instante
-        //private int _flameIndex = 0;
-        //// Corrutina del lanzallamas
-        //private Coroutine _flameCoroutine;
-
+        // Dirección de los ataques
         private Vector2 _direction;
-        private Vector2 _origin;
+
+        // Objeto del lanzallamas
+        private GameObject _flame;
 
         #endregion
 
@@ -36,61 +26,38 @@ namespace Attack
         public void WeakAttack(GameObject prefab)
         {
             // Instanciamos bola de fuego
-            GameObject fireball = MonoBehaviour.Instantiate(
+            GameObject fireball = Instantiate(
                 prefab, // Prefab de la bola
-                _origin,
+                transform.position, // Posición del player
                 Quaternion.identity // Quaternion identity
                 );
 
             fireball.GetComponent<Fireball>().SetDirection(_direction);
 
-            //// Y modificamos su dirección
-            ChangeFireBallDirection(fireball.GetComponent<Fireball>());
         }
 
         /// <summary>
         /// Activa el lanzallamas (si corresponde)
         /// </summary>
-        public void MediumAttack()
+        public void MediumAttack(GameObject prefab)
         {
-            // Si el temporizador no ha alcanzado el tiempo suficiente como
-            // para activar el lanzallamas
-            if (_timer < Constants.TIME_TO_FLAMETHROWER)
-                // Incrementamos el contador de tiempo
-                _timer += Time.deltaTime;
-            // En caso contrario,
-            // si el lanzallamas no ha sido activado aún
-            //else if (!_isFlamethrowerActive)
-            //{
-            //    // Activamos el lanzallamas, teniendo en cuenta la dirección
-            //    // de la animación de movimiento
-            //    //switch (PlayerMovement.Instance.Layer)
-            //    //{
-            //    //    // Si nos movemos hacia abajo
-            //    //    case PlayerMovement.AnimationLayers.WalkDown:
-            //    //        AsignNewList(PlayerAttack.Instance.Flames[2]);
-            //    //        break;
-            //    //    // Si nos movemos en horizontal
-            //    //    case PlayerMovement.AnimationLayers.WalkHorizontal:
-            //    //        // Si se mueve a la izquierda, se activa el de la izquierda
-            //    //        // en otro caso, el de la derecha
-            //    //        GameObject[] list = PlayerMovement.Instance.HorizontalFlip ?
-            //    //            PlayerAttack.Instance.Flames[3] :
-            //    //            PlayerAttack.Instance.Flames[1];
-            //    //        AsignNewList(list);
-            //    //        break;
-            //    //    // Si nos movemos hacia arriba
-            //    //    case PlayerMovement.AnimationLayers.WalkUp:
-            //    //        AsignNewList(PlayerAttack.Instance.Flames[0]);
-            //    //        break;
-            //    //}
+            _flame = Instantiate(
+                prefab, // Prefab de la llama
+                transform
+                );
 
-            //    //// Activamos una nueva corrutina
-            //    //_flameCoroutine = PlayerAttack.Instance.
-            //    //    ActivateCoroutine(ActivateFlames());
-            //    //// E indicamos que ha sido activado el lanzallamas
-            //    //_isFlamethrowerActive = true;
-            //}
+            _flame.GetComponent<ParticleSystem>().Play();
+        }
+
+        public void StopMediumAttack()
+        {
+            // Lo quitamos
+            _flame.transform.parent = null;
+            // Y lo paramos
+            _flame.GetComponent<ParticleSystem>().Stop();
+
+            // Y lo destruimos
+            Destroy(_flame, 4f);
         }
 
         /// <summary>
@@ -102,46 +69,14 @@ namespace Attack
             StartCoroutine(FinalPower((List<GameObject>)element));
         }
 
-        public void SetOriginAndDirection(Transform origin, Vector2 direction)
+        public void SetDirection(Vector2 direction)
         {
-            _origin = origin.position;
             _direction = direction;
         }
 
         #endregion
 
         #region Private Methods
-
-        #region Weak Attack
-
-        /// <summary>
-        /// Cambia la dirección de movimiento de una bola de fuego dada
-        /// </summary>
-        /// <param name="fireball"></param>
-        /// <param name="script"></param>
-        private void ChangeFireBallDirection(Fireball script)
-        {
-            script.SetDirection(_direction);
-        }
-
-        #endregion
-
-        #region Medium Attack
-
-        /// <summary>
-        /// Asigna una nueva lista a la lista de flames.
-        /// En caso de ser la misma, para corrutinas existentes
-        /// </summary>
-        /// <param name="list"></param>
-        private void AsignNewList(GameObject[] list)
-        {
-            //if (_flames != list)
-            //    _flames = list;
-            //else if (_flameCoroutine != null)
-            //    StopCoroutine(_flameCoroutine);
-        }
-
-        #endregion
 
         #region Strong Attack
 
@@ -158,39 +93,6 @@ namespace Attack
         #endregion
 
         #region Coroutines
-
-        #region Medium Attack
-
-        /// <summary>
-        /// Corrutina para ir activando las llamitas
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator ActivateFlames()
-        {
-            //for (int i = _flameIndex; i < _flames.Length; i++)
-            //{
-            //    _flameIndex = i;
-            //    _flames[_flameIndex].SetActive(true);
-            yield return new WaitForSeconds(0.02f);
-            //}
-        }
-
-        /// <summary>
-        /// Corrutina para ir desactivando las llamitas
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator DeactivateFlames()
-        {
-            //for (int i = _flameIndex; i >= 0; i--)
-            //{
-            //    _flameIndex = i;
-            //    _flames[_flameIndex].SetActive(false);
-
-            yield return new WaitForSeconds(0.02f);
-            //}
-        }
-
-        #endregion
 
         #region Strong Attack
 

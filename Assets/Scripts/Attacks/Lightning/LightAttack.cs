@@ -3,7 +3,7 @@ using Utils;
 
 namespace Attack
 {
-    public class LightAttack : MonoBehaviour, IAttack
+    public class LightAttack : MonoBehaviour//, IAttack
     {
         private Vector2 _direction;
         private Transform _origin;

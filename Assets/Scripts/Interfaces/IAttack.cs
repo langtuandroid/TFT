@@ -15,7 +15,9 @@ namespace Attack
         /// <summary>
         /// Ataque medio
         /// </summary>
-        void MediumAttack();
+        void MediumAttack(GameObject prefab);
+
+        void StopMediumAttack();
 
         /// <summary>
         /// Ataque fuerte
@@ -23,11 +25,11 @@ namespace Attack
         void StrongAttack(System.Object element);
 
         /// <summary>
-        /// Establece el origen y la dirección de los ataques
+        /// Establece la dirección de los ataques
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="direction"></param>
-        void SetOriginAndDirection(Transform origin, Vector2 direction);
+        void SetDirection(Vector2 direction);
     }
 
 }
