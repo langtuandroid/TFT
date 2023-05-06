@@ -49,3 +49,36 @@ MonoBehaviour:
       Data3: 1188981898
       Data4: 1516262500
     Path: event:/Sfx/Player/Throw
+  SfxRef:
+  - SoundName: 
+    Sound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - SoundName: 
+    Sound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - SoundName: Jump
+    Sound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 
+  - SoundName: Landing
+    Sound:
+      Guid:
+        Data1: 0
+        Data2: 0
+        Data3: 0
+        Data4: 0
+      Path: 

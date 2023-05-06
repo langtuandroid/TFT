@@ -9,10 +9,13 @@ namespace Player
         [SerializeField][Range(0, 5)] private float _fallSpeed = 4f;
         [SerializeField][Range(0, 2)] private float _maxJumpHeight = 1f;
 
+        private AudioSpeaker _audioSpeaker;
+
         private float _yOffset;
 
         private bool _canJump = true;
         private bool _isJumping = false;
+        private bool _canPlayLandSound = true;
 
         private float _timer = 0;
         private float _cooldownSeconds = 0.1f;
@@ -22,6 +25,7 @@ namespace Player
 
         public void Init()
         {
+            _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
             _yOffset = _playerVisuals.localPosition.y;
             _z = _yOffset;
         }
@@ -32,6 +36,8 @@ namespace Player
             {
                 _isJumping = true;
                 _canJump = false;
+                _canPlayLandSound = true;
+                _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
                 // TODO: Change animation to jump
             }
 
@@ -60,6 +66,11 @@ namespace Player
             else
             {
                 _z = 0;
+                if ( _canPlayLandSound )
+                {
+                    _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_LANDING );
+                    _canPlayLandSound = false;
+                }
                 CanJumpTimer();
             }
 

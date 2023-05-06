@@ -76,7 +76,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {
-        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].Sounds[soundId] , soundOrigin );
+        Debug.Log( "[Play Sound]: " + _sfxGroupSO.list[groupId].SfxRef[soundId].SoundName + 
+            ", IDSend: " + soundId + " = ID: " + _sfxGroupSO.list[groupId].SfxRef[soundId].Id );
+        //RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].Sounds[soundId] , soundOrigin );
+        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].SfxRef[soundId].Sound , soundOrigin );
     }
 
 
