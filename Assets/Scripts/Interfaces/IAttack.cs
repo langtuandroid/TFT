@@ -1,15 +1,11 @@
 
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Attack
 {
     public interface IAttack
     {
-        /// <summary>
-        /// Ejecuta ataques
-        /// </summary>
-        void Execute(bool pressed);
 
         /// <summary>
         /// Ataque débil
@@ -19,24 +15,21 @@ namespace Attack
         /// <summary>
         /// Ataque medio
         /// </summary>
-        void MediumAttack();
+        void MediumAttack(GameObject prefab);
+
+        void StopMediumAttack();
 
         /// <summary>
         /// Ataque fuerte
         /// </summary>
-        void StrongAttack();
+        void StrongAttack(System.Object element);
 
         /// <summary>
-        /// Método para indicar que se pasa a ataque fuerte
+        /// Establece la dirección de los ataques
         /// </summary>
-        void ChangeStrongAttackState();
-
-        /// <summary>
-        /// Resetea los valores de las variables que contiene
-        /// </summary>
-        void ResetValues();
-
-        void SetOriginAndDirection(Transform origin, Vector2 direction);
+        /// <param name="origin"></param>
+        /// <param name="direction"></param>
+        void SetDirection(Vector2 direction);
     }
 
 }

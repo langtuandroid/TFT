@@ -3,21 +3,13 @@ using Utils;
 
 namespace Attack
 {
-    public class LightAttack : MonoBehaviour, IAttack
+    public class LightAttack : MonoBehaviour//, IAttack
     {
         private Vector2 _direction;
         private Transform _origin;
 
 
-        #region Interface Methods
-
-        public void Execute(bool pressed)
-        {
-            // Para el caso de la bola de luz,
-            // solo tenemos el poder débil
-            //if (!pressed)
-            //    WeakAttack();
-        }
+        #region Interface Methodss
 
         /// <summary>
         /// Lanza el hechizo de la bola de luz
@@ -48,7 +40,7 @@ namespace Attack
         {
         }
 
-        public void StrongAttack()
+        public void StrongAttack(System.Object element)
         {
         }
 
@@ -66,7 +58,7 @@ namespace Attack
             lightScript.HandleMovement(_direction);
         }
 
-        public void SetOriginAndDirection(Transform origin,Vector2 direction)
+        public void SetOriginAndDirection(Transform origin, Vector2 direction)
         {
             _origin = origin;
             _direction = direction;
