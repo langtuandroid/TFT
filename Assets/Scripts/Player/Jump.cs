@@ -27,38 +27,26 @@ namespace Player
             _jumpState = JumpState.Grounded;
         }
 
-        public bool JumpAction()
+        public void JumpAction( bool jumpInput )
         {
+
             switch ( _jumpState )
             {
             case JumpState.Grounded:
+                if ( !jumpInput ) return;
                 _jumpState = JumpState.Jumping;
                 _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
                 // TODO: Change animation to jump
                 break;
 
             case JumpState.Jumping:
-                if ( _z < _maxJumpHeight )
+                if ( jumpInput && _z < _maxJumpHeight )
                 {
                     _z += Time.deltaTime * _jumpSpeed;
                     _z = Mathf.Lerp( _z , _maxJumpHeight , Time.deltaTime * _jumpSpeed );
                     MoveZ();
                 }
                 else _jumpState = JumpState.Falling;
-                break;
-
-            case JumpState.Falling:
-                return false;
-            }
-            return true;
-        }
-
-        public void Fall()
-        {
-            switch ( _jumpState )
-            {
-            case JumpState.Jumping:
-                _jumpState = JumpState.Falling;
                 break;
 
             case JumpState.Falling:

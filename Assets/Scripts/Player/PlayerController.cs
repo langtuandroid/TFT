@@ -193,10 +193,9 @@ namespace Player
             if (IsAttacking())
                 return;
 
-            if (_isJumpInput)
-                _isJumpInput = _jump.JumpAction();
-            else
-                _jump.Fall();
+            _jump.JumpAction( _isJumpInput );
+            if ( _jump.IsFalling )
+                _isJumpInput = false;
         }
 
         #endregion
