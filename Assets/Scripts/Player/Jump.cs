@@ -13,18 +13,17 @@ namespace Player
         private float _yOffset;
         private enum JumpState { Grounded, Jumping, Falling, Cooldown }
         private JumpState _jumpState;
-
-        private float _timer = 0;
-        private float _cooldownSeconds = 0.1f;
+        private Timer _cooldownTimer;
 
         private float _z = 0; // jump virtual axis
 
 
         public void Init()
         {
+            float _cooldownSeconds = 0.1f;
+            _cooldownTimer = new Timer( _cooldownSeconds );
             _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
             _yOffset = _playerVisuals.localPosition.y;
-            _z = _yOffset;
             _jumpState = JumpState.Grounded;
         }
 
@@ -75,23 +74,15 @@ namespace Player
                 break;
 
             case JumpState.Cooldown:
-                JumpCooldownTimer();
+                if ( _cooldownTimer.TickForever() )
+                    _jumpState = JumpState.Grounded;
                 break;
             }
         }
 
         private void MoveZ() => _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
 
-        private void JumpCooldownTimer()
-        {
-            _timer += Time.deltaTime;
-            if ( _timer > _cooldownSeconds )
-            {
-                _timer = 0;
-                _jumpState = JumpState.Grounded;
-            }
-        }
-
+        public bool IsFalling => _jumpState.Equals( JumpState.Falling );
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
         public bool CanJump => _jumpState.Equals( JumpState.Grounded );
     }
