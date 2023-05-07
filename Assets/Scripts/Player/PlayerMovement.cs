@@ -51,7 +51,6 @@ namespace Player
             // Y movemos el RigidBody
             _rb.MovePosition(_rb.position + Time.deltaTime * _speed * direction);
 
-            Debug.Log( direction.magnitude );
             _currentSpeedOnAir = direction.magnitude > 0 ? _speed : 0;
             _rb.velocity = Vector2.zero;
         }
@@ -61,8 +60,6 @@ namespace Player
             _currentSpeedOnAir += Time.deltaTime * _accelerationOnAir;
             Vector2 airVelocity = _currentSpeedOnAir * direction;
             _rb.velocity = Vector2.ClampMagnitude( airVelocity , _speed );
-
-            Debug.Log( "Air: " + _rb.velocity );
         }
 
         /// <summary>
