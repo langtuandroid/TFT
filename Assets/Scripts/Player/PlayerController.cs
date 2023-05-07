@@ -75,6 +75,7 @@ namespace Player
 
             _anim = GetComponentInChildren<Animator>();
 
+            _movement.Init();
             _jump.Init();
             _interaction.Init();
 
@@ -175,7 +176,10 @@ namespace Player
 
         private void DoMove()
         {
-            _movement.Move(_direction);
+            if ( _jump.IsGrounded )
+                _movement.Move(_direction);
+            else
+                _movement.MoveOnAir(_direction);
         }
 
         #endregion
@@ -193,10 +197,9 @@ namespace Player
             if (IsAttacking())
                 return;
 
-            if (_isJumpInput)
-                _isJumpInput = _jump.JumpAction();
-            else
-                _jump.Fall();
+            _jump.JumpAction( _isJumpInput );
+            if ( _jump.IsFalling )
+                _isJumpInput = false;
         }
 
         #endregion

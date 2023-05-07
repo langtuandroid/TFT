@@ -180,6 +180,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6639730691038399552, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
+      propertyPath: _speedOnAir
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639730691038399552, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
+      propertyPath: _accelerationOnAir
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -12951,6 +12959,10 @@ PrefabInstance:
     - target: {fileID: 4276205243018742825, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}
       propertyPath: m_Name
       value: Audio Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4276205243018742825, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}
