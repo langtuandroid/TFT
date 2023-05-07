@@ -74,7 +74,7 @@ namespace Player
                 break;
 
             case JumpState.Cooldown:
-                if ( _cooldownTimer.TickForever() )
+                if ( _cooldownTimer.HasTickForever() )
                     _jumpState = JumpState.Grounded;
                 break;
             }

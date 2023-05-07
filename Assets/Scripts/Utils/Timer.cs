@@ -18,7 +18,7 @@ public class Timer
     /// <summary>
     /// Only tick true once the seconds selected in constructors, needs manual time restart
     /// </summary>
-    public bool TickOnce()
+    public bool HasTickOnce()
     {
         if ( _timer < 0 ) return true;
         _timer -= Time.deltaTime;
@@ -28,7 +28,7 @@ public class Timer
     /// <summary>
     /// Tick true each time the selected seconds in constructors, auto restart when tick
     /// </summary>
-    public bool TickForever()
+    public bool HasTickForever()
     {
         _timer -= Time.deltaTime;
         if (_timer < 0 )
