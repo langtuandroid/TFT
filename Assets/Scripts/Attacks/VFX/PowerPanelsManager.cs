@@ -47,8 +47,6 @@ public class PowerPanelsManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-
-
     }
 
     private void Start()
@@ -76,10 +74,33 @@ public class PowerPanelsManager : MonoBehaviour
         if (_powerPanelList.PowerPanelDataList.Count > 0)
             return;
 
-        PowerPanelData panel1 = new PowerPanelData(Constants.PANEL_FIRE, new Color(161 / 255f, 97 / 255f, 89 / 255f));
-        PowerPanelData panel2 = new PowerPanelData(Constants.PANEL_LEAF, new Color(120 / 255f, 161 / 255f, 88 / 255f));
-        PowerPanelData panel3 = new PowerPanelData(Constants.PANEL_WATER, new Color(87 / 255f, 114 / 255f, 151 / 255f));
-
+        PowerPanelData panel1 =
+            new PowerPanelData(
+                Constants.PANEL_FIRE,
+                new Color(
+                    161 / 255f,
+                    97 / 255f,
+                    89 / 255f
+                    )
+            );
+        PowerPanelData panel2 =
+            new PowerPanelData(
+                Constants.PANEL_LEAF,
+                new Color(
+                    120 / 255f,
+                    161 / 255f,
+                    88 / 255f
+                    )
+                );
+        PowerPanelData panel3 =
+            new PowerPanelData(
+                Constants.PANEL_WATER,
+                new Color(
+                    87 / 255f,
+                    114 / 255f,
+                    151 / 255f
+                    )
+                );
 
         _powerPanelList.PowerPanelDataList.Clear();
         _powerPanelList.PowerPanelDataList.Add(panel1);
