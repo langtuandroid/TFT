@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 5680709177882448353}
   - component: {fileID: 6126499950577664429}
   m_Layer: 0
-  m_Name: Alex De AlvaroLayers
+  m_Name: Alex V0.2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _accelerationOnAir: 8
 --- !u!114 &5899227869626264206
 MonoBehaviour:
   m_ObjectHideFlags: 0
