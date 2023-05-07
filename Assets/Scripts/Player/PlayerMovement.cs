@@ -6,41 +6,25 @@ namespace Player
     {
         public static PlayerMovement Instance;
 
-        #region SerializeFields
-
         [Header("Move Settings")]
-        [SerializeField] private float _speed; // Velocidad de movimiento del personaje
+        [SerializeField] private float _speed = 3; // Velocidad de movimiento del personaje
+        [SerializeField] private float _accelerationOnAir = 500; // Velocidad de movimiento del personaje en el aire
 
-        //[Header("Attack")]
-        //private PlayerAttackExtra _attack;
-
-        #endregion
-
-        #region Const Variables
+        private float _currentSpeedOnAir; // Velocidad de movimiento del personaje en el aire
 
         public enum AnimationLayers
         {
-            // Animaciones de caminar
             WalkDown,
             WalkHorizontal,
             WalkUp,
-            // Animaciones de salto
             JumpDown,
             JumpHorizontal,
             JumpUp,
-            // Animaciones de ataque
-            // Animación nula
             Null
         }
-        #endregion
-
-        #region Public Variables
 
         public AnimationLayers Layer => _layer; // Da la capa de animación en la que estamos
         public bool HorizontalFlip => _spriteRend.flipX; // Devuelve si está volteado el sprite o no
-        #endregion
-
-        #region Private Variables
 
         // COMPONENTES DEL GAMEOBJECT
         private Rigidbody2D _rb; // RigidBody del personaje
@@ -49,38 +33,15 @@ namespace Player
         // ANIMATOR
         private AnimationLayers _layer; // Layer en ese momento
 
-
-        #endregion
-
-        #region Unity Methods
-
-        private void Awake()
+        private void Awake() => Instance = this;
+        public void Init()
         {
-            Instance = this;
-            //Hacemos Singleton a la clase
-            //if (Instance == null)
-            //{
-            //    Instance = this;
-            //    DontDestroyOnLoad(gameObject);
-            //}
-            //else
-            //    Destroy(gameObject);
-
             // Inicializamos variables
             _rb = GetComponent<Rigidbody2D>();
             _spriteRend = GetComponentInChildren<SpriteRenderer>();
-            //_attack = GetComponent<PlayerAttackExtra>();
-
             // Establecemos como layer inicial el primero (Walkdown)
             _layer = AnimationLayers.WalkDown;
-            // Y el layer para el salto a null
-            //_jumpLayer = AnimationLayers.Null;
         }
-
-        #endregion
-
-
-        #region Public Methods
 
         /// <summary>
         /// Mueve el GameObject del personaje
@@ -89,6 +50,19 @@ namespace Player
         {
             // Y movemos el RigidBody
             _rb.MovePosition(_rb.position + Time.deltaTime * _speed * direction);
+
+            Debug.Log( direction.magnitude );
+            _currentSpeedOnAir = direction.magnitude > 0 ? _speed : 0;
+            _rb.velocity = Vector2.zero;
+        }
+
+        public void MoveOnAir( Vector2 direction )
+        {
+            _currentSpeedOnAir += Time.deltaTime * _accelerationOnAir;
+            Vector2 airVelocity = Time.deltaTime * _currentSpeedOnAir * direction;
+            _rb.velocity = Vector2.ClampMagnitude( airVelocity , _speed );
+
+            //Debug.Log( "Air: " + airVelocity);
         }
 
         /// <summary>
@@ -97,10 +71,9 @@ namespace Player
         public void ChangeWorldPosition(Transform _destinyTransform)
         {
             transform.position =
-                new Vector3(_destinyTransform.position.x, _destinyTransform.position.y, _destinyTransform.position.z);
+                new Vector3(_destinyTransform.position.x, 
+                            _destinyTransform.position.y, 
+                            _destinyTransform.position.z);
         }
-
-        #endregion
-
     }
 }
