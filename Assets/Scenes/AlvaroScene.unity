@@ -270,29 +270,31 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
---- !u!1001 &399855453
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6639730691038399552, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
+      propertyPath: _speedOnAir
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639730691038399552, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
+      propertyPath: _accelerationOnAir
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.64445
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.9800098
+      value: -2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -13301,6 +13303,10 @@ PrefabInstance:
     - target: {fileID: 4276205243018742825, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}
       propertyPath: m_Name
       value: Audio Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4276205243018742825, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 520d422f177b00441bbfe8c8328f45f3, type: 3}

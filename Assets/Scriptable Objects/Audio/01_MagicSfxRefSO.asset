@@ -13,3 +13,22 @@ MonoBehaviour:
   m_Name: 01_MagicSfxRefSO
   m_EditorClassIdentifier: 
   Sounds: []
+  SfxRef:
+  - SoundName: Magic Charge
+    Id: 0
+    Sound:
+      Guid:
+        Data1: -1998152685
+        Data2: 1297817317
+        Data3: -7870589
+        Data4: 992459901
+      Path: event:/Fire_Ball_Cast
+  - SoundName: Magic Charge Full
+    Id: 1
+    Sound:
+      Guid:
+        Data1: -1998152685
+        Data2: 1297817317
+        Data3: -7870589
+        Data4: 992459901
+      Path: event:/Fire_Ball_Cast
