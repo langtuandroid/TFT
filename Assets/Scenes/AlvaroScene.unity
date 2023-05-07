@@ -186,7 +186,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399552, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: _accelerationOnAir
-      value: 500
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder

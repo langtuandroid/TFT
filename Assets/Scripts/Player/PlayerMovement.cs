@@ -8,7 +8,7 @@ namespace Player
 
         [Header("Move Settings")]
         [SerializeField] private float _speed = 3; // Velocidad de movimiento del personaje
-        [SerializeField] private float _accelerationOnAir = 500; // Velocidad de movimiento del personaje en el aire
+        [SerializeField] private float _accelerationOnAir = 8; // Aceleración presente en el personaje en el aire
 
         private float _currentSpeedOnAir; // Velocidad de movimiento del personaje en el aire
 
@@ -59,10 +59,10 @@ namespace Player
         public void MoveOnAir( Vector2 direction )
         {
             _currentSpeedOnAir += Time.deltaTime * _accelerationOnAir;
-            Vector2 airVelocity = Time.deltaTime * _currentSpeedOnAir * direction;
+            Vector2 airVelocity = _currentSpeedOnAir * direction;
             _rb.velocity = Vector2.ClampMagnitude( airVelocity , _speed );
 
-            //Debug.Log( "Air: " + airVelocity);
+            Debug.Log( "Air: " + _rb.velocity );
         }
 
         /// <summary>
