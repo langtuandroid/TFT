@@ -60,11 +60,6 @@ namespace Player
 
         #region Unity methods
 
-        private void Awake()
-        {
-
-        }
-
         private void Start()
         {
             // Obtenemos componentes
@@ -157,7 +152,7 @@ namespace Player
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
-            //DoMagicAttack();
+            DoMagicAttack();
         }
 
         private void DoFixedUpdateActions()

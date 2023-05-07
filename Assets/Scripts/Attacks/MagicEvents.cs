@@ -23,11 +23,6 @@ public class MagicEvents
 
     #region Coroutines
 
-    //public void MaxPowerActivated(IAttack attack)
-    //{
-    //    StartCoroutine(IncrementFillAmount(attack));
-    //}
-
     public void ChangeMaxPowerValue(float value, IAttack attack)
     {
         MaxPowerValues maxPower = new MaxPowerValues(value, attack);
@@ -50,23 +45,7 @@ public class MagicEvents
         OnMaxPowerValueChange?.Invoke(maxPower);
     }
 
-    ///// <summary>
-    ///// Bucle que va incrementando un fillAmount
-    ///// de un evento
-    ///// </summary>
-    ///// <param name="action"></param>
-    ///// <returns></returns>
-    //private IEnumerator IncrementFillAmount(IAttack attack)
-    //{
-    //    for (float i = 0f; i < 1f; i += 0.001f)
-    //    {
-    //        ChangeFillAmount(new MaxPowerValues(i, attack));
-    //        yield return new WaitForSeconds(0.005f);
-    //    }
 
-    //    // Finalmente, se pone a 1 exacto
-    //    ChangeFillAmount(new MaxPowerValues(1f, attack));
-    //}
 
     #endregion
 

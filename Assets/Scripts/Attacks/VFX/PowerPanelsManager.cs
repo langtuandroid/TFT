@@ -19,6 +19,9 @@ public class PowerPanelsManager : MonoBehaviour
     [Tooltip("Panel con el efecto de ataque")]
     private Image _panel;
 
+    [SerializeField]
+    private Image _maxPowerIcon;
+
     #endregion
 
     #region Public variables
@@ -110,7 +113,7 @@ public class PowerPanelsManager : MonoBehaviour
 
     private void OnMaxPowerValueChange(MaxPowerValues values)
     {
-        _panel.SetImageAlpha(values.Alpha);
+        _maxPowerIcon.fillAmount = values.FillAmount;
     }
 
     #endregion
