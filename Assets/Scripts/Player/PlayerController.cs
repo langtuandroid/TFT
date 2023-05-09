@@ -197,7 +197,7 @@ namespace Player
             if (IsAttacking())
                 return;
 
-            _jump.JumpAction( _isJumpInput );
+            _jump.JumpAction( _isJumpInput , _lookDirection );
             if ( _jump.IsFalling )
                 _isJumpInput = false;
         }
