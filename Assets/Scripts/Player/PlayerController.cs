@@ -259,7 +259,6 @@ namespace Player
                 }
             }
             
-            Debug.Log(_hasItem);
             if (_hasItem)
                 _pickable.PickUp(gameObject.transform);
         }
