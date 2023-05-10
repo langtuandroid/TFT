@@ -160,10 +160,10 @@ namespace Player
         {
             // Realizamos salto
             DoJump();
-            // Realizamos interacción
-            DoInteraction();
             // Realizamos elevar objeto no pesado
             DoPickUpItem();
+            // Realizamos interacción
+            DoInteraction();
             // Atacamos con magia
             //DoMagicAttack();
         }
@@ -184,10 +184,10 @@ namespace Player
 
         private void DoMove()
         {
-            if ( _jump.IsGrounded )
-                _movement.Move(_direction);
-            else
+            if ( _jump.IsPerformingJump )
                 _movement.MoveOnAir(_direction);
+            else
+                _movement.Move(_direction);
         }
 
         #endregion
@@ -196,7 +196,7 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if (_jump.CanJump)
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = true;
         }
 
@@ -206,7 +206,7 @@ namespace Player
                 return;
 
             _jump.JumpAction( _isJumpInput );
-            if ( _jump.IsFalling )
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = false;
         }
 
@@ -224,21 +224,10 @@ namespace Player
 
         private void DoInteraction()
         {
-            if ( _jump.IsPerformingJump || IsAttacking())
+            if ( _jump.IsPerformingJump || IsAttacking() || _hasItem )
                 return;
 
-            if (_interaction.CanInteract(_lookDirection))
-            {
-                if (_isPhysicActionInput)
-                {
-                    _interaction.Interact(_lookDirection);
-                    _isPhysicActionInput = false;
-                }
-            }
-            else
-            {
-                _interaction.StopInteracting();
-            }
+            _interaction.Interact( _isPhysicActionInput , _lookDirection);
         }
 
         #endregion
