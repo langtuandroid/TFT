@@ -39,5 +39,5 @@ public class Timer
         return false;
     }
 
-    public float SecondsLeft() => _secondsLimit - _timer;
+    public float SecondsLeft() => _timer;
 }

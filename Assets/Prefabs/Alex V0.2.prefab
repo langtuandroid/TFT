@@ -238,6 +238,9 @@ MonoBehaviour:
   _jumpSpeed: 3
   _fallSpeed: 4
   _maxJumpHeight: 1
+  _jumpableMask:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!114 &5325403409720472714
 MonoBehaviour:
   m_ObjectHideFlags: 0

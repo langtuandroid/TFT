@@ -23,11 +23,13 @@ namespace Player
         private Mushroom _jumpable;
         private Vector2 _colliderOffset;
         private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+        private Timer _jumpDownTimer;
 
         public void Init()
         {
             float _cooldownSeconds = 0.1f;
             _cooldownTimer = new Timer( _cooldownSeconds );
+            _jumpDownTimer = new Timer( 1 );
             _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
             _yOffset = _playerVisuals.localPosition.y;
             _jumpState = JumpState.Grounded;
@@ -41,6 +43,8 @@ namespace Player
             {
             case JumpState.Grounded:
 
+                CheckJumpDown( lookDirection );
+
                 if ( !jumpInput ) return;
                 _jumpState = JumpState.Jumping;
                 _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
@@ -49,7 +53,7 @@ namespace Player
 
             case JumpState.Jumping:
 
-                CheckJumpuable( lookDirection );
+                CheckJumpable( lookDirection );
 
                 if ( jumpInput && _z < _maxJumpHeight )
                 {
@@ -66,7 +70,7 @@ namespace Player
                 {
                     _z += -Time.deltaTime * _fallSpeed;
                     if ( _z < _maxJumpHeight / 2 )
-                        JumpLevel();
+                        JumpLevelUp();
                 }
                 else
                 {
@@ -85,13 +89,41 @@ namespace Player
             }
         }
 
-        private void JumpLevel()
+        private void CheckJumpDown( Vector2 lookDirection )
+        {
+            if ( lookDirection.magnitude < 0.05f )
+            {
+                _jumpDownTimer.Restart();
+                return;
+            }
+
+            Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
+                                          _colliderOffset.y + transform.position.y );
+
+            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , 0.4f );//, _interactableLayer );
+
+            if ( hit )
+            {
+                if ( _jumpDownTimer.HasTickOnce() )
+                {
+
+                }
+            }
+        }
+
+        private void JumpLevelDown( Vector3 lookDirection )
+        {
+            int directionFactor = lookDirection == Vector3.down ? 2 : 1;
+            transform.position += directionFactor * lookDirection;
+        }
+
+        private void JumpLevelUp()
         {
             _jumpable?.JumpIn( transform );
             _jumpable = null;
         }
 
-        private void CheckJumpuable( Vector2 lookDirection )
+        private void CheckJumpable( Vector2 lookDirection )
         {
             if ( _z < _maxJumpHeight / 2 ) return;
 
@@ -124,11 +156,11 @@ namespace Player
             }
         }
 
-        private void MoveZ() => _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
+        private void MoveZ()
+        {
+            _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
+        }
 
-        public bool IsGrounded => _jumpState.Equals( JumpState.Grounded );
-        public bool IsFalling => _jumpState.Equals( JumpState.Falling );
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
-        public bool CanJump => _jumpState.Equals( JumpState.Grounded );
     }
 }

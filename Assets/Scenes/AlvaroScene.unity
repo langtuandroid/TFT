@@ -4442,7 +4442,7 @@ MonoBehaviour:
   m_RefResolutionX: 320
   m_RefResolutionY: 180
   m_CropFrame: 4
-  m_GridSnapping: 1
+  m_GridSnapping: 0
   m_UpscaleRT: 0
   m_PixelSnapping: 0
   m_CropFrameX: 0
@@ -12778,7 +12778,7 @@ GameObject:
   - component: {fileID: 1316942050}
   - component: {fileID: 1316942048}
   - component: {fileID: 1316942049}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Mushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12887,10 +12887,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5899227869626264206, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
-      propertyPath: _jumpableMask.m_Bits
-      value: 256
-      objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder
       value: 1

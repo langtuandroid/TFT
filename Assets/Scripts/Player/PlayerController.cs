@@ -176,10 +176,10 @@ namespace Player
 
         private void DoMove()
         {
-            if ( _jump.IsGrounded )
-                _movement.Move(_direction);
-            else
+            if ( _jump.IsPerformingJump )
                 _movement.MoveOnAir(_direction);
+            else
+                _movement.Move(_direction);
         }
 
         #endregion
@@ -188,7 +188,7 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if (_jump.CanJump)
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = true;
         }
 
@@ -198,7 +198,7 @@ namespace Player
                 return;
 
             _jump.JumpAction( _isJumpInput , _lookDirection );
-            if ( _jump.IsFalling )
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = false;
         }
 
