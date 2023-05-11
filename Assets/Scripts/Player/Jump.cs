@@ -35,7 +35,7 @@ namespace Player
         public void Init()
         {
             _cooldownTimer = new Timer( 0.1f );
-            _jumpDownTimer = new Timer( 1 );
+            _jumpDownTimer = new Timer( 0.6f );
             _yOffset       = _playerVisuals.localPosition.y;
             _jumpState     = JumpState.Grounded;
 
