@@ -358,8 +358,6 @@ namespace Player
 
         private void SetAnimations()
         {
-            // Controlamos los saltos
-            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _jump.IsPerformingJump );
             // Si está saltando
             if ( _jump.IsPerformingJump )
                 // Volvemos

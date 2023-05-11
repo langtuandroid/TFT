@@ -6,6 +6,12 @@ namespace Player
 {
     public class Jump : MonoBehaviour
     {
+        public event Action OnJumpStarted;
+        public event Action OnJumpFinished;
+        public event Action OnJumpableActionStarted;
+
+        private enum JumpState { Grounded, Jumping, Falling, Cooldown }
+
         [SerializeField] private Transform _playerVisuals;
         [SerializeField][Range(0, 5)] private float _jumpSpeed = 3f;
         [SerializeField][Range(0, 5)] private float _fallSpeed = 4f;
@@ -15,29 +21,25 @@ namespace Player
         [SerializeField] private float _rayLenght = 0.5f;
 
         private AudioSpeaker _audioSpeaker;
-        private JumpEvents _jumpEvents;
-        private enum JumpState { Grounded, Jumping, Falling, Cooldown }
+
         private JumpState _jumpState;
         private Timer _cooldownTimer;
         private float _yOffset;
         private float _z = 0; // jump virtual axis
 
-
         private IJumpable _jumpable;
-        private Vector2 _colliderOffset;
-        private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
-        private Timer _jumpDownTimer;
+        private Timer     _jumpDownTimer;
+        private Vector2   _colliderOffset;
+        private Vector2   _rayCastOffset = new( 0.2f , 0.2f );
 
         public void Init()
         {
-            float _cooldownSeconds = 0.1f;
-            _cooldownTimer = new Timer( _cooldownSeconds );
+            _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 1 );
             _yOffset = _playerVisuals.localPosition.y;
             _jumpState = JumpState.Grounded;
 
             _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
-            _jumpEvents = ServiceLocator.GetService<JumpEvents>();
             _colliderOffset = GetComponent<Collider2D>().offset;
 
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
@@ -80,7 +82,10 @@ namespace Player
                 case JumpState.Cooldown:
 
                     if ( _cooldownTimer.HasTickForever() )
+                    {
                         _jumpState = JumpState.Grounded;
+                        OnJumpFinished?.Invoke();
+                    }
 
                     break;
             }
@@ -92,7 +97,7 @@ namespace Player
             _jumpState = JumpState.Jumping;
             _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
             _jumpDownTimer.Restart();
-            _jumpEvents.StartJump();
+            OnJumpStarted?.Invoke();
         }
 
         private void JumpAction()
@@ -122,7 +127,7 @@ namespace Player
             _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_LANDING );
         }
 
-        Vector2 previousLookDirection;
+
         private void CheckJumpDown( Vector2 lookDirection )
         {
             if ( lookDirection.magnitude < 0.05f )
@@ -197,7 +202,7 @@ namespace Player
             if ( _z > _maxJumpHeight * 0.4f )
             {
                 _jumpable.JumpIn( transform );
-                _jumpEvents.StartJumpableAction();
+                OnJumpableActionStarted?.Invoke();
             }
             else
                 _jumpable.ChangeToJumpable( false );
@@ -212,7 +217,7 @@ namespace Player
             Vector3 positionDiference = 
                 new Vector3(transform.localPosition.x, 
                             transform.localPosition.y - _yOffset, 
-                            transform.localPosition.z);
+                            0 );
 
             transform.position += positionDiference;
         }

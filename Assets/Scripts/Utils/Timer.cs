@@ -6,6 +6,9 @@ public class Timer
     private float _timer;
     private float _secondsLimit;
 
+    /// <summary>
+    /// Tick each timerSeconds
+    /// </summary>
     public Timer( float timerSeconds ) { _timer = timerSeconds; }
 
     public void Restart() => _timer = _secondsLimit;

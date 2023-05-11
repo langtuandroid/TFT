@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6063646437499440016}
   - component: {fileID: 297942490896436439}
   - component: {fileID: 5899227869604823770}
+  - component: {fileID: 2082079206}
   m_Layer: 0
   m_Name: CharacterVisuals
   m_TagString: Untagged
@@ -117,6 +118,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15da201d3c1904540a4e4c0bb7324a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2082079206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218480799221041995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d13a83b51fdd0bc469ef66b7e37f8e35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6639730691038399559
@@ -244,6 +257,7 @@ MonoBehaviour:
   _jumpDownMask:
     serializedVersion: 2
     m_Bits: 1024
+  _rayLenght: 0.5
 --- !u!114 &5325403409720472714
 MonoBehaviour:
   m_ObjectHideFlags: 0

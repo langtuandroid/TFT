@@ -1,46 +1,42 @@
 using System;
 using UnityEngine;
 
-public class AnimatorBrain : MonoBehaviour
+namespace Player
 {
-    public event Action OnJumpableHasLanded;
-
-    private Animator _animator;
-
-    private void Start()
+    public class AnimatorBrain : MonoBehaviour
     {
-        //_animator = GetComponent<Animator>();
-        JumpEvents jumpEvents = ServiceLocator.GetService<JumpEvents>();
-        jumpEvents.OnJumpStarted  += JumpEvents_OnJumpStarted;
-        jumpEvents.OnJumpFinished += JumpEvents_OnJumpFinished;
-        jumpEvents.OnJumpableActionStarted += JumpEvents_OnJumpableActionStarted;
-    }
+        public event Action OnJumpableHasLanded;
 
-    private void JumpEvents_OnJumpableActionStarted()
-    {
-        _animator.SetTrigger( "OnJumpable" );
-    }
+        private Animator _animator;
 
-    private void JumpEvents_OnJumpFinished()
-    {
-        _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , false );
-    }
+        private void Start()
+        {
+            _animator = GetComponent<Animator>();
+            Jump jump = GetComponentInParent<Jump>();
+            jump.OnJumpStarted  += Jump_OnJumpStarted;
+            jump.OnJumpFinished += Jump_OnJumpFinished;
+            jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
+        }
 
-    private void JumpEvents_OnJumpStarted()
-    {
-        _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , true );
-    }
+        private void Jump_OnJumpableActionStarted()
+        {
+            _animator.SetTrigger( "OnJumpable" );
+        }
 
-    public void HasLandedAfterJumpable()
-    {
-        OnJumpableHasLanded?.Invoke();
-    }
+        private void Jump_OnJumpFinished()
+        {
+            _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , false );
+        }
 
-    private void OnDestroy()
-    {
-        JumpEvents jumpEvents = ServiceLocator.GetService<JumpEvents>();
-        jumpEvents.OnJumpStarted  -= JumpEvents_OnJumpStarted;
-        jumpEvents.OnJumpFinished -= JumpEvents_OnJumpFinished;
-        jumpEvents.OnJumpableActionStarted -= JumpEvents_OnJumpableActionStarted;
+        private void Jump_OnJumpStarted()
+        {
+            _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , true );
+        }
+
+        public void HasLandedAfterJumpable()
+        {
+            Jump_OnJumpFinished();
+            OnJumpableHasLanded?.Invoke();
+        }
     }
 }

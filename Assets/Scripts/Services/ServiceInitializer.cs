@@ -15,8 +15,6 @@ namespace Services
                 AddService( new AudioSpeaker() );
                 // Events
                 AddService( new MagicEvents() );
-                AddService( new JumpEvents() );
-
 
                 IsInitialized = true;
             }
