@@ -72,18 +72,6 @@ namespace Player
             _jump.Init();
             _interaction.Init();
 
-            // Inicializamos variables
-            // Jump input
-            _isJumpInput = false;
-            // Interact input
-            _isPhysicActionInput = false;
-            // Attack states
-            _isPhysicAttacking = false;
-            _isWeakMagicInput = false;
-            _isMediumMagicInput = false;
-            _isStrongMagicInput = false;
-            _mediumMagicUsed = false;
-
             // Axis
             _lookDirection = new Vector2(0, -1);
 
@@ -165,10 +153,14 @@ namespace Player
 
         private void DoMove()
         {
-            if ( _jump.IsPerformingJump )
-                _movement.MoveOnAir(_direction);
-            else 
-                _movement.Move(_direction);
+            if ( _jump.IsOnAir )
+                _movement.MoveOnAir( _direction );
+            else
+            if ( _jump.IsCooldown )
+                _movement.Stop();
+            else
+            if ( !_jump.IsPerformingJump )
+                _movement.Move( _direction );
         }
 
         #endregion

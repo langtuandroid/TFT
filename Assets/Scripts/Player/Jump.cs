@@ -18,7 +18,7 @@ namespace Player
         [SerializeField][Range(0, 2)] private float _maxJumpHeight = 1f;
         [SerializeField] private LayerMask _jumpableMask;
         [SerializeField] private LayerMask _jumpDownMask;
-        [SerializeField] private float _rayLenght = 0.5f;
+        [SerializeField] private float _checkJumpableRayLength = 0.5f;
 
         private AudioSpeaker _audioSpeaker;
 
@@ -170,9 +170,9 @@ namespace Player
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x + xRayOffset,
                                           _colliderOffset.y + transform.position.y + yRayOffset );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _rayLenght , _jumpableMask );
+            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkJumpableRayLength , _jumpableMask );
 
-            Debug.DrawLine( origin , origin + lookDirection * _rayLenght , Color.red );
+            Debug.DrawLine( origin , origin + lookDirection * _checkJumpableRayLength , Color.red );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -185,9 +185,9 @@ namespace Player
             origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
                                   _colliderOffset.y + transform.position.y - yRayOffset );
 
-            hit = Physics2D.Raycast( origin , lookDirection , _rayLenght , _jumpableMask );
+            hit = Physics2D.Raycast( origin , lookDirection , _checkJumpableRayLength , _jumpableMask );
 
-            Debug.DrawLine( origin , origin + lookDirection * _rayLenght , Color.red );
+            Debug.DrawLine( origin , origin + lookDirection * _checkJumpableRayLength , Color.red );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -216,12 +216,13 @@ namespace Player
 
             Vector3 positionDiference = 
                 new Vector3(transform.localPosition.x, 
-                            transform.localPosition.y - _yOffset, 
-                            0 );
+                            transform.localPosition.y - _yOffset, 0 );
 
             transform.position += positionDiference;
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
+        public bool IsOnAir => _jumpState.Equals( JumpState.Jumping ) || _jumpState.Equals( JumpState.Falling );
+        public bool IsCooldown => _jumpState.Equals( JumpState.Cooldown );
     }
 }

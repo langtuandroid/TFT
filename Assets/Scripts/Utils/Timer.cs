@@ -9,7 +9,11 @@ public class Timer
     /// <summary>
     /// Tick each timerSeconds
     /// </summary>
-    public Timer( float timerSeconds ) { _timer = timerSeconds; }
+    public Timer( float timerSeconds ) 
+    { 
+        _timer = timerSeconds;
+        _secondsLimit = timerSeconds;
+    }
 
     public void Restart() => _timer = _secondsLimit;
     public void Reset( float timerSeconds )
