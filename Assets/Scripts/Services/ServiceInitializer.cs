@@ -10,9 +10,13 @@ namespace Services
         {
             if (!IsInitialized)
             {
-                AddService(new GameInputs());
-                AddService(new MagicEvents());
-                AddService(new AudioSpeaker());
+                // Systems
+                AddService( new GameInputs() );
+                AddService( new AudioSpeaker() );
+                // Events
+                AddService( new MagicEvents() );
+                AddService( new JumpEvents() );
+
 
                 IsInitialized = true;
             }

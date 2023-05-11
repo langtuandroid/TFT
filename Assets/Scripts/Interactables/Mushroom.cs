@@ -12,8 +12,7 @@ public class Mushroom : MonoBehaviour, IJumpable
     public void JumpIn( Transform transform )
     {
         transform.position += Vector3.up * 2;
-        _collider.isTrigger = false;
-        Debug.Log( "Jump in Mushroom: OFF" );
+        ChangeToJumpable( false );
     }
 
     public void ChangeToJumpable( bool isJumpable )
@@ -21,9 +20,8 @@ public class Mushroom : MonoBehaviour, IJumpable
         if ( isJumpable != _collider.isTrigger )
         {
             _collider.isTrigger = isJumpable;
-            string message = "Jump in Mushroom: ";
-            message += isJumpable ? "ON" : "OFF";
-            Debug.Log( message );
+            string result = isJumpable ? "ON" : "OFF";
+            Debug.Log( "Jump in Mushroom: " + result );
         }
     }
 }
