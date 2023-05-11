@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
@@ -51,11 +49,6 @@ namespace Player
         private bool _isStrongMagicInput;
         private bool _mediumMagicUsed;
 
-
-        // Axis (for animator)
-        private float _lastX;
-        private float _lastY;
-
         #endregion
 
         #region Unity methods
@@ -92,8 +85,7 @@ namespace Player
             _mediumMagicUsed = false;
 
             // Axis
-            _lastX = 0f;
-            _lastY = -1f; // Al principio mira hacia abajo
+            _lookDirection = new Vector2(0, -1);
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
@@ -145,9 +137,6 @@ namespace Player
         {
             // Obtenemos la dirección
             GetDirection();
-
-            // Vemos si interactuamos
-            GetInteraction();
         }
 
         private void DoUpdateActions()
@@ -178,7 +167,7 @@ namespace Player
         {
             if ( _jump.IsPerformingJump )
                 _movement.MoveOnAir(_direction);
-            else
+            else 
                 _movement.Move(_direction);
         }
 
@@ -208,11 +197,6 @@ namespace Player
 
         private void GameInputs_OnPhysicActionButtonPerformed() => _isPhysicActionInput = true;
 
-        private void GetInteraction()
-        {
-            if (_direction.magnitude > 0.05f)
-                _lookDirection = _direction;
-        }
 
         private void DoInteraction()
         {
@@ -289,7 +273,7 @@ namespace Player
                 _isMediumMagicInput = false;
                 _isStrongMagicInput = false;
                 _magicAttack.ResetTimer();
-                _magicAttack.WeakAttack(new Vector2(_lastX, _lastY));
+                _magicAttack.WeakAttack(_lookDirection);
             }
         }
 
@@ -313,7 +297,7 @@ namespace Player
 
             // Ponemos a false todas las variables de magia
             _mediumMagicUsed = true;
-            _magicAttack.MediumAttack(new Vector2(_lastX, _lastY));
+            _magicAttack.MediumAttack(_lookDirection);
 
         }
 
@@ -364,7 +348,7 @@ namespace Player
                 return;
 
             // Controlamos el movimiento
-            ControlWalking2();
+            ControlWalking();
         }
 
         private void ControlWalking()
@@ -380,66 +364,37 @@ namespace Player
                 float x = _direction.x;
                 float y = _direction.y;
 
-
-                _lastX = (Mathf.Abs(_lastY) > 0f &&
-                    Mathf.Abs(y) > 0f &&
-                    _lastX == 0f && Mathf.Abs(x) > 0f) ?
-                    _lastX : x;
-
-                _lastY = (Mathf.Abs(_lastX) > 0f &&
-                    Mathf.Abs(x) > 0f &&
-                    _lastY == 0f && Mathf.Abs(y) > 0f) ?
-                    _lastY : y;
-
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lastX);
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lastY);
-            }
-        }
-
-        private void ControlWalking2()
-        {
-            bool isWalking = _direction.magnitude > 0f;
-            _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
-
-            if (_mediumMagicUsed)
-                return;
-
-            if (isWalking)
-            {
-                float x = _direction.x;
-                float y = _direction.y;
-
                 if (Mathf.Abs(x) > Mathf.Abs(y))
                 {
-                    _lastX = x > 0f ? 1f : -1f;
-                    _lastY = 0f;
+                    _lookDirection.x = x > 0f ? 1f : -1f;
+                    _lookDirection.y = 0f;
                 }
                 else if (Mathf.Abs(y) > Mathf.Abs(x))
                 {
-                    _lastX = 0f;
-                    _lastY = y > 0f ? 1f : -1f;
+                    _lookDirection.x = 0f;
+                    _lookDirection.y = y > 0f ? 1f : -1f;
                 }
                 else
                 {
                     if (x == 0f && y == 0f)
                     {
-                        _lastX = x;
-                        _lastY = y;
+                        _lookDirection.x = x;
+                        _lookDirection.y = y;
                     }
-                    else if (Mathf.Abs(_lastX) > Mathf.Abs(_lastY))
+                    else if (Mathf.Abs( _lookDirection.x ) > Mathf.Abs( _lookDirection.y ) )
                     {
-                        _lastX = x > 0f ? 1f : -1f;
-                        _lastY = 0f;
+                        _lookDirection.x = x > 0f ? 1f : -1f;
+                        _lookDirection.y = 0f;
                     }
                     else
                     {
-                        _lastX = 0f;
-                        _lastY = y > 0f ? 1f : -1f;
+                        _lookDirection.x = 0f;
+                        _lookDirection.y = y > 0f ? 1f : -1f;
                     }
                 }
 
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lastX);
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lastY);
+                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lookDirection.x );
+                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lookDirection.y );
             }
         }
 

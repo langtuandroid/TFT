@@ -36,10 +36,10 @@ namespace Player
         {
             _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 1 );
-            _yOffset = _playerVisuals.localPosition.y;
-            _jumpState = JumpState.Grounded;
+            _yOffset       = _playerVisuals.localPosition.y;
+            _jumpState     = JumpState.Grounded;
 
-            _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+            _audioSpeaker   = ServiceLocator.GetService<AudioSpeaker>();
             _colliderOffset = GetComponent<Collider2D>().offset;
 
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
