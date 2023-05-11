@@ -240,7 +240,10 @@ MonoBehaviour:
   _maxJumpHeight: 1
   _jumpableMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 320
+  _jumpDownMask:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!114 &5325403409720472714
 MonoBehaviour:
   m_ObjectHideFlags: 0

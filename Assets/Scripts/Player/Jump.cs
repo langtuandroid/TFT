@@ -1,5 +1,4 @@
 // ************ @autor: Álvaro Repiso Romero *************
-using System;
 using UnityEngine;
 
 namespace Player
@@ -95,27 +94,19 @@ namespace Player
             _z += Time.deltaTime * _jumpSpeed;
             _z = Mathf.Lerp( _z , _maxJumpHeight , Time.deltaTime * _jumpSpeed );
             MoveZ();
-        }        
+        }
+
+        private void MoveZ()
+        {
+            _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
+        }
 
         private void Fall()
         {
             _z += -Time.deltaTime * _fallSpeed;
 
             if ( _z < _maxJumpHeight / 2 )
-            {
-                // Can Jump in IJumpable?
-                if ( _z > _maxJumpHeight * 0.4f )
-                {
-                    if ( _jumpable != null && _z < _maxJumpHeight / 2 )
-                        JumpLevelUp();
-                }
-                else 
-                if ( _jumpable != null )
-                {
-                    _jumpable.ChangeToJumpable( false );
-                    _jumpable = null;
-                }
-            }
+                JumpGroundUp();
         }
 
         private void Landing()
@@ -124,7 +115,6 @@ namespace Player
             _jumpState = JumpState.Cooldown;
             _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_LANDING );
         }
-
 
 
         private void CheckJumpDown( Vector2 lookDirection )
@@ -145,24 +135,19 @@ namespace Player
                 Debug.DrawRay( origin, lookDirection, Color.yellow );
                 if ( _jumpDownTimer.HasTickOnce() )
                 {
-                    JumpLevelDown( lookDirection );
+                    JumpGroundDown( lookDirection );
                     _jumpDownTimer.Restart();
                 }
             }
         }
 
-        private void JumpLevelDown( Vector3 lookDirection )
+        private void JumpGroundDown( Vector3 lookDirection )
         {
             int directionFactor = lookDirection == Vector3.down ? 2 : 1;
             transform.position += directionFactor * lookDirection;
+            IsJumpAnimation = true;
         }
 
-        private void JumpLevelUp()
-        {
-
-            _jumpable?.JumpIn( transform );
-            _jumpable = null;
-        }
 
         private void CheckJumpable( Vector2 lookDirection )
         {
@@ -176,12 +161,16 @@ namespace Player
                                           _colliderOffset.y + transform.position.y + yRayOffset );
 
             RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , 0.6f , _jumpableMask );
-            Debug.DrawRay( origin , lookDirection , Color.red );
+
+            Debug.DrawLine(origin , origin + lookDirection * 0.6f , Color.red );
+
             if ( hit )
             {
-                _jumpable = hit.collider.GetComponent<IJumpable>();
-                _jumpable?.ChangeToJumpable( true );
-                return;
+                if ( hit.collider.TryGetComponent( out _jumpable ) )
+                {
+                    _jumpable.ChangeToJumpable( true );
+                    return;
+                }
             }
 
 
@@ -190,18 +179,31 @@ namespace Player
 
             hit = Physics2D.Raycast( origin , lookDirection , 0.6f , _jumpableMask );
 
-            Debug.DrawRay( origin , lookDirection , Color.red );
+            Debug.DrawLine( origin , origin + lookDirection * 0.6f , Color.red );
+
             if ( hit )
+                if ( hit.collider.TryGetComponent( out _jumpable ) )
+                    _jumpable.ChangeToJumpable( true );
+        }
+
+        private void JumpGroundUp()
+        {
+            if ( _jumpable != null )
             {
-                _jumpable = hit.collider.GetComponent<IJumpable>();
-                _jumpable?.ChangeToJumpable( true );
+                if ( _z > _maxJumpHeight * 0.4f )
+                {
+                    _jumpable.JumpIn( transform );
+                    _jumpable = null;
+                    IsJumpAnimation = true;
+                }
+                else
+                {
+                    _jumpable.ChangeToJumpable( false );
+                    _jumpable = null;
+                }
             }
         }
 
-        private void MoveZ()
-        {
-            _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
-        }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
         public bool IsJumpAnimation { get; private set; }
