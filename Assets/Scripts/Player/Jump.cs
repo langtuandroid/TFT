@@ -13,19 +13,20 @@ namespace Player
         private enum JumpState { Grounded, Jumping, Falling, Cooldown }
 
         [SerializeField] private Transform _playerVisuals;
-        [SerializeField][Range(0, 5)] private float _jumpSpeed = 3f;
-        [SerializeField][Range(0, 5)] private float _fallSpeed = 4f;
-        [SerializeField][Range(0, 2)] private float _maxJumpHeight = 1f;
         [SerializeField] private LayerMask _jumpableMask;
-        [SerializeField] private LayerMask _jumpDownMask;
-        [SerializeField] private float _checkJumpableRayLength = 0.5f;
+        [SerializeField] private LayerMask _groundLevelFloorMask;
+
+        private float _jumpSpeed      = 3f;
+        private float _fallSpeed      = 4f;
+        private float _maxJumpHeight  = 1f;
+        private float _checkRayLength = 0.55f;
 
         private AudioSpeaker _audioSpeaker;
 
         private JumpState _jumpState;
-        private Timer _cooldownTimer;
-        private float _yOffset;
-        private float _z = 0; // jump virtual axis
+        private Timer     _cooldownTimer;
+        private float     _yOffset;
+        private float     _z = 0; // jump virtual axis
 
         private IJumpable _jumpable;
         private Timer     _jumpDownTimer;
@@ -45,15 +46,19 @@ namespace Player
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
         }
 
-        public void JumpAction( bool jumpInput , Vector2 lookDirection )
+        public void JumpAction( bool jumpInput , Vector2 lookDirection , Vector2 moveDirection )
         {
             switch ( _jumpState )
             {
                 case JumpState.Grounded:
 
-                    CheckJumpDown( lookDirection );
                     if ( jumpInput )
                         StartJump();
+                    else
+                    if ( moveDirection.magnitude > 0 && moveDirection == lookDirection )
+                        CheckJumpDown( lookDirection );
+                    else
+                        _jumpDownTimer.Restart();
 
                     break;
 
@@ -130,20 +135,14 @@ namespace Player
 
         private void CheckJumpDown( Vector2 lookDirection )
         {
-            if ( lookDirection.magnitude < 0.05f )
-            {
-                _jumpDownTimer.Restart();
-                return;
-            }
-
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
                                           _colliderOffset.y + transform.position.y );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , 0.5f , _jumpDownMask );
+            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _groundLevelFloorMask );
 
             if ( hit )
             {
-                Debug.DrawRay( origin , lookDirection , Color.yellow );
+                Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.yellow );
                 if ( _jumpDownTimer.HasTickOnce() )
                 {
                     JumpGroundDown( lookDirection );
@@ -170,9 +169,9 @@ namespace Player
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x + xRayOffset,
                                           _colliderOffset.y + transform.position.y + yRayOffset );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkJumpableRayLength , _jumpableMask );
+            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
 
-            Debug.DrawLine( origin , origin + lookDirection * _checkJumpableRayLength , Color.red );
+            Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.red );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -185,9 +184,9 @@ namespace Player
             origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
                                   _colliderOffset.y + transform.position.y - yRayOffset );
 
-            hit = Physics2D.Raycast( origin , lookDirection , _checkJumpableRayLength , _jumpableMask );
+            hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
 
-            Debug.DrawLine( origin , origin + lookDirection * _checkJumpableRayLength , Color.red );
+            Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.red );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -199,15 +198,25 @@ namespace Player
             if ( _jumpable == null )
                 return;
 
-            if ( _z > _maxJumpHeight * 0.4f )
-            {
+            if ( CanJumpOnJumpable() )
+            { 
                 _jumpable.JumpIn( transform );
                 OnJumpableActionStarted?.Invoke();
             }
-            else
-                _jumpable.ChangeToJumpable( false );
 
+            _jumpable.ChangeToJumpable( false );
             _jumpable = null;
+        }
+
+        private bool CanJumpOnJumpable()
+        {
+            float minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
+            
+            Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
+                                          _colliderOffset.y + transform.position.y );
+            float radius = 0.05f;
+
+            return _z > minJumpableHeight && Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
         }
 
         private void AnimatorBrain_OnJumpableHasLanded()

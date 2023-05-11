@@ -5,13 +5,6 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        #region Public variables
-
-        public Vector2 LookDirection => _lookDirection;
-
-        #endregion
-
-
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
@@ -55,11 +48,6 @@ namespace Player
 
         private void Awake()
         {
-
-        }
-
-        private void Start()
-        {
             // Obtenemos componentes
             _movement = GetComponent<PlayerMovement>();
             _jump = GetComponent<Jump>();
@@ -67,7 +55,10 @@ namespace Player
             _magicAttack = GetComponent<PlayerMagicAttack>();
 
             _anim = GetComponentInChildren<Animator>();
+        }
 
+        private void Start()
+        {
             _movement.Init();
             _jump.Init();
             _interaction.Init();
@@ -76,26 +67,26 @@ namespace Player
             _lookDirection = new Vector2(0, -1);
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
-            _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnJumpButtonStarted           += GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled          += GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed += GameInputs_OnPhysicActionButtonPerformed;
-            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
-            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
-            _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
-            _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
-            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted   += GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled  += GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted     += GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled    += GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed       += GameInputs_OnStrongAttackButtonPerformed;
         }
 
         private void OnDestroy()
         {
-            _gameInputs.OnJumpButtonStarted -= GameInputs_OnJumpButtonStarted;
-            _gameInputs.OnJumpButtonCanceled -= GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnJumpButtonStarted           -= GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled          -= GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed -= GameInputs_OnPhysicActionButtonPerformed;
-            _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
-            _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
-            _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
-            _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
-            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted   -= GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled  -= GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted     -= GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled    -= GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed       -= GameInputs_OnStrongAttackButtonPerformed;
         }
 
         private void Update()
@@ -124,7 +115,7 @@ namespace Player
         private void GetActionsInformation()
         {
             // Obtenemos la dirección
-            GetDirection();
+            _direction = _gameInputs.GetDirectionNormalized();
         }
 
         private void DoUpdateActions()
@@ -144,12 +135,6 @@ namespace Player
         }
 
         #region Movement
-
-        private void GetDirection()
-        {
-            // Obtenemos el vector de dirección
-            _direction = _gameInputs.GetDirectionNormalized();
-        }
 
         private void DoMove()
         {
@@ -178,7 +163,7 @@ namespace Player
             if (IsAttacking())
                 return;
 
-            _jump.JumpAction( _isJumpInput , _lookDirection );
+            _jump.JumpAction( _isJumpInput , _lookDirection , _direction );
             if ( !_jump.IsPerformingJump )
                 _isJumpInput = false;
         }

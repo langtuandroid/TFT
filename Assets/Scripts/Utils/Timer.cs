@@ -27,7 +27,9 @@ public class Timer
     /// </summary>
     public bool HasTickOnce()
     {
-        if ( _timer < 0 ) return true;
+        if ( _timer < 0 ) 
+            return true;
+
         _timer -= Time.deltaTime;
         return _timer < 0;
     }
@@ -38,12 +40,11 @@ public class Timer
     public bool HasTickForever()
     {
         _timer -= Time.deltaTime;
-        if (_timer < 0 )
-        {
-            _timer = _secondsLimit;
-            return true;
-        }
-        return false;
+        if ( _timer > 0 )
+            return false;
+
+        _timer = _secondsLimit;
+        return true;
     }
 
     public float SecondsLeft() => _timer;

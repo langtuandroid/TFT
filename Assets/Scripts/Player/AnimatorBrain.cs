@@ -9,6 +9,10 @@ namespace Player
 
         private Animator _animator;
 
+        private const string IDLE = "IdleTree";
+        private const string JUMP = "JumpTree";
+        private const string JUMPABLE = "OnJumpable";
+
         private void Start()
         {
             _animator = GetComponent<Animator>();
@@ -18,24 +22,26 @@ namespace Player
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
         }
 
+        private void Play( string nameState ) => _animator.Play( nameState );
+
         private void Jump_OnJumpableActionStarted()
         {
-            _animator.SetTrigger( "OnJumpable" );
+            Play( JUMPABLE );
         }
 
         private void Jump_OnJumpFinished()
         {
-            _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , false );
+            Play( IDLE );
         }
 
         private void Jump_OnJumpStarted()
         {
-            _animator.SetBool( Utils.Constants.ANIM_PLAYER_JUMP , true );
+            Play( JUMP );
         }
 
         public void HasLandedAfterJumpable()
         {
-            Jump_OnJumpFinished();
+            Play( IDLE );
             OnJumpableHasLanded?.Invoke();
         }
     }

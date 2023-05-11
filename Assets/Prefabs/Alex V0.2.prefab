@@ -248,16 +248,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerVisuals: {fileID: 3876599013387595833}
-  _jumpSpeed: 3
-  _fallSpeed: 4
-  _maxJumpHeight: 1
   _jumpableMask:
     serializedVersion: 2
     m_Bits: 320
-  _jumpDownMask:
+  _groundLevelFloorMask:
     serializedVersion: 2
     m_Bits: 1024
-  _rayLenght: 0.5
 --- !u!114 &5325403409720472714
 MonoBehaviour:
   m_ObjectHideFlags: 0
