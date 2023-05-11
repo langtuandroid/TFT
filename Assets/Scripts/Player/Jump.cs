@@ -1,4 +1,5 @@
 // ************ @autor: Álvaro Repiso Romero *************
+using System;
 using UnityEngine;
 
 namespace Player
@@ -38,6 +39,8 @@ namespace Player
             _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
             _jumpEvents = ServiceLocator.GetService<JumpEvents>();
             _colliderOffset = GetComponent<Collider2D>().offset;
+
+            GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
         }
 
         public void JumpAction( bool jumpInput , Vector2 lookDirection )
@@ -89,6 +92,7 @@ namespace Player
             _jumpState = JumpState.Jumping;
             _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
             _jumpDownTimer.Restart();
+            _jumpEvents.StartJump();
         }
 
         private void JumpAction()
@@ -147,7 +151,6 @@ namespace Player
         {
             int directionFactor = lookDirection == Vector3.down ? 2 : 1;
             transform.position += directionFactor * lookDirection;
-            IsJumpAnimation = true;
         }
 
 
@@ -194,7 +197,7 @@ namespace Player
             if ( _z > _maxJumpHeight * 0.4f )
             {
                 _jumpable.JumpIn( transform );
-                IsJumpAnimation = true;
+                _jumpEvents.StartJumpableAction();
             }
             else
                 _jumpable.ChangeToJumpable( false );
@@ -202,13 +205,18 @@ namespace Player
             _jumpable = null;
         }
 
-
-        public void OnAnimationJumpableEnd()
+        private void AnimatorBrain_OnJumpableHasLanded()
         {
-            IsJumpAnimation = false;
+            _jumpState = JumpState.Grounded;
+
+            Vector3 positionDiference = 
+                new Vector3(transform.localPosition.x, 
+                            transform.localPosition.y - _yOffset, 
+                            transform.localPosition.z);
+
+            transform.position += positionDiference;
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
-        public bool IsJumpAnimation { get; private set; }
     }
 }
