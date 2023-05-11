@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 445121314}
   - component: {fileID: 445121313}
   - component: {fileID: 445121312}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: 1 Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12887,6 +12887,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5899227869626264206, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
+      propertyPath: _jumpDownMask.m_Bits
+      value: 1024
+      objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder
       value: 1
