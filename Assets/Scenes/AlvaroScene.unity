@@ -13053,14 +13053,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5899227869626264206, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
-      propertyPath: _groundLevelFloorMask.m_Bits
-      value: 66560
-      objectReference: {fileID: 0}
-    - target: {fileID: 5899227869626264206, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
-      propertyPath: _initialGroundLevelMask.m_Bits
-      value: 32768
-      objectReference: {fileID: 0}
     - target: {fileID: 6639730691038399557, guid: 36bdb77844d0ec245ad694e27b4d3f5e, type: 3}
       propertyPath: m_RootOrder
       value: 2
