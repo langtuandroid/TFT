@@ -1,6 +1,7 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Player
 {
@@ -9,8 +10,9 @@ namespace Player
         public event Action OnJumpStarted;
         public event Action OnJumpFinished;
         public event Action OnJumpableActionStarted;
+        public event Action OnJumpableActionFinished;
 
-        private enum JumpState { Grounded, Jumping, Falling, Cooldown }
+        private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private LayerMask _jumpableMask;
@@ -204,10 +206,18 @@ namespace Player
             if ( _jumpable == null )
                 return;
 
-            if ( CanJumpOnJumpable() )
-            { 
-                _jumpable.JumpIn( transform );
-                _currentFloorBitPosition *= 2;
+            if ( CanJumpOnJumpable( out Vector3 jumpablePos ) )
+            {
+                _jumpState = JumpState.Jumpable;
+                _jumpable.JumpIn();
+
+                Vector3 distance = transform.position - jumpablePos;
+                transform.DOMove( jumpablePos , 0.5f )
+                    .SetRelative( false )
+                    .SetEase( Ease.Linear )
+                    .SetLoops( 1 )
+                    .Play();
+                
                 Debug.Log(_currentFloorBitPosition );
                 OnJumpableActionStarted?.Invoke();
             }
@@ -216,26 +226,28 @@ namespace Player
             _jumpable = null;
         }
 
-        private bool CanJumpOnJumpable()
+        private void StartJumpable() => OnJumpableActionStarted?.Invoke();
+
+        private bool CanJumpOnJumpable( out Vector3 jumpablePos )
         {
             float minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
             
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
                                           _colliderOffset.y + transform.position.y );
             float radius = 0.05f;
+            RaycastHit2D hit = Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
+            jumpablePos = hit.collider.GetComponent<Transform>().position + 
+                        new Vector3( hit.collider.offset.x , hit.collider.offset.y );
 
-            return _z > minJumpableHeight && Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
+            return _z > minJumpableHeight && hit;
         }
 
-        private void AnimatorBrain_OnJumpableHasLanded()
+        public void AnimatorBrain_OnJumpableHasLanded()
         {
             _jumpState = JumpState.Grounded;
-
-            Vector3 positionDiference = 
-                new Vector3(transform.localPosition.x, 
-                            transform.localPosition.y - _yOffset, 0 );
-
-            transform.position += positionDiference;
+            _currentFloorBitPosition *= 2;
+            transform.position += new Vector3( 0 , 2 , 0);
+            OnJumpableActionFinished?.Invoke();
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );

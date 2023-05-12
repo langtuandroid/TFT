@@ -1,6 +1,6 @@
 
 public interface IJumpable
 {
-    public void JumpIn( UnityEngine.Transform transform );
+    public void JumpIn();
     public void ChangeToJumpable( bool isJumpable );
 }

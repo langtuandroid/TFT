@@ -22,7 +22,7 @@ namespace Player
 
         // COMPONENTES
         // Animator del player
-        private Animator _anim;
+        [SerializeField] private Animator _anim;
 
         // VARIABLES
         // Jump input
@@ -53,8 +53,6 @@ namespace Player
             _jump = GetComponent<Jump>();
             _interaction = GetComponent<Interaction>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
-
-            _anim = GetComponentInChildren<Animator>();
         }
 
         private void Start()
@@ -146,6 +144,8 @@ namespace Player
             else
             if ( !_jump.IsPerformingJump )
                 _movement.Move( _direction );
+            else
+                _movement.Stop();
         }
 
         #endregion

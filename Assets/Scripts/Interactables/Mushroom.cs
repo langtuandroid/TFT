@@ -11,9 +11,8 @@ public class Mushroom : MonoBehaviour, IJumpable
         _animator = GetComponent<Animator>();
     }
 
-    public void JumpIn( Transform transform )
+    public void JumpIn()
     {
-        transform.position += Vector3.up * 2;
         ChangeToJumpable( false );
     }
 
