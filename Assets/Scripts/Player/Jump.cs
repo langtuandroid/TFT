@@ -14,7 +14,8 @@ namespace Player
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private LayerMask _jumpableMask;
-        [SerializeField] private LayerMask _groundLevelFloorMask;
+        [SerializeField] private LayerMask _initialGroundLevelMask;
+        private int _currentFloorBitPosition;
 
         private float _jumpSpeed      = 3f;
         private float _fallSpeed      = 4f;
@@ -42,6 +43,9 @@ namespace Player
 
             _audioSpeaker   = ServiceLocator.GetService<AudioSpeaker>();
             _colliderOffset = GetComponent<Collider2D>().offset;
+
+            _currentFloorBitPosition = _initialGroundLevelMask.value;
+            Debug.Log( _currentFloorBitPosition );
 
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
         }
@@ -138,7 +142,7 @@ namespace Player
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
                                           _colliderOffset.y + transform.position.y );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _groundLevelFloorMask );
+            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _currentFloorBitPosition );
 
             if ( hit )
             {
@@ -153,6 +157,8 @@ namespace Player
 
         private void JumpGroundDown( Vector3 lookDirection )
         {
+            _currentFloorBitPosition /= 2;
+            Debug.Log( _currentFloorBitPosition );
             int directionFactor = lookDirection == Vector3.down ? 2 : 1;
             transform.position += directionFactor * lookDirection;
         }
@@ -201,6 +207,8 @@ namespace Player
             if ( CanJumpOnJumpable() )
             { 
                 _jumpable.JumpIn( transform );
+                _currentFloorBitPosition *= 2;
+                Debug.Log(_currentFloorBitPosition );
                 OnJumpableActionStarted?.Invoke();
             }
 

@@ -251,9 +251,9 @@ MonoBehaviour:
   _jumpableMask:
     serializedVersion: 2
     m_Bits: 320
-  _groundLevelFloorMask:
+  _initialGroundLevelMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 32768
 --- !u!114 &5325403409720472714
 MonoBehaviour:
   m_ObjectHideFlags: 0
