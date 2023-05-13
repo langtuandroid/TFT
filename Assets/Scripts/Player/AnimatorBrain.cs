@@ -10,7 +10,6 @@ namespace Player
         public class OnJumpableHasLandedArgs 
         {
             public float yLandPosition;
-            public Vector3 locaLandPosition; 
         }
 
         [SerializeField] private Transform _playerVisuals;
@@ -44,7 +43,9 @@ namespace Player
         {
             PlayPlayer( JUMP );
 
-            _playerVisuals.DOLocalJump( new Vector3( 0 , 2.5f , 0) , 1 , 1 , 1 )
+            Vector3 endJumpRelativePos = new Vector3( 0 , 2.5f , 0 );
+            float jumpPower = 1;
+            _playerVisuals.DOLocalJump( endJumpRelativePos , jumpPower , 1 , 1 )
                 .OnComplete( HasLandedAfterJumpable )
                 .Play();
             _shadowVisuals.DOLocalMoveY( 2.5f , 0.9f )
@@ -54,16 +55,14 @@ namespace Player
         public void HasLandedAfterJumpable()
         {
             PlayPlayer( IDLE );
-            Vector3 landPosition = _playerVisuals.localPosition;
+
+            float yLandPos = _playerVisuals.localPosition.y - 0.8f; // Magic number from tween
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 
-            Debug.Log( landPosition.y );
-
             OnJumpableHasLanded?.Invoke( new OnJumpableHasLandedArgs()
             {
-                yLandPosition = landPosition.y - 0.8f ,
-                locaLandPosition = landPosition
+                yLandPosition = yLandPos
             } );
         }
 

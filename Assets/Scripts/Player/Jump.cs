@@ -246,9 +246,7 @@ namespace Player
         {
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition *= 2;
-            //transform.position += new Vector3( 0 , 2 , 0);
             transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
-            //transform.position += onJumpableHasLanded.locaLandPosition;
             Debug.Log( _currentFloorBitPosition );
         }
 
