@@ -10,7 +10,6 @@ namespace Player
         public event Action OnJumpStarted;
         public event Action OnJumpFinished;
         public event Action OnJumpableActionStarted;
-        public event Action OnJumpableActionFinished;
 
         private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
@@ -211,14 +210,12 @@ namespace Player
                 _jumpState = JumpState.Jumpable;
                 _jumpable.JumpIn();
 
-                Vector3 distance = transform.position - jumpablePos;
                 transform.DOMove( jumpablePos , 0.5f )
                     .SetRelative( false )
                     .SetEase( Ease.Linear )
                     .SetLoops( 1 )
                     .Play();
-                
-                Debug.Log(_currentFloorBitPosition );
+
                 OnJumpableActionStarted?.Invoke();
             }
 
@@ -226,7 +223,6 @@ namespace Player
             _jumpable = null;
         }
 
-        private void StartJumpable() => OnJumpableActionStarted?.Invoke();
 
         private bool CanJumpOnJumpable( out Vector3 jumpablePos )
         {
@@ -236,8 +232,11 @@ namespace Player
                                           _colliderOffset.y + transform.position.y );
             float radius = 0.05f;
             RaycastHit2D hit = Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
-            jumpablePos = hit.collider.GetComponent<Transform>().position + 
-                        new Vector3( hit.collider.offset.x , hit.collider.offset.y );
+            if ( hit )
+                jumpablePos = hit.collider.GetComponent<Transform>().position +
+                            new Vector3( hit.collider.offset.x , hit.collider.offset.y );
+            else 
+                jumpablePos = new();
 
             return _z > minJumpableHeight && hit;
         }
@@ -247,7 +246,7 @@ namespace Player
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition *= 2;
             transform.position += new Vector3( 0 , 2 , 0);
-            OnJumpableActionFinished?.Invoke();
+            Debug.Log( _currentFloorBitPosition );
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );

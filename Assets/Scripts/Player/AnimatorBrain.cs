@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Player
 {
@@ -14,49 +15,46 @@ namespace Player
         private Vector3 _shadowVisualInitialPos;
 
         private Animator _playerAnimator;
-        private Animator _jumpAnimator;
 
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
-        private const string JUMP_JUMPABLE = "Jump_Anim_Jumpable_Up";
-        private const string JUMP_IDLE = "Jump_Anim_Idle";
 
 
         private void Start()
         {
-            //_playerAnimator = GetComponent<Animator>();
-            _playerAnimator = GetComponentInParent<Animator>();
-            //_jumpAnimator = GetComponentInParent<Animator>();
+            _playerAnimator = GetComponent<Animator>();
 
-            _playerVisualInitialPos = _playerVisuals.position;
-            _shadowVisualInitialPos = _shadowVisuals.position;
+            _playerVisualInitialPos = _playerVisuals.localPosition;
+            _shadowVisualInitialPos = _shadowVisuals.localPosition;
 
             Jump jump = GetComponentInParent<Jump>();
             jump.OnJumpStarted  += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
-            jump.OnJumpableActionFinished += Jump_OnJumpableActionFinished;
-        }
-
-        private void Jump_OnJumpableActionFinished()
-        {
-            Debug.Log( "a" );
-            PlayPlayer( IDLE );
-            Debug.Log( "b" );
-            //PlayJumpAnim( JUMP_IDLE );
-            Debug.Log( "c" );
-            _playerVisuals.localPosition = _playerVisualInitialPos;
-            _shadowVisuals.localPosition = _shadowVisualInitialPos;
-            //OnJumpableHasLanded?.Invoke();
         }
 
         private void PlayPlayer( string stateName ) => _playerAnimator.Play( stateName );
-        private void PlayJumpAnim( string stateName ) => _jumpAnimator.Play( stateName );
 
         private void Jump_OnJumpableActionStarted()
         {
-            PlayPlayer( JUMP_JUMPABLE );
-            //PlayJumpAnim( JUMP_JUMPABLE );
+            PlayPlayer( JUMP );
+
+            _playerVisuals.DOMoveY( 2 , 1 )
+                .SetRelative( true )
+                .OnComplete( HasLandedAfterJumpable )
+                .Play();
+
+            _shadowVisuals.DOMoveY( 1.5f , 0.8f )
+                .SetRelative( true )
+                .Play();
+        }
+
+        public void HasLandedAfterJumpable()
+        {
+            PlayPlayer( IDLE );
+            _playerVisuals.localPosition = _playerVisualInitialPos;
+            _shadowVisuals.localPosition = _shadowVisualInitialPos;
+            OnJumpableHasLanded?.Invoke();
         }
 
         private void Jump_OnJumpFinished()
@@ -69,16 +67,5 @@ namespace Player
             PlayPlayer( JUMP );
         }
 
-        public void HasLandedAfterJumpable()
-        {
-            Debug.Log( "a" );
-            PlayPlayer( IDLE );
-            Debug.Log( "b" );
-            //PlayJumpAnim( JUMP_IDLE );
-            Debug.Log( "c" );
-            _playerVisuals.localPosition = _playerVisualInitialPos;
-            _shadowVisuals.localPosition = _shadowVisualInitialPos;
-            OnJumpableHasLanded?.Invoke();
-        }
     }
 }

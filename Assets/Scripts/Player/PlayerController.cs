@@ -53,6 +53,7 @@ namespace Player
             _jump = GetComponent<Jump>();
             _interaction = GetComponent<Interaction>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
+            _anim = GetComponentInChildren<Animator>();
         }
 
         private void Start()
