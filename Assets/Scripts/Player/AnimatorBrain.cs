@@ -6,7 +6,12 @@ namespace Player
 {
     public class AnimatorBrain : MonoBehaviour
     {
-        public event Action OnJumpableHasLanded;
+        public event Action<OnJumpableHasLandedArgs> OnJumpableHasLanded;
+        public class OnJumpableHasLandedArgs 
+        {
+            public float yLandPosition;
+            public Vector3 locaLandPosition; 
+        }
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private Transform _shadowVisuals;
@@ -39,22 +44,27 @@ namespace Player
         {
             PlayPlayer( JUMP );
 
-            _playerVisuals.DOMoveY( 2 , 1 )
-                .SetRelative( true )
+            _playerVisuals.DOLocalJump( new Vector3( 0 , 2.5f , 0) , 1 , 1 , 1 )
                 .OnComplete( HasLandedAfterJumpable )
                 .Play();
-
-            _shadowVisuals.DOMoveY( 1.5f , 0.8f )
-                .SetRelative( true )
+            _shadowVisuals.DOLocalMoveY( 2.5f , 0.9f )
                 .Play();
         }
 
         public void HasLandedAfterJumpable()
         {
             PlayPlayer( IDLE );
+            Vector3 landPosition = _playerVisuals.localPosition;
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
-            OnJumpableHasLanded?.Invoke();
+
+            Debug.Log( landPosition.y );
+
+            OnJumpableHasLanded?.Invoke( new OnJumpableHasLandedArgs()
+            {
+                yLandPosition = landPosition.y - 0.8f ,
+                locaLandPosition = landPosition
+            } );
         }
 
         private void Jump_OnJumpFinished()
