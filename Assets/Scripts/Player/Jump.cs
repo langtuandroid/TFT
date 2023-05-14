@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using static Player.AnimatorBrain;
 using Unity.VisualScripting;
+using UnityEngine.Tilemaps;
 
 namespace Player
 {
@@ -169,20 +170,21 @@ namespace Player
         private void JumpGroundDown( Vector3 lookDirection )
         {
             int numOfFloors = 1;
+            Vector3 posToCheck;
             if ( lookDirection == Vector3.down )
             {
-                //numOfFloors = CheckFloorDescended( numOfFloors );
-                int maxNumOfFloors = 5;
-                for ( int i = numOfFloors; i < maxNumOfFloors; i++ )
+                float maxNumOfFloors = 3;
+                for ( int i = numOfFloors; i <= maxNumOfFloors; i++ )
                 {
-                    Vector3 posToCheck = transform.position + Vector3.down * i;
-                    if ( Physics2D.OverlapCircle( posToCheck , 0.05f , _currentFloorBitPosition ) )
+                    posToCheck = transform.position + Vector3.down * i;
+                    if ( !Physics2D.OverlapPoint( posToCheck , _currentFloorBitPosition ) )
                     {
                         numOfFloors = i;
                         break;
                     }
                 }
             }
+
             for ( int i = 0; i < numOfFloors; i++ )
                 _currentFloorBitPosition /= 2;
 
@@ -190,22 +192,10 @@ namespace Player
                 numFloorsDescended = numOfFloors,
                 descendDirection = lookDirection
             } );
+
             Debug.Log( _currentFloorBitPosition );
-            Debug.Log( numOfFloors );
             transform.position += ( numOfFloors + 1 ) * lookDirection;
         }
-
-        private int CheckFloorDescended( int floorsCount )
-        {
-            if ( Physics2D.OverlapCircle( transform.position + Vector3.down * floorsCount , 0.05f , _currentFloorBitPosition ) )
-            {
-                Debug.Log( floorsCount );
-                floorsCount = CheckFloorDescended( floorsCount + 1 );
-            }
-
-            return floorsCount;
-        }
-
 
         private void CheckJumpable( Vector2 lookDirection )
         {

@@ -255,7 +255,10 @@ MonoBehaviour:
     m_Bits: 320
   _initialGroundLevelMask:
     serializedVersion: 2
-    m_Bits: 32768
+    m_Bits: 262144
+  _boundsMask:
+    serializedVersion: 2
+    m_Bits: 16384
 --- !u!114 &4925454125521198172
 MonoBehaviour:
   m_ObjectHideFlags: 0
