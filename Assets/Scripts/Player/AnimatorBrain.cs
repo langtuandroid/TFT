@@ -62,7 +62,10 @@ namespace Player
         {
             PlayPlayer( IDLE );
 
-            Vector3 landPosition = _playerVisuals.localPosition + transform.position;
+            Vector3 landPosition = new Vector3( _playerVisuals.position.x , _playerVisuals.position.y - 0.8125f );
+            Debug.Log( landPosition );
+            Debug.Log( _playerVisuals.localPosition );
+            Debug.Log( _playerVisuals.position );
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 

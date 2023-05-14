@@ -228,6 +228,7 @@ namespace Player
         {
             _jumpState = JumpState.Grounded;
             transform.position = jumpDownLandArgs.landedPosition;
+            Debug.Log( transform.position );
         }
 
         private void CheckJumpable( Vector2 lookDirection )
