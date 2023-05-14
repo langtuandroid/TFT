@@ -12,6 +12,13 @@ namespace Player
             public float yLandPosition;
         }
 
+        public event Action<OnJumpDownHasLandedArgs> OnJumpDownHasLanded;
+        public class OnJumpDownHasLandedArgs
+        {
+            public Vector3 landedPosition;
+        }
+
+
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private Transform _shadowVisuals;
 
@@ -42,15 +49,35 @@ namespace Player
 
         private void Jump_OnJumpDownStarted( Jump.OnJumpDownStartedArgs jumpDownArgs )
         {
+            PlayPlayer( JUMP );
 
+            float jumpPower = 2f;
+            Debug.Log( jumpDownArgs.landedRelativePosition );
+            _playerVisuals.DOLocalJump( jumpDownArgs.landedRelativePosition , jumpPower , 1 , 1 )
+                .OnComplete( HasLandedAfterJumpDown_Callback )
+                .Play();
         }
+
+        private void HasLandedAfterJumpDown_Callback()
+        {
+            PlayPlayer( IDLE );
+
+            Vector3 landPosition = _playerVisuals.localPosition + transform.position;
+            _playerVisuals.localPosition = _playerVisualInitialPos;
+            _shadowVisuals.localPosition = _shadowVisualInitialPos;
+
+            OnJumpDownHasLanded?.Invoke( new OnJumpDownHasLandedArgs() {
+                landedPosition = landPosition
+            } );
+        }
+
 
         private void Jump_OnJumpableActionStarted()
         {
             PlayPlayer( JUMP );
 
             Vector3 endJumpRelativePos = new Vector3( 0 , 2.5f , 0 );
-            float jumpPower = 1;
+            float jumpPower = 2;
             _playerVisuals.DOLocalJump( endJumpRelativePos , jumpPower , 1 , 1 )
                 .OnComplete( HasLandedAfterJumpable_Callback )
                 .Play();
@@ -62,7 +89,7 @@ namespace Player
         {
             PlayPlayer( IDLE );
 
-            float yLandPos = _playerVisuals.localPosition.y - 0.8f; // Magic number because of DOJump
+            float yLandPos = _playerVisuals.localPosition.y - 0.8125f; // Magic number because of DOJump 
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 

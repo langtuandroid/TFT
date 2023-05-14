@@ -4638,11 +4638,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.5378704
+      value: 1.8996296
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7557107
+      value: -2.2442894
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4677,8 +4677,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6657266087975895640, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+      propertyPath: _boundsMask.m_Bits
+      value: 16448
+      objectReference: {fileID: 0}
+    - target: {fileID: 6657266087975895640, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: _initialGroundLevelMask.m_Bits
-      value: 262144
+      value: 65536
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}

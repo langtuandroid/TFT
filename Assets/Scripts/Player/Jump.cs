@@ -19,6 +19,7 @@ namespace Player
             public int numFloorsDescended;
             public Vector3 descendDirection;
             public Vector3 landedPosition;
+            public Vector3 landedRelativePosition;
         }
 
 
@@ -61,6 +62,7 @@ namespace Player
             Debug.Log( _initialGroundLevelMask.value );
 
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
+            GetComponentInChildren<AnimatorBrain>().OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
         }
 
         public void JumpAction( bool jumpInput , Vector2 lookDirection , Vector2 moveDirection )
@@ -172,6 +174,7 @@ namespace Player
         {
             int numOfFloors = 1;
             Vector3 posToCheck = new();
+            Vector3 relativePos = new();
             if ( lookDirection == Vector3.down )
             {
                 float maxNumOfFloors = 3;
@@ -181,6 +184,7 @@ namespace Player
                     Debug.Log( posToCheck );
                     if ( !Physics2D.OverlapPoint( posToCheck , _currentFloorBitPosition ) )
                     {
+                        relativePos = Vector3.down * ( i + 1 );
                         numOfFloors = i;
                         break;
                     }
@@ -190,14 +194,18 @@ namespace Player
             else if ( lookDirection == Vector3.up )
             {
                 posToCheck = transform.position + Vector3.up * 1.5f;
+                relativePos = Vector3.up * 1.5f;
             }
             else
             {
                 posToCheck = transform.position + lookDirection * 1.5f + Vector3.down;
+                relativePos = lookDirection * 1.5f + Vector3.down;
             }
 
             if ( Physics2D.OverlapPoint( posToCheck , _boundsMask ) )
                 return;
+
+            _jumpState = JumpState.Jumpable;
 
             for ( int i = 0; i < numOfFloors; i++ )
                 _currentFloorBitPosition /= 2;
@@ -205,14 +213,21 @@ namespace Player
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
                 descendDirection = lookDirection,
-                landedPosition = posToCheck
+                landedPosition = posToCheck,
+                landedRelativePosition = relativePos
             } );
 
             Debug.Log( _currentFloorBitPosition );
-            if ( lookDirection == Vector3.down )
-                transform.position += ( numOfFloors + 1 ) * lookDirection;
-            else
-                transform.position = posToCheck;
+            //if ( lookDirection == Vector3.down )
+            //    transform.position += ( numOfFloors + 1 ) * lookDirection;
+            //else
+            //    transform.position = posToCheck;
+        }
+
+        private void Jump_OnJumpDownHasLanded( OnJumpDownHasLandedArgs jumpDownLandArgs )
+        {
+            _jumpState = JumpState.Grounded;
+            transform.position = jumpDownLandArgs.landedPosition;
         }
 
         private void CheckJumpable( Vector2 lookDirection )
