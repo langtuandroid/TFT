@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 using static Player.AnimatorBrain;
+using Unity.VisualScripting;
 
 namespace Player
 {
@@ -11,12 +12,20 @@ namespace Player
         public event Action OnJumpStarted;
         public event Action OnJumpFinished;
         public event Action OnJumpableActionStarted;
+        public event Action<OnJumpDownStartedArgs> OnJumpDownStarted;
+        public class OnJumpDownStartedArgs
+        {
+            public int numFloorsDescended;
+            public Vector3 descendDirection;
+        }
+
 
         private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private LayerMask _jumpableMask;
         [SerializeField] private LayerMask _initialGroundLevelMask;
+        [SerializeField] private LayerMask _boundsMask;
         private int _currentFloorBitPosition;
 
         private float _jumpSpeed      = 3f;
@@ -47,7 +56,7 @@ namespace Player
             _colliderOffset = GetComponent<Collider2D>().offset;
 
             _currentFloorBitPosition = _initialGroundLevelMask.value;
-            Debug.Log( _currentFloorBitPosition );
+            Debug.Log( _initialGroundLevelMask.value );
 
             GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
         }
@@ -159,10 +168,42 @@ namespace Player
 
         private void JumpGroundDown( Vector3 lookDirection )
         {
-            _currentFloorBitPosition /= 2;
+            int numOfFloors = 1;
+            if ( lookDirection == Vector3.down )
+            {
+                //numOfFloors = CheckFloorDescended( numOfFloors );
+                int maxNumOfFloors = 5;
+                for ( int i = numOfFloors; i < maxNumOfFloors; i++ )
+                {
+                    Vector3 posToCheck = transform.position + Vector3.down * i;
+                    if ( Physics2D.OverlapCircle( posToCheck , 0.05f , _currentFloorBitPosition ) )
+                    {
+                        numOfFloors = i;
+                        break;
+                    }
+                }
+            }
+            for ( int i = 0; i < numOfFloors; i++ )
+                _currentFloorBitPosition /= 2;
+
+            OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
+                numFloorsDescended = numOfFloors,
+                descendDirection = lookDirection
+            } );
             Debug.Log( _currentFloorBitPosition );
-            int directionFactor = lookDirection == Vector3.down ? 2 : 1;
-            transform.position += directionFactor * lookDirection;
+            Debug.Log( numOfFloors );
+            transform.position += ( numOfFloors + 1 ) * lookDirection;
+        }
+
+        private int CheckFloorDescended( int floorsCount )
+        {
+            if ( Physics2D.OverlapCircle( transform.position + Vector3.down * floorsCount , 0.05f , _currentFloorBitPosition ) )
+            {
+                Debug.Log( floorsCount );
+                floorsCount = CheckFloorDescended( floorsCount + 1 );
+            }
+
+            return floorsCount;
         }
 
 
@@ -227,6 +268,7 @@ namespace Player
 
         private bool CanJumpOnJumpable( out Vector3 jumpablePos )
         {
+            jumpablePos = Vector3.zero;
             float minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
             
             Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
@@ -236,8 +278,6 @@ namespace Player
             if ( hit )
                 jumpablePos = hit.collider.GetComponent<Transform>().position +
                             new Vector3( hit.collider.offset.x , hit.collider.offset.y );
-            else 
-                jumpablePos = new();
 
             return _z > minJumpableHeight && hit;
         }

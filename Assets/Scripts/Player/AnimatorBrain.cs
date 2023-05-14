@@ -46,22 +46,21 @@ namespace Player
             Vector3 endJumpRelativePos = new Vector3( 0 , 2.5f , 0 );
             float jumpPower = 1;
             _playerVisuals.DOLocalJump( endJumpRelativePos , jumpPower , 1 , 1 )
-                .OnComplete( HasLandedAfterJumpable )
+                .OnComplete( HasLandedAfterJumpable_Callback )
                 .Play();
             _shadowVisuals.DOLocalMoveY( 2.5f , 0.9f )
                 .Play();
         }
 
-        public void HasLandedAfterJumpable()
+        public void HasLandedAfterJumpable_Callback()
         {
             PlayPlayer( IDLE );
 
-            float yLandPos = _playerVisuals.localPosition.y - 0.8f; // Magic number from tween
+            float yLandPos = _playerVisuals.localPosition.y - 0.8f; // Magic number because of DOJump
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 
-            OnJumpableHasLanded?.Invoke( new OnJumpableHasLandedArgs()
-            {
+            OnJumpableHasLanded?.Invoke( new OnJumpableHasLandedArgs() {
                 yLandPosition = yLandPos
             } );
         }
