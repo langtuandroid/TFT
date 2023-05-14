@@ -17,7 +17,6 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
-        private MagicEvents _magicEvents;
 
         // SCRIPTS DEL JUGADOR
         // Script de movimiento del personaje
@@ -64,11 +63,6 @@ namespace Player
         #endregion
 
         #region Unity methods
-
-        private void Awake()
-        {
-
-        }
 
         private void Start()
         {
@@ -165,7 +159,7 @@ namespace Player
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
-            //DoMagicAttack();
+            DoMagicAttack();
         }
 
         private void DoFixedUpdateActions()
@@ -267,22 +261,50 @@ namespace Player
 
         #region Magic attack
 
-        private void GameInputs_OnWeakAttackButtonStarted() => _isWeakMagicInput = true;
-        private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
-        private void GameInputs_OnMediumAttackButtonStarted() => _isMediumMagicInput = true;
-        private void GameInputs_OnMediumAttackButtonCanceled() => _isMediumMagicInput = false;
+        private void GameInputs_OnWeakAttackButtonStarted()
+        {
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack())
+                return;
 
-        private void GameInputs_OnStrongAttackButtonPerformed() => _isStrongMagicInput = true;
+            _isWeakMagicInput = true;
+        }
+
+        private void GameInputs_OnWeakAttackButtonCanceled()
+        {
+            _isWeakMagicInput = false;
+        }
+
+        private void GameInputs_OnMediumAttackButtonStarted()
+        {
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack())
+                return;
+
+            _isMediumMagicInput = true;
+        }
+
+        private void GameInputs_OnMediumAttackButtonCanceled()
+        {
+            _isMediumMagicInput = false;
+        }
+
+        private void GameInputs_OnStrongAttackButtonPerformed()
+        {
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack() ||
+                !MaxPowerVisualsManager.Instance.MaxPowerCharged())
+                return;
+
+
+            _isStrongMagicInput = true;
+        }
 
         /// <summary>
         /// Gestiona los ataques mágicos
         /// </summary>
         private void DoMagicAttack()
         {
-            if ( _jump.IsPerformingJump ||
-                !_magicAttack.CanAttack())
-                return;
-
             DoWeakMagicAttack();
             DoMediumMagicAttack();
             DoStrongMagicAttack();
@@ -376,9 +398,9 @@ namespace Player
         private void SetAnimations()
         {
             // Controlamos los saltos
-            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _jump.IsPerformingJump );
+            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _jump.IsPerformingJump);
             // Si está saltando
-            if ( _jump.IsPerformingJump )
+            if (_jump.IsPerformingJump)
                 // Volvemos
                 return;
 
