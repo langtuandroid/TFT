@@ -45,7 +45,7 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 9
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -112,15 +112,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1bc25a27d2b47314cb9cb154f8277bb9
-      internalID: 1532369971
+      spriteID: 55876f9896f984e48afc6cd53d978568
+      internalID: -1989475357
       vertices: []
       indices: 
       edges: []
@@ -133,15 +133,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cc90c2a43124a8644b5b5258ea998c42
-      internalID: 1281749221
+      spriteID: e9fc68f800eb730449532c22cac6b875
+      internalID: 1648484542
       vertices: []
       indices: 
       edges: []
@@ -154,15 +154,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e58531e29ab1a86488a7ef364ab28db7
-      internalID: 2014785163
+      spriteID: 5343f30239034de4ca6ed941d55e4d3d
+      internalID: -111579453
       vertices: []
       indices: 
       edges: []
@@ -175,15 +175,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d8bdba5a010a2e4459efbaca4e15026e
-      internalID: -1727940780
+      spriteID: 98353fb8a4509d14db5dd897f7d51ee2
+      internalID: 1637561033
       vertices: []
       indices: 
       edges: []
@@ -196,15 +196,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 508d29c361d0b0b49bc1633c3f2a038c
-      internalID: 688748121
+      spriteID: 4685a1a59edc81c49838167216e25884
+      internalID: -1264548367
       vertices: []
       indices: 
       edges: []
@@ -217,15 +217,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8aebe97e9552575428af9aeb42db2d54
-      internalID: -2017594697
+      spriteID: 460cbe95d43e77747a301c27450d84da
+      internalID: 955201646
       vertices: []
       indices: 
       edges: []
@@ -238,15 +238,15 @@ TextureImporter:
         y: 0
         width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.25}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 221378b012c039e4a81d124cb0b20d87
-      internalID: 1150544218
+      spriteID: c92ae00dfaed6d8409844154ec1620a0
+      internalID: -573576891
       vertices: []
       indices: 
       edges: []
@@ -262,13 +262,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Torch-Sheet_0: 1532369971
-      Torch-Sheet_1: 1281749221
-      Torch-Sheet_2: 2014785163
-      Torch-Sheet_3: -1727940780
-      Torch-Sheet_4: 688748121
-      Torch-Sheet_5: -2017594697
-      Torch-Sheet_6: 1150544218
+      Torch-Sheet_0: -1989475357
+      Torch-Sheet_1: 1648484542
+      Torch-Sheet_2: -111579453
+      Torch-Sheet_3: 1637561033
+      Torch-Sheet_4: -1264548367
+      Torch-Sheet_5: 955201646
+      Torch-Sheet_6: -573576891
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -71,11 +71,11 @@ namespace Player
             }
         }
 
-        private void MoveZ() => _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
+        private void MoveZ()
+        {
+            _playerVisuals.localPosition = new Vector3( 0 , _z + _yOffset );
+        }
 
-        public bool IsGrounded => _jumpState.Equals( JumpState.Grounded );
-        public bool IsFalling => _jumpState.Equals( JumpState.Falling );
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
-        public bool CanJump => _jumpState.Equals( JumpState.Grounded );
     }
 }

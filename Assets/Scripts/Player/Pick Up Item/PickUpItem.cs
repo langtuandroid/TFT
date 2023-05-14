@@ -1,44 +1,36 @@
+using System;
 using System.Collections;
-using Player;
 using UnityEngine;
 using Utils;
 
 public class PickUpItem : MonoBehaviour
 {
-    private GameObject _heldItem;
-    private bool isThrowing; 
-    
-    void Update()
-    {
-        CheckHeldItem();
-    }
+    public static GameObject HeldItem;
+    public Func<bool> CanPickUpItem = () => HeldItem != null;
+    private bool _itemMoving;
 
-    private void CheckHeldItem()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && _heldItem != null)
-        {
-            isThrowing = true;
-            GetPlayerDirection();
-        }
-        
-        if (_heldItem != null && !isThrowing)
-        {
-            _heldItem.transform.position = new Vector3(PlayerMovement.Instance.transform.position.x,
-                PlayerMovement.Instance.transform.position.y + 1f);
-        }
-    }
-    
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(Constants.TAG_PLAYER_PICKUP_POSITION) && _heldItem == null)
+        if (other.CompareTag(Constants.TAG_PLAYER_PICKUP_POSITION) && HeldItem == null)
         {
-            _heldItem = other.gameObject;
-            _heldItem.transform.localPosition = Vector3.zero; 
-            _heldItem.GetComponent<Collider2D>().enabled = false;
+            HeldItem = other.gameObject;
         }
     }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if(!_itemMoving)
+            HeldItem = null;
+    }
     
-    private IEnumerator ThrowHeldItem(Vector2 direction)
+    public void PickUp(Transform _playerTransform)
+    {
+        _itemMoving = true;
+        HeldItem.transform.position = new Vector3(_playerTransform.position.x,
+            _playerTransform.transform.position.y + 1f);
+    }
+
+    public IEnumerator ThrowHeldItem(Vector2 direction)
     {
         Vector2 pos1 = new Vector2();
         Vector2 pos2 = new Vector2();
@@ -69,7 +61,7 @@ public class PickUpItem : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
 
-            _heldItem.transform.position = Vector3.Lerp(transform.position, pos1, t) * 2f * Time.deltaTime;
+            HeldItem.transform.position = Vector3.Lerp(HeldItem.transform.position, pos1, t) * 2f * Time.deltaTime;
             yield return null;
         }
 
@@ -80,34 +72,18 @@ public class PickUpItem : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / duration;
 
-            _heldItem.transform.position = Vector3.Lerp(pos1, pos2, t) * 2f * Time.deltaTime;
+            HeldItem.transform.position = Vector3.Lerp(pos1, pos2, t) * 2f * Time.deltaTime;
             yield return null;
         }
         
-        _heldItem.GetComponent<Collider2D>().enabled = true;
+        HeldItem.GetComponent<Collider2D>().enabled = true;
         
-        _heldItem = null;
-        
-        isThrowing = false;
+        Reset();
     }
-    
-    public void GetPlayerDirection()
+
+    private void Reset()
     {
-        switch (PlayerMovement.Instance.Layer)
-        {
-            case PlayerMovement.AnimationLayers.WalkDown:
-                StartCoroutine(ThrowHeldItem(Vector3.down));
-                break;
-            case PlayerMovement.AnimationLayers.WalkHorizontal:
-                if (PlayerMovement.Instance.HorizontalFlip)
-                    StartCoroutine(ThrowHeldItem(Vector3.left));
-                else
-                    StartCoroutine(ThrowHeldItem(Vector3.right));
-                break;
-            case PlayerMovement.AnimationLayers.WalkUp:
-                StartCoroutine(ThrowHeldItem(Vector3.up));
-                break;
-        }
+        HeldItem = null;
+        _itemMoving = false;
     }
-    
 }

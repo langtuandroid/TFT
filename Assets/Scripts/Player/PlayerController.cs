@@ -23,6 +23,8 @@ namespace Player
         private PlayerMovement _movement;
         // Script de interacción del personaje
         private Interaction _interaction;
+        // Script de elevar objetos no pesados del personaje
+        private PickUpItem _pickable;
         // Script de salto del personaje
         private Jump _jump;
         // Script de ataque del personaje
@@ -42,6 +44,9 @@ namespace Player
         // Interact state
         private bool _isPhysicActionInput;
         private Vector2 _lookDirection;
+        
+        // Pickable state
+        private bool _hasItem;
 
         // Attack states
         private bool _isPhysicAttacking;
@@ -65,6 +70,7 @@ namespace Player
             _movement = GetComponent<PlayerMovement>();
             _jump = GetComponent<Jump>();
             _interaction = GetComponent<Interaction>();
+            _pickable = GetComponent<PickUpItem>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
 
             _anim = GetComponentInChildren<Animator>();
@@ -148,6 +154,8 @@ namespace Player
         {
             // Realizamos salto
             DoJump();
+            // Realizamos elevar objeto no pesado
+            DoPickUpItem();
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
@@ -170,10 +178,10 @@ namespace Player
 
         private void DoMove()
         {
-            if (_jump.IsGrounded)
-                _movement.Move(_direction);
-            else
+            if ( _jump.IsPerformingJump )
                 _movement.MoveOnAir(_direction);
+            else
+                _movement.Move(_direction);
         }
 
         #endregion
@@ -182,7 +190,7 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if (_jump.CanJump)
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = true;
         }
 
@@ -191,8 +199,8 @@ namespace Player
             if (IsAttacking())
                 return;
 
-            _jump.JumpAction(_isJumpInput);
-            if (_jump.IsFalling)
+            _jump.JumpAction( _isJumpInput );
+            if ( !_jump.IsPerformingJump )
                 _isJumpInput = false;
         }
 
@@ -210,25 +218,34 @@ namespace Player
 
         private void DoInteraction()
         {
-            if (_jump.IsPerformingJump || IsAttacking())
+            if ( _jump.IsPerformingJump || IsAttacking() || _hasItem )
                 return;
 
-            if (_interaction.CanInteract(_lookDirection))
-            {
-                if (_isPhysicActionInput)
-                {
-                    _interaction.Interact(_lookDirection);
-                    _isPhysicActionInput = false;
-                }
-            }
-            else
-            {
-                _interaction.StopInteracting();
-            }
+            _interaction.Interact( _isPhysicActionInput , _lookDirection);
         }
 
         #endregion
 
+        #region Pick item
+
+        private void DoPickUpItem()
+        {
+            if (_isPhysicActionInput)
+            {
+                _isPhysicActionInput = false;
+                if (_pickable.CanPickUpItem() && !_hasItem)
+                    _hasItem = true;
+                else if (_hasItem)
+                {
+                    _hasItem = false;
+                    _pickable.ThrowHeldItem(_direction);
+                }
+            }
+            
+            if (_hasItem)
+                _pickable.PickUp(gameObject.transform);
+        }
+        #endregion
         #region Attack
 
         private bool IsAttacking()
