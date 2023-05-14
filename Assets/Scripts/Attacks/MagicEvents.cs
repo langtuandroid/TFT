@@ -17,19 +17,15 @@ public class MagicEvents
 
     public void SetPanelColor(IAttack attack)
     {
-        PowerPanelsManager.Instance.ChangePanelColor(attack);
-        PowerPanelsManager.Instance.SetAlpha(0f);
+        MaxPowerVisualsManager.Instance.ChangeColor(attack);
+        MaxPowerVisualsManager.Instance.SetPanelAlpha(0f);
     }
-
-    #region Coroutines
 
     public void ChangeMaxPowerValue(float value, IAttack attack)
     {
         MaxPowerValues maxPower = new MaxPowerValues(value, attack);
         ChangeFillAmount(maxPower);
     }
-
-    #endregion
 
     #endregion
 
@@ -44,8 +40,6 @@ public class MagicEvents
     {
         OnMaxPowerValueChange?.Invoke(maxPower);
     }
-
-
 
     #endregion
 

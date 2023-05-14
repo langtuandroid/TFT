@@ -15,29 +15,30 @@ namespace Player
 
         [Header("Attack Settings")]
         [SerializeField]
-        private float _cooldownTime; // Tiempo entre ataques
-
-        [Header("Light Power")]
-        [SerializeField]
-        private GameObject _lightPrefab; // Prefab de la bola de luz
+        [Tooltip("Tiempo entre ataques mágicos")]
+        private float _cooldownTime;
 
         [Header("Fire Power")]
         [SerializeField]
         [Tooltip("Prefab de la bola de fuego.")]
-        private GameObject _fireBallPrefab; // Prefab de la bola de fuego
+        private GameObject _fireBallPrefab;
 
         [SerializeField]
-        private GameObject _flamesUp; // Lanzallamas hacia arriba
+        [Tooltip("Prefab del lanzallamas hacia arriba")]
+        private GameObject _flamesUp;
         [SerializeField]
-        private GameObject _flamesRight; // Lanzallamas hacia la derecha
+        [Tooltip("Prefab del lanzallamas hacia la derecha")]
+        private GameObject _flamesRight;
         [SerializeField]
-        private GameObject _flamesDown; // Lanzallamas hacia abajo
+        [Tooltip("Prefab del lanzallamas hacia abajo")]
+        private GameObject _flamesDown;
         [SerializeField]
-        private GameObject _flamesLeft; // Lanzallamas hacia la izda
+        [Tooltip("Prefab del lanzallamas hacia la izda")]
+        private GameObject _flamesLeft;
 
         [SerializeField]
         [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
-        private List<GameObject> _fireOrbs; // Bolas del ataque fuerte de fuego
+        private List<GameObject> _fireOrbs;
 
         #endregion
 
@@ -57,11 +58,16 @@ namespace Player
 
         private void Awake()
         {
-            _magicEvents = ServiceLocator.GetService<MagicEvents>();
             _attack = gameObject.AddComponent<FireAttack>();
-
             _timer = _cooldownTime;
         }
+
+        private void Start()
+        {
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+
+        }
+
 
         private void Update()
         {

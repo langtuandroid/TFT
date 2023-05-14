@@ -6,7 +6,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PowerPanelsManager : MonoBehaviour
+public class MaxPowerVisualsManager : MonoBehaviour
 {
 
     #region SerializeFields
@@ -26,7 +26,7 @@ public class PowerPanelsManager : MonoBehaviour
 
     #region Public variables
 
-    public static PowerPanelsManager Instance { get; private set; }
+    public static MaxPowerVisualsManager Instance { get; private set; }
     public PowerPanelDataListScriptable PowerPanelList => _powerPanelList;
 
     #endregion
@@ -121,28 +121,41 @@ public class PowerPanelsManager : MonoBehaviour
 
     #region Public methods
 
-    #region Panel values
+    #region Icon values
 
-    public void ChangePanelColor(IAttack attack)
+    public bool MaxPowerCharged()
     {
-        _panel.color = GetData(attack).Color;
+        return _maxPowerIcon.fillAmount == 1f;
     }
 
-    public float GetAlpha()
+    #endregion
+
+    #region Panel values
+
+    public void ChangeColor(IAttack attack)
+    {
+        PowerPanelData data = GetData(attack);
+        _panel.color = data.Color;
+        _maxPowerIcon.color = data.Color;
+    }
+
+    /// <summary>
+    /// Obtiene el alpha del panel de efectos de poder máximo
+    /// </summary>
+    /// <returns></returns>
+    public float GetPanelAlpha()
     {
         return _panel.color.a;
     }
 
-    public void SetAlpha(float alpha)
+    /// <summary>
+    /// Cambia el alpha del panel de efectos de poder máximo
+    /// </summary>
+    /// <param name="alpha"></param>
+    public void SetPanelAlpha(float alpha)
     {
         _panel.SetImageAlpha(alpha);
     }
-
-    #region Coroutines
-
-
-
-    #endregion
 
     #endregion
 

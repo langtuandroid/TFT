@@ -18,7 +18,6 @@ namespace Attack
         // Lista de lanzallamas para destruirr
         private List<GameObject> _flamesToDestroy;
 
-
         // Evento
         private MagicEvents _magicEvents;
 
@@ -156,10 +155,10 @@ namespace Attack
         /// <returns></returns>
         private IEnumerator ChangePanel()
         {
-            PowerPanelsManager.Instance.ChangePanelColor(this);
+            MaxPowerVisualsManager.Instance.ChangeColor(this);
             float alpha = 25 / 255f;
             // Cambiamos el alfa de la imagen del panel a 25
-            PowerPanelsManager.Instance.SetAlpha(alpha);
+            MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
             // Indicamos que debe crecer
             bool grow = true;
 
@@ -180,13 +179,13 @@ namespace Attack
                     grow = true;
 
                 // Cambiamos el alfa de la imagen del panel
-                PowerPanelsManager.Instance.SetAlpha(alpha);
+                MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
 
                 // Y esperamos un tiempo
                 yield return new WaitForSecondsRealtime(0.002f);
             }
 
-            PowerPanelsManager.Instance.SetAlpha(0f);
+            MaxPowerVisualsManager.Instance.SetPanelAlpha(0f);
         }
 
         /// <summary>
@@ -273,7 +272,7 @@ namespace Attack
         }
 
         /// <summary>
-        /// Bucle que va incrementando un fillAmount
+        /// Bucle que va incrementando el fillAmount de la carga de poder máximo
         /// de un evento
         /// </summary>
         /// <param name="action"></param>
