@@ -13,6 +13,7 @@ public class Mushroom : MonoBehaviour, IJumpable
 
     public void JumpIn()
     {
+        _animator.SetTrigger( "Boing" );
         ChangeToJumpable( false );
     }
 

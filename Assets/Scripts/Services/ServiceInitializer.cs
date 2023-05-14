@@ -8,6 +8,7 @@ namespace Services
     {
         private void Awake()
         {
+            Application.targetFrameRate = 60;
             if (!IsInitialized)
             {
                 // Systems
