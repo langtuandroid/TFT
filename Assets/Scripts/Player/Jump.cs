@@ -18,6 +18,7 @@ namespace Player
         {
             public int numFloorsDescended;
             public Vector3 descendDirection;
+            public Vector3 landedPosition;
         }
 
 
@@ -170,31 +171,48 @@ namespace Player
         private void JumpGroundDown( Vector3 lookDirection )
         {
             int numOfFloors = 1;
-            Vector3 posToCheck;
+            Vector3 posToCheck = new();
             if ( lookDirection == Vector3.down )
             {
                 float maxNumOfFloors = 3;
                 for ( int i = numOfFloors; i <= maxNumOfFloors; i++ )
                 {
                     posToCheck = transform.position + Vector3.down * i;
+                    Debug.Log( posToCheck );
                     if ( !Physics2D.OverlapPoint( posToCheck , _currentFloorBitPosition ) )
                     {
                         numOfFloors = i;
                         break;
                     }
                 }
+                posToCheck += Vector3.down;
             }
+            else if ( lookDirection == Vector3.up )
+            {
+                posToCheck = transform.position + Vector3.up * 1.5f;
+            }
+            else
+            {
+                posToCheck = transform.position + lookDirection * 1.5f + Vector3.down;
+            }
+
+            if ( Physics2D.OverlapPoint( posToCheck , _boundsMask ) )
+                return;
 
             for ( int i = 0; i < numOfFloors; i++ )
                 _currentFloorBitPosition /= 2;
 
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
-                descendDirection = lookDirection
+                descendDirection = lookDirection,
+                landedPosition = posToCheck
             } );
 
             Debug.Log( _currentFloorBitPosition );
-            transform.position += ( numOfFloors + 1 ) * lookDirection;
+            if ( lookDirection == Vector3.down )
+                transform.position += ( numOfFloors + 1 ) * lookDirection;
+            else
+                transform.position = posToCheck;
         }
 
         private void CheckJumpable( Vector2 lookDirection )

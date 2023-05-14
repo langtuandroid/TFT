@@ -35,9 +35,15 @@ namespace Player
             jump.OnJumpStarted  += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
+            jump.OnJumpDownStarted += Jump_OnJumpDownStarted;
         }
 
         private void PlayPlayer( string stateName ) => _playerAnimator.Play( stateName );
+
+        private void Jump_OnJumpDownStarted( Jump.OnJumpDownStartedArgs jumpDownArgs )
+        {
+
+        }
 
         private void Jump_OnJumpableActionStarted()
         {

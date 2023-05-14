@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Mushroom : MonoBehaviour, IJumpable
+public class Mushroom : MonoBehaviour, IJumpable, IInteractable
 {
     private Collider2D _collider;
     private Animator _animator;
@@ -25,5 +25,15 @@ public class Mushroom : MonoBehaviour, IJumpable
             string result = isJumpable ? "ON" : "OFF";
             Debug.Log( "Jump in Mushroom: " + result );
         }
+    }
+
+    public void Interact( Vector2 lookDirection )
+    {
+        Debug.Log( "Seems like I can get on top somehow..." );
+    }
+
+    public void ShowCanInteract( bool show )
+    {
+
     }
 }
