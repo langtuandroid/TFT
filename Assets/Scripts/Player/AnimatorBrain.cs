@@ -74,10 +74,7 @@ namespace Player
         {
             PlayPlayer( IDLE );
 
-            Vector3 landPosition = new Vector3( _playerVisuals.position.x , _playerVisuals.position.y - 0.8125f );
-            Debug.Log( landPosition );
-            Debug.Log( _playerVisuals.localPosition );
-            Debug.Log( _playerVisuals.position );
+            Vector3 landPosition = new Vector3( _playerVisuals.position.x , _playerVisuals.position.y - _playerVisualInitialPos.y ); // rectify relative to world
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 
@@ -104,7 +101,7 @@ namespace Player
         {
             PlayPlayer( IDLE );
 
-            float yLandPos = _playerVisuals.localPosition.y - 0.8125f; // Magic number because of DOJump 
+            float yLandPos = _playerVisuals.localPosition.y - _playerVisualInitialPos.y; // rectify relative to world
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 

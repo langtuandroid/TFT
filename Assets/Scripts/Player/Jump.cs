@@ -15,7 +15,6 @@ namespace Player
         {
             public int numFloorsDescended;
             public Vector3 descendDirection;
-            public Vector3 landedPosition;
             public Vector3 landedRelativePosition;
         }
 
@@ -215,7 +214,6 @@ namespace Player
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
                 descendDirection = lookDirection,
-                landedPosition = posToCheck,
                 landedRelativePosition = relativePos
             } );
         }
