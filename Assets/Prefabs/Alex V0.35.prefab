@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Bits: 320
   _initialGroundLevelMask:
     serializedVersion: 2
-    m_Bits: 65536
+    m_Bits: 0
   _boundsMask:
     serializedVersion: 2
     m_Bits: 16448

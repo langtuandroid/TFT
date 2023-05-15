@@ -14,6 +14,7 @@ namespace Services
                 // Systems
                 AddService( new GameInputs() );
                 AddService( new AudioSpeaker() );
+                AddService( new SceneLoader() );
                 // Events
                 AddService( new MagicEvents() );
 

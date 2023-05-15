@@ -28,7 +28,7 @@ namespace UI
         private void SetButtonEvents()
         {
             _resumeButton.onClick.AddListener( () => {
-                SceneLoadSystem.SceneLoader.Load( "SampleScene" );
+                ServiceLocator.GetService<SceneLoader>().Load( "SampleScene" );
             } );
 
             _loadButton.onClick.AddListener( () => {
