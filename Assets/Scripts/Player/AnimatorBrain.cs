@@ -56,6 +56,18 @@ namespace Player
             _playerVisuals.DOLocalJump( jumpDownArgs.landedRelativePosition , jumpPower , 1 , 1 )
                 .OnComplete( HasLandedAfterJumpDown_Callback )
                 .Play();
+
+            if ( jumpDownArgs.descendDirection == Vector3.up || jumpDownArgs.descendDirection == Vector3.down )
+            {
+                _shadowVisuals.DOLocalMove( jumpDownArgs.landedRelativePosition , 0.9f )
+                    .Play();
+            }
+            else
+            {
+                _shadowVisuals.DOLocalMove( jumpDownArgs.landedRelativePosition , 0.9f )
+                    .Play();
+            }
+            
         }
 
         private void HasLandedAfterJumpDown_Callback()
