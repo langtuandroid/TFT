@@ -1,5 +1,4 @@
 using UnityEngine;
-using Utils;
 
 namespace Player
 {
@@ -131,14 +130,14 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if ( !_jump.IsPerformingJump )
+            if ( CanJump() )
                 _isJumpInput = true;
         }
 
         private void DoJump()
         {
-            if (IsAttacking())
-                return;
+            //if (IsAttacking())
+            //    return;
 
             _jump.JumpAction( _isJumpInput , _lookDirection , _direction );
             if ( !_jump.IsPerformingJump )
@@ -175,6 +174,11 @@ namespace Player
 
         #region States Control
 
+        private bool CanJump()
+        {
+            return !_jump.IsPerformingJump && !IsAttacking();
+        }
+
         private bool IsAttacking()
         {
             return _isPhysicAttacking || _isWeakMagicInput
@@ -188,12 +192,27 @@ namespace Player
 
         #region Magic attack
 
-        private void GameInputs_OnWeakAttackButtonStarted() => _isWeakMagicInput = true;
+        private void GameInputs_OnWeakAttackButtonStarted()
+        {
+            if ( _jump.IsPerformingJump )
+                return;
+            _isWeakMagicInput = true;
+        }
         private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
-        private void GameInputs_OnMediumAttackButtonStarted() => _isMediumMagicInput = true;
+        private void GameInputs_OnMediumAttackButtonStarted()
+        {
+            if ( _jump.IsPerformingJump )
+                return;
+            _isMediumMagicInput = true;
+        }
         private void GameInputs_OnMediumAttackButtonCanceled() => _isMediumMagicInput = false;
 
-        private void GameInputs_OnStrongAttackButtonPerformed() => _isStrongMagicInput = true;
+        private void GameInputs_OnStrongAttackButtonPerformed()
+        {
+            if ( _jump.IsPerformingJump )
+                return;
+            _isStrongMagicInput = true;
+        }
 
         /// <summary>
         /// Gestiona los ataques mágicos

@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/AlvaroScene.unity
-    guid: 5001a07db8397ac41883c192ed9a5899
+    path: Assets/Scenes/ARR_Scene.unity
+    guid: a3c443ba0c229fd4db9caff550ef8f47
   - enabled: 1
     path: Assets/Scenes/00_MainMenuScene.unity
     guid: 2b6b1e64bb52ae345b4b1c6a3921d059
@@ -17,7 +20,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/10_Z0_WoodsScene.unity
     guid: b93d116bfd236a848b92cf37b34ba749
-  - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects: {}
