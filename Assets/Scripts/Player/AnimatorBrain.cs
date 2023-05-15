@@ -26,12 +26,19 @@ namespace Player
         private Vector3 _shadowVisualInitialPos;
 
         private Animator _playerAnimator;
+        private Vector2 _lookDirection;
 
+        [Header("States")]
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
 
+        [Header("Parameters")]
+        private const string X_DIR = "x";
+        private const string Y_DIR = "y";
+        private const string IS_WALKING = "IsWalking";
 
-        private void Start()
+
+        public void Init()
         {
             _playerAnimator = GetComponent<Animator>();
 
@@ -42,7 +49,7 @@ namespace Player
             jump.OnJumpStarted  += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
-            jump.OnJumpDownStarted += Jump_OnJumpDownStarted;
+            jump.OnJumpDownStarted       += Jump_OnJumpDownStarted;
         }
 
         private void PlayPlayer( string stateName ) => _playerAnimator.Play( stateName );
@@ -121,6 +128,54 @@ namespace Player
         private void Jump_OnJumpStarted()
         {
             PlayPlayer( JUMP );
+        }
+
+
+        public void IsWalking( bool isWalking )
+        {
+            _playerAnimator.SetBool( IS_WALKING , isWalking );
+        }
+        
+        public Vector2 LookDirection( Vector2 direction )
+        {
+            if ( direction.magnitude > 0 )
+            {
+                float x = direction.x;
+                float y = direction.y;
+
+                if ( Mathf.Abs( x ) > Mathf.Abs( y ) )
+                {
+                    _lookDirection.x = x > 0f ? 1f : -1f;
+                    _lookDirection.y = 0f;
+                }
+                else if ( Mathf.Abs( y ) > Mathf.Abs( x ) )
+                {
+                    _lookDirection.x = 0f;
+                    _lookDirection.y = y > 0f ? 1f : -1f;
+                }
+                else
+                {
+                    if ( x == 0f && y == 0f )
+                    {
+                        _lookDirection.x = x;
+                        _lookDirection.y = y;
+                    }
+                    else if ( Mathf.Abs( _lookDirection.x ) > Mathf.Abs( _lookDirection.y ) )
+                    {
+                        _lookDirection.x = x > 0f ? 1f : -1f;
+                        _lookDirection.y = 0f;
+                    }
+                    else
+                    {
+                        _lookDirection.x = 0f;
+                        _lookDirection.y = y > 0f ? 1f : -1f;
+                    }
+                }
+
+                _playerAnimator.SetFloat( X_DIR , _lookDirection.x );
+                _playerAnimator.SetFloat( Y_DIR , _lookDirection.y );
+            }
+            return _lookDirection;
         }
 
     }

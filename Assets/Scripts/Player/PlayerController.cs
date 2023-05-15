@@ -8,34 +8,26 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
-        private MagicEvents _magicEvents;
 
         // SCRIPTS DEL JUGADOR
-        // Script de movimiento del personaje
         private PlayerMovement _movement;
-        // Script de interacción del personaje
         private Interaction _interaction;
-        // Script de salto del personaje
         private Jump _jump;
-        // Script de ataque del personaje
         private PlayerMagicAttack _magicAttack;
-
-        // COMPONENTES
-        // Animator del player
-        [SerializeField] private Animator _anim;
+        private AnimatorBrain _animatorBrain;
 
         // VARIABLES
         // Jump input
         private bool _isJumpInput;
 
-        // Movement state
+        // Movement input
         private Vector2 _direction;
-
-        // Interact state
-        private bool _isPhysicActionInput;
         private Vector2 _lookDirection;
 
-        // Attack states
+        // Interact input
+        private bool _isPhysicActionInput;
+
+        // Attack input
         private bool _isPhysicAttacking;
         private bool _isWeakMagicInput;
         private bool _isMediumMagicInput;
@@ -53,7 +45,7 @@ namespace Player
             _jump = GetComponent<Jump>();
             _interaction = GetComponent<Interaction>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
-            _anim = GetComponentInChildren<Animator>();
+            _animatorBrain = GetComponentInChildren<AnimatorBrain>();
         }
 
         private void Start()
@@ -61,9 +53,7 @@ namespace Player
             _movement.Init();
             _jump.Init();
             _interaction.Init();
-
-            // Axis
-            _lookDirection = new Vector2(0, -1);
+            _animatorBrain.Init();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted           += GameInputs_OnJumpButtonStarted;
@@ -93,47 +83,35 @@ namespace Player
             // Controlamos las acciones
             GetActionsInformation();
 
-            // Realizamos acciones
-            DoUpdateActions();
-
-            // Cambiamos la animación según corresponda
-            SetAnimations();
-        }
-
-        private void FixedUpdate()
-        {
-            DoFixedUpdateActions();
-        }
-
-        #endregion
-
-        #region Private methods
-
-        #region Actions
-
-        private void GetActionsInformation()
-        {
-            // Obtenemos la dirección
-            _direction = _gameInputs.GetDirectionNormalized();
-        }
-
-        private void DoUpdateActions()
-        {
             // Realizamos salto
             DoJump();
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
             //DoMagicAttack();
+
+            // Cambiamos la animación según corresponda
+            SetWalkingAnim();
         }
 
-        private void DoFixedUpdateActions()
+        private void FixedUpdate()
         {
-            // Movemos a nuestro player
             DoMove();
         }
 
-        #region Movement
+        #endregion
+
+        private void GetActionsInformation()
+        {
+            // Obtenemos la dirección
+            _direction = _gameInputs.GetDirectionNormalized();
+
+
+            if ( _jump.IsPerformingJump || _mediumMagicUsed )
+                return;
+
+            _lookDirection = _animatorBrain.LookDirection( _direction );
+        }
 
         private void DoMove()
         {
@@ -148,8 +126,6 @@ namespace Player
             else
                 _movement.Stop();
         }
-
-        #endregion
 
         #region Jump
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
@@ -197,7 +173,7 @@ namespace Player
 
         #endregion
 
-        #region Attack
+        #region States Control
 
         private bool IsAttacking()
         {
@@ -303,81 +279,19 @@ namespace Player
 
         #endregion
 
-        #region Selections
-
         // TODO: Selecci�n de tipo de acci�n
         private void SelectElement()
         {
 
         }
 
-        #endregion
-
-
-        #endregion
-
-        #region Animations
-
-        private void SetAnimations()
+        private void SetWalkingAnim()
         {
             // Si está saltando
             if ( _jump.IsPerformingJump )
-                // Volvemos
                 return;
 
-            // Controlamos el movimiento
-            ControlWalking();
+            _animatorBrain.IsWalking( _direction.magnitude > 0 );
         }
-
-        private void ControlWalking()
-        {
-            bool isWalking = _direction.magnitude > 0f;
-            _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
-
-            if (_mediumMagicUsed)
-                return;
-
-            if (isWalking)
-            {
-                float x = _direction.x;
-                float y = _direction.y;
-
-                if (Mathf.Abs(x) > Mathf.Abs(y))
-                {
-                    _lookDirection.x = x > 0f ? 1f : -1f;
-                    _lookDirection.y = 0f;
-                }
-                else if (Mathf.Abs(y) > Mathf.Abs(x))
-                {
-                    _lookDirection.x = 0f;
-                    _lookDirection.y = y > 0f ? 1f : -1f;
-                }
-                else
-                {
-                    if (x == 0f && y == 0f)
-                    {
-                        _lookDirection.x = x;
-                        _lookDirection.y = y;
-                    }
-                    else if (Mathf.Abs( _lookDirection.x ) > Mathf.Abs( _lookDirection.y ) )
-                    {
-                        _lookDirection.x = x > 0f ? 1f : -1f;
-                        _lookDirection.y = 0f;
-                    }
-                    else
-                    {
-                        _lookDirection.x = 0f;
-                        _lookDirection.y = y > 0f ? 1f : -1f;
-                    }
-                }
-
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lookDirection.x );
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lookDirection.y );
-            }
-        }
-
-        #endregion
-
-        #endregion
     }
 }
