@@ -28,7 +28,6 @@ namespace Player
 
         // Interact input
         private bool _isPhysicActionInput;
-        private Vector2 _lookDirection;
         
         // Pickable state
         private bool _hasItem;
@@ -221,7 +220,8 @@ namespace Player
         private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
         private void GameInputs_OnMediumAttackButtonStarted()
         {
-            if ( _jump.IsPerformingJump )
+            if ( _jump.IsPerformingJump ||
+                !_magicAttack.CanAttack() )
                 return;
             _isMediumMagicInput = true;
         }
@@ -229,40 +229,12 @@ namespace Player
 
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
-            if (_jump.IsPerformingJump ||
-                !_magicAttack.CanAttack())
+            if ( _jump.IsPerformingJump ||
+                !_magicAttack.CanAttack() ||
+                !MaxPowerVisualsManager.Instance.MaxPowerCharged() )
                 return;
 
             _isWeakMagicInput = true;
-        }
-
-        private void GameInputs_OnWeakAttackButtonCanceled()
-        {
-            _isWeakMagicInput = false;
-        }
-
-        private void GameInputs_OnMediumAttackButtonStarted()
-        {
-            if (_jump.IsPerformingJump ||
-                !_magicAttack.CanAttack())
-                return;
-
-            _isMediumMagicInput = true;
-        }
-
-        private void GameInputs_OnMediumAttackButtonCanceled()
-        {
-            _isMediumMagicInput = false;
-        }
-
-        private void GameInputs_OnStrongAttackButtonPerformed()
-        {
-            if (_jump.IsPerformingJump ||
-                !_magicAttack.CanAttack() ||
-                !MaxPowerVisualsManager.Instance.MaxPowerCharged())
-                return;
-
-            _isStrongMagicInput = true;
         }
 
         /// <summary>
