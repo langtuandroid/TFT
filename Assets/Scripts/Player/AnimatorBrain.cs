@@ -52,7 +52,6 @@ namespace Player
             PlayPlayer( JUMP );
 
             float jumpPower = 2f;
-            Debug.Log( jumpDownArgs.landedRelativePosition );
             _playerVisuals.DOLocalJump( jumpDownArgs.landedRelativePosition , jumpPower , 1 , 1 )
                 .OnComplete( HasLandedAfterJumpDown_Callback )
                 .Play();
@@ -64,8 +63,12 @@ namespace Player
             }
             else
             {
-                _shadowVisuals.DOLocalMove( jumpDownArgs.landedRelativePosition , 0.9f )
-                    .Play();
+                float moveXPixels = 6f / 16;
+                Sequence lateralJumpSeq = DOTween.Sequence();
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.descendDirection.x * moveXPixels , 0.1f  ) );
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveY( jumpDownArgs.landedRelativePosition.y , 0f  ) );
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.landedRelativePosition.x , 0.7f  ) );
+                lateralJumpSeq.Play();
             }
             
         }
