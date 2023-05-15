@@ -15,9 +15,32 @@ namespace Attack
 
         // Objeto del lanzallamas
         private GameObject _flame;
-        private List<GameObject> _flamesToDestroy = new List<GameObject>();
+        // Lista de lanzallamas para destruirr
+        private List<GameObject> _flamesToDestroy;
+
+        // Evento
+        private MagicEvents _magicEvents;
 
         #endregion
+
+        #region Unity Methods
+
+        private void OnDestroy()
+        {
+            foreach (GameObject f in _flamesToDestroy)
+                Destroy(f);
+        }
+
+        private void Start()
+        {
+            // Inicializamos componentes
+            _flamesToDestroy = new List<GameObject>();
+
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+        }
+
+        #endregion
+
 
         #region Interface Methods
 
@@ -115,11 +138,14 @@ namespace Attack
         {
             // TODO: Detener el juego
 
+            // Quitamos el fillAmount
+            _magicEvents.ChangeMaxPowerValue(0f, this);
             // Configuramos el panel
             StartCoroutine(ChangePanel());
             // Rotamos los orbes
             yield return RotateOrbs(fireOrbs);
 
+            StartCoroutine(IncrementFillAmount());
             // TODO: Dejar de detener el juego
         }
 
@@ -129,10 +155,10 @@ namespace Attack
         /// <returns></returns>
         private IEnumerator ChangePanel()
         {
-            PowerPanelsManager.Instance.ChangePanelColor(this);
+            MaxPowerVisualsManager.Instance.ChangeColor(this);
             float alpha = 25 / 255f;
             // Cambiamos el alfa de la imagen del panel a 25
-            PowerPanelsManager.Instance.SetAlpha(alpha);
+            MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
             // Indicamos que debe crecer
             bool grow = true;
 
@@ -153,13 +179,13 @@ namespace Attack
                     grow = true;
 
                 // Cambiamos el alfa de la imagen del panel
-                PowerPanelsManager.Instance.SetAlpha(alpha);
+                MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
 
                 // Y esperamos un tiempo
                 yield return new WaitForSecondsRealtime(0.002f);
             }
 
-            PowerPanelsManager.Instance.SetAlpha(0f);
+            MaxPowerVisualsManager.Instance.SetPanelAlpha(0f);
         }
 
         /// <summary>
@@ -243,6 +269,24 @@ namespace Attack
 
             // Cambiamos el estado de los orbes (para desactivarlos)
             ChangeOrbsState(fireOrbs);
+        }
+
+        /// <summary>
+        /// Bucle que va incrementando el fillAmount de la carga de poder máximo
+        /// de un evento
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        private IEnumerator IncrementFillAmount()
+        {
+            for (float i = 0f; i < 1f; i += 0.001f)
+            {
+                _magicEvents.ChangeMaxPowerValue(i, this);
+                yield return new WaitForSeconds(0.005f);
+            }
+
+            // Finalmente, se pone a 1 exacto
+            _magicEvents.ChangeMaxPowerValue(1f, this);
         }
 
         #endregion

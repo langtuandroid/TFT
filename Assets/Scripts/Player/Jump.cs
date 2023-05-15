@@ -1,4 +1,4 @@
-// ************ @autor: ¡lvaro Repiso Romero *************
+// ************ @autor: √Ålvaro Repiso Romero *************
 using System;
 using UnityEngine;
 using DG.Tweening;
@@ -282,7 +282,6 @@ namespace Player
             _jumpable.ChangeToJumpable( false );
             _jumpable = null;
         }
-
 
         private bool CanJumpOnJumpable( out Vector3 jumpablePos )
         {

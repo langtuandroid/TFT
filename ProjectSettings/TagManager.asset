@@ -21,8 +21,9 @@ TagManager:
   - UI
   - Interactable
   - NavMesh
+  - Pickable
   - 
-  - Jumpable
+  - 
   - 
   - 
   - 

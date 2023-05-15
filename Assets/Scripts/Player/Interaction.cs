@@ -11,9 +11,27 @@ public class Interaction : MonoBehaviour
     private Vector2 _colliderOffset;
     private IInteractable _interactable;
 
+    public bool IsInteracting { get; private set; }
+
     public void Init() => _colliderOffset = GetComponent<Collider2D>().offset;
 
-    public bool CanInteract( Vector2 lookDirection )
+    public void Interact( bool interactInput , Vector2 lookDirection )
+    {
+        if ( CanInteract( lookDirection ) )
+        {
+            if ( interactInput )
+            {
+                _interactable?.Interact( lookDirection );
+                IsInteracting = true;
+            }
+        }
+        else
+        {
+            StopInteracting();
+        }
+    }
+
+    private bool CanInteract( Vector2 lookDirection )
     {
         float xRayOffset = lookDirection.y != 0 ? _rayCastOffset.x : 0;
         float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
@@ -44,18 +62,14 @@ public class Interaction : MonoBehaviour
         }
 
         return hit;
-    }
+    }    
 
-    public void Interact( Vector2 lookDirection )
-    {
-        _interactable?.Interact( lookDirection );
-    }
-
-    public void StopInteracting()
+    private void StopInteracting()
     {
         if ( _interactable == null ) return;
 
         _interactable?.ShowCanInteract( false );
         _interactable = null;
+        IsInteracting = false; // TODO: IsInteracting has to change false when the interactiong has ended through event
     }
 }

@@ -11,6 +11,9 @@ namespace Player
         // SCRIPTS DEL JUGADOR
         private PlayerMovement _movement;
         private Interaction _interaction;
+        // Script de elevar objetos no pesados del personaje
+        private PickUpItem _pickable;
+        // Script de salto del personaje
         private Jump _jump;
         private PlayerMagicAttack _magicAttack;
         private AnimatorBrain _animatorBrain;
@@ -25,6 +28,10 @@ namespace Player
 
         // Interact input
         private bool _isPhysicActionInput;
+        private Vector2 _lookDirection;
+        
+        // Pickable state
+        private bool _hasItem;
 
         // Attack input
         private bool _isPhysicAttacking;
@@ -43,6 +50,7 @@ namespace Player
             _movement = GetComponent<PlayerMovement>();
             _jump = GetComponent<Jump>();
             _interaction = GetComponent<Interaction>();
+            _pickable = GetComponent<PickUpItem>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
         }
@@ -84,10 +92,12 @@ namespace Player
 
             // Realizamos salto
             DoJump();
+            // Realizamos elevar objeto no pesado
+            DoPickUpItem();
             // Realizamos interacción
             DoInteraction();
             // Atacamos con magia
-            //DoMagicAttack();
+            DoMagicAttack();
 
             // Cambiamos la animación según corresponda
             SetWalkingAnim();
@@ -153,23 +163,33 @@ namespace Player
 
         private void DoInteraction()
         {
-            if ( _jump.IsPerformingJump || IsAttacking())
+            if ( _jump.IsPerformingJump || IsAttacking() || _hasItem )
                 return;
 
-            if (_interaction.CanInteract(_lookDirection))
-            {
-                if (_isPhysicActionInput)
-                {
-                    _interaction.Interact(_lookDirection);
-                    _isPhysicActionInput = false;
-                }
-            }
-            else
-            {
-                _interaction.StopInteracting();
-            }
+            _interaction.Interact( _isPhysicActionInput , _lookDirection);
         }
 
+        #endregion
+
+        #region Pick item
+
+        private void DoPickUpItem()
+        {
+            if (_isPhysicActionInput)
+            {
+                _isPhysicActionInput = false;
+                if (_pickable.CanPickUpItem() && !_hasItem)
+                    _hasItem = true;
+                else if (_hasItem)
+                {
+                    _hasItem = false;
+                    _pickable.ThrowHeldItem(_direction);
+                }
+            }
+            
+            if (_hasItem)
+                _pickable.PickUp(gameObject.transform);
+        }
         #endregion
 
         #region States Control
@@ -209,8 +229,39 @@ namespace Player
 
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
-            if ( _jump.IsPerformingJump )
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack())
                 return;
+
+            _isWeakMagicInput = true;
+        }
+
+        private void GameInputs_OnWeakAttackButtonCanceled()
+        {
+            _isWeakMagicInput = false;
+        }
+
+        private void GameInputs_OnMediumAttackButtonStarted()
+        {
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack())
+                return;
+
+            _isMediumMagicInput = true;
+        }
+
+        private void GameInputs_OnMediumAttackButtonCanceled()
+        {
+            _isMediumMagicInput = false;
+        }
+
+        private void GameInputs_OnStrongAttackButtonPerformed()
+        {
+            if (_jump.IsPerformingJump ||
+                !_magicAttack.CanAttack() ||
+                !MaxPowerVisualsManager.Instance.MaxPowerCharged())
+                return;
+
             _isStrongMagicInput = true;
         }
 
@@ -219,10 +270,6 @@ namespace Player
         /// </summary>
         private void DoMagicAttack()
         {
-            if ( _jump.IsPerformingJump ||
-                !_magicAttack.CanAttack())
-                return;
-
             DoWeakMagicAttack();
             DoMediumMagicAttack();
             DoStrongMagicAttack();
@@ -308,8 +355,7 @@ namespace Player
         {
             // Si está saltando
             if ( _jump.IsPerformingJump )
-                return;
-
+              return;
             _animatorBrain.IsWalking( _direction.magnitude > 0 );
         }
     }
