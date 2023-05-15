@@ -2,9 +2,6 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
-using static Player.AnimatorBrain;
-using Unity.VisualScripting;
-using UnityEngine.Tilemaps;
 
 namespace Player
 {
@@ -181,7 +178,10 @@ namespace Player
                 for ( int i = numOfFloors; i <= maxNumOfFloors; i++ )
                 {
                     posToCheck = transform.position + Vector3.down * i;
-                    Debug.Log( posToCheck );
+
+                    if ( Physics2D.OverlapPoint( posToCheck , _boundsMask ) )
+                        return;
+
                     if ( !Physics2D.OverlapPoint( posToCheck , _currentFloorBitPosition ) )
                     {
                         relativePos = Vector3.down * ( i + 1 );
@@ -189,7 +189,7 @@ namespace Player
                         break;
                     }
                 }
-                posToCheck += Vector3.down;
+                posToCheck += Vector3.down;                
             }
             else if ( lookDirection == Vector3.up )
             {
@@ -210,21 +210,17 @@ namespace Player
             for ( int i = 0; i < numOfFloors; i++ )
                 _currentFloorBitPosition /= 2;
 
+            Debug.Log( _currentFloorBitPosition );
+
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
                 descendDirection = lookDirection,
                 landedPosition = posToCheck,
                 landedRelativePosition = relativePos
             } );
-
-            Debug.Log( _currentFloorBitPosition );
-            //if ( lookDirection == Vector3.down )
-            //    transform.position += ( numOfFloors + 1 ) * lookDirection;
-            //else
-            //    transform.position = posToCheck;
         }
 
-        private void Jump_OnJumpDownHasLanded( OnJumpDownHasLandedArgs jumpDownLandArgs )
+        private void Jump_OnJumpDownHasLanded( AnimatorBrain.OnJumpDownHasLandedArgs jumpDownLandArgs )
         {
             _jumpState = JumpState.Grounded;
             transform.position = jumpDownLandArgs.landedPosition;
@@ -306,12 +302,18 @@ namespace Player
             return _z > minJumpableHeight && hit;
         }
 
-        public void AnimatorBrain_OnJumpableHasLanded( OnJumpableHasLandedArgs onJumpableHasLanded )
+        private void AnimatorBrain_OnJumpableHasLanded( AnimatorBrain.OnJumpableHasLandedArgs onJumpableHasLanded )
         {
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition *= 2;
             transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
             Debug.Log( _currentFloorBitPosition );
+        }
+
+
+        public void SetInitialGroundLevelMask( LayerMask intialLevelMask )
+        {
+            _initialGroundLevelMask = intialLevelMask;
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );
