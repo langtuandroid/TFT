@@ -28,10 +28,11 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Bounds
+  - 0 Floor
+  - 1st Floor
+  - 2nd Floor
+  - 3rd Floor
   - 
   - 
   - 
@@ -46,11 +47,8 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Ground
+  - name: 0 Floor
     uniqueID: 3456483117
-    locked: 0
-  - name: Bounds
-    uniqueID: 818653879
     locked: 0
   - name: 1st Floor
     uniqueID: 1244275949
@@ -58,8 +56,11 @@ TagManager:
   - name: 2nd Floor
     uniqueID: 2558196821
     locked: 0
-  - name: Top Floor
+  - name: 3rd Floor
     uniqueID: 1812331177
+    locked: 0
+  - name: Bounds
+    uniqueID: 818653879
     locked: 0
   - name: Details
     uniqueID: 1959516633
