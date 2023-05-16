@@ -6,8 +6,36 @@ using Utils;
 
 namespace Attack
 {
-    public class FireAttack : MonoBehaviour, IAttack
+    public class FireAttack : MagicAttack
     {
+        #region SerializeFields
+
+        [Header("Weak Attack")]
+        [SerializeField]
+        [Tooltip("Prefab de la bola de fuego")]
+        private GameObject _fireballPrefab;
+
+        [Header("Medium Attack")]
+        [SerializeField]
+        [Tooltip("Prefab del lanzallamas hacia arriba")]
+        private GameObject _flamesUp;
+        [SerializeField]
+        [Tooltip("Prefab del lanzallamas hacia abajo")]
+        private GameObject _flamesDown;
+        [SerializeField]
+        [Tooltip("Prefab del lanzallamas hacia la izda")]
+        private GameObject _flamesLeft;
+        [SerializeField]
+        [Tooltip("Prefab del lanzallamas hacia la derecha")]
+        private GameObject _flamesRight;
+
+        [Header("Strong Attack")]
+        [SerializeField]
+        [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
+        private List<GameObject> _fireOrbs;
+
+        #endregion
+
         #region Private Variables
 
         // Dirección de los ataques
@@ -47,13 +75,18 @@ namespace Attack
         /// <summary>
         /// Lanza una bola de fuego
         /// </summary>
-        public void WeakAttack(GameObject prefab)
+        public override void WeakAttack()
         {
             // Instanciamos bola de fuego
             GameObject fireball = Instantiate(
-                prefab, // Prefab de la bola
+                _fireballPrefab, // Prefab de la bola
                 transform.position, // Posición del player
                 Quaternion.identity // Quaternion identity
+                );
+
+            fireball.transform.position = new Vector2(
+                transform.position.x,
+                transform.position.y + Constants.PLAYER_OFFSET
                 );
 
             fireball.GetComponent<Fireball>().SetDirection(_direction);
@@ -63,17 +96,33 @@ namespace Attack
         /// <summary>
         /// Activa el lanzallamas (si corresponde)
         /// </summary>
-        public void MediumAttack(GameObject prefab)
+        public override void MediumAttack()
         {
+            GameObject prefab = null;
+
+            if (_direction.Equals(Vector2.up))
+                prefab = _flamesUp;
+            else if (_direction.Equals(Vector2.down))
+                prefab = _flamesDown;
+            else if (_direction.Equals(Vector2.left))
+                prefab = _flamesLeft;
+            else if (_direction.Equals(Vector2.right))
+                prefab = _flamesRight;
+
             _flame = Instantiate(
                 prefab, // Prefab de la llama
                 transform
                 );
 
+            _flame.transform.position = new Vector2(
+                _flame.transform.position.x,
+                _flame.transform.position.y + Constants.PLAYER_OFFSET
+                );
+
             _flame.GetComponent<ParticleSystem>().Play();
         }
 
-        public void StopMediumAttack()
+        public override void StopMediumAttack()
         {
             // Lo quitamos
             _flame.transform.parent = null;
@@ -87,13 +136,13 @@ namespace Attack
         /// <summary>
         /// Activa una ráfaga de bolas de fuego que afecta a toda la pantalla
         /// </summary>
-        public void StrongAttack(System.Object element)
+        public override void StrongAttack()
         {
             // Activamos el poder
-            StartCoroutine(FinalPower((List<GameObject>)element));
+            StartCoroutine(FinalPower());
         }
 
-        public void SetDirection(Vector2 direction)
+        public override void SetDirection(Vector2 direction)
         {
             _direction = direction;
         }
@@ -114,10 +163,10 @@ namespace Attack
 
         #region Strong Attack
 
-        private void ChangeOrbsState(List<GameObject> fireOrbs)
+        private void ChangeOrbsState()
         {
             // Para cada orbe de la lista
-            foreach (GameObject obj in fireOrbs)
+            foreach (GameObject obj in _fireOrbs)
                 // Se cambia el estado al opuesto que tiene en ese momento
                 obj.SetActive(!obj.activeSelf);
         }
@@ -134,16 +183,16 @@ namespace Attack
         /// Aplica el poder final
         /// </summary>
         /// <returns></returns>
-        private IEnumerator FinalPower(List<GameObject> fireOrbs)
+        private IEnumerator FinalPower()
         {
             // TODO: Detener el juego
 
             // Quitamos el fillAmount
-            _magicEvents.ChangeMaxPowerValue(0f, this);
+            _magicEvents.ChangeFillAmount(0f);
             // Configuramos el panel
             StartCoroutine(ChangePanel());
             // Rotamos los orbes
-            yield return RotateOrbs(fireOrbs);
+            yield return RotateOrbs();
 
             StartCoroutine(IncrementFillAmount());
             // TODO: Dejar de detener el juego
@@ -155,10 +204,9 @@ namespace Attack
         /// <returns></returns>
         private IEnumerator ChangePanel()
         {
-            MaxPowerVisualsManager.Instance.ChangeColor(this);
             float alpha = 25 / 255f;
             // Cambiamos el alfa de la imagen del panel a 25
-            MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
+            _magicEvents.ChangePanelAlphaAmount(alpha);
             // Indicamos que debe crecer
             bool grow = true;
 
@@ -179,23 +227,24 @@ namespace Attack
                     grow = true;
 
                 // Cambiamos el alfa de la imagen del panel
-                MaxPowerVisualsManager.Instance.SetPanelAlpha(alpha);
+
+                _magicEvents.ChangePanelAlphaAmount(alpha);
 
                 // Y esperamos un tiempo
                 yield return new WaitForSecondsRealtime(0.002f);
             }
 
-            MaxPowerVisualsManager.Instance.SetPanelAlpha(0f);
+            _magicEvents.ChangePanelAlphaAmount(0f);
         }
 
         /// <summary>
         /// Aplica rotación circular a los orbes del poder final
         /// </summary>
         /// <returns></returns>
-        private IEnumerator RotateOrbs(List<GameObject> fireOrbs)
+        private IEnumerator RotateOrbs()
         {
             // Cambiamos el estado de los orbes (para activarlos)
-            ChangeOrbsState(fireOrbs);
+            ChangeOrbsState();
 
             // Tiempo a esperar
             float timeToWait = 0.002f;
@@ -219,9 +268,9 @@ namespace Attack
                 posInCircle.y = Mathf.Sin(radians);
 
                 // Para cada objeto de la lista de orbes
-                for (int j = 0; j < fireOrbs.Count; j++)
+                for (int j = 0; j < _fireOrbs.Count; j++)
                 {
-                    GameObject obj = fireOrbs[j];
+                    GameObject obj = _fireOrbs[j];
                     int n = j + 1;
 
                     // Aplicamos la transformación de su posición local
@@ -268,7 +317,7 @@ namespace Attack
             }
 
             // Cambiamos el estado de los orbes (para desactivarlos)
-            ChangeOrbsState(fireOrbs);
+            ChangeOrbsState();
         }
 
         /// <summary>
@@ -281,12 +330,12 @@ namespace Attack
         {
             for (float i = 0f; i < 1f; i += 0.001f)
             {
-                _magicEvents.ChangeMaxPowerValue(i, this);
+                _magicEvents.ChangeFillAmount(i);
                 yield return new WaitForSeconds(0.005f);
             }
 
             // Finalmente, se pone a 1 exacto
-            _magicEvents.ChangeMaxPowerValue(1f, this);
+            _magicEvents.ChangeFillAmount(1f);
         }
 
         #endregion

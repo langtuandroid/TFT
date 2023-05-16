@@ -69,8 +69,8 @@ namespace Player
             _animatorBrain.Init();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnJumpButtonStarted           += GameInputs_OnJumpButtonStarted;
-            _gameInputs.OnJumpButtonCanceled          += GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed += GameInputs_OnPhysicActionButtonPerformed;
             _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
             _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
@@ -82,8 +82,8 @@ namespace Player
 
         private void OnDestroy()
         {
-            _gameInputs.OnJumpButtonStarted           -= GameInputs_OnJumpButtonStarted;
-            _gameInputs.OnJumpButtonCanceled          -= GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnJumpButtonStarted -= GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled -= GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed -= GameInputs_OnPhysicActionButtonPerformed;
             _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
             _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
@@ -128,22 +128,22 @@ namespace Player
             _direction = _gameInputs.GetDirectionNormalized();
 
 
-            if ( _jump.IsPerformingJump || _mediumMagicUsed )
+            if (_jump.IsPerformingJump || _mediumMagicUsed)
                 return;
 
-            _lookDirection = _animatorBrain.LookDirection( _direction );
+            _lookDirection = _animatorBrain.LookDirection(_direction);
         }
 
         private void DoMove()
         {
-            if ( _jump.IsOnAir )
-                _movement.MoveOnAir( _direction );
+            if (_jump.IsOnAir)
+                _movement.MoveOnAir(_direction);
             else
-            if ( _jump.IsCooldown )
+            if (_jump.IsCooldown)
                 _movement.Stop();
             else
-            if ( !_jump.IsPerformingJump )
-                _movement.Move( _direction );
+            if (!_jump.IsPerformingJump)
+                _movement.Move(_direction);
 
             else
                 _movement.Stop();
@@ -153,7 +153,7 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if ( CanJump() )
+            if (CanJump())
                 _isJumpInput = true;
         }
 
@@ -162,8 +162,8 @@ namespace Player
             //if (IsAttacking())
             //    return;
 
-            _jump.JumpAction( _isJumpInput , _lookDirection , _direction );
-            if ( !_jump.IsPerformingJump )
+            _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
+            if (!_jump.IsPerformingJump)
                 _isJumpInput = false;
         }
 
@@ -176,7 +176,7 @@ namespace Player
 
         private void DoInteraction()
         {
-            if ( _jump.IsPerformingJump || IsAttacking() || _pickable.HasItem )
+            if (_jump.IsPerformingJump || IsAttacking() || _pickable.HasItem)
                 return;
 
             _interaction.Interact(_isPhysicActionInput, _lookDirection);
@@ -190,7 +190,7 @@ namespace Player
         {
             if (_jump.IsPerformingJump || IsAttacking())
                 return;
-            
+
             if (!_pickable.HasItem)
             {
                 if (_pickable.CanPickItUp(_lookDirection))
@@ -212,7 +212,7 @@ namespace Player
             }
         }
         #endregion
-        
+
         #region Secondary Action
 
         private void GameInputs_OnSecondaryButtonPerformed()
@@ -289,7 +289,7 @@ namespace Player
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
             if (_magicAttack.CanAttack()
-                && MaxPowerVisualsManager.Instance.MaxPowerCharged()
+                && _magicAttack.CanUseMaxAttack()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -362,9 +362,9 @@ namespace Player
         private void SetWalkingAnim()
         {
             // Si está saltando
-            if ( _jump.IsPerformingJump )
-              return;
-            _animatorBrain.IsWalking( _direction.magnitude > 0 );
+            if (_jump.IsPerformingJump)
+                return;
+            _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 namespace Attack
 {
@@ -24,6 +25,11 @@ namespace Attack
                 _lightPrefab, // Prefab de la bola
                 transform.position, // Posición del jugador
                 Quaternion.identity // Quaternion identity
+                );
+
+            lightBall.transform.position = new Vector2(
+                _lightPrefab.transform.position.x,
+                _lightPrefab.transform.position.y + Constants.PLAYER_OFFSET
                 );
 
             //Y modificamos su dirección

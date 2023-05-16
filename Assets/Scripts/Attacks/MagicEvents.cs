@@ -5,40 +5,30 @@ using UnityEngine;
 
 public class MagicEvents
 {
-
     #region Events
 
     // Eventos para recarga de los poderes máximos
-    public event Action<MaxPowerValues> OnMaxPowerValueChange;
+    public event Action<MagicAttack> OnAttackTypeValue;
+    public event Action<float> OnFillAmountValue;
+    public event Action<float> OnPanelAlphaValue;
 
     #endregion
 
     #region Public methods
 
-    public void SetPanelColor(IAttack attack)
+    public void ChangePanelAlphaAmount(float alpha)
     {
-        MaxPowerVisualsManager.Instance.ChangeColor(attack);
-        MaxPowerVisualsManager.Instance.SetPanelAlpha(0f);
+        OnPanelAlphaValue?.Invoke(alpha);
     }
 
-    public void ChangeMaxPowerValue(float value, IAttack attack)
+    public void ChangeAttackType(MagicAttack attack)
     {
-        MaxPowerValues maxPower = new MaxPowerValues(value, attack);
-        ChangeFillAmount(maxPower);
+        OnAttackTypeValue?.Invoke(attack);
     }
 
-    #endregion
-
-    #region Private methods
-
-    /// <summary>
-    /// Cambia el valor flotante de un evento
-    /// </summary>
-    /// <param name="action"></param>
-    /// <param name="value"></param>
-    private void ChangeFillAmount(MaxPowerValues maxPower)
+    public void ChangeFillAmount(float fillAmount)
     {
-        OnMaxPowerValueChange?.Invoke(maxPower);
+        OnFillAmountValue?.Invoke(fillAmount);
     }
 
     #endregion
