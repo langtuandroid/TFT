@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 476871898}
   - component: {fileID: 476871900}
   - component: {fileID: 476871899}
-  m_Layer: 15
+  m_Layer: 16
   m_Name: 0 Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3053,7 +3053,7 @@ GameObject:
   - component: {fileID: 1028062307}
   - component: {fileID: 1028062309}
   - component: {fileID: 1028062308}
-  m_Layer: 18
+  m_Layer: 19
   m_Name: 3 Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3587,7 +3587,7 @@ GameObject:
   - component: {fileID: 1351443318}
   - component: {fileID: 1351443322}
   - component: {fileID: 1351443321}
-  m_Layer: 16
+  m_Layer: 17
   m_Name: 1 Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4692,7 +4692,7 @@ GameObject:
   - component: {fileID: 1786688273}
   - component: {fileID: 1786688275}
   - component: {fileID: 1786688274}
-  m_Layer: 17
+  m_Layer: 18
   m_Name: 2 Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5384,7 +5384,7 @@ GameObject:
   - component: {fileID: 2055882862}
   - component: {fileID: 2055882864}
   - component: {fileID: 2055882863}
-  m_Layer: 14
+  m_Layer: 15
   m_Name: Bounds Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
