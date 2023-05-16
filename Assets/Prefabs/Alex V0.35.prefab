@@ -151,6 +151,9 @@ GameObject:
   - component: {fileID: 4925454125521198172}
   - component: {fileID: 4857403397467978039}
   - component: {fileID: 6393048233429952891}
+  - component: {fileID: 1262885401}
+  - component: {fileID: 1262885402}
+  - component: {fileID: 1262885403}
   m_Layer: 0
   m_Name: Alex V0.35
   m_TagString: Player
@@ -306,6 +309,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfec20faf94314e498841e8e39db1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1262885401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879475305411568785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d100fde841e9d204d83b13a19e9cdec4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lightPrefab: {fileID: 8151965325498104194, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+--- !u!114 &1262885402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879475305411568785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4cde6307311deb4a8a88c471282c039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cooldownTime: 0.2
+  _maxPowerTime: 10
+--- !u!114 &1262885403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879475305411568785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4fb9b2241a21f64ca9cca75394a7014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fireballPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
+  _flamesUp: {fileID: 825047999918456023, guid: 29d197734dd90ac40b42e2643be6d2d1, type: 3}
+  _flamesDown: {fileID: 4186990749208588629, guid: 29962d20446fea946b64d29ca41ee944, type: 3}
+  _flamesLeft: {fileID: 3329722903509604215, guid: bc25aa1a59413d34a96d6ee2a1b850d4, type: 3}
+  _flamesRight: {fileID: 5727942065040346014, guid: 9599c935c9988c94386d83a75646e62d, type: 3}
+  _fireOrbs: []
 --- !u!1 &5931733289382357370
 GameObject:
   m_ObjectHideFlags: 0
