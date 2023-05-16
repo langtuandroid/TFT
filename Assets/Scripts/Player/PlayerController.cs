@@ -84,6 +84,7 @@ namespace Player
             _movement.Init();
             _jump.Init();
             _interaction.Init();
+            _pickable.Init();
 
             // Inicializamos variables
             // Jump input
@@ -247,20 +248,32 @@ namespace Player
 
         private void DoPickUpItem()
         {
-            if (_isPhysicActionInput)
+            if ( _jump.IsPerformingJump || IsAttacking())
+                return;
+
+            if (_pickable.CanPickItUp(_lookDirection))
             {
-                _isPhysicActionInput = false;
-                if (_pickable.CanPickUpItem() && !_hasItem)
-                    _hasItem = true;
-                else if (_hasItem)
+                if (_isPhysicActionInput && !_hasItem)
                 {
-                    _hasItem = false;
-                    _pickable.ThrowHeldItem(_direction);
+                    _pickable.PickItUp(_lookDirection);
+                    _hasItem = true;
+                    _isPhysicActionInput = false;
+                }
+            }
+            else
+            {
+                if (!_hasItem)
+                {
+                    _pickable.StopPickItUp();
                 }
             }
             
-            if (_hasItem)
-                _pickable.PickUp(gameObject.transform);
+            if (_isPhysicActionInput && _hasItem)
+            {
+                _pickable.ThrowIt(_lookDirection);
+                _hasItem = false;
+                _isPhysicActionInput = false;
+            }
         }
         #endregion
         #region Attack
