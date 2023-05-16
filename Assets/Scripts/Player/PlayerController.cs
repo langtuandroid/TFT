@@ -1,3 +1,6 @@
+using Attack;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -16,6 +19,9 @@ namespace Player
         // Script de salto del personaje
         private Jump _jump;
         private PlayerMagicAttack _magicAttack;
+
+        // Script de acción secundaria
+        private SecondaryAction _secondaryAction;
         private AnimatorBrain _animatorBrain;
 
         // VARIABLES
@@ -36,6 +42,9 @@ namespace Player
         private bool _isStrongMagicInput;
         private bool _mediumMagicUsed;
 
+        // Secondary action input
+        private bool _isSecondaryInput;
+
         #endregion
 
         #region Unity methods
@@ -48,6 +57,7 @@ namespace Player
             _interaction = GetComponent<Interaction>();
             _pickable = GetComponent<PickUpItem>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
+            _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
         }
 
@@ -62,11 +72,12 @@ namespace Player
             _gameInputs.OnJumpButtonStarted           += GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled          += GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed += GameInputs_OnPhysicActionButtonPerformed;
-            _gameInputs.OnMediumAttackButtonStarted   += GameInputs_OnMediumAttackButtonStarted;
-            _gameInputs.OnMediumAttackButtonCanceled  += GameInputs_OnMediumAttackButtonCanceled;
-            _gameInputs.OnWeakAttackButtonStarted     += GameInputs_OnWeakAttackButtonStarted;
-            _gameInputs.OnWeakAttackButtonCanceled    += GameInputs_OnWeakAttackButtonCanceled;
-            _gameInputs.OnStrongAttackPerformed       += GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
         }
 
         private void OnDestroy()
@@ -74,11 +85,12 @@ namespace Player
             _gameInputs.OnJumpButtonStarted           -= GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled          -= GameInputs_OnJumpButtonCanceled;
             _gameInputs.OnPhysicActionButtonPerformed -= GameInputs_OnPhysicActionButtonPerformed;
-            _gameInputs.OnMediumAttackButtonStarted   -= GameInputs_OnMediumAttackButtonStarted;
-            _gameInputs.OnMediumAttackButtonCanceled  -= GameInputs_OnMediumAttackButtonCanceled;
-            _gameInputs.OnWeakAttackButtonStarted     -= GameInputs_OnWeakAttackButtonStarted;
-            _gameInputs.OnWeakAttackButtonCanceled    -= GameInputs_OnWeakAttackButtonCanceled;
-            _gameInputs.OnStrongAttackPerformed       -= GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted -= GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled -= GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
         }
 
         private void Update()
@@ -94,6 +106,10 @@ namespace Player
             DoInteraction();
             // Atacamos con magia
             DoMagicAttack();
+
+            // Realizamos la acción secundaria
+            // (hechizos menores / uso de consumibles)
+            DoSecondaryAction();
 
             // Cambiamos la animación según corresponda
             SetWalkingAnim();
@@ -128,6 +144,7 @@ namespace Player
             else
             if ( !_jump.IsPerformingJump )
                 _movement.Move( _direction );
+
             else
                 _movement.Stop();
         }
@@ -162,7 +179,7 @@ namespace Player
             if ( _jump.IsPerformingJump || IsAttacking() || _pickable.HasItem )
                 return;
 
-            _interaction.Interact( _isPhysicActionInput , _lookDirection);
+            _interaction.Interact(_isPhysicActionInput, _lookDirection);
         }
 
         #endregion
@@ -195,6 +212,30 @@ namespace Player
             }
         }
         #endregion
+        
+        #region Secondary Action
+
+        private void GameInputs_OnSecondaryButtonPerformed()
+        {
+            if (!_jump.IsPerformingJump
+                && !IsAttacking())
+                _isSecondaryInput = true;
+        }
+
+        private void DoSecondaryAction()
+        {
+            if (!_isSecondaryInput)
+                return;
+
+            // Activamos el efecto de la acción secundaria
+            _secondaryAction.SetDirection(_lookDirection);
+            _secondaryAction.Effect();
+            _isSecondaryInput = false;
+        }
+
+        #endregion
+
+        #region Attack
 
         #region States Control
 
@@ -206,7 +247,8 @@ namespace Player
         private bool IsAttacking()
         {
             return _isPhysicAttacking || _isWeakMagicInput
-                || _isMediumMagicInput || _isStrongMagicInput;
+                || _mediumMagicUsed || _isMediumMagicInput
+                || _isStrongMagicInput;
         }
 
         #region Physic Attack
@@ -218,28 +260,42 @@ namespace Player
 
         private void GameInputs_OnWeakAttackButtonStarted()
         {
-            if ( _jump.IsPerformingJump )
-                return;
-            _isWeakMagicInput = true;
+            if (_magicAttack.CanAttack()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isWeakMagicInput = true;
         }
         private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
         private void GameInputs_OnMediumAttackButtonStarted()
         {
-            if ( _jump.IsPerformingJump ||
-                !_magicAttack.CanAttack() )
-                return;
-            _isMediumMagicInput = true;
+            if (_magicAttack.CanAttack()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isMediumMagicInput = true;
         }
-        private void GameInputs_OnMediumAttackButtonCanceled() => _isMediumMagicInput = false;
+
+        private void GameInputs_OnMediumAttackButtonCanceled()
+        {
+            _isMediumMagicInput = false;
+
+            if (_mediumMagicUsed)
+            {
+                _mediumMagicUsed = false;
+                _magicAttack.StopMediumAttack();
+                _magicAttack.ResetTimer();
+            }
+        }
 
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
-            if ( _jump.IsPerformingJump ||
-                !_magicAttack.CanAttack() ||
-                !MaxPowerVisualsManager.Instance.MaxPowerCharged() )
-                return;
-
-            _isWeakMagicInput = true;
+            if (_magicAttack.CanAttack()
+                && MaxPowerVisualsManager.Instance.MaxPowerCharged()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isStrongMagicInput = true;
         }
 
         /// <summary>
@@ -260,18 +316,11 @@ namespace Player
             if (!_isWeakMagicInput)
                 return;
 
-            if (_isMediumMagicInput || _isStrongMagicInput)
-                _isWeakMagicInput = false;
-
-            else
-            {
-                // Ponemos a false todas las variables de magia
-                _isWeakMagicInput = false;
-                _isMediumMagicInput = false;
-                _isStrongMagicInput = false;
-                _magicAttack.ResetTimer();
-                _magicAttack.WeakAttack(_lookDirection);
-            }
+            // Reseteamos variables
+            _isWeakMagicInput = false;
+            _magicAttack.ResetTimer();
+            // Y activamos la magia débil
+            _magicAttack.WeakAttack(_lookDirection);
         }
 
         /// <summary>
@@ -279,20 +328,10 @@ namespace Player
         /// </summary>
         private void DoMediumMagicAttack()
         {
-            if (!_isMediumMagicInput)
-            {
-                if (_mediumMagicUsed)
-                {
-                    _mediumMagicUsed = false;
-                    _magicAttack.StopMediumAttack();
-                    _magicAttack.ResetTimer();
-                }
-                return;
-            }
-            if (_mediumMagicUsed)
+            if (!_isMediumMagicInput || _mediumMagicUsed)
                 return;
 
-            // Ponemos a false todas las variables de magia
+            // Activamos las variables de magia media e invocamos el nuevo ataque
             _mediumMagicUsed = true;
             _magicAttack.MediumAttack(_lookDirection);
 
@@ -306,13 +345,7 @@ namespace Player
             if (!_isStrongMagicInput)
                 return;
 
-            if (_mediumMagicUsed)
-            {
-                _isStrongMagicInput = false;
-                return;
-            }
-
-            // Ponemos a false todas las variables de magia
+            // Activamos la magia fuerte
             _isStrongMagicInput = false;
             _magicAttack.ResetTimer();
             _magicAttack.StrongAttack();
