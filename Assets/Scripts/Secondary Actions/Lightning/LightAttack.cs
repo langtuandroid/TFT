@@ -1,47 +1,33 @@
 using UnityEngine;
-using Utils;
 
 namespace Attack
 {
-    public class LightAttack : MonoBehaviour//, IAttack
+    public class LightAttack : SecondaryAction
     {
-        private Vector2 _direction;
-        private Transform _origin;
+        #region SerializeFields
 
+        [SerializeField]
+        [Tooltip("Prefab de la bola de luz")]
+        private GameObject _lightPrefab;
 
-        #region Interface Methodss
+        #endregion
+
+        #region Inherited Methodss
 
         /// <summary>
         /// Lanza el hechizo de la bola de luz
         /// </summary>
-        public void WeakAttack(GameObject prefab)
+        public override void Effect()
         {
             // Instanciamos bola de luz
             GameObject lightBall = Instantiate(
-                prefab, // Prefab de la bola
+                _lightPrefab, // Prefab de la bola
                 transform.position, // Posición del jugador
                 Quaternion.identity // Quaternion identity
                 );
 
             //Y modificamos su dirección
             SetBallDirection(lightBall.GetComponent<LightMovement>());
-
-        }
-
-        public void ChangeStrongAttackState()
-        {
-        }
-
-        public void MediumAttack()
-        {
-        }
-
-        public void ResetValues()
-        {
-        }
-
-        public void StrongAttack(System.Object element)
-        {
         }
 
         #endregion
@@ -55,13 +41,7 @@ namespace Attack
         /// <param name="lightScript"></param>
         private void SetBallDirection(LightMovement lightScript)
         {
-            lightScript.HandleMovement(_direction);
-        }
-
-        public void SetOriginAndDirection(Transform origin, Vector2 direction)
-        {
-            _origin = origin;
-            _direction = direction;
+            lightScript.HandleMovement(direction);
         }
 
         #endregion

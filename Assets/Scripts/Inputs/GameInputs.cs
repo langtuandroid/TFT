@@ -13,8 +13,8 @@ public class GameInputs
     public event Action OnMediumAttackButtonCanceled;
     public event Action OnWeakAttackButtonStarted;
     public event Action OnWeakAttackButtonCanceled;
-
     public event Action OnStrongAttackPerformed;
+    public event Action OnSecondaryPerformed;
 
     // UI
     public event Action OnCancelPerformed;
@@ -52,6 +52,12 @@ public class GameInputs
         _playerInputActions.PlayerGround.Pause.performed += Pause_performed;
 
         _playerInputActions.PlayerGround.StrongAttack.performed += StrongAttack_performed;
+        _playerInputActions.PlayerGround.Secondary.performed += Secondary_performed;
+    }
+
+    private void Secondary_performed(InputAction.CallbackContext ctx)
+    {
+        OnSecondaryPerformed?.Invoke();
     }
 
     private void StrongAttack_performed(InputAction.CallbackContext ctx)
