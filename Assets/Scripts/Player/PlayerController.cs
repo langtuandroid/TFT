@@ -235,8 +235,6 @@ namespace Player
 
         #endregion
 
-        #region Attack
-
         #region States Control
 
         private bool CanJump()
