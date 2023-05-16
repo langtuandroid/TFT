@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ namespace AI
 {
     public class EnemyWillOWisp : MonoBehaviour
     {
+        public event Action OnDeath;
+        
     #region CONFIGURATION
     
     [Header("Tags Necesarios:\n" +

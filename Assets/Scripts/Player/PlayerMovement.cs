@@ -62,6 +62,11 @@ namespace Player
             _rb.velocity = Vector2.ClampMagnitude( airVelocity , _speed );
         }
 
+        public void Stop()
+        {
+            _rb.velocity = Vector2.zero;
+        }
+
         /// <summary>
         /// Método que cambia la ubicación del personaje
         /// </summary>        
