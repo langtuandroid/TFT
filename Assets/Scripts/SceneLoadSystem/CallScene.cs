@@ -11,7 +11,7 @@ namespace SceneLoadSystem
         /// </summary>
         public void LoadScene()
         {
-            SceneLoader.Load( _sceneToLoadName );
+            ServiceLocator.GetService<SceneLoader>().Load( _sceneToLoadName );
         }
         
         /// <summary>
@@ -19,7 +19,7 @@ namespace SceneLoadSystem
         /// </summary>
         public void LoadScene( string sceneToLoad )
         {
-            SceneLoader.Load( sceneToLoad );
+            ServiceLocator.GetService<SceneLoader>().Load( sceneToLoad );
         }
     }
 }

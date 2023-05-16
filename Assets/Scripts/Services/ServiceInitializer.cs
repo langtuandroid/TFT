@@ -8,11 +8,15 @@ namespace Services
     {
         private void Awake()
         {
+            Application.targetFrameRate = 60;
             if (!IsInitialized)
             {
-                AddService(new GameInputs());
-                AddService(new MagicEvents());
-                AddService(new AudioSpeaker());
+                // Systems
+                AddService( new GameInputs() );
+                AddService( new AudioSpeaker() );
+                AddService( new SceneLoader() );
+                // Events
+                AddService( new MagicEvents() );
 
                 IsInitialized = true;
             }

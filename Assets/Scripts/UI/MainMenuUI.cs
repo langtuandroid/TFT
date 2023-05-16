@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using SceneLoadSystem;
 
 namespace UI
 {
@@ -28,7 +27,7 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                SceneLoader.Load( SceneName.S10_WOODS_Z0 );
+                ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
             } );
 
             _loadButton.onClick.AddListener( () => {

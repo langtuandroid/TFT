@@ -3,15 +3,15 @@ using Attack;
 
 public class MaxPowerValues
 {
-    public float Alpha => _alpha;
+    public float FillAmount => _fillAmount;
     public IAttack Attack => _attack;
 
-    private float _alpha;
+    private float _fillAmount;
     private IAttack _attack;
 
     public MaxPowerValues(float alpha, IAttack attack)
     {
-        _alpha = alpha;
+        _fillAmount = alpha;
         _attack = attack;
     }
 

@@ -10,6 +10,7 @@ public class PickUpItem : MonoBehaviour
     private Vector2 _colliderOffset;
     private IPickable _pickable;
     public void Init() => _colliderOffset = GetComponent<Collider2D>().offset;
+    public bool HasItem = false;
     public bool CanPickItUp( Vector2 lookDirection )
     {
         float xRayOffset = lookDirection.y != 0 ? _rayCastOffset.x : 0;
@@ -28,7 +29,6 @@ public class PickUpItem : MonoBehaviour
             return true;
         }
 
-
         origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
             _colliderOffset.y + transform.position.y - yRayOffset );
 
@@ -39,18 +39,27 @@ public class PickUpItem : MonoBehaviour
             _pickable = hit.collider.GetComponent<IPickable>();
             _pickable?.ShowCanPickUpItem( true );
         }
+        else
+        {
+            StopPickItUp();
+        }
+
 
         return hit;
     }
     
     public void PickItUp( Vector2 lookDirection )
     {
+        HasItem = true;
+        _pickable?.ShowCanPickUpItem( false );
         _pickable?.PickItUp( lookDirection );
     }
-
+    
     public void ThrowIt(Vector2 lookDirection)
     {
+        HasItem = false;
         _pickable?.ThrowIt(lookDirection);
+        StopPickItUp();
     }
     
     public void StopPickItUp()

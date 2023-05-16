@@ -9,29 +9,21 @@ public class Pickable : MonoBehaviour, IPickable
     private Transform _pickItUpPoint;
 
     private bool _canPickItUp = true;
-    public bool _holdIt = false;
+    
 
     private void Start()
     {
         _collider = GetComponent<Collider2D>();
         _pickItUpPoint = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_PICKUP_POSITION).GetComponent<Transform>();
     }
-
-    private void Update()
-    {
-        if (_holdIt)
-        {
-            _collider.enabled = false;
-            transform.SetParent(_pickItUpPoint);
-        }
-    }
-
+    
     public void PickItUp(Vector2 lookDirection)
     {
         if (_canPickItUp && lookDirection.y > 0)
         {
             _canPickItUp = false;
-            _holdIt = true;
+            _collider.enabled = false;
+            transform.parent = _pickItUpPoint;
             ShowCanPickUpItem(false);
             transform.DOMove(_pickItUpPoint.position, 0.3f).SetEase(Ease.Linear).Play();
         }
@@ -39,12 +31,8 @@ public class Pickable : MonoBehaviour, IPickable
 
     public void ThrowIt(Vector2 lookDirection)
     {
-        if (!_holdIt)
-            return;
-
-        _holdIt = false;
         _canPickItUp = true;
-        transform.SetParent(null);
+        transform.parent = null;
         _collider.enabled = true;
 
         Vector3 jumpTarget = lookDirection * 2f;

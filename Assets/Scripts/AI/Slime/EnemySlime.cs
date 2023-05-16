@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -5,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class EnemySlime : MonoBehaviour
 {
+    public event Action OnDeath;
+    
     #region CONFIGURATION
     [Header("Tags Necesarios:\n" +
             "Player: Transform del Player.\n" +
@@ -200,7 +203,7 @@ public class EnemySlime : MonoBehaviour
     }
 
     #endregion
-    
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

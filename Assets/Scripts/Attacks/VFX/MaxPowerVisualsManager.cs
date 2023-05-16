@@ -6,7 +6,7 @@ using System;
 using UnityEngine.UI;
 using System.Collections;
 
-public class PowerPanelsManager : MonoBehaviour
+public class MaxPowerVisualsManager : MonoBehaviour
 {
 
     #region SerializeFields
@@ -19,11 +19,14 @@ public class PowerPanelsManager : MonoBehaviour
     [Tooltip("Panel con el efecto de ataque")]
     private Image _panel;
 
+    [SerializeField]
+    private Image _maxPowerIcon;
+
     #endregion
 
     #region Public variables
 
-    public static PowerPanelsManager Instance { get; private set; }
+    public static MaxPowerVisualsManager Instance { get; private set; }
     public PowerPanelDataListScriptable PowerPanelList => _powerPanelList;
 
     #endregion
@@ -46,8 +49,6 @@ public class PowerPanelsManager : MonoBehaviour
         }
         else
             Destroy(gameObject);
-
-
 
     }
 
@@ -76,10 +77,33 @@ public class PowerPanelsManager : MonoBehaviour
         if (_powerPanelList.PowerPanelDataList.Count > 0)
             return;
 
-        PowerPanelData panel1 = new PowerPanelData(Constants.PANEL_FIRE, new Color(161 / 255f, 97 / 255f, 89 / 255f));
-        PowerPanelData panel2 = new PowerPanelData(Constants.PANEL_LEAF, new Color(120 / 255f, 161 / 255f, 88 / 255f));
-        PowerPanelData panel3 = new PowerPanelData(Constants.PANEL_WATER, new Color(87 / 255f, 114 / 255f, 151 / 255f));
-
+        PowerPanelData panel1 =
+            new PowerPanelData(
+                Constants.PANEL_FIRE,
+                new Color(
+                    161 / 255f,
+                    97 / 255f,
+                    89 / 255f
+                    )
+            );
+        PowerPanelData panel2 =
+            new PowerPanelData(
+                Constants.PANEL_LEAF,
+                new Color(
+                    120 / 255f,
+                    161 / 255f,
+                    88 / 255f
+                    )
+                );
+        PowerPanelData panel3 =
+            new PowerPanelData(
+                Constants.PANEL_WATER,
+                new Color(
+                    87 / 255f,
+                    114 / 255f,
+                    151 / 255f
+                    )
+                );
 
         _powerPanelList.PowerPanelDataList.Clear();
         _powerPanelList.PowerPanelDataList.Add(panel1);
@@ -89,7 +113,7 @@ public class PowerPanelsManager : MonoBehaviour
 
     private void OnMaxPowerValueChange(MaxPowerValues values)
     {
-        _panel.SetImageAlpha(values.Alpha);
+        _maxPowerIcon.fillAmount = values.FillAmount;
     }
 
     #endregion
@@ -97,28 +121,41 @@ public class PowerPanelsManager : MonoBehaviour
 
     #region Public methods
 
-    #region Panel values
+    #region Icon values
 
-    public void ChangePanelColor(IAttack attack)
+    public bool MaxPowerCharged()
     {
-        _panel.color = GetData(attack).Color;
+        return _maxPowerIcon.fillAmount == 1f;
     }
 
-    public float GetAlpha()
+    #endregion
+
+    #region Panel values
+
+    public void ChangeColor(IAttack attack)
+    {
+        PowerPanelData data = GetData(attack);
+        _panel.color = data.Color;
+        _maxPowerIcon.color = data.Color;
+    }
+
+    /// <summary>
+    /// Obtiene el alpha del panel de efectos de poder máximo
+    /// </summary>
+    /// <returns></returns>
+    public float GetPanelAlpha()
     {
         return _panel.color.a;
     }
 
-    public void SetAlpha(float alpha)
+    /// <summary>
+    /// Cambia el alpha del panel de efectos de poder máximo
+    /// </summary>
+    /// <param name="alpha"></param>
+    public void SetPanelAlpha(float alpha)
     {
         _panel.SetImageAlpha(alpha);
     }
-
-    #region Coroutines
-
-
-
-    #endregion
 
     #endregion
 

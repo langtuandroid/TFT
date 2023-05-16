@@ -23,4 +23,27 @@ public class AudioSpeaker
         if ( isDevelop ) return;
         AudioManager.Instance.PlayOneShot( groupId , soundId , soundPosition );
     }
+
+
+    public void SetMusicVolume( float volume )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.SetMusicVolume( volume );
+    }
+
+    public void SetSfxVolume( float volume )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.SetSfxVolume( volume );
+    }
+
+    public float MusicVolume()
+    {
+        return isDevelop ? 0 : AudioManager.Instance.MusicVolume();
+    }
+
+    public float SfxVolume() 
+    {
+        return isDevelop ? 0 : AudioManager.Instance.SfxVolume();
+    }
 }
