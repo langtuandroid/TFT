@@ -4,7 +4,6 @@ using Utils;
 using Attack;
 using System;
 using UnityEngine.UI;
-using System.Collections;
 
 public class MaxPowerVisualsManager : MonoBehaviour
 {
@@ -20,14 +19,17 @@ public class MaxPowerVisualsManager : MonoBehaviour
     private Image _panel;
 
     [SerializeField]
+    [Tooltip("Cantidad de carga del poder máximo")]
     private Image _maxPowerIcon;
+    [SerializeField]
+    [Tooltip("Fondo de la carga del poder máximo")]
+    private Image _maxPowerBackground;
 
     #endregion
 
     #region Public variables
 
     public static MaxPowerVisualsManager Instance { get; private set; }
-    public PowerPanelDataListScriptable PowerPanelList => _powerPanelList;
 
     #endregion
 
@@ -45,7 +47,6 @@ public class MaxPowerVisualsManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            Initialize();
         }
         else
             Destroy(gameObject);
@@ -54,24 +55,31 @@ public class MaxPowerVisualsManager : MonoBehaviour
 
     private void Start()
     {
-        _magicEvents.OnMaxPowerValueChange += OnMaxPowerValueChange;
+        Initialize();
+
+        _magicEvents.OnAttackTypeValue += OnAttackTypeValueChange;
+        _magicEvents.OnFillAmountValue += OnFillAmountValueChange;
+        _magicEvents.OnPanelAlphaValue += OnPanelAlphaValueChange;
     }
 
     private void OnDestroy()
     {
-        _magicEvents.OnMaxPowerValueChange -= OnMaxPowerValueChange;
+        _magicEvents.OnAttackTypeValue -= OnAttackTypeValueChange;
+        _magicEvents.OnFillAmountValue -= OnFillAmountValueChange;
+        _magicEvents.OnPanelAlphaValue -= OnPanelAlphaValueChange;
     }
 
     #endregion
 
     #region Private methods
 
+    #region Initialization
+
     /// <summary>
     /// Introduce los datos para los 3 tipos de paneles
     /// </summary>
     private void Initialize()
     {
-
         _magicEvents = ServiceLocator.GetService<MagicEvents>();
 
         if (_powerPanelList.PowerPanelDataList.Count > 0)
@@ -111,48 +119,25 @@ public class MaxPowerVisualsManager : MonoBehaviour
         _powerPanelList.PowerPanelDataList.Add(panel3);
     }
 
-    private void OnMaxPowerValueChange(MaxPowerValues values)
-    {
-        _maxPowerIcon.fillAmount = values.FillAmount;
-    }
-
     #endregion
 
+    #region Events
 
-    #region Public methods
-
-    #region Icon values
-
-    public bool MaxPowerCharged()
-    {
-        return _maxPowerIcon.fillAmount == 1f;
-    }
-
-    #endregion
-
-    #region Panel values
-
-    public void ChangeColor(IAttack attack)
+    private void OnAttackTypeValueChange(MagicAttack attack)
     {
         PowerPanelData data = GetData(attack);
         _panel.color = data.Color;
         _maxPowerIcon.color = data.Color;
+        _maxPowerBackground.color = data.Color;
+        _maxPowerBackground.SetImageAlpha(100f/255f);
     }
 
-    /// <summary>
-    /// Obtiene el alpha del panel de efectos de poder máximo
-    /// </summary>
-    /// <returns></returns>
-    public float GetPanelAlpha()
+    private void OnFillAmountValueChange(float fillAmount)
     {
-        return _panel.color.a;
+        _maxPowerIcon.fillAmount = fillAmount;
     }
 
-    /// <summary>
-    /// Cambia el alpha del panel de efectos de poder máximo
-    /// </summary>
-    /// <param name="alpha"></param>
-    public void SetPanelAlpha(float alpha)
+    private void OnPanelAlphaValueChange(float alpha)
     {
         _panel.SetImageAlpha(alpha);
     }
@@ -176,7 +161,7 @@ public class MaxPowerVisualsManager : MonoBehaviour
     /// </summary>
     /// <param name="attack"></param>
     /// <returns></returns>
-    public PowerPanelData GetData(IAttack attack)
+    public PowerPanelData GetData(MagicAttack attack)
     {
         Type type = attack.GetType();
 

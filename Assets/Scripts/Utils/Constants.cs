@@ -45,8 +45,14 @@ namespace Utils
 
         #endregion
 
+        #region Offset
+
+        public const float PLAYER_OFFSET = 0.8125f;
+
+        #endregion
 
         #region Attack variables
+
 
         #region Magic maxpower panel names
 

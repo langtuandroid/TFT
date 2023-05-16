@@ -1,35 +1,34 @@
 
-using System;
 using UnityEngine;
 
 namespace Attack
 {
-    public interface IAttack
+    public abstract class MagicAttack : MonoBehaviour
     {
 
         /// <summary>
         /// Ataque débil
         /// </summary>
-        void WeakAttack(GameObject prefab);
+        public abstract void WeakAttack();
 
         /// <summary>
         /// Ataque medio
         /// </summary>
-        void MediumAttack(GameObject prefab);
+        public abstract void MediumAttack();
 
-        void StopMediumAttack();
+        public abstract void StopMediumAttack();
 
         /// <summary>
         /// Ataque fuerte
         /// </summary>
-        void StrongAttack(System.Object element);
+        public abstract void StrongAttack();
 
         /// <summary>
         /// Establece la dirección de los ataques
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="direction"></param>
-        void SetDirection(Vector2 direction);
+        public abstract void SetDirection(Vector2 direction);
     }
 
 }
