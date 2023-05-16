@@ -22,10 +22,6 @@ public class EnemySlime : MonoBehaviour
     private float _speed;
 
     [SerializeField]
-    [Tooltip("Distancia a la que para si encuentra una pared.")]
-    private float _wallAware = 0.5f;
-    
-    [SerializeField]
     [Tooltip("Tiempo en segundos para cambiar su dirección.")]
     private float _secondsToChangeDirection;
 
@@ -140,20 +136,6 @@ public class EnemySlime : MonoBehaviour
 
         return _canSeePlayer;
     }
-
-    public bool ObstacleAware()
-    {
-        bool result = false;
-        
-        Vector3 direction = transform.TransformDirection(_player.transform.position - transform.position);
-
-        if (Physics2D.Raycast(transform.position, direction, _wallAware, _layer))
-            result = true;
-        
-        return result;
- 
-    }
-    
     #endregion
     
     #region MOVEMENT
@@ -208,18 +190,5 @@ public class EnemySlime : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _earRadious);
-
-        if (_player != null)
-        {
-            Gizmos.color = Color.blue;
-            Vector3 direction = transform.TransformDirection(_player.transform.position - transform.position);
-            Gizmos.DrawRay(transform.position, direction);
-        
-            Gizmos.color = Color.green;
-            Vector3 direction2 = transform.TransformDirection(_player.transform.position - transform.position);
-            Gizmos.DrawRay(transform.position, direction2 * 1.5f);
-        }
-   
-
     }
 }
