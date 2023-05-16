@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AudioSpeaker
 {
-    private bool isDevelop = false;
+    private bool isDevelop = true;
 
     public AudioSpeaker()
     {
