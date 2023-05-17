@@ -148,7 +148,6 @@ GameObject:
   - component: {fileID: 5797619827965401374}
   - component: {fileID: 5879475305411568790}
   - component: {fileID: 6657266087975895640}
-  - component: {fileID: 4925454125521198172}
   - component: {fileID: 4857403397467978039}
   - component: {fileID: 6393048233429952891}
   - component: {fileID: 1262885401}
@@ -253,32 +252,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerVisuals: {fileID: 4067148498380675311}
-  _jumpableMask:
-    serializedVersion: 2
-    m_Bits: 64
   _initialGroundLevelMask:
     serializedVersion: 2
     m_Bits: 0
   _boundsMask:
     serializedVersion: 2
     m_Bits: 49216
---- !u!114 &4925454125521198172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5879475305411568785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dac43a93898ad2b4ea6e1aa68b694d3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _checkDistance: 0.6
-  _rayCastOffset: {x: 0.2, y: 0.2}
 --- !u!114 &4857403397467978039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,6 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfec20faf94314e498841e8e39db1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactableLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &1262885401
 MonoBehaviour:
   m_ObjectHideFlags: 0

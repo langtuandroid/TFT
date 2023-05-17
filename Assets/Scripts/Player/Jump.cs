@@ -22,9 +22,10 @@ namespace Player
         private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
         [SerializeField] private Transform _playerVisuals;
-        [SerializeField] private LayerMask _jumpableMask;
         [SerializeField] private LayerMask _initialGroundLevelMask;
         [SerializeField] private LayerMask _boundsMask;
+
+        private LayerMask _jumpableMask;
         private int _currentFloorBitPosition;
 
         private float _jumpSpeed      = 3f;
@@ -44,7 +45,7 @@ namespace Player
         private Vector2   _colliderOffset;
         private Vector2   _rayCastOffset = new( 0.2f , 0.2f );
 
-        public void Init()
+        public void Init( AnimatorBrain animatorBrain , Vector2 colliderOffset , LayerMask jumpableLayerMask )
         {
             _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 0.6f );
@@ -52,13 +53,14 @@ namespace Player
             _jumpState     = JumpState.Grounded;
 
             _audioSpeaker   = ServiceLocator.GetService<AudioSpeaker>();
-            _colliderOffset = GetComponent<Collider2D>().offset;
+            _colliderOffset = colliderOffset;
+            _jumpableMask   = jumpableLayerMask;
 
             _currentFloorBitPosition = _initialGroundLevelMask.value;
             Debug.Log( _initialGroundLevelMask.value );
 
-            GetComponentInChildren<AnimatorBrain>().OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
-            GetComponentInChildren<AnimatorBrain>().OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
+            animatorBrain.OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
+            animatorBrain.OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
         }
 
         public void JumpAction( bool jumpInput , Vector2 lookDirection , Vector2 moveDirection )

@@ -25,6 +25,8 @@ namespace Player
         private AnimatorBrain _animatorBrain;
 
         // VARIABLES
+        // Masks
+        [SerializeField] private LayerMask _interactableLayerMask;
         // Jump input
         private bool _isJumpInput;
 
@@ -54,7 +56,7 @@ namespace Player
             // Obtenemos componentes
             _movement = GetComponent<PlayerMovement>();
             _jump = GetComponent<Jump>();
-            _interaction = GetComponent<Interaction>();
+            _interaction = new Interaction( transform , GetComponent<Collider2D>().offset , _interactableLayerMask );
             _pickable = GetComponent<PickUpItem>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -64,8 +66,7 @@ namespace Player
         private void Start()
         {
             _movement.Init();
-            _jump.Init();
-            _interaction.Init();
+            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask );
             _animatorBrain.Init();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -180,6 +181,8 @@ namespace Player
                 return;
 
             _interaction.Interact(_isPhysicActionInput, _lookDirection);
+
+            _isPhysicActionInput = false;
         }
 
         #endregion

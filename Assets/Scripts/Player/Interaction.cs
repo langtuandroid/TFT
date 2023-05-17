@@ -1,19 +1,24 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
 
-public class Interaction : MonoBehaviour
+public class Interaction
 {
-    [Header("Interactable")]
-    [SerializeField] private LayerMask _interactableLayer;
-    [SerializeField] private float _checkDistance = 0.6f;
-    [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+    private Transform _transform;
+    private LayerMask _interactableLayer;
+    private float _checkDistance = 0.6f;
+    private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
 
     private Vector2 _colliderOffset;
     private IInteractable _interactable;
 
     public bool IsInteracting { get; private set; }
 
-    public void Init() => _colliderOffset = GetComponent<Collider2D>().offset;
+    public Interaction( Transform playerTransform , Vector2 colliderOffset , LayerMask interactableLayerMask )
+    {
+        _transform = playerTransform;
+        _colliderOffset = colliderOffset;
+        _interactableLayer = interactableLayerMask;
+    }
 
     public void Interact( bool interactInput , Vector2 lookDirection )
     {
@@ -37,8 +42,8 @@ public class Interaction : MonoBehaviour
         float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
 
-        Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x + xRayOffset,
-                                      _colliderOffset.y + transform.position.y + yRayOffset );
+        Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
+                                      _colliderOffset.y + _transform.position.y + yRayOffset );
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
@@ -50,8 +55,8 @@ public class Interaction : MonoBehaviour
         }
 
 
-        origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
-                              _colliderOffset.y + transform.position.y - yRayOffset );
+        origin = new Vector2( _colliderOffset.x + _transform.position.x - xRayOffset ,
+                              _colliderOffset.y + _transform.position.y - yRayOffset );
 
         hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
