@@ -22,9 +22,9 @@ public class PickUpItem : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
-        if ( hit )
+        _pickable = hit.collider?.GetComponent<IPickable>();
+        if ( _pickable != null )
         {
-            _pickable = hit.collider.GetComponent<IPickable>();
             _pickable?.ShowCanPickUpItem( true );
             return true;
         }
@@ -34,18 +34,15 @@ public class PickUpItem : MonoBehaviour
 
         hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
-        if ( hit )
+        _pickable = hit.collider?.GetComponent<IPickable>();
+        if ( _pickable != null )
         {
-            _pickable = hit.collider.GetComponent<IPickable>();
             _pickable?.ShowCanPickUpItem( true );
-        }
-        else
-        {
-            StopPickItUp();
+            return true;
         }
 
-
-        return hit;
+        StopPickItUp();
+        return false;
     }
     
     public void PickItUp( Vector2 lookDirection )

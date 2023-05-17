@@ -5,34 +5,31 @@ public class Interaction
 {
     private Transform _transform;
     private LayerMask _interactableLayer;
-    private float _checkDistance = 0.6f;
-    private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
-
-    private Vector2 _colliderOffset;
     private IInteractable _interactable;
+
+    private float   _checkDistance = 0.6f;
+    private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+    private Vector2 _colliderOffset;
 
     public bool IsInteracting { get; private set; }
 
     public Interaction( Transform playerTransform , Vector2 colliderOffset , LayerMask interactableLayerMask )
     {
-        _transform = playerTransform;
-        _colliderOffset = colliderOffset;
+        _transform         = playerTransform;
+        _colliderOffset    = colliderOffset;
         _interactableLayer = interactableLayerMask;
     }
 
     public void Interact( bool interactInput , Vector2 lookDirection )
     {
+        StopInteracting();
         if ( CanInteract( lookDirection ) )
         {
             if ( interactInput )
             {
                 _interactable?.Interact( lookDirection );
                 IsInteracting = true;
-            }
-        }
-        else
-        {
-            StopInteracting();
+            }            
         }
     }
 
@@ -47,9 +44,9 @@ public class Interaction
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
-        if ( hit )
+        _interactable = hit.collider?.GetComponent<IInteractable>();
+        if ( _interactable != null )
         {
-            _interactable = hit.collider.GetComponent<IInteractable>();
             _interactable?.ShowCanInteract( true );
             return true;
         }
@@ -60,13 +57,13 @@ public class Interaction
 
         hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
-        if ( hit )
+        _interactable = hit.collider?.GetComponent<IInteractable>();
+        if ( _interactable != null )
         {
-            _interactable = hit.collider.GetComponent<IInteractable>();
             _interactable?.ShowCanInteract( true );
+            return true;
         }
-
-        return hit;
+        return false;
     }    
 
     private void StopInteracting()

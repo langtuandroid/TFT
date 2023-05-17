@@ -1,6 +1,4 @@
 using Attack;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -101,10 +99,10 @@ namespace Player
 
             // Realizamos salto
             DoJump();
-            // Realizamos elevar objeto no pesado
-            DoPickUpItem();
-            // Realizamos interacción
-            DoInteraction();
+
+            // Realizamos las interacciones físicas
+            DoPhysicalAction();
+
             // Atacamos con magia
             DoMagicAttack();
 
@@ -170,28 +168,32 @@ namespace Player
 
         #endregion
 
-        #region Interact
+        #region Physical Actions
 
         private void GameInputs_OnPhysicActionButtonPerformed() => _isPhysicActionInput = true;
 
 
-        private void DoInteraction()
+        private void DoPhysicalAction()
         {
-            if (_jump.IsPerformingJump || IsAttacking() || _pickable.HasItem)
-                return;
-
-            _interaction.Interact(_isPhysicActionInput, _lookDirection);
-
+            if ( !_jump.IsPerformingJump || !IsAttacking() )
+            {
+                DoInteraction();
+                DoPickUpItem();
+            }
             _isPhysicActionInput = false;
         }
 
-        #endregion
+        private void DoInteraction()
+        {
+            if ( _pickable.HasItem )
+                return;
 
-        #region Pick item
+            _interaction.Interact( _isPhysicActionInput , _lookDirection );
+        }
 
         private void DoPickUpItem()
         {
-            if (_jump.IsPerformingJump || IsAttacking())
+            if ( _interaction.IsInteracting ) 
                 return;
 
             if (!_pickable.HasItem)
@@ -214,6 +216,7 @@ namespace Player
                 }
             }
         }
+
         #endregion
 
         #region Secondary Action
