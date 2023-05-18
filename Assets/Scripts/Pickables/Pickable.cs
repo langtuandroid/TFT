@@ -19,7 +19,7 @@ public class Pickable : MonoBehaviour, IPickable
     
     public void PickItUp(Vector2 lookDirection)
     {
-        if (_canPickItUp && lookDirection.y > 0)
+        if (_canPickItUp)
         {
             _canPickItUp = false;
             _collider.enabled = false;
@@ -31,13 +31,20 @@ public class Pickable : MonoBehaviour, IPickable
 
     public void ThrowIt(Vector2 lookDirection)
     {
+        ShowCanPickUpItem(false);
+        
         _canPickItUp = true;
+
         transform.parent = null;
-        _collider.enabled = true;
-
+        
+        
         Vector3 jumpTarget = lookDirection * 2f;
-
-        transform.DOJump(jumpTarget, 1f, 1, 1f).SetEase(Ease.OutQuad).Play();
+      
+        
+        transform.DOJump(jumpTarget + transform.position, 1f, 1, 1f).SetEase(Ease.OutQuad).OnComplete(() =>
+        {
+            _collider.enabled = true;
+        }).Play();
     }
     
     public void ShowCanPickUpItem(bool show)

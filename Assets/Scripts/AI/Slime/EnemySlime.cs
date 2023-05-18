@@ -99,6 +99,7 @@ public class EnemySlime : MonoBehaviour
         
         //Collider donde patrulla el slime
         boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
+        //boundsCollider = GetComponentInParent<Collider2D>();
     }
 
     private void Init()
