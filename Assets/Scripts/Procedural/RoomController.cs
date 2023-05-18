@@ -35,7 +35,7 @@ namespace Procedural
 
         private void OnTriggerEnter2D( Collider2D collision )
         {
-            if ( collision.gameObject.tag == "Player" )
+            if ( collision.gameObject.tag.Equals( "Player" ) )
             {
                 Debug.Log( "enter room" );
                 OnEnterRoom?.Invoke();
@@ -44,7 +44,7 @@ namespace Procedural
 
         private void OnTriggerExit2D( Collider2D collision )
         {
-            if ( collision.gameObject.tag == "Player" )
+            if ( collision.gameObject.tag.Equals( "Player" ) )
             {
                 Debug.Log( "room cleared" );
                 RoomHasBeenClear();

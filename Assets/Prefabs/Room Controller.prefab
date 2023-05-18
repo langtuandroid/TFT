@@ -1085,6 +1085,7 @@ GameObject:
   - component: {fileID: 9216362396043706230}
   - component: {fileID: 2723266226586962376}
   - component: {fileID: 2841450470309367793}
+  - component: {fileID: 316006848102155448}
   m_Layer: 0
   m_Name: South Door
   m_TagString: Untagged
@@ -1149,6 +1150,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDoorVisual: {fileID: 1977473501834062211}
   _keyDoorVisual: {fileID: 1154253544745112795}
+--- !u!210 &316006848102155448
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3776291069137829603}
+  m_Enabled: 1
+  m_SortingLayerID: 818653879
+  m_SortingLayer: -2
+  m_SortingOrder: 0
 --- !u!1 &4473621810926212359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,6 +1556,7 @@ GameObject:
   - component: {fileID: 1858124407256865826}
   - component: {fileID: 1746759186052722439}
   - component: {fileID: 5357996416264101503}
+  - component: {fileID: 3804559056401953656}
   m_Layer: 0
   m_Name: East Door
   m_TagString: Untagged
@@ -1608,6 +1621,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDoorVisual: {fileID: 4473621810926212359}
   _keyDoorVisual: {fileID: 6376700527563850146}
+--- !u!210 &3804559056401953656
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7902064815400898374}
+  m_Enabled: 1
+  m_SortingLayerID: 818653879
+  m_SortingLayer: -2
+  m_SortingOrder: 0
 --- !u!1 &8512610204904840223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,6 +1727,7 @@ GameObject:
   - component: {fileID: 7907553056988116490}
   - component: {fileID: 9082490247251562140}
   - component: {fileID: 4104755591368016004}
+  - component: {fileID: 4416578435925117980}
   m_Layer: 0
   m_Name: West Door
   m_TagString: Untagged
@@ -1767,6 +1792,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDoorVisual: {fileID: 4936663187515801313}
   _keyDoorVisual: {fileID: 6519742794737601091}
+--- !u!210 &4416578435925117980
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655734086530047689}
+  m_Enabled: 1
+  m_SortingLayerID: 818653879
+  m_SortingLayer: -2
+  m_SortingOrder: 0
 --- !u!1 &9113138668967401878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1778,6 +1814,7 @@ GameObject:
   - component: {fileID: 9113138668967401576}
   - component: {fileID: 9113138668967401579}
   - component: {fileID: 9113138668967401577}
+  - component: {fileID: 6418339681500397813}
   m_Layer: 0
   m_Name: North Door
   m_TagString: Untagged
@@ -1842,6 +1879,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDoorVisual: {fileID: 9113138669282639378}
   _keyDoorVisual: {fileID: 9113138670847824575}
+--- !u!210 &6418339681500397813
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9113138668967401878}
+  m_Enabled: 1
+  m_SortingLayerID: 818653879
+  m_SortingLayer: -2
+  m_SortingOrder: 0
 --- !u!1 &9113138669029962605
 GameObject:
   m_ObjectHideFlags: 0
@@ -1903,7 +1951,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 18, y: 9}
+  m_Size: {x: 17, y: 8}
   m_EdgeRadius: 0
 --- !u!114 &9113138669029962604
 MonoBehaviour:
@@ -1917,7 +1965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba16535975103b479d8f9af1fc7a83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 1007482090118453926, guid: 0845304f0061bdf4f98bf0ef79d951c9, type: 3}
+  _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   _northDoorController: {fileID: 9113138668967401577}
   _eastDoorController: {fileID: 5357996416264101503}
   _southDoorController: {fileID: 2841450470309367793}
