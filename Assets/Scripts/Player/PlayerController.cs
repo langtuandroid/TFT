@@ -69,7 +69,7 @@ namespace Player
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
-            _gameInputs.OnPhysicActionButtonPerformed += GameInputs_OnPhysicActionButtonPerformed;
+            _gameInputs.OnPhysicActionButtonStarted += GameInputs_OnPhysicActionButtonStarted;
             _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
             _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
             _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
@@ -82,7 +82,7 @@ namespace Player
         {
             _gameInputs.OnJumpButtonStarted -= GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled -= GameInputs_OnJumpButtonCanceled;
-            _gameInputs.OnPhysicActionButtonPerformed -= GameInputs_OnPhysicActionButtonPerformed;
+            _gameInputs.OnPhysicActionButtonStarted -= GameInputs_OnPhysicActionButtonStarted;
             _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
             _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
             _gameInputs.OnWeakAttackButtonStarted -= GameInputs_OnWeakAttackButtonStarted;
@@ -157,8 +157,8 @@ namespace Player
 
         private void DoJump()
         {
-            //if (IsAttacking())
-            //    return;
+            if ( IsAttacking() || _pickable.HasItem || _interaction.IsInteracting )
+                return;
 
             _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
             if (!_jump.IsPerformingJump)
@@ -169,7 +169,7 @@ namespace Player
 
         #region Physical Actions
 
-        private void GameInputs_OnPhysicActionButtonPerformed() => _isPhysicActionInput = true;
+        private void GameInputs_OnPhysicActionButtonStarted() => _isPhysicActionInput = true;
 
 
         private void DoPhysicalAction()

@@ -8,7 +8,7 @@ public class GameInputs
     // Gameplay
     public event Action OnJumpButtonStarted;
     public event Action OnJumpButtonCanceled;
-    public event Action OnPhysicActionButtonPerformed;
+    public event Action OnPhysicActionButtonStarted;
     public event Action OnMediumAttackButtonStarted;
     public event Action OnMediumAttackButtonCanceled;
     public event Action OnWeakAttackButtonStarted;
@@ -44,7 +44,7 @@ public class GameInputs
         _moveAction = _playerInputActions.PlayerGround.Move;
         _playerInputActions.PlayerGround.Jump.started += Jump_started;
         _playerInputActions.PlayerGround.Jump.canceled += Jump_canceled;
-        _playerInputActions.PlayerGround.PhysicAction.performed += PhysicAction_performed;
+        _playerInputActions.PlayerGround.PhysicAction.started += PhysicAction_started;
         _playerInputActions.PlayerGround.MediumAttack.started += MediumAttack_started;
         _playerInputActions.PlayerGround.MediumAttack.canceled += MediumAttack_canceled;
         _playerInputActions.PlayerGround.WeakAttack.started += WeakAttack_started;
@@ -65,9 +65,9 @@ public class GameInputs
         OnStrongAttackPerformed?.Invoke();
     }
 
-    private void PhysicAction_performed(InputAction.CallbackContext ctx)
+    private void PhysicAction_started(InputAction.CallbackContext ctx)
     {
-        OnPhysicActionButtonPerformed?.Invoke();
+        OnPhysicActionButtonStarted?.Invoke();
     }
 
     private void MediumAttack_started(InputAction.CallbackContext ctx)
@@ -109,12 +109,10 @@ public class GameInputs
     private void MenuModeEnable()
     {
         _playerInputActions.UI.Enable();
-        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
     }
 
     private void MenuModeDisable()
     {
-        _playerInputActions.UI.Cancel.performed -= Cancel_Performed;
         _playerInputActions.UI.Disable();
     }
 
