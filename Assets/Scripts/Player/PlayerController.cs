@@ -52,7 +52,7 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
-            _movement = GetComponent<PlayerMovement>();
+            _movement = new PlayerMovement( GetComponent<Rigidbody2D>() );
             _jump = GetComponent<Jump>();
             _interaction = new Interaction( transform , GetComponent<Collider2D>().offset , _interactableLayerMask );
             _pickable = GetComponent<PickUpItem>();
@@ -63,7 +63,6 @@ namespace Player
 
         private void Start()
         {
-            _movement.Init();
             _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask );
             _animatorBrain.Init();
 
