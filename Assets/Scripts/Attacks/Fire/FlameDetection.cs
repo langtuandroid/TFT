@@ -17,7 +17,7 @@ public class FlameDetection : MonoBehaviour
         Up, Down, Left, Right
     }
 
-    private List<GameObject> _collisions;
+    private List<Collider2D> _collisions;
 
     private ParticleSystem _particles;
 
@@ -29,18 +29,18 @@ public class FlameDetection : MonoBehaviour
         _particles = GetComponent<ParticleSystem>();
         _lifeTime = 0;
         _stopTime = 0;
-        _collisions = new List<GameObject>();
+        _collisions = new List<Collider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag(Constants.TAG_MAGIC_POWER))
-            _collisions.Add(collision.gameObject);
+            _collisions.Add(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _collisions.Remove(collision.gameObject);
+        _collisions.Remove(collision);
     }
 
     private void Update()
@@ -59,16 +59,19 @@ public class FlameDetection : MonoBehaviour
 
     private void CheckCollisions()
     {
-        foreach (GameObject hit in _collisions)
+        foreach (Collider2D hit in _collisions)
         {
-            float distance = Vector2.Distance(hit.transform.position, transform.position);
+            float distance = Vector2.Distance(
+                hit.ClosestPoint(transform.position),
+                transform.position
+                );
 
             // Si cumple las condiciones de distancia y ángulo,
             // y se trata de un elemento quemable
             if (distance <= Mathf.Min(_lifeTime, _maxDistance) &&
                 distance >= _stopTime &&
                 AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
-                hit.TryGetComponent(out IBurnable burnable))
+                hit.gameObject.TryGetComponent(out IBurnable burnable))
                 // Lo activamos
                 burnable.Burn();
         }
@@ -98,10 +101,10 @@ public class FlameDetection : MonoBehaviour
     }
 
 
-    public float AngleWith(GameObject obj)
+    public float AngleWith(Collider2D obj)
     {
         // Vector 3
-        Vector2 playerDir = obj.transform.position - transform.position;
+        Vector2 playerDir = obj.ClosestPoint(transform.position) - (Vector2)transform.position;
         return Vector3.Angle(GetDirection(), playerDir);
     }
 }
