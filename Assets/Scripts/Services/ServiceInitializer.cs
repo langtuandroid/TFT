@@ -8,7 +8,7 @@ namespace Services
     {
         private void Awake()
         {
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = Screen.currentResolution.refreshRate;
             if (!IsInitialized)
             {
                 // Systems

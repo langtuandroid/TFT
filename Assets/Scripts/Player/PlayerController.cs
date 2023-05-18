@@ -202,7 +202,6 @@ namespace Player
                     if (_isPhysicActionInput)
                     {
                         _pickable.PickItUp(_lookDirection);
-                        _isPhysicActionInput = false;
                     }
                 }
             }
@@ -210,7 +209,6 @@ namespace Player
             {
                 if (_isPhysicActionInput)
                 {
-                    _isPhysicActionInput = false;
                     _pickable.ThrowIt(_lookDirection);
                 }
             }
@@ -254,10 +252,6 @@ namespace Player
                 || _isStrongMagicInput;
         }
 
-        #region Physic Attack
-
-
-        #endregion
 
         #region Magic attack
 
