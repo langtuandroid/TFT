@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utils;
 
-public class Torch : MonoBehaviour
+public class Torch : MonoBehaviour, IBurnable, IInteractable
 {
     #region SerializeFields
 
@@ -28,30 +28,34 @@ public class Torch : MonoBehaviour
         _activated = false; // Por defecto no ha sido activado
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // Si no ha sido activado previamente
-        // y colisiona con la bola de fuego
-        if (collision.gameObject.CompareTag(Constants.TAG_FIRE_BALL))
-        {
-            // Destruimos la bola de fuego
-            Destroy(collision.gameObject);
-            ActivateTorch();
-        }
-        else if (!_activated &&
-            collision.gameObject.CompareTag(Constants.TAG_FLAMES))
-            // Activamos la antorcha
-            ActivateTorch();
-    }
-
     #endregion
 
     #region Public Methods
 
+    public void Burn()
+    {
+        // Si se quema, activamos la antorcha
+        ActivateTorch();
+    }
+
+    public void Interact(Vector2 lookDirection)
+    {
+        Debug.Log("Maybe I can activate it with fire");
+    }
+
+    public void ShowCanInteract(bool show)
+    {
+        
+    }
+
+    #endregion
+
+    #region Private Methods
+
     /// <summary>
     /// Activa la antorcha
     /// </summary>
-    public void ActivateTorch()
+    private void ActivateTorch()
     {
         if (_activated)
             return;
@@ -62,7 +66,10 @@ public class Torch : MonoBehaviour
         _activated = true;
     }
 
-    public void DeactivateTorch()
+    /// <summary>
+    /// Desactiva la antorcha
+    /// </summary>
+    private void DeactivateTorch()
     {
         // Cambiamos el sprite a apagado
         _fire.SetActive(false);
@@ -71,6 +78,7 @@ public class Torch : MonoBehaviour
     }
 
     #endregion
+
 
 
 }

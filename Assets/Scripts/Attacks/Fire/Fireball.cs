@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 public class Fireball : MonoBehaviour
 {
@@ -32,6 +33,21 @@ public class Fireball : MonoBehaviour
         IncrementTime();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Constants.TAG_TORCH))
+        {
+            // Cogemos la antorcha
+            Torch t = collision.GetComponent<Torch>();
+            // Y la activamos
+            t.Burn();
+            // Y hacemos desaparecer la bola
+        }
+
+        if (!collision.CompareTag(Constants.TAG_PLAYER))
+            DisappearBall();
+    }
+
     #endregion
 
     #region Private Methods
@@ -57,6 +73,12 @@ public class Fireball : MonoBehaviour
         if (_timer >= _lifeTime)
             // Destruimos la bola de fuego
             Destroy(gameObject);
+    }
+
+    private void DisappearBall()
+    {
+        // TODO: Añadir animación de la bola chocando
+        Destroy(gameObject);
     }
 
     #endregion

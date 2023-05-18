@@ -68,7 +68,7 @@ public class FlameDetection : MonoBehaviour
                 && AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER)
             {
                 Torch t = hit.GetComponent<Torch>();
-                t.ActivateTorch();
+                t.Burn();
             }
         }
 
