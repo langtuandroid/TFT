@@ -1972,7 +1972,8 @@ MonoBehaviour:
   _westDoorController: {fileID: 4104755591368016004}
   _bossPrefab: {fileID: 0}
   _miniBossPrefab: {fileID: 0}
-  _enemyPrefabList: []
+  _enemyPrefabList:
+  - {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
   _treasureKeyPrefab: {fileID: 0}
 --- !u!1 &9113138669282639378
 GameObject:

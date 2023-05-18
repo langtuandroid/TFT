@@ -1,6 +1,8 @@
+using Player;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Procedural
 {
@@ -61,22 +63,19 @@ namespace Procedural
                 GameObject playerObj = Instantiate( _playerPrefab , transform.position , Quaternion.identity );
                 _playerTransform = playerObj.transform;
                 camera.Follow = playerObj.transform;
-                DestroyImmediate( gameObject );
+                playerObj.GetComponentInChildren<AnimatorBrain>().Init( Vector2.down ); 
+                Destroy( gameObject );
             }
             else
             {
-                //OnEnterRoom += CreateRoomEnemies;
+                OnEnterRoom += CreateRoomEnemies;
 
                 _isBossRoom = roomData.IsBossRoom;
                 _isMiniBossRoom = roomData.IsMiniBossRoom;
 
                 SetRoomDoors( roomData.OpenSidesIntMask , roomData.BossDoorMask );
             }
-
-            //CreateRoomEnemies();
         }
-
-
 
 
         private void SetRoomDoors( int openSidesMask , int bossDoorMask )
@@ -102,8 +101,6 @@ namespace Procedural
         }
 
 
-
-
         private void CreateRoomEnemies()
         {
             GameObject enemyInstantiated;
@@ -121,12 +118,18 @@ namespace Procedural
             }
             else
             {
-                int numOfEnemies = 5;
-
+                int numOfEnemies = Random.Range( 1 , 2 );
                 for ( int i = 0; i < numOfEnemies; i++ )
                 {
-                    int randIndex = UnityEngine.Random.Range( 0 , _enemyPrefabList.Count );
-                    enemyInstantiated = _enemyPrefabList[randIndex];
+                    Debug.Log( "create enemy" );
+                    int randIndex = Random.Range( 0 , _enemyPrefabList.Count - 1 );
+
+                    float x = Random.Range( -5 , 5 );
+                    float y = Random.Range( -2 , 2 );
+                    Vector3 position = transform.position + new Vector3( x, y );
+
+                    enemyInstantiated = Instantiate( _enemyPrefabList[randIndex] , position , Quaternion.identity );
+                    Debug.Log( "instantiated enemy" );
 
                     enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
 
@@ -134,7 +137,6 @@ namespace Procedural
                 }
             }
         }
-
 
 
         private void EnemiesInRoomCount()
@@ -163,12 +165,6 @@ namespace Procedural
 
             OnEnterRoom = null;
             Destroy( gameObject );
-        }
-
-
-        private void OnDestroy()
-        {
-            RoomHasBeenClear();
         }
     }
 }

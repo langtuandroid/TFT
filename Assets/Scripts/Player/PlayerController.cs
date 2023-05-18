@@ -64,7 +64,7 @@ namespace Player
         private void Start()
         {
             _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask );
-            _animatorBrain.Init();
+            _animatorBrain.Init( Vector2.down );
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;

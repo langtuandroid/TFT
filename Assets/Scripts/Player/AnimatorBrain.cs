@@ -38,7 +38,7 @@ namespace Player
         private const string IS_WALKING = "IsWalking";
 
 
-        public void Init()
+        public void Init( Vector2 startLookDirection )
         {
             _playerAnimator = GetComponent<Animator>();
 
@@ -50,6 +50,8 @@ namespace Player
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
             jump.OnJumpDownStarted       += Jump_OnJumpDownStarted;
+
+            LookDirection( startLookDirection );
         }
 
         private void PlayPlayer( string stateName ) => _playerAnimator.Play( stateName );

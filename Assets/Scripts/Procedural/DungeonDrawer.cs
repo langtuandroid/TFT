@@ -16,7 +16,7 @@ namespace Procedural
         [Header("Rooms Related:")]
         [SerializeField] private Texture2D _roomTex;
         [SerializeField] private GameObject _roomControllerPrefab;
-        [SerializeField] private Vector3 _roomOffset = new Vector3( 10 , 5.5f );
+        private Vector3 _roomOffset = new Vector3( 10 , 5.5f );
 
         [Header("Player Related:")]
         [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
