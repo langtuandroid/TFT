@@ -35,16 +35,15 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag(Constants.TAG_TORCH))
-        {
-            // Cogemos la antorcha
-            Torch t = collision.GetComponent<Torch>();
-            // Y la activamos
-            t.Burn();
-            // Y hacemos desaparecer la bola
-        }
+        // Si colisiona con un elemento que es quemable
+        if (collision.TryGetComponent(out IBurnable burnable))
+            // Lo activamos
+            burnable.Burn();
 
-        if (!collision.CompareTag(Constants.TAG_PLAYER))
+        // En caso de colisionar con un elemento distinto al player
+        if (!collision.CompareTag(Constants.TAG_PLAYER) &&
+            !collision.CompareTag(Constants.TAG_MAGIC_POWER))
+            // Hacemos desaparecer a la bola
             DisappearBall();
     }
 

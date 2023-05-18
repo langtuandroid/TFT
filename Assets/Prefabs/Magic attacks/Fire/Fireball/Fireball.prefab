@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -6897265632609743047}
   m_Layer: 0
   m_Name: Fireball
-  m_TagString: FireBall
+  m_TagString: MagicPower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

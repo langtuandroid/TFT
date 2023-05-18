@@ -34,7 +34,8 @@ public class FlameDetection : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        _collisions.Add(collision.gameObject);
+        if (!collision.CompareTag(Constants.TAG_MAGIC_POWER))
+            _collisions.Add(collision.gameObject);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -62,14 +63,14 @@ public class FlameDetection : MonoBehaviour
         {
             float distance = Vector2.Distance(hit.transform.position, transform.position);
 
+            // Si cumple las condiciones de distancia y ángulo,
+            // y se trata de un elemento quemable
             if (distance <= Mathf.Min(_lifeTime, _maxDistance) &&
                 distance >= _stopTime &&
-                hit.CompareTag(Constants.TAG_TORCH)
-                && AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER)
-            {
-                Torch t = hit.GetComponent<Torch>();
-                t.Burn();
-            }
+                AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
+                hit.TryGetComponent(out IBurnable burnable))
+                // Lo activamos
+                burnable.Burn();
         }
 
     }
