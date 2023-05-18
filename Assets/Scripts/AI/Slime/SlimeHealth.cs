@@ -1,12 +1,16 @@
-
+using System;
 using UnityEngine;
 using DG.Tweening;
 using Utils;
 
 public class SlimeHealth : MonoBehaviour
 {
+    // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
+    public event Action OnDeath;
+
     private void OnDestroy()
     {
+        OnDeath?.Invoke();
         DOTween.Kill(transform);
     }
 

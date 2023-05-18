@@ -8,6 +8,7 @@ namespace Procedural
     {
         public event Action OnEnterRoom;
 
+        private static Transform _playerTransform;
 
         [SerializeField] private GameObject _playerPrefab;
 
@@ -37,7 +38,7 @@ namespace Procedural
         {
             if ( collision.gameObject.tag.Equals( "Player" ) )
             {
-                Debug.Log( "enter room" );
+                Debug.Log( "enter room " + _playerTransform.position );
                 OnEnterRoom?.Invoke();
             }
         }
@@ -53,11 +54,13 @@ namespace Procedural
 
 
 
-        public void SetRoom( RoomCell roomData )
+        public void SetRoom( RoomCell roomData , Cinemachine.CinemachineVirtualCamera camera )
         {
             if ( roomData.IsStartRoom )
             {
-                Instantiate( _playerPrefab , transform.position , Quaternion.identity );
+                GameObject playerObj = Instantiate( _playerPrefab , transform.position , Quaternion.identity );
+                _playerTransform = playerObj.transform;
+                camera.Follow = playerObj.transform;
                 DestroyImmediate( gameObject );
             }
             else
@@ -125,7 +128,7 @@ namespace Procedural
                     int randIndex = UnityEngine.Random.Range( 0 , _enemyPrefabList.Count );
                     enemyInstantiated = _enemyPrefabList[randIndex];
 
-                    //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
+                    enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
 
                     _enemiesLeftInRoom++;
                 }
