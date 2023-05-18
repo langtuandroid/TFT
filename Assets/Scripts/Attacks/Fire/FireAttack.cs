@@ -156,6 +156,7 @@ namespace Attack
         private void DisableAndDestroy()
         {
             GameObject obj = _flamesToDestroy[0];
+            _flamesToDestroy.Remove(obj);
             Destroy(obj);
         }
 

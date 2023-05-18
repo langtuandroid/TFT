@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utils;
 
 public class Fireball : MonoBehaviour
 {
@@ -32,6 +33,20 @@ public class Fireball : MonoBehaviour
         IncrementTime();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Si colisiona con un elemento que es quemable
+        if (collision.TryGetComponent(out IBurnable burnable))
+            // Lo activamos
+            burnable.Burn();
+
+        // En caso de colisionar con un elemento distinto al player
+        if (!collision.CompareTag(Constants.TAG_PLAYER) &&
+            !collision.CompareTag(Constants.TAG_MAGIC_POWER))
+            // Hacemos desaparecer a la bola
+            DisappearBall();
+    }
+
     #endregion
 
     #region Private Methods
@@ -57,6 +72,12 @@ public class Fireball : MonoBehaviour
         if (_timer >= _lifeTime)
             // Destruimos la bola de fuego
             Destroy(gameObject);
+    }
+
+    private void DisappearBall()
+    {
+        // TODO: Añadir animación de la bola chocando
+        Destroy(gameObject);
     }
 
     #endregion

@@ -4,14 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - FireBall
-  - Flames
   - Waypoint
   - NavMesh
   - Torch
   - PlayerInitialPosition
   - PickUp
   - PatrolCollider
+  - MagicPower
   layers:
   - Default
   - TransparentFX
@@ -33,7 +32,6 @@ TagManager:
   - 1st Floor
   - 2nd Floor
   - 3rd Floor
-  - 
   - 
   - 
   - 

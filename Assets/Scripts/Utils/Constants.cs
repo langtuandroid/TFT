@@ -4,8 +4,7 @@ namespace Utils
     {
         #region Tags
         #region Fire Attacks
-        public const string TAG_FIRE_BALL = "FireBall";
-        public const string TAG_FLAMES = "Flames";
+        public const string TAG_MAGIC_POWER = "MagicPower";
 
         #endregion
 

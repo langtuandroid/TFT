@@ -16,7 +16,7 @@ public class SlimeHealth : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag(Constants.TAG_FIRE_BALL))
+        if (col.CompareTag(Constants.TAG_MAGIC_POWER))
         {
             PlayDeathAnimation();
         }

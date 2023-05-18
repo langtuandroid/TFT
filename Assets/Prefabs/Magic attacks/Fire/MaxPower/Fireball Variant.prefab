@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
       propertyPath: m_TagString
-      value: Flames
+      value: MagicPower
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8129722892565354001, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
