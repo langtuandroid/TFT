@@ -63,11 +63,7 @@ public class EnemySlime : MonoBehaviour
     #endregion
     
     #region UNITY METHODS
-    private void Awake()
-    {
 
-    }
-    
     void Start()
     {
         if ( !_isOnProcedural )
