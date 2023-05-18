@@ -72,8 +72,10 @@ public class FlameDetection : MonoBehaviour
                 distance >= _stopTime &&
                 AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
                 hit.gameObject.TryGetComponent(out IBurnable burnable))
+            {
                 // Lo activamos
                 burnable.Burn();
+            }
         }
 
     }

@@ -40,10 +40,8 @@ public class Fireball : MonoBehaviour
             // Lo activamos
             burnable.Burn();
 
-        // En caso de colisionar con un elemento distinto al player
-        if (!collision.CompareTag(Constants.TAG_PLAYER) &&
-            !collision.CompareTag(Constants.TAG_MAGIC_POWER))
-            // Hacemos desaparecer a la bola
+        if (collision.TryGetComponent(out IInteractable interactable)
+            || collision.TryGetComponent(out IPickable pickable))
             DisappearBall();
     }
 
