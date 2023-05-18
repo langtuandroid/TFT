@@ -66,16 +66,20 @@ public class FlameDetection : MonoBehaviour
                 transform.position
                 );
 
+            string text = $"Distancia: {distance}\n" +
+                $"Ángulo: {AngleWith(hit)}";
+
+            Debug.Log(text);
+
             // Si cumple las condiciones de distancia y ángulo,
             // y se trata de un elemento quemable
             if (distance <= Mathf.Min(_lifeTime, _maxDistance) &&
                 distance >= _stopTime &&
-                AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
+                //AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
                 hit.gameObject.TryGetComponent(out IBurnable burnable))
-            {
                 // Lo activamos
                 burnable.Burn();
-            }
+            
         }
 
     }
@@ -103,10 +107,11 @@ public class FlameDetection : MonoBehaviour
     }
 
 
-    public float AngleWith(Collider2D obj)
+    private float AngleWith(Collider2D obj)
     {
         // Vector 3
         Vector2 playerDir = obj.ClosestPoint(transform.position) - (Vector2)transform.position;
+
         return Vector3.Angle(GetDirection(), playerDir);
     }
 }
