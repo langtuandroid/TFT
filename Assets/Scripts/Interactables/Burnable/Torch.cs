@@ -45,7 +45,6 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
 
     public void ShowCanInteract(bool show)
     {
-        
     }
 
     #endregion
