@@ -58,22 +58,34 @@ public class EnemySlime : MonoBehaviour
         set => _actualState = value;
     }
 
+    private bool _isOnProcedural;
+
     #endregion
     
     #region UNITY METHODS
     private void Awake()
     {
-        PrepareComponent();
+
     }
     
     void Start()
     {
-        Init();
+        if ( !_isOnProcedural )
+        {
+            PrepareComponent();
+            Init();
+        }
     }
     
     void Update()
     {
-        _actualState.Execute(this);
+        if ( _isOnProcedural )
+        {
+            Vector3 direction = _player.transform.position - transform.position;
+            transform.position += Time.deltaTime * _speed * direction.normalized;
+        }
+        else
+            _actualState.Execute(this);
     }
     
     private void PrepareComponent()
@@ -179,6 +191,13 @@ public class EnemySlime : MonoBehaviour
     public void Follow()
     {
         _navMeshAgent.destination = _player.transform.position;
+    }
+
+    public void SetAsProceduralEnemy( Transform playerTransform )
+    {
+        _isOnProcedural = true;
+        _player = playerTransform.gameObject;
+        GetComponent<NavMeshAgent>().enabled = false;
     }
 
     #endregion

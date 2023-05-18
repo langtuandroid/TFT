@@ -130,7 +130,7 @@ namespace Procedural
 
                     enemyInstantiated = Instantiate( _enemyPrefabList[randIndex] , position , Quaternion.identity );
                     Debug.Log( "instantiated enemy" );
-
+                    enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
                     enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
 
                     _enemiesLeftInRoom++;
