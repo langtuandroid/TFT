@@ -43,7 +43,7 @@ public class Timer
         if ( _timer > 0 )
             return false;
 
-        _timer = _secondsLimit;
+        _timer += _secondsLimit;
         return true;
     }
 

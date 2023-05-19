@@ -103,9 +103,10 @@ namespace Player
 
                 case JumpState.Cooldown:
 
-                    if ( _cooldownTimer.HasTickForever() )
+                    if ( _cooldownTimer.HasTickOnce() )
                     {
                         _jumpState = JumpState.Grounded;
+                        _cooldownTimer.Restart();
                         OnJumpFinished?.Invoke();
                     }
 
