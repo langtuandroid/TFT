@@ -48,13 +48,48 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 6f0896b428c48484aaa49acadf82e6b1, type: 3}
     - {fileID: 2800000, guid: 22075169a64ce6c4586bd6f447104f56, type: 3}
     - {fileID: 2800000, guid: 97ce29992bc9cdc4c9723e89e61c6cfd, type: 3}
-    - {fileID: 2800000, guid: 2249c31691eba994988467684ef7be7b, type: 3}
     - {fileID: 2800000, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: -148013899, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1893447060, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -2120397412, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1534899209, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 2036006468, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 481630731, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1408626371, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1335507012, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -758502215, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1598181935, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1329128217, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1906307109, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 70170826, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -638009750, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -822318855, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1607671728, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1810349873, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1636694065, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1796677879, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -56655661, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -656378276, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1179237538, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 682295730, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1694657205, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 109622812, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1318921361, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -134896931, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -56540952, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -630921648, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 975587159, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1663443309, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 1385514726, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1696749167, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 345654553, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: 617662782, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
+  - {fileID: -1910451815, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
   - {fileID: 1377298246, guid: 6f0896b428c48484aaa49acadf82e6b1, type: 3}
   - {fileID: 1417088046, guid: 6f0896b428c48484aaa49acadf82e6b1, type: 3}
   - {fileID: 546463394, guid: 6f0896b428c48484aaa49acadf82e6b1, type: 3}
@@ -114,6 +149,42 @@ SpriteAtlas:
   - {fileID: 1207958653, guid: 30a9af0eb92d1504dbb8989837ddf809, type: 3}
   - {fileID: 818758209, guid: 30a9af0eb92d1504dbb8989837ddf809, type: 3}
   m_PackedSpriteNamesToIndex:
+  - cave_interior_fixed_29
+  - cave_interior_fixed_28
+  - cave_interior_fixed_25
+  - cave_interior_fixed_24
+  - cave_interior_fixed_27
+  - cave_interior_fixed_26
+  - cave_interior_fixed_21
+  - cave_interior_fixed_20
+  - cave_interior_fixed_23
+  - cave_interior_fixed_22
+  - cave_interior_fixed_9
+  - cave_interior_fixed_8
+  - cave_interior_fixed_5
+  - cave_interior_fixed_4
+  - cave_interior_fixed_7
+  - cave_interior_fixed_6
+  - cave_interior_fixed_1
+  - cave_interior_fixed_0
+  - cave_interior_fixed_3
+  - cave_interior_fixed_2
+  - cave_interior_fixed_14
+  - cave_interior_fixed_15
+  - cave_interior_fixed_16
+  - cave_interior_fixed_17
+  - cave_interior_fixed_10
+  - cave_interior_fixed_11
+  - cave_interior_fixed_12
+  - cave_interior_fixed_13
+  - cave_interior_fixed_18
+  - cave_interior_fixed_19
+  - cave_interior_fixed_32
+  - cave_interior_fixed_33
+  - cave_interior_fixed_30
+  - cave_interior_fixed_31
+  - cave_interior_fixed_34
+  - cave_interior_fixed_35
   - grass_planta_1_14
   - grass_planta_1_12
   - grass_planta_1_13

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98cebeae2d82c794c80a0faba2c87377, type: 3}
   m_Name: _Cave Interior Wall RuleTile
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 1015096422, guid: 2249c31691eba994988467684ef7be7b, type: 3}
+  m_DefaultSprite: {fileID: -1598181935, guid: 9e16c193170ee944fbca954040162f0d, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules:
