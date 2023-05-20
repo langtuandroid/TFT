@@ -5,4 +5,6 @@ public class ZoneExitSideSO : ScriptableObject
 {
     [Tooltip("Only positive values")]
     public int nextStartPointRefID;
+
+    public void NewGameReset() => nextStartPointRefID = 0;
 }

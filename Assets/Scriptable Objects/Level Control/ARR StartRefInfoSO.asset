@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
-  m_Name: ARR Scene StartRefInfoSO
+  m_Name: ARR StartRefInfoSO
   m_EditorClassIdentifier: 
   startRefInfoArray:
   - exitZoneDescription: South

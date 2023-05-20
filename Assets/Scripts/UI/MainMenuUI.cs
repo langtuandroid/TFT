@@ -14,6 +14,10 @@ namespace UI
         [SerializeField] private Button _optionButton;
         [SerializeField] private Button _quitButton;
 
+        [Header("Save Data")]
+        [SerializeField] private ZoneExitSideSO _zoneExitSideSO;
+        [SerializeField] private ZoneSaveSO[] _zoneSaveSOList;
+
         private Button _selectedButton;
 
 
@@ -27,7 +31,7 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                NewGame();
             } );
 
             _loadButton.onClick.AddListener( () => {
@@ -42,6 +46,17 @@ namespace UI
 
             _quitButton.onClick.AddListener( () => QuitGame() );
         }
+
+
+        private void NewGame()
+        {
+            _zoneExitSideSO.NewGameReset();
+            foreach ( var zoneSaveSO in _zoneSaveSOList )
+                zoneSaveSO.NewGameReset();
+
+            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+        }
+
 
         private void Show()
         {

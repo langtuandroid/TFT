@@ -6159,6 +6159,9 @@ MonoBehaviour:
   _loadButton: {fileID: 460164547}
   _optionButton: {fileID: 1440797313}
   _quitButton: {fileID: 395456384}
+  _zoneExitSideSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
+  _zoneSaveSOList:
+  - {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
 --- !u!1 &1957621800
 GameObject:
   m_ObjectHideFlags: 0
