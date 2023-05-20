@@ -5961,6 +5961,7 @@ GameObject:
   - component: {fileID: 1916084339}
   - component: {fileID: 1916084341}
   - component: {fileID: 1916084342}
+  - component: {fileID: 1916084343}
   m_Layer: 5
   m_Name: Option Menu Panel
   m_TagString: Untagged
@@ -6061,6 +6062,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _musicVolumeSlider: {fileID: 705711800}
   _sfxVolumeSlider: {fileID: 793552713}
+--- !u!114 &1916084343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916084337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39553ad2a4991034b96b48782d324f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lenguageDropdown: {fileID: 69728359}
+  _vibrationToggle: {fileID: 1890866679}
+  _framerateDropdown: {fileID: 889952403}
 --- !u!1 &1933849524
 GameObject:
   m_ObjectHideFlags: 0
