@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ZoneController : MonoBehaviour
@@ -9,15 +10,25 @@ public class ZoneController : MonoBehaviour
     [Header("Scene Related:")]
     [SerializeField] private GameObject     _playerPrefab;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
+    [SerializeField] private List<ActivableSceneObject> _activableObjectList;
 
     private void Start()
     {
+        LoadZoneInteractableData();
         PlayerInstantation();
     }
 
     private void LoadZoneInteractableData()
     {
+        if ( _zoneSaveSO.zoneSave.IsCompleted )
+        {
+            Debug.Log( "Zone completed, TODO: Create logic" );
+        }
 
+        List<bool> activatedObjects = _zoneSaveSO.zoneSave.IsActivatedActivableObjectList;
+        for ( int i = 0; i < activatedObjects.Count; i++ )
+            if ( activatedObjects[i] )
+                _activableObjectList[i].TriggerActivation();
     }
 
     private void PlayerInstantation()
@@ -48,8 +59,14 @@ public class ZoneController : MonoBehaviour
         return -1;
     }
 
+    private void ZoneComplete()
+    {
+        _zoneSaveSO.zoneSave.IsCompleted = true;
+    }
+
     private void SaveZoneInteractableData()
     {
-
+        for ( int i = 0; i < _activableObjectList.Count; i++ )
+            _zoneSaveSO.zoneSave.IsActivatedActivableObjectList[i] = _activableObjectList[i].HasBeenActivated();
     }
 }

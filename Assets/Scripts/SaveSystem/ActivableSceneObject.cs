@@ -4,10 +4,10 @@ public class ActivableSceneObject : MonoBehaviour
 {
     protected bool _hasBeenActivated;
 
-    public virtual void TriggerActivation( bool hasBeenActivated )
+    public virtual void TriggerActivation()
     {
-        _hasBeenActivated = hasBeenActivated;
+        _hasBeenActivated = true;
     }
 
-    public bool HasBeenActivated => _hasBeenActivated;
+    public bool HasBeenActivated() => _hasBeenActivated;
 }

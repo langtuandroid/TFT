@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ARR Scene ZoneSaveSO
   m_EditorClassIdentifier: 
   zoneSave:
-    IsCompleted: 0
-    ActivableObjectList: 
+    IsCompleted: 1
+    IsActivatedActivableObjectList: 

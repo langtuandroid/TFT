@@ -1,7 +1,7 @@
 using UnityEngine;
 using Utils;
 
-public class Chest : MonoBehaviour, IInteractable
+public class Chest : ActivableSceneObject, IInteractable
 {
     [SerializeField] private GameObject _exclamationIcon;
 

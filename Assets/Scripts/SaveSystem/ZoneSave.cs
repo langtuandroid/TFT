@@ -7,6 +7,6 @@ namespace SaveSystem
     public class ZoneSave
     {
         public bool IsCompleted;
-        public List<bool> ActivableObjectList;
+        public List<bool> IsActivatedActivableObjectList;
     }
 }
