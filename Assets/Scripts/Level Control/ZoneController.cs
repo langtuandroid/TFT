@@ -78,17 +78,5 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
             _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
-
-        //// if there are save data
-        //if ( _zoneSaveSO.zoneSave.IsActivatedList.Count > 0 )
-        //{
-        //    for ( int i = 0; i < _activableObjectList.Count; i++ )
-        //        _zoneSaveSO.zoneSave.IsActivatedList[i] = _activableObjectList[i].HasBeenActivated();
-        //}
-        //else // if NO save data
-        //{
-        //    for ( int i = 0; i < _activableObjectList.Count; i++ )
-        //        _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
-        //}
     }
 }
