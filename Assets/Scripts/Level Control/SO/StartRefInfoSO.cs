@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StartRefInfoSO", menuName = "SaveData/StartRefInfoSO")]
+[CreateAssetMenu(fileName = "StartRefInfoSO", menuName = "Level Control/StartRefInfoSO")]
 public class StartRefInfoSO : ScriptableObject
 {
     public StartRefInfo[] startRefInfoArray;

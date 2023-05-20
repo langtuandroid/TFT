@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu( fileName = "ZoneExitSideSO" , menuName = "SaveData/ZoneExitSideSO" )]
+//[CreateAssetMenu( fileName = "ZoneExitSideSO" , menuName = "Level Control/ZoneExitSideSO" )]
 public class ZoneExitSideSO : ScriptableObject
 {
     [Tooltip("Only positive values")]
