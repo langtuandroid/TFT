@@ -7,6 +7,7 @@ public class ActivableSceneObject : MonoBehaviour
     public virtual void TriggerActivation()
     {
         _hasBeenActivated = true;
+        Debug.Log( gameObject.name + " has been activated" );
     }
 
     public bool HasBeenActivated() => _hasBeenActivated;

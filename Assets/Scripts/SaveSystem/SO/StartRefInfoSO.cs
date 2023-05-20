@@ -10,6 +10,7 @@ public class StartRefInfoSO : ScriptableObject
     public struct StartRefInfo
     {
         public string exitZoneDescription;
+
         [Tooltip("Only positive values")]
         public int startPointRefID;
         public Vector2 startPosition;

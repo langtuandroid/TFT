@@ -16,6 +16,15 @@ public class ZoneController : MonoBehaviour
     {
         LoadZoneInteractableData();
         PlayerInstantation();
+
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
+    }
+
+    private void OnDestroy()
+    {
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnZoneCompleted -= ZoneComplete;
     }
 
     private void LoadZoneInteractableData()

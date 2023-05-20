@@ -17,6 +17,7 @@ namespace Services
                 AddService( new SceneLoader() );
                 // Events
                 AddService( new MagicEvents() );
+                AddService( new LevelEvents() );
 
                 IsInitialized = true;
             }
