@@ -5,7 +5,6 @@ public class Chest : ActivableSceneObject, IInteractable
 {
     [SerializeField] private GameObject _exclamationIcon;
 
-    private bool _canBeOpened = true;
     private Animator _anim;
 
     private void Awake()
@@ -15,17 +14,25 @@ public class Chest : ActivableSceneObject, IInteractable
         // if Cannot be opened then change chest anim to opened
     }
 
+    public override void TriggerActivation()
+    {
+        base.TriggerActivation();
+        _anim.SetBool( Constants.ANIM_CHEST_OPENED , true );
+    }
+
     public void Interact( Vector2 lookDirection )
     {
-        if ( _canBeOpened && lookDirection.y > 0 )
+        if ( !_hasBeenActivated && lookDirection.y > 0 )
         {
             _anim.SetBool( Constants.ANIM_CHEST_OPENED , true );
-            _canBeOpened = false;
+            ShowCanInteract( false );
+            _hasBeenActivated = true;
         }
     }
 
     public void ShowCanInteract( bool show )
     {
-        _exclamationIcon.SetActive( show );
+        if ( !_hasBeenActivated )
+            _exclamationIcon.SetActive( show );
     }
 }

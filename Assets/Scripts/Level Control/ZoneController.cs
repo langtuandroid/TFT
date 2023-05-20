@@ -34,7 +34,7 @@ public class ZoneController : MonoBehaviour
             Debug.Log( "Zone completed, TODO: Create logic" );
         }
 
-        List<bool> activatedObjects = _zoneSaveSO.zoneSave.IsActivatedActivableObjectList;
+        List<bool> activatedObjects = _zoneSaveSO.zoneSave.IsActivatedList;
         for ( int i = 0; i < activatedObjects.Count; i++ )
             if ( activatedObjects[i] )
                 _activableObjectList[i].TriggerActivation();
@@ -75,7 +75,20 @@ public class ZoneController : MonoBehaviour
 
     private void SaveZoneInteractableData()
     {
+        _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
-            _zoneSaveSO.zoneSave.IsActivatedActivableObjectList[i] = _activableObjectList[i].HasBeenActivated();
+            _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
+
+        //// if there are save data
+        //if ( _zoneSaveSO.zoneSave.IsActivatedList.Count > 0 )
+        //{
+        //    for ( int i = 0; i < _activableObjectList.Count; i++ )
+        //        _zoneSaveSO.zoneSave.IsActivatedList[i] = _activableObjectList[i].HasBeenActivated();
+        //}
+        //else // if NO save data
+        //{
+        //    for ( int i = 0; i < _activableObjectList.Count; i++ )
+        //        _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
+        //}
     }
 }
