@@ -61,10 +61,10 @@ namespace Player
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
         }
 
-        private void Start()
+        public void Init( Vector2 startLookDirection , LayerMask initialGroundLayerMask )
         {
-            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask );
-            _animatorBrain.Init( Vector2.down );
+            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask , initialGroundLayerMask );
+            _animatorBrain.Init( startLookDirection );
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
