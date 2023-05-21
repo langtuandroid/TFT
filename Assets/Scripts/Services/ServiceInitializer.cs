@@ -8,13 +8,11 @@ namespace Services
     public class ServiceInitializer : MonoBehaviour
     {
         private void Awake()
-        {
-            Application.targetFrameRate = Screen.currentResolution.refreshRate;
+        {            
             if (!IsInitialized)
             {
                 // Load or Initialize OptionsSave
-                SaveGame saveGame = new SaveGame();
-                OptionsSave optionsSave = saveGame.LoadOptions();
+                OptionsSave optionsSave = new SaveGame().Get().LoadOptions();
                 // Systems
                 AddService( optionsSave );
                 AddService( new GameInputs( optionsSave ) );

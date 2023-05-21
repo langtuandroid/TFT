@@ -1,5 +1,4 @@
 // ************ @autor: Álvaro Repiso Romero *************
-using System.IO;
 using UnityEngine;
 
 public class GameSaver : MonoBehaviour, IInteractable
@@ -21,6 +20,6 @@ public class GameSaver : MonoBehaviour, IInteractable
     private void SaveData()
     {
         SaveGame saveGame = new SaveGame();
-        saveGame.SaveOptions( ServiceLocator.GetService<OptionsSave>() );
+        saveGame.Get().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
     }
 }

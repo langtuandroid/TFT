@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Xml.Linq;
 
 namespace UI
 {
@@ -54,7 +55,10 @@ namespace UI
             foreach ( var zoneSaveSO in _zoneSaveSOList )
                 zoneSaveSO.NewGameReset();
 
+            new SaveGame().Get().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
+
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+            //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
         }
 
 

@@ -8,6 +8,11 @@ public class SaveGame
     private string optionsSaveFile = "/OptionsSave.json";
     //private string gameSavefile = "GameSave.json";
 
+    public SaveGame Get()
+    {
+        return this;
+    }
+
     public void SaveOptions( OptionsSave optionsSave )
     {
         if ( !Directory.Exists( saveDirectoryPath ) )
@@ -25,11 +30,19 @@ public class SaveGame
 
     public OptionsSave LoadOptions()
     {
+        Debug.Log( Application.systemLanguage );
         if ( !Directory.Exists( saveDirectoryPath ) )
             Directory.CreateDirectory( saveDirectoryPath );
 
         if ( !File.Exists( saveDirectoryPath + optionsSaveFile ) )
-            return new OptionsSave();
+        {
+            // Default Options Settings
+            OptionsSave newOptionsSave = new OptionsSave();
+            newOptionsSave.lenguageDropdownValue = GetSystemLenguage();
+            newOptionsSave.isVibrationActive = true;
+            Application.targetFrameRate = Screen.currentResolution.refreshRate;
+            return newOptionsSave;
+        }
 
         // Load Data from Json
         StreamReader reader = new StreamReader( saveDirectoryPath + optionsSaveFile );
@@ -39,5 +52,17 @@ public class SaveGame
         reader.Close();
 
         return optionsSave;
+    }
+
+    private static int GetSystemLenguage()
+    {
+        switch ( Application.systemLanguage )
+        {
+            case SystemLanguage.English:
+                return 0;
+            case SystemLanguage.Spanish:
+                return 1;
+        }
+        return 0;
     }
 }
