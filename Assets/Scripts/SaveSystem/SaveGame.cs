@@ -8,11 +8,6 @@ public class SaveGame
     private string optionsSaveFile = "/OptionsSave.json";
     //private string gameSavefile = "GameSave.json";
 
-    public SaveGame Get()
-    {
-        return this;
-    }
-
     public void SaveOptions( OptionsSave optionsSave )
     {
         if ( !Directory.Exists( saveDirectoryPath ) )

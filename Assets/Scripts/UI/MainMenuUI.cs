@@ -55,7 +55,7 @@ namespace UI
             foreach ( var zoneSaveSO in _zoneSaveSOList )
                 zoneSaveSO.NewGameReset();
 
-            new SaveGame().Get().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
+            new SaveGame().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
 
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
             //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );

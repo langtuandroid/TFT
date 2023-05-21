@@ -12,7 +12,7 @@ namespace Services
             if (!IsInitialized)
             {
                 // Load or Initialize OptionsSave
-                OptionsSave optionsSave = new SaveGame().Get().LoadOptions();
+                OptionsSave optionsSave = new SaveGame().LoadOptions();
                 // Systems
                 AddService( optionsSave );
                 AddService( new GameInputs( optionsSave ) );

@@ -36,6 +36,18 @@ public class OtherOptionsPanelUI : MonoBehaviour
         
         _framerateDropdown.onValueChanged.AddListener( ( int framerateIndex ) => {
             _optionsSave.framerateDropdownValue = framerateIndex;
+            Application.targetFrameRate = ChangeFramerate( framerateIndex );
         } );
+    }
+
+    private int ChangeFramerate( int framerateIndex )
+    {
+        switch ( framerateIndex )
+        {
+            case 1: return 60;
+            case 2: return 120;
+            case 3: return 144;
+        }
+        return Screen.currentResolution.refreshRate;
     }
 }
