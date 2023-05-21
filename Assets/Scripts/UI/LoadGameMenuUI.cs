@@ -17,10 +17,16 @@ namespace UI
         [SerializeField] private Button _thirdSlotButton;
         [SerializeField] private Button _returnButton;
 
-        [Header("Save Slots Panel")]
-        [SerializeField] private GameObject _confirmationPanel;
+        [Header("Confirmation Panel")]
+        [SerializeField] private ConfirmationPanelUI _confirmationPanelUI;
+
+        [Header("Save Data")]
+        [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
+        [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
+        [SerializeField] private ZoneSaveSO[]       _zoneSaveSOArray;
 
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
+        private int _slotToLoadIndex;
 
 
         private event Action OnReturnButtonClicked;
@@ -29,41 +35,56 @@ namespace UI
         private void Awake()
         {
             Instance = this;
-            SetButtonEvents();
-            SetSaveSlotInfo();
-            Hide();
-        }        
-
-        private void SetButtonEvents()
-        {
-            _firstSlotButton.onClick.AddListener(  () => OpenSaveSlotPanel( 0 ) );
-            _secondSlotButton.onClick.AddListener( () => OpenSaveSlotPanel( 1 ) );
-            _thirdSlotButton.onClick.AddListener(  () => OpenSaveSlotPanel( 2 ) );
+            SetSaveSlotInfoAndButtonsEvent();
 
             _returnButton.onClick.AddListener( () => Hide() );
+            Hide();
         }
 
-        private void SetSaveSlotInfo()
+        private void SetSaveSlotInfoAndButtonsEvent()
         {
             SaveGame saveGame = new SaveGame();
 
             _gameSaveDataArray[0] = saveGame.LoadGameSaveData( 1 );
             if ( _gameSaveDataArray[0] != null )
+            {
+                _firstSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 0 ) );
                 _firstSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 1";
+            }
 
             _gameSaveDataArray[1] = saveGame.LoadGameSaveData( 2 );
             if ( _gameSaveDataArray[1] != null )
+            {
+                _secondSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 1 ) );
                 _secondSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 2";
+            }
 
             _gameSaveDataArray[2] = saveGame.LoadGameSaveData( 3 );
             if ( _gameSaveDataArray[2] != null )
+            {
+                _thirdSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 2 ) );
                 _thirdSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 3";
+            }
         }
 
-        private void OpenSaveSlotPanel( int saveSlot )
+        private void OpenConfirmationPanel( int saveSlot )
         {
-            _confirmationPanel.SetActive( true );
-            //_gameSaveDataArray[saveSlot];
+            _slotToLoadIndex = saveSlot;
+            _confirmationPanelUI.Show( LoadGame );
+        }
+
+        private void LoadGame()
+        {
+            _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
+            _zoneExitSideSO.nextStartPointRefID  = _gameSaveDataArray[_slotToLoadIndex].startPointRefID;
+
+            _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
+
+            int arrayLength = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray.Length;
+            for ( int i = 0; i < arrayLength; i++ )
+                _zoneSaveSOArray[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
+
+            Debug.Log( "Loaded" );
         }
 
 

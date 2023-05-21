@@ -5755,7 +5755,11 @@ MonoBehaviour:
   _secondSlotButton: {fileID: 1016459525}
   _thirdSlotButton: {fileID: 1317221390}
   _returnButton: {fileID: 99674348}
-  _confirmationPanel: {fileID: 0}
+  _confirmationPanelUI: {fileID: 1705182061}
+  _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
+  _zoneExitSideSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
+  _zoneSaveSOArray:
+  - {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
 --- !u!1 &1685437221
 GameObject:
   m_ObjectHideFlags: 0
@@ -6037,6 +6041,7 @@ GameObject:
   - component: {fileID: 1705182058}
   - component: {fileID: 1705182060}
   - component: {fileID: 1705182059}
+  - component: {fileID: 1705182061}
   m_Layer: 5
   m_Name: Confirmation Panel
   m_TagString: Untagged
@@ -6105,6 +6110,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1705182057}
   m_CullTransparentMesh: 1
+--- !u!114 &1705182061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705182057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 246a0cad67940c7478ef379dc7e7c74b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _messageText: {fileID: 346657491}
+  _yesButton: {fileID: 252968499}
+  _noButton: {fileID: 1064947799}
 --- !u!1 &1721825189
 GameObject:
   m_ObjectHideFlags: 0
