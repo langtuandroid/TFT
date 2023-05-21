@@ -21,6 +21,6 @@ public class GameSaver : MonoBehaviour, IInteractable
     private void SaveData()
     {
         SaveGame saveGame = new SaveGame();
-        saveGame.Save();
+        saveGame.SaveOptions( ServiceLocator.GetService<OptionsSave>() );
     }
 }

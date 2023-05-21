@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class SaveGame
 {
-    private string optionsSaveFile = "OptionsSave.json";
+    private string saveDirectoryPath = Application.dataPath + "/Save Data";
+    private string optionsSaveFile = "/OptionsSave.json";
     private string gameSavefile = "GameSave.json";
 
-    public void Save()
+    public void SaveOptions( OptionsSave optionsSave )
     {
-        Debug.Log( "Saving..." );
-        if ( File.Exists( optionsSaveFile ) )
+        if ( !Directory.Exists( saveDirectoryPath ) )
         {
-            File.Delete( optionsSaveFile );
+            Directory.CreateDirectory( saveDirectoryPath );
         }
 
-        OptionsSave optionsSave = ServiceLocator.GetService<OptionsSave>();
+        Debug.Log( "Saving..." );
+        if ( File.Exists( saveDirectoryPath + optionsSaveFile ) )
+        {
+            File.Delete( saveDirectoryPath + optionsSaveFile );
+        }
 
         // Save data to Json
-        StreamWriter writer = new StreamWriter( optionsSaveFile );
+        StreamWriter writer = new StreamWriter( saveDirectoryPath + optionsSaveFile );
 
         string optionsSaveJson = JsonUtility.ToJson( optionsSave );
 
@@ -28,26 +32,20 @@ public class SaveGame
         Debug.Log( "Saved" );
     }
 
-    public void Load()
+    public OptionsSave LoadOptions()
     {
-        //if ( !File.Exists( optionsSaveFile ) )
-        //    return 0;
+        if ( !File.Exists( optionsSaveFile ) )
+        {
+            return new OptionsSave();
+        }
 
-        //// Load Data from Json
-        //StreamReader reader = new StreamReader( optionsSaveFile );
+        // Load Data from Json
+        StreamReader reader = new StreamReader( optionsSaveFile );
 
-        //maxScore = JsonUtility.FromJson<MaxScore>( reader.ReadToEnd() );
+        OptionsSave optionsSave = JsonUtility.FromJson<OptionsSave>( reader.ReadToEnd() );
 
-        //reader.Close();
+        reader.Close();
 
-        //// Load on console all MaxScores
-        //int lastScore = 0;
-        //for ( int i = 0; i < maxScore.scoreList.Count; i++ )
-        //{
-        //    lastScore = maxScore.scoreList[i];
-        //    Debug.Log( i + 1 + ": " + lastScore );
-        //}
-
-        //return lastScore;
+        return optionsSave;
     }
 }
