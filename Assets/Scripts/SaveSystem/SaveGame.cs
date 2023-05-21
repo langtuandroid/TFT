@@ -6,7 +6,20 @@ public class SaveGame
 {
     private string saveDirectoryPath = Application.dataPath + "/Save Data";
     private string optionsSaveFile = "/OptionsSave.json";
-    //private string gameSavefile = "GameSave.json";
+
+    public void SavePlayerGame( int saveSlot , GameSaveData gameSaveData )
+    {
+        if ( !Directory.Exists( saveDirectoryPath ) )
+            Directory.CreateDirectory( saveDirectoryPath );
+
+        string gameSavefile = $"/GameSave{saveSlot}.json";
+
+        StreamWriter writer = new StreamWriter( saveDirectoryPath + gameSavefile );
+        string optionsSaveJson = JsonUtility.ToJson( gameSaveData );
+
+        writer.Write( optionsSaveJson );
+        writer.Close();
+    }
 
     public void SaveOptions( OptionsSave optionsSave )
     {
@@ -18,14 +31,11 @@ public class SaveGame
         string optionsSaveJson = JsonUtility.ToJson( optionsSave );
 
         writer.Write( optionsSaveJson );
-        writer.Close();
-
-        Debug.Log( "Options Saved" );
+        writer.Close();        
     }
 
     public OptionsSave LoadOptions()
     {
-        Debug.Log( Application.systemLanguage );
         if ( !Directory.Exists( saveDirectoryPath ) )
             Directory.CreateDirectory( saveDirectoryPath );
 
@@ -49,7 +59,7 @@ public class SaveGame
         return optionsSave;
     }
 
-    private static int GetSystemLenguage()
+    private int GetSystemLenguage()
     {
         switch ( Application.systemLanguage )
         {

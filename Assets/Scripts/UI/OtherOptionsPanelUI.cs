@@ -47,6 +47,7 @@ public class OtherOptionsPanelUI : MonoBehaviour
             case 1: return 60;
             case 2: return 120;
             case 3: return 144;
+            case 4: return -1;
         }
         return Screen.currentResolution.refreshRate;
     }

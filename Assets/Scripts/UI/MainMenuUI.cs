@@ -16,6 +16,7 @@ namespace UI
         [SerializeField] private Button _quitButton;
 
         [Header("Save Data")]
+        [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
         [SerializeField] private ZoneExitSideSO _zoneExitSideSO;
         [SerializeField] private ZoneSaveSO[] _zoneSaveSOList;
 
@@ -51,6 +52,7 @@ namespace UI
 
         private void NewGame()
         {
+            _playerStatusSaveSO.NewGameReset();
             _zoneExitSideSO.NewGameReset();
             foreach ( var zoneSaveSO in _zoneSaveSOList )
                 zoneSaveSO.NewGameReset();
