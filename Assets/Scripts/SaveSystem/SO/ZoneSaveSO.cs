@@ -1,7 +1,5 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
-using SaveSystem;
-using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "ZoneSaveSO", menuName = "SaveData/ZoneSaveSO" )]
 public class ZoneSaveSO : ScriptableObject
@@ -10,7 +8,6 @@ public class ZoneSaveSO : ScriptableObject
 
     public void NewGameReset()
     {
-        zoneSave.IsCompleted = false;
-        zoneSave.IsActivatedList = new List<bool>();
+        zoneSave = new ZoneSave();
     }
 }

@@ -18,9 +18,9 @@ namespace UI
         [SerializeField] private Button _returnButton;
 
         [Header("Save Slots Panel")]
-        [SerializeField] private GameObject _firstSaveSlotPanel;
-        [SerializeField] private GameObject _secondSaveSlotPanel;
-        [SerializeField] private GameObject _thirdSaveSlotPanel;
+        [SerializeField] private GameObject _confirmationPanel;
+
+        private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
 
 
         private event Action OnReturnButtonClicked;
@@ -30,21 +30,40 @@ namespace UI
         {
             Instance = this;
             SetButtonEvents();
+            SetSaveSlotInfo();
             Hide();
         }        
 
         private void SetButtonEvents()
         {
-            _firstSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
-            _secondSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
-            _thirdSlotButton.onClick.AddListener( () => OpenSaveSlotPanel() );
+            _firstSlotButton.onClick.AddListener(  () => OpenSaveSlotPanel( 0 ) );
+            _secondSlotButton.onClick.AddListener( () => OpenSaveSlotPanel( 1 ) );
+            _thirdSlotButton.onClick.AddListener(  () => OpenSaveSlotPanel( 2 ) );
 
             _returnButton.onClick.AddListener( () => Hide() );
         }
 
-        private void OpenSaveSlotPanel()
+        private void SetSaveSlotInfo()
         {
-            _firstSaveSlotPanel.SetActive( true );
+            SaveGame saveGame = new SaveGame();
+
+            _gameSaveDataArray[0] = saveGame.LoadGameSaveData( 1 );
+            if ( _gameSaveDataArray[0] != null )
+                _firstSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 1";
+
+            _gameSaveDataArray[1] = saveGame.LoadGameSaveData( 2 );
+            if ( _gameSaveDataArray[1] != null )
+                _secondSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 2";
+
+            _gameSaveDataArray[2] = saveGame.LoadGameSaveData( 3 );
+            if ( _gameSaveDataArray[2] != null )
+                _thirdSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 3";
+        }
+
+        private void OpenSaveSlotPanel( int saveSlot )
+        {
+            _confirmationPanel.SetActive( true );
+            //_gameSaveDataArray[saveSlot];
         }
 
 

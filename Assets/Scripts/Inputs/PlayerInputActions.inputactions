@@ -192,7 +192,7 @@
                 {
                     "name": "",
                     "id": "14cbda54-815c-4a47-a038-77d10789d207",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/backspace",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -508,7 +508,7 @@
                 {
                     "name": "",
                     "id": "ecb74435-68ca-445e-8adf-2787e6b44283",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -540,6 +540,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4a2779d6-54d4-4e03-a595-4f618c4d2745",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "MediumAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "44bca716-62e4-4f51-b776-c2b9dc9f1a83",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -553,6 +564,17 @@
                     "name": "",
                     "id": "ec6e0ef6-14c3-4597-a681-029b15fc43ee",
                     "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "WeakAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f55b9c04-5e80-4f51-aca4-fc2d98f5c6ea",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -584,6 +606,17 @@
                 },
                 {
                     "name": "",
+                    "id": "6f9d1829-9aab-4553-9efb-bbc244170da4",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "StrongAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "fda190f5-a45c-48f6-99c8-44906cf879ce",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
@@ -599,7 +632,7 @@
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -610,7 +643,7 @@
                     "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -621,7 +654,18 @@
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
+                    "action": "SelectionModifier",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c89328f5-96af-45ea-880e-696aaed4fed8",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "SelectionModifier",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -636,6 +680,39 @@
                     "action": "Selection",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "57817500-ff03-4e1d-b79c-702f79272383",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Selection",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Left",
+                    "id": "6057c340-fd1a-4236-89d3-bb9514b10c11",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "d5302e3d-6856-45e1-b89b-3c02f0edf444",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Selection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

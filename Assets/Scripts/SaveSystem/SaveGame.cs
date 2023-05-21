@@ -21,6 +21,24 @@ public class SaveGame
         writer.Close();
     }
 
+    public GameSaveData LoadGameSaveData( int saveSlot )
+    {
+        string gameSavefile = $"/GameSave{saveSlot}.json";
+
+        if ( !File.Exists( saveDirectoryPath + gameSavefile ) )
+            return null;
+
+        // Load Data from Json
+        StreamReader reader = new StreamReader( saveDirectoryPath + gameSavefile );
+
+        GameSaveData gameSaveData = JsonUtility.FromJson<GameSaveData>( reader.ReadToEnd() );
+
+        reader.Close();
+
+        return gameSaveData;
+    }
+
+
     public void SaveOptions( OptionsSave optionsSave )
     {
         if ( !Directory.Exists( saveDirectoryPath ) )

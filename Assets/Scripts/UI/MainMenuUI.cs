@@ -17,8 +17,8 @@ namespace UI
 
         [Header("Save Data")]
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
-        [SerializeField] private ZoneExitSideSO _zoneExitSideSO;
-        [SerializeField] private ZoneSaveSO[] _zoneSaveSOList;
+        [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
+        [SerializeField] private ZoneSaveSO[]       _zoneSaveSOList;
 
         private Button _selectedButton;
 
@@ -56,8 +56,6 @@ namespace UI
             _zoneExitSideSO.NewGameReset();
             foreach ( var zoneSaveSO in _zoneSaveSOList )
                 zoneSaveSO.NewGameReset();
-
-            new SaveGame().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
 
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
             //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );

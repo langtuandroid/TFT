@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PlayerStatusSaveSO
   m_EditorClassIdentifier: 
   playerStatusSave:
-    currentHealth: 0
-    maxHealth: 0
-    currentSouls: 0
-    maxSouls: 0
+    currentHealth: 3
+    maxHealth: 3
+    currentSouls: 1000
+    maxSouls: 1000
     isFireWeakUnlock: 0
     isFireMediumUnlock: 0
     isFireStrongUnlock: 0

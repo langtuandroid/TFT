@@ -21,7 +21,10 @@ namespace UI
         private void Awake()
         {
             Instance = this;
-            _returnButton.onClick.AddListener( () => Hide() );
+            _returnButton.onClick.AddListener( () => {
+                new SaveGame().SaveOptions( ServiceLocator.GetService<OptionsSave>() );
+                Hide();
+            } );
             Hide();
         }        
 
@@ -36,7 +39,7 @@ namespace UI
         public void Hide()
         {
             gameObject.SetActive( false );
-            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;            
             OnReturnButtonClicked?.Invoke();
         }
 

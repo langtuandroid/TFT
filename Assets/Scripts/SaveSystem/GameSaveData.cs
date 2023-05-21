@@ -9,5 +9,5 @@ public class GameSaveData
 
     public PlayerStatusSave playerStatusSave;
 
-    public ZoneSaveSO[] zoneSaveSOs;
+    public ZoneSave[] zoneSavesArray;
 }

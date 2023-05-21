@@ -31,7 +31,7 @@ namespace Procedural
 
         private DoorController[] _doorControllerArray;
 
-        private int _enemiesLeftInRoom;
+        private int  _enemiesLeftInRoom;
         private bool _isBossRoom;
         private bool _isMiniBossRoom;
 
@@ -63,7 +63,7 @@ namespace Procedural
                 GameObject playerObj = Instantiate( _playerPrefab , transform.position , Quaternion.identity );
                 _playerTransform = playerObj.transform;
                 camera.Follow = playerObj.transform;
-                playerObj.GetComponentInChildren<AnimatorBrain>().Init( Vector2.down ); 
+                playerObj.GetComponent<PlayerController>().Init( Vector2.down , 0 );
                 Destroy( gameObject );
             }
             else

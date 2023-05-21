@@ -61,8 +61,20 @@ namespace Player
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
         }
 
+#if UNITY_EDITOR
+        private bool _isInitialized;
+        private void Start()
+        {
+            if ( !_isInitialized )
+                Init( Vector2.down, 1 << 16 );
+        }
+#endif
+
         public void Init( Vector2 startLookDirection , LayerMask initialGroundLayerMask )
         {
+#if UNITY_EDITOR
+            _isInitialized = true;
+#endif
             _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask , initialGroundLayerMask );
             _animatorBrain.Init( startLookDirection );
 
@@ -118,7 +130,7 @@ namespace Player
             DoMove();
         }
 
-        #endregion
+#endregion
 
         private void GetActionsInformation()
         {
