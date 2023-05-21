@@ -1,3 +1,4 @@
+// ************ @autor: Álvaro Repiso Romero *************
 using UnityEngine;
 
 //[CreateAssetMenu( fileName = "ZoneExitSideSO" , menuName = "Level Control/ZoneExitSideSO" )]

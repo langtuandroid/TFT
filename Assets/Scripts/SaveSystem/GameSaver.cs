@@ -1,3 +1,5 @@
+// ************ @autor: Álvaro Repiso Romero *************
+using System.IO;
 using UnityEngine;
 
 public class GameSaver : MonoBehaviour, IInteractable
@@ -8,13 +10,7 @@ public class GameSaver : MonoBehaviour, IInteractable
 
     public void Interact( Vector2 lookDirection )
     {
-        if ( lookDirection.y > 0 )
-        {
-            Debug.Log( "Saving..." );
-            SaveData();
-        }
-        else
-            Debug.Log( "Cannot Save From Here" );
+        SaveData();
     }
 
     public void ShowCanInteract( bool show )
@@ -24,6 +20,7 @@ public class GameSaver : MonoBehaviour, IInteractable
 
     private void SaveData()
     {
-        OptionsSave optionsSave = ServiceLocator.GetService<OptionsSave>();
+        SaveGame saveGame = new SaveGame();
+        saveGame.Save();
     }
 }
