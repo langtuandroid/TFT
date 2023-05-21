@@ -19,9 +19,6 @@ public class OtherOptionsPanelUI : MonoBehaviour
 
     private void LoadOptionsSaveData()
     {
-        if ( _optionsSave.isDefaultDataSave )
-            return;
-
         _lenguageDropdown.value  = _optionsSave.lenguageDropdownValue;
         _vibrationToggle.isOn    = _optionsSave.isVibrationActive;
         _framerateDropdown.value = _optionsSave.framerateDropdownValue;
@@ -31,17 +28,14 @@ public class OtherOptionsPanelUI : MonoBehaviour
     {
         _lenguageDropdown.onValueChanged.AddListener( ( int lenguageIndex ) => {
             _optionsSave.lenguageDropdownValue = lenguageIndex;
-            _optionsSave.isDefaultDataSave = false;
         } );
 
         _vibrationToggle.onValueChanged.AddListener( ( bool isOn ) => {
             _optionsSave.isVibrationActive = isOn;
-            _optionsSave.isDefaultDataSave = false;
         } );
         
         _framerateDropdown.onValueChanged.AddListener( ( int framerateIndex ) => {
             _optionsSave.framerateDropdownValue = framerateIndex;
-            _optionsSave.isDefaultDataSave = false;
         } );
     }
 }

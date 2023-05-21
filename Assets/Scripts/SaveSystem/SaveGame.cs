@@ -6,41 +6,33 @@ public class SaveGame
 {
     private string saveDirectoryPath = Application.dataPath + "/Save Data";
     private string optionsSaveFile = "/OptionsSave.json";
-    private string gameSavefile = "GameSave.json";
+    //private string gameSavefile = "GameSave.json";
 
     public void SaveOptions( OptionsSave optionsSave )
     {
         if ( !Directory.Exists( saveDirectoryPath ) )
-        {
             Directory.CreateDirectory( saveDirectoryPath );
-        }
-
-        Debug.Log( "Saving..." );
-        if ( File.Exists( saveDirectoryPath + optionsSaveFile ) )
-        {
-            File.Delete( saveDirectoryPath + optionsSaveFile );
-        }
 
         // Save data to Json
         StreamWriter writer = new StreamWriter( saveDirectoryPath + optionsSaveFile );
-
         string optionsSaveJson = JsonUtility.ToJson( optionsSave );
 
         writer.Write( optionsSaveJson );
-
         writer.Close();
-        Debug.Log( "Saved" );
+
+        Debug.Log( "Options Saved" );
     }
 
     public OptionsSave LoadOptions()
     {
-        if ( !File.Exists( optionsSaveFile ) )
-        {
+        if ( !Directory.Exists( saveDirectoryPath ) )
+            Directory.CreateDirectory( saveDirectoryPath );
+
+        if ( !File.Exists( saveDirectoryPath + optionsSaveFile ) )
             return new OptionsSave();
-        }
 
         // Load Data from Json
-        StreamReader reader = new StreamReader( optionsSaveFile );
+        StreamReader reader = new StreamReader( saveDirectoryPath + optionsSaveFile );
 
         OptionsSave optionsSave = JsonUtility.FromJson<OptionsSave>( reader.ReadToEnd() );
 

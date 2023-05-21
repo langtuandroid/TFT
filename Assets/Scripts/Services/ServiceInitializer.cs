@@ -4,6 +4,7 @@ using static ServiceLocator;
 
 namespace Services
 {
+    [DefaultExecutionOrder(-5)]
     public class ServiceInitializer : MonoBehaviour
     {
         private void Awake()
@@ -11,11 +12,14 @@ namespace Services
             Application.targetFrameRate = Screen.currentResolution.refreshRate;
             if (!IsInitialized)
             {
+                // Load or Initialize OptionsSave
+                SaveGame saveGame = new SaveGame();
+                OptionsSave optionsSave = saveGame.LoadOptions();
                 // Systems
-                AddService( new GameInputs() );
+                AddService( optionsSave );
+                AddService( new GameInputs( optionsSave ) );
                 AddService( new AudioSpeaker() );
                 AddService( new SceneLoader() );
-                AddService( new OptionsSave() );
                 // Events
                 AddService( new MagicEvents() );
                 AddService( new LevelEvents() );

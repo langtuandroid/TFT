@@ -16,7 +16,7 @@ namespace UI
         private void Start()
         {
             _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
-            _optionsSave = ServiceLocator.GetService<OptionsSave>();
+            _optionsSave  = ServiceLocator.GetService<OptionsSave>();
             InitSliders();
             SetSliderEvents();
         }
@@ -30,7 +30,7 @@ namespace UI
         private void InitSliders()
         {
             _musicVolumeSlider.value = _audioSpeaker.MusicVolume() * _musicVolumeSlider.maxValue;
-            _sfxVolumeSlider.value = _audioSpeaker.SfxVolume() * _sfxVolumeSlider.maxValue;
+            _sfxVolumeSlider.value   = _audioSpeaker.SfxVolume()   * _sfxVolumeSlider.maxValue;
         }
 
         private void ChangeMusicVolume()
@@ -38,7 +38,6 @@ namespace UI
             float volume = _musicVolumeSlider.value / _musicVolumeSlider.maxValue;
             _audioSpeaker.SetMusicVolume( volume );
             _optionsSave.musicVolume = volume;
-            _optionsSave.isDefaultDataSave = false;
         }        
         
         private void ChangeSfxVolume()
@@ -46,7 +45,6 @@ namespace UI
             float volume = _sfxVolumeSlider.value / _sfxVolumeSlider.maxValue;
             _audioSpeaker.SetSfxVolume( volume );
             _optionsSave.sfxVolume = volume;
-            _optionsSave.isDefaultDataSave = false;
         }
     }
 }
