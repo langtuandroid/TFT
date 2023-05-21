@@ -75,7 +75,6 @@ namespace UI
 
         private void LoadGame()
         {
-            _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
             _zoneExitSideSO.nextStartPointRefID  = _gameSaveDataArray[_slotToLoadIndex].startPointRefID;
 
             _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
@@ -84,7 +83,20 @@ namespace UI
             for ( int i = 0; i < arrayLength; i++ )
                 _zoneSaveSOArray[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
 
-            Debug.Log( "Loaded" );
+
+            switch ( _gameSaveDataArray[_slotToLoadIndex].startSavePoint )
+            {
+                case 0: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                    break;
+                case 1: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                    break;
+                case 2: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                    break;
+                case 3: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                    break;
+                default: Debug.LogError( $"Bad Load]: Start Save Point {_gameSaveDataArray[_slotToLoadIndex].startSavePoint} doesn't exist" );
+                    break; 
+            }
         }
 
 
