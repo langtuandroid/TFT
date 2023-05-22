@@ -25,6 +25,7 @@ namespace UI
         [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
         [SerializeField] private ZoneSaveSO[]       _zoneSaveSOArray;
 
+        private Button _lastSelectedButton;
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
         private int _slotToLoadIndex;
 
@@ -46,23 +47,38 @@ namespace UI
             SaveGame saveGame = new SaveGame();
 
             _gameSaveDataArray[0] = saveGame.LoadGameSaveData( 1 );
+
             if ( _gameSaveDataArray[0] != null )
             {
-                _firstSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 0 ) );
+                _firstSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _firstSlotButton;
+                    OpenConfirmationPanel( 0 );
+                    } );
+
                 _firstSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 1";
             }
 
             _gameSaveDataArray[1] = saveGame.LoadGameSaveData( 2 );
+
             if ( _gameSaveDataArray[1] != null )
             {
-                _secondSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 1 ) );
+                _secondSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _secondSlotButton;
+                    OpenConfirmationPanel( 1 );
+                    } );
+
                 _secondSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 2";
             }
 
             _gameSaveDataArray[2] = saveGame.LoadGameSaveData( 3 );
+
             if ( _gameSaveDataArray[2] != null )
             {
-                _thirdSlotButton.onClick.AddListener( () => OpenConfirmationPanel( 2 ) );
+                _thirdSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _thirdSlotButton;
+                    OpenConfirmationPanel( 2 );
+                    } );
+
                 _thirdSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 3";
             }
         }
@@ -70,7 +86,13 @@ namespace UI
         private void OpenConfirmationPanel( int saveSlot )
         {
             _slotToLoadIndex = saveSlot;
-            _confirmationPanelUI.Show( LoadGame );
+            _confirmationPanelUI.Show( LoadGame , () => {
+                gameObject.SetActive( true );
+                ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
+                _lastSelectedButton.Select();
+            } );
+            gameObject.SetActive( false );
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
         }
 
         private void LoadGame()
