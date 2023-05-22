@@ -14,3 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zones:
   - {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
+  - {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
+  - {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
+  - {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
+  - {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
+  - {fileID: 11400000, guid: d33d07b2da1eb3e41a0c6b490b0d8ee2, type: 2}

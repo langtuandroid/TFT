@@ -6497,8 +6497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _zoneExitSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
-  _zoneSaveSO: {fileID: 11400000, guid: 8c0b5f58f0d017046be152cf1488bd70, type: 2}
-  _startRefInfoSO: {fileID: 11400000, guid: b1930c5373c79c64d84f8cced9810de6, type: 2}
+  _zoneSaveSO: {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
+  _startRefInfoSO: {fileID: 11400000, guid: c916792c46d390b4bb6601207eda9b4f, type: 2}
   _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   _camera: {fileID: 2097416876}
   _activableObjectList:
