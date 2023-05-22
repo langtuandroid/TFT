@@ -118,6 +118,7 @@ public class GameInputs
     private void MenuModeEnable()
     {
         _playerInputActions.UI.Enable();
+        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
     }
 
     private void MenuModeDisable()
