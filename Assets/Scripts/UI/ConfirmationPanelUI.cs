@@ -19,8 +19,9 @@ namespace UI
             _noButton.onClick.AddListener( () => Hide() );
         }
 
-        public void Show( Action onConfirmation , Action onCancel )
+        public void Show( Action onConfirmation , Action onCancel , string questionMessage )
         {
+            _messageText.text = questionMessage;
             gameObject.SetActive( true );
             _noButton.Select();
             ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;

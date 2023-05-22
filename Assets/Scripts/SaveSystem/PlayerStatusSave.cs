@@ -3,6 +3,8 @@ using System;
 [Serializable]
 public class PlayerStatusSave
 {
+    public int saveSlot;
+    public string playerName;
     // Basic status
     public int currentHealth;
     public int maxHealth;

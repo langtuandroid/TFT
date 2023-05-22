@@ -28,7 +28,7 @@ namespace UI
         private Button _lastSelectedButton;
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
         private int _slotToLoadIndex;
-
+        private string _loadMessage = "You want to load ";
 
         private event Action OnReturnButtonClicked;
 
@@ -52,7 +52,7 @@ namespace UI
             {
                 _firstSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _firstSlotButton;
-                    OpenConfirmationPanel( 0 );
+                    OpenLoadConfirmationPanel( 0 );
                     } );
 
                 _firstSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 1";
@@ -64,7 +64,7 @@ namespace UI
             {
                 _secondSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _secondSlotButton;
-                    OpenConfirmationPanel( 1 );
+                    OpenLoadConfirmationPanel( 1 );
                     } );
 
                 _secondSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 2";
@@ -76,21 +76,24 @@ namespace UI
             {
                 _thirdSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _thirdSlotButton;
-                    OpenConfirmationPanel( 2 );
+                    OpenLoadConfirmationPanel( 2 );
                     } );
 
                 _thirdSlotButton.GetComponentInChildren<TextMeshProUGUI>().text  = "Save Game 3";
             }
         }
 
-        private void OpenConfirmationPanel( int saveSlot )
+        private void OpenLoadConfirmationPanel( int saveSlot )
         {
             _slotToLoadIndex = saveSlot;
+
             _confirmationPanelUI.Show( LoadGame , () => {
                 gameObject.SetActive( true );
                 ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
                 _lastSelectedButton.Select();
-            } );
+            } ,
+            _loadMessage + $"Save Game {saveSlot + 1}?" );
+
             gameObject.SetActive( false );
             ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
         }

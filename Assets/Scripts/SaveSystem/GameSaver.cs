@@ -22,7 +22,7 @@ public class GameSaver : MonoBehaviour, IInteractable
     {
         SaveGame saveGame = new SaveGame();
         saveGame.SaveOptions( ServiceLocator.GetService<OptionsSave>() );
-        saveGame.SavePlayerGame( 1 , new GameSaveData() 
+        saveGame.SavePlayerGame( _playerStatusSaveSO.playerStatusSave.saveSlot , new GameSaveData() 
         {
             startSavePoint   = _savePointRef,
             startPointRefID  = 0,

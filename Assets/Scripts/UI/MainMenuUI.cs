@@ -32,7 +32,9 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                NewGame();
+                Hide();
+                NewGameUI.Instance.Show( Show );
+                //NewGame();
             } );
 
             _loadButton.onClick.AddListener( () => {
@@ -49,16 +51,16 @@ namespace UI
         }
 
 
-        private void NewGame()
-        {
-            _playerStatusSaveSO.NewGameReset();
-            _zoneExitSideSO.NewGameReset();                    
-            foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
-                zoneSaveSO.NewGameReset();
+        //private void NewGame()
+        //{
+        //    _playerStatusSaveSO.NewGameReset();
+        //    _zoneExitSideSO.NewGameReset();                    
+        //    foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
+        //        zoneSaveSO.NewGameReset();
 
-            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
-            //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
-        }
+        //    ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+        //    //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
+        //}
 
 
         private void Show()

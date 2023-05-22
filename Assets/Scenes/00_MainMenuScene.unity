@@ -3986,14 +3986,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bdf23f845ff7c748aa40a3e7e2636c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _firstSlotButton: {fileID: 0}
-  _secondSlotButton: {fileID: 0}
-  _thirdSlotButton: {fileID: 0}
-  _returnButton: {fileID: 0}
-  _confirmationPanelUI: {fileID: 0}
-  _playerStatusSaveSO: {fileID: 0}
-  _zoneExitSideSO: {fileID: 0}
-  _gameZoneSavesSO: {fileID: 0}
+  _firstSlotButton: {fileID: 840790606}
+  _secondSlotButton: {fileID: 2118737134}
+  _thirdSlotButton: {fileID: 446306276}
+  _returnButton: {fileID: 1793597954}
+  _confirmationPanelUI: {fileID: 1705182061}
+  _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
+  _zoneExitSideSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
+  _gameZoneSavesSO: {fileID: 11400000, guid: caa0094a185f81a4b952527b5bce2d27, type: 2}
 --- !u!1 &879374068
 GameObject:
   m_ObjectHideFlags: 0

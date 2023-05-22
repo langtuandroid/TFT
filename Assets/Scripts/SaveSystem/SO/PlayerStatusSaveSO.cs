@@ -5,10 +5,11 @@ public class PlayerStatusSaveSO : ScriptableObject
 {
     public PlayerStatusSave playerStatusSave;
 
-    public void NewGameReset()
+    public void NewGameReset( int saveSlot )
     {
         playerStatusSave = new PlayerStatusSave();
 
+        playerStatusSave.saveSlot = saveSlot;
         playerStatusSave.maxHealth = 3;
         playerStatusSave.currentHealth = playerStatusSave.maxHealth;
         playerStatusSave.maxSouls = 1000;

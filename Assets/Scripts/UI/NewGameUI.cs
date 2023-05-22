@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,7 @@ namespace UI
         public static NewGameUI Instance { get; private set; }
 
 
-        [Header("Load Game Buttons")]
+        [Header("New Game Buttons")]
         [SerializeField] private Button _firstSlotButton;
         [SerializeField] private Button _secondSlotButton;
         [SerializeField] private Button _thirdSlotButton;
@@ -25,20 +26,114 @@ namespace UI
 
         private Button _lastSelectedButton;
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
-        private int _slotToLoadIndex;
+        private int _slotToSaveIndex;
+        private string _overwriteMessage = "This slot is already in use, \n Do you want to overwrite it?";
 
 
         private event Action OnReturnButtonClicked;
 
 
-        private void Awake()
+        private void Start()
         {
             Instance = this;
-
+            SetNewGamePossibleSlots();
             _returnButton.onClick.AddListener( () => Hide() );
             Hide();
         }
 
+        private void SetNewGamePossibleSlots()
+        {
+            SaveGame saveGame = new SaveGame();
+
+            _gameSaveDataArray[0] = saveGame.LoadGameSaveData( 1 );
+
+            if ( _gameSaveDataArray[0] != null )
+            {
+                Debug.Log( "yes 0" );
+                _firstSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _firstSlotButton;
+                    OpenOverwriteConfirmationPanel( 0 );
+                } );
+
+                _firstSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 1";
+            }
+            else
+            {
+                Debug.Log( "no 0" );
+                _firstSlotButton.onClick.AddListener( () => {
+                    _slotToSaveIndex = 0;
+                    NewGame();
+                } );
+            }
+
+            _gameSaveDataArray[1] = saveGame.LoadGameSaveData( 2 );
+
+            if ( _gameSaveDataArray[1] != null )
+            {
+                Debug.Log( "yes 1" );
+                _secondSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _secondSlotButton;
+                    OpenOverwriteConfirmationPanel( 1 );
+                } );
+
+                _secondSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 2";
+            }
+            else
+            {
+                Debug.Log( "no 1" );
+                _secondSlotButton.onClick.AddListener( () => {
+                    _slotToSaveIndex = 1;
+                    NewGame();
+                } );
+            }
+
+            _gameSaveDataArray[2] = saveGame.LoadGameSaveData( 3 );
+
+            if ( _gameSaveDataArray[2] != null )
+            {
+                Debug.Log( "yes 2" );
+                _thirdSlotButton.onClick.AddListener( () => {
+                    _lastSelectedButton = _thirdSlotButton;
+                    OpenOverwriteConfirmationPanel( 2 );
+                } );
+
+                _thirdSlotButton.GetComponentInChildren<TextMeshProUGUI>().text = "Save Game 3";
+            }
+            else
+            {
+                Debug.Log( "no 2" );
+                _thirdSlotButton.onClick.AddListener( () => {
+                    _slotToSaveIndex = 2;
+                    NewGame();
+                } );
+            }
+        }
+
+        private void OpenOverwriteConfirmationPanel( int saveSlot )
+        {
+            _slotToSaveIndex = saveSlot;
+
+            _confirmationPanelUI.Show( NewGame , () => {
+                gameObject.SetActive( true );
+                ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
+                _lastSelectedButton.Select();
+            } ,
+            _overwriteMessage );
+
+            gameObject.SetActive( false );
+            ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
+        }
+
+        private void NewGame()
+        {
+            _playerStatusSaveSO.NewGameReset( _slotToSaveIndex + 1 );
+            _zoneExitSideSO.NewGameReset();
+            foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
+                zoneSaveSO.NewGameReset();
+
+            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+            //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
+        }
 
         public void Show( Action OnReturnButtonClicked )
         {
