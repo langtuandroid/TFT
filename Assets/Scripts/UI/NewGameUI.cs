@@ -28,7 +28,7 @@ namespace UI
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
         private int _slotToSaveIndex;
         private string _overwriteMessage = "This slot is already in use, \n Do you want to overwrite it?";
-
+        private string _insertNameMessage = "What's your name?";
 
         private event Action OnReturnButtonClicked;
 
@@ -49,7 +49,6 @@ namespace UI
 
             if ( _gameSaveDataArray[0] != null )
             {
-                Debug.Log( "yes 0" );
                 _firstSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _firstSlotButton;
                     OpenOverwriteConfirmationPanel( 0 );
@@ -59,7 +58,6 @@ namespace UI
             }
             else
             {
-                Debug.Log( "no 0" );
                 _firstSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 0;
                     NewGame();
@@ -70,7 +68,6 @@ namespace UI
 
             if ( _gameSaveDataArray[1] != null )
             {
-                Debug.Log( "yes 1" );
                 _secondSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _secondSlotButton;
                     OpenOverwriteConfirmationPanel( 1 );
@@ -80,7 +77,6 @@ namespace UI
             }
             else
             {
-                Debug.Log( "no 1" );
                 _secondSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 1;
                     NewGame();
@@ -91,7 +87,6 @@ namespace UI
 
             if ( _gameSaveDataArray[2] != null )
             {
-                Debug.Log( "yes 2" );
                 _thirdSlotButton.onClick.AddListener( () => {
                     _lastSelectedButton = _thirdSlotButton;
                     OpenOverwriteConfirmationPanel( 2 );
@@ -101,7 +96,6 @@ namespace UI
             }
             else
             {
-                Debug.Log( "no 2" );
                 _thirdSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 2;
                     NewGame();

@@ -50,19 +50,6 @@ namespace UI
             _quitButton.onClick.AddListener( () => QuitGame() );
         }
 
-
-        //private void NewGame()
-        //{
-        //    _playerStatusSaveSO.NewGameReset();
-        //    _zoneExitSideSO.NewGameReset();                    
-        //    foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
-        //        zoneSaveSO.NewGameReset();
-
-        //    ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
-        //    //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
-        //}
-
-
         private void Show()
         {
             gameObject.SetActive( true );
