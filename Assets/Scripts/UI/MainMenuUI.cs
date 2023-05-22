@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using System.Xml.Linq;
 
 namespace UI
 {
@@ -18,7 +17,7 @@ namespace UI
         [Header("Save Data")]
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
         [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
-        [SerializeField] private ZoneSaveSO[]       _zoneSaveSOList;
+        [SerializeField] private GameZoneSavesSO    _gameZoneSavesSO;
 
         private Button _selectedButton;
 
@@ -53,8 +52,8 @@ namespace UI
         private void NewGame()
         {
             _playerStatusSaveSO.NewGameReset();
-            _zoneExitSideSO.NewGameReset();
-            foreach ( var zoneSaveSO in _zoneSaveSOList )
+            _zoneExitSideSO.NewGameReset();                    
+            foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
                 zoneSaveSO.NewGameReset();
 
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );

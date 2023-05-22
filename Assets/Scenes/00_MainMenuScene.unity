@@ -5758,8 +5758,7 @@ MonoBehaviour:
   _confirmationPanelUI: {fileID: 1705182061}
   _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _zoneExitSideSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
-  _zoneSaveSOArray:
-  - {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
+  _gameZoneSavesSO: {fileID: 11400000, guid: caa0094a185f81a4b952527b5bce2d27, type: 2}
 --- !u!1 &1685437221
 GameObject:
   m_ObjectHideFlags: 0
@@ -6926,6 +6925,7 @@ MonoBehaviour:
   _quitButton: {fileID: 395456384}
   _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _zoneExitSideSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
+  _gameZoneSavesSO: {fileID: 11400000, guid: caa0094a185f81a4b952527b5bce2d27, type: 2}
   _zoneSaveSOList:
   - {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
 --- !u!1 &1957621800

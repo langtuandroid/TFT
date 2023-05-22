@@ -23,7 +23,7 @@ namespace UI
         [Header("Save Data")]
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
         [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
-        [SerializeField] private ZoneSaveSO[]       _zoneSaveSOArray;
+        [SerializeField] private GameZoneSavesSO    _gameZoneSavesSO;
 
         private Button _lastSelectedButton;
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
@@ -103,7 +103,7 @@ namespace UI
 
             int arrayLength = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray.Length;
             for ( int i = 0; i < arrayLength; i++ )
-                _zoneSaveSOArray[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
+                _gameZoneSavesSO.zones[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
 
 
             switch ( _gameSaveDataArray[_slotToLoadIndex].startSavePoint )

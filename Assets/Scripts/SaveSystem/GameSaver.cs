@@ -6,7 +6,7 @@ public class GameSaver : MonoBehaviour, IInteractable
     [SerializeField][Range( 0, 3 )] private int _savePointRef;
     [SerializeField] private GameObject         _exclamationIcon;
     [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
-    [SerializeField] private ZoneSaveSO[]       _zoneSaveSOArray;
+    [SerializeField] private GameZoneSavesSO    _gameZoneSavesSO;
 
     public void Interact( Vector2 lookDirection )
     {
@@ -33,10 +33,10 @@ public class GameSaver : MonoBehaviour, IInteractable
 
     private ZoneSave[] GetZoneSaveArray()
     {
-        ZoneSave[] zoneSaveArray = new ZoneSave[_zoneSaveSOArray.Length];
+        ZoneSave[] zoneSaveArray = new ZoneSave[_gameZoneSavesSO.zones.Length];
 
-        for ( int i = 0; i < _zoneSaveSOArray.Length; i++ )
-            zoneSaveArray[i] = _zoneSaveSOArray[i].zoneSave;
+        for ( int i = 0; i < _gameZoneSavesSO.zones.Length; i++ )
+            zoneSaveArray[i] = _gameZoneSavesSO.zones[i].zoneSave;
 
         return zoneSaveArray;
     }

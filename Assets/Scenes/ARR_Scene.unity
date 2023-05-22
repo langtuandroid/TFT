@@ -5690,8 +5690,7 @@ MonoBehaviour:
   _savePointRef: 0
   _exclamationIcon: {fileID: 347213073}
   _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
-  _zoneSaveSOArray:
-  - {fileID: 11400000, guid: 8c0b5f58f0d017046be152cf1488bd70, type: 2}
+  _gameZoneSavesSO: {fileID: 11400000, guid: caa0094a185f81a4b952527b5bce2d27, type: 2}
 --- !u!4 &770253346
 Transform:
   m_ObjectHideFlags: 0
