@@ -14,11 +14,6 @@ namespace UI
         [SerializeField] private Button _optionButton;
         [SerializeField] private Button _quitButton;
 
-        [Header("Save Data")]
-        [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
-        [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
-        [SerializeField] private GameZoneSavesSO    _gameZoneSavesSO;
-
         [Header("Menus")]
         [SerializeField] private NewGameUI      _newGameUI;
         [SerializeField] private LoadGameMenuUI _loadGameMenuUI;

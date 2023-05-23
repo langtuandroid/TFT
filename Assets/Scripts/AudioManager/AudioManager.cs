@@ -33,19 +33,6 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void Update()
-    {
-        if ( Input.GetKeyUp( KeyCode.Escape ) )
-        {
-            ChangeMusic();
-        }
-        
-        if ( Input.GetKeyUp( KeyCode.V ) )
-        {
-            ChangeParameter( "Woods_Dungeon_M" , 1 );
-        }
-    }
-
     private void Init()
     {
         _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.MainMenu );
