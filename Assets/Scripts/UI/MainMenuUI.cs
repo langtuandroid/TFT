@@ -19,6 +19,12 @@ namespace UI
         [SerializeField] private ZoneExitSideSO     _zoneExitSideSO;
         [SerializeField] private GameZoneSavesSO    _gameZoneSavesSO;
 
+        [Header("Menus")]
+        [SerializeField] private NewGameUI      _newGameUI;
+        [SerializeField] private LoadGameMenuUI _loadGameMenuUI;
+        [SerializeField] private OptionMenuUI   _optionMenuUI;
+
+
         private Button _selectedButton;
 
 
@@ -33,18 +39,17 @@ namespace UI
         {
             _newGameButton.onClick.AddListener( () => {
                 Hide();
-                NewGameUI.Instance.Show( Show );
-                //NewGame();
+                _newGameUI.Show( Show );
             } );
 
             _loadButton.onClick.AddListener( () => {
                 Hide();
-                LoadGameMenuUI.Instance.Show( Show );
+                _loadGameMenuUI.Show( Show );
             } );
 
             _optionButton.onClick.AddListener( () => {
                 Hide();
-                OptionMenuUI.Instance.Show( Show );
+                _optionMenuUI.Show( Show );
             } );
 
             _quitButton.onClick.AddListener( () => QuitGame() );

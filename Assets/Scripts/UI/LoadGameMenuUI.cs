@@ -8,9 +8,6 @@ namespace UI
 {
     public class LoadGameMenuUI : MonoBehaviour
     {
-        public static LoadGameMenuUI Instance { get; private set; }
-
-
         [Header("Load Game Buttons")]
         [SerializeField] private Button _firstSlotButton;
         [SerializeField] private Button _secondSlotButton;
@@ -35,7 +32,6 @@ namespace UI
 
         private void Awake()
         {
-            Instance = this;
             SetSaveSlotInfoAndButtonsEvent();
 
             _returnButton.onClick.AddListener( () => Hide() );

@@ -7,9 +7,6 @@ namespace UI
 {
     public class NewGameUI : MonoBehaviour
     {
-        public static NewGameUI Instance { get; private set; }
-
-
         [Header("New Game Buttons")]
         [SerializeField] private Button _firstSlotButton;
         [SerializeField] private Button _secondSlotButton;
@@ -30,12 +27,12 @@ namespace UI
         private string _overwriteMessage = "This slot is already in use, \n Do you want to overwrite it?";
         private string _insertNameMessage = "What's your name?";
 
+
         private event Action OnReturnButtonClicked;
 
 
         private void Start()
         {
-            Instance = this;
             SetNewGamePossibleSlots();
             _returnButton.onClick.AddListener( () => Hide() );
             Hide();
