@@ -13,17 +13,23 @@ MonoBehaviour:
   m_Name: PlayerStatusSaveSO
   m_EditorClassIdentifier: 
   playerStatusSave:
+    saveSlot: 0
     currentHealth: 3
     maxHealth: 3
+    currentMagic: 0
+    maxMagic: 0
     currentSouls: 1000
     maxSouls: 1000
-    isFireWeakUnlock: 0
-    isFireMediumUnlock: 0
-    isFireStrongUnlock: 0
-    isPlantWeakUnlock: 0
-    isPlantMediumUnlock: 0
-    isPlantStrongUnlock: 0
-    isWaterWeakUnlock: 0
-    isWaterMediumUnlock: 0
-    isWaterStrongUnlock: 0
-    isLightUnlock: 0
+    isJumpUnlocked: 1
+    isSwimUnlocked: 0
+    isDashUnlocked: 0
+    isFireWeakUnlocked: 0
+    isFireMediumUnlocked: 0
+    isFireStrongUnlocked: 0
+    isPlantWeakUnlocked: 0
+    isPlantMediumUnlocked: 0
+    isPlantStrongUnlocked: 0
+    isWaterWeakUnlocked: 0
+    isWaterMediumUnlocked: 0
+    isWaterStrongUnlocked: 0
+    isLightUnlocked: 0

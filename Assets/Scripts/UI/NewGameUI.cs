@@ -25,7 +25,6 @@ namespace UI
         private GameSaveData[] _gameSaveDataArray = new GameSaveData[3];
         private int _slotToSaveIndex;
         private string _overwriteMessage = "This slot is already in use, \n Do you want to overwrite it?";
-        private string _insertNameMessage = "What's your name?";
 
 
         private event Action OnReturnButtonClicked;

@@ -10,6 +10,7 @@ namespace Player
         private GameInputs _gameInputs;
 
         // SCRIPTS DEL JUGADOR
+        private PlayerStatus _playerStatus;
         private PlayerMovement _movement;
         private Interaction _interaction;
         // Script de elevar objetos no pesados del personaje
@@ -59,6 +60,7 @@ namespace Player
             _magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
+            _playerStatus = GetComponent<PlayerStatus>();
         }
 
 #if UNITY_EDITOR
@@ -163,8 +165,9 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if (CanJump())
-                _isJumpInput = true;
+            if ( _playerStatus.IsJumpUnlocked )
+                if (CanJump())
+                    _isJumpInput = true;
         }
 
         private void DoJump()

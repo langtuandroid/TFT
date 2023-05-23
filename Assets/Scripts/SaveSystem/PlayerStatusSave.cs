@@ -4,26 +4,32 @@ using System;
 public class PlayerStatusSave
 {
     public int saveSlot;
-    public string playerName;
     // Basic status
     public int currentHealth;
     public int maxHealth;
+    public int currentMagic;
+    public int maxMagic;
     public int currentSouls;
     public int maxSouls;
 
+    // Physics Skills
+    public bool isJumpUnlocked;
+    public bool isSwimUnlocked;
+    public bool isDashUnlocked;
+
     // Primary skill
-    public bool isFireWeakUnlock;
-    public bool isFireMediumUnlock;
-    public bool isFireStrongUnlock;
+    public bool isFireWeakUnlocked;
+    public bool isFireMediumUnlocked;
+    public bool isFireStrongUnlocked;
     
-    public bool isPlantWeakUnlock;
-    public bool isPlantMediumUnlock;
-    public bool isPlantStrongUnlock;
+    public bool isPlantWeakUnlocked;
+    public bool isPlantMediumUnlocked;
+    public bool isPlantStrongUnlocked;
     
-    public bool isWaterWeakUnlock;
-    public bool isWaterMediumUnlock;
-    public bool isWaterStrongUnlock;
+    public bool isWaterWeakUnlocked;
+    public bool isWaterMediumUnlocked;
+    public bool isWaterStrongUnlocked;
 
     // Secondary skill
-    public bool isLightUnlock;
+    public bool isLightUnlocked;
 }
