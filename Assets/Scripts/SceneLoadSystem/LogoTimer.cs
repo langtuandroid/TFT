@@ -9,6 +9,6 @@ public class LogoTimer : MonoBehaviour
 
     private void ChangeScene()
     {
-        ServiceLocator.GetService<SceneLoader>().InstaLoad( SceneName.S00_MAIN_MENU );
+        ServiceLocator.GetService<SceneLoader>().InstaLoad( SceneName.S00_MainMenuScene.ToString() );
     }
 }

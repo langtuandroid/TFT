@@ -9,7 +9,7 @@ public class SceneLoader
     public void Load( string targetSceneName )
     {
         _targetScene = targetSceneName;
-        SceneManager.LoadScene( SceneName.S01_LOADING );
+        SceneManager.LoadScene( SceneName.S01_LoadingScene.ToString() );
     }
 
     public void InstaLoad( string targetSceneName )

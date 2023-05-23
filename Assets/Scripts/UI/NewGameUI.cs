@@ -121,7 +121,7 @@ namespace UI
             foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
                 zoneSaveSO.NewGameReset();
 
-            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
             //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
         }
 
