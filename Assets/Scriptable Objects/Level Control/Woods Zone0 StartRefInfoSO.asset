@@ -13,10 +13,17 @@ MonoBehaviour:
   m_Name: Woods Zone0 StartRefInfoSO
   m_EditorClassIdentifier: 
   startRefInfoArray:
-  - exitZoneDescription: South Enter - From The City
+  - exitZoneDescription: South Enter - From City
     startPointRefID: 0
-    startPosition: {x: 0, y: 0}
+    startPosition: {x: -1.5, y: -5}
     _playerStartLookDirection: 0
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+  - exitZoneDescription: North Enter - From Altar
+    startPointRefID: 1
+    startPosition: {x: 19.5, y: 81}
+    _playerStartLookDirection: 2
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 65536

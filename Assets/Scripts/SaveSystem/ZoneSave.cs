@@ -6,5 +6,5 @@ using System.Collections.Generic;
 public class ZoneSave
 {
     public bool IsCompleted;
-    public List<bool> IsActivatedList;
+    public List<bool> IsActivatedList = new();
 }
