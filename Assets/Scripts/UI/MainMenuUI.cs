@@ -14,6 +14,12 @@ namespace UI
         [SerializeField] private Button _optionButton;
         [SerializeField] private Button _quitButton;
 
+        [Header("Menus")]
+        [SerializeField] private NewGameUI      _newGameUI;
+        [SerializeField] private LoadGameMenuUI _loadGameMenuUI;
+        [SerializeField] private OptionMenuUI   _optionMenuUI;
+
+
         private Button _selectedButton;
 
 
@@ -27,17 +33,18 @@ namespace UI
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {
-                ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                Hide();
+                _newGameUI.Show( Show );
             } );
 
             _loadButton.onClick.AddListener( () => {
                 Hide();
-                LoadGameMenuUI.Instance.Show( Show );
+                _loadGameMenuUI.Show( Show );
             } );
 
             _optionButton.onClick.AddListener( () => {
                 Hide();
-                OptionMenuUI.Instance.Show( Show );
+                _optionMenuUI.Show( Show );
             } );
 
             _quitButton.onClick.AddListener( () => QuitGame() );

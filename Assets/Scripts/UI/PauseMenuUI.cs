@@ -33,12 +33,12 @@ namespace UI
 
             _loadButton.onClick.AddListener( () => {
                 Hide();
-                LoadGameMenuUI.Instance.Show( Show );
+                //LoadGameMenuUI.Instance.Show( Show );
             } );
 
             _optionButton.onClick.AddListener( () => {
                 Hide();
-                OptionMenuUI.Instance.Show( Show );
+                //OptionMenuUI.Instance.Show( Show );
             } );
 
             _returnMainMenuButton.onClick.AddListener( () => QuitGame() );

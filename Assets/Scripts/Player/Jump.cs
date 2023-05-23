@@ -22,7 +22,6 @@ namespace Player
         private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
         [SerializeField] private Transform _playerVisuals;
-        [SerializeField] private LayerMask _initialGroundLevelMask;
         [SerializeField] private LayerMask _boundsMask;
 
         private LayerMask _jumpableMask;
@@ -45,7 +44,7 @@ namespace Player
         private Vector2   _colliderOffset;
         private Vector2   _rayCastOffset = new( 0.2f , 0.2f );
 
-        public void Init( AnimatorBrain animatorBrain , Vector2 colliderOffset , LayerMask jumpableLayerMask )
+        public void Init( AnimatorBrain animatorBrain , Vector2 colliderOffset , LayerMask jumpableLayerMask , LayerMask initialGroundLayerMask )
         {
             _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 0.6f );
@@ -56,8 +55,8 @@ namespace Player
             _colliderOffset = colliderOffset;
             _jumpableMask   = jumpableLayerMask;
 
-            _currentFloorBitPosition = _initialGroundLevelMask.value;
-            Debug.Log( _initialGroundLevelMask.value );
+            _currentFloorBitPosition = initialGroundLayerMask.value;
+            Debug.Log( _currentFloorBitPosition );
 
             animatorBrain.OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
             animatorBrain.OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
@@ -308,12 +307,6 @@ namespace Player
             _currentFloorBitPosition *= 2;
             transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
             Debug.Log( _currentFloorBitPosition );
-        }
-
-
-        public void SetInitialGroundLevelMask( LayerMask intialLevelMask )
-        {
-            _initialGroundLevelMask = intialLevelMask;
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );

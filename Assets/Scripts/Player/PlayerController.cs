@@ -10,6 +10,7 @@ namespace Player
         private GameInputs _gameInputs;
 
         // SCRIPTS DEL JUGADOR
+        private PlayerStatus _playerStatus;
         private PlayerMovement _movement;
         private Interaction _interaction;
         // Script de elevar objetos no pesados del personaje
@@ -59,12 +60,25 @@ namespace Player
             _magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
+            _playerStatus = GetComponent<PlayerStatus>();
         }
 
+#if UNITY_EDITOR
+        private bool _isInitialized;
         private void Start()
         {
-            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask );
-            _animatorBrain.Init( Vector2.down );
+            if ( !_isInitialized )
+                Init( Vector2.down, 1 << 16 );
+        }
+#endif
+
+        public void Init( Vector2 startLookDirection , LayerMask initialGroundLayerMask )
+        {
+#if UNITY_EDITOR
+            _isInitialized = true;
+#endif
+            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask , initialGroundLayerMask );
+            _animatorBrain.Init( startLookDirection );
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
@@ -118,7 +132,7 @@ namespace Player
             DoMove();
         }
 
-        #endregion
+#endregion
 
         private void GetActionsInformation()
         {
@@ -151,8 +165,9 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if (CanJump())
-                _isJumpInput = true;
+            if ( _playerStatus.IsJumpUnlocked )
+                if (CanJump())
+                    _isJumpInput = true;
         }
 
         private void DoJump()

@@ -24,9 +24,12 @@ public class GameInputs
     private PlayerInputActions _playerInputActions;
     private InputAction _moveAction;
 
-    public GameInputs()
+    private OptionsSave _options;
+
+    public GameInputs( OptionsSave options )
     {
         _playerInputActions = new PlayerInputActions();
+        _options = options;
         PlayerGroundMode();
         MenuModeEnable();
     }
@@ -36,6 +39,12 @@ public class GameInputs
     public Vector2 GetDirectionNormalized()
     {
         return _moveAction.ReadValue<Vector2>().normalized;
+    }
+
+    public void RumblePad( float lowFrequency , float highFrequency )
+    {
+        if ( _options.isVibrationActive )
+            Gamepad.current.SetMotorSpeeds( lowFrequency, highFrequency );
     }
 
     private void PlayerGroundMode()
@@ -109,6 +118,7 @@ public class GameInputs
     private void MenuModeEnable()
     {
         _playerInputActions.UI.Enable();
+        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
     }
 
     private void MenuModeDisable()
