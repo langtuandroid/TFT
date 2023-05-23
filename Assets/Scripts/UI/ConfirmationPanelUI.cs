@@ -25,7 +25,10 @@ namespace UI
             gameObject.SetActive( true );
             _noButton.Select();
             ServiceLocator.GetService<GameInputs>().OnCancelPerformed += GameInputs_OnCancelPerformed;
-            _yesButton.onClick.AddListener( () => onConfirmation?.Invoke() );
+            _yesButton.onClick.AddListener( () => {
+                ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
+                onConfirmation?.Invoke(); 
+                } );
             OnCancel = onCancel;
         }
 
