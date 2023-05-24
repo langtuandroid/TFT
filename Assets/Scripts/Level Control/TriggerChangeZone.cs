@@ -16,9 +16,10 @@ public class TriggerChangeZone : MonoBehaviour
         if ( collision.CompareTag( "Player" ) )
         {
             StartCoroutine( FadeOut() );
-            ServiceLocator.GetService<LevelEvents>().ChangeZone( new BumperUI.FadeOutArgs
-            { 
-                    fadeColor = _fadeOutColor, 
+            ServiceLocator.GetService<LevelEvents>().ChangeZone(
+                new BumperUI.FadeOutArgs
+                {
+                    fadeColor = _fadeOutColor ,
                     fadeDurationSeconds = _fadeOutSeconds
                 } );
         }
