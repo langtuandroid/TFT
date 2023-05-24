@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour
     public void ChangeMusic()
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.WoodsDungeon );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.MainMenu );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }
