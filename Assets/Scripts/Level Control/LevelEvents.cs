@@ -3,8 +3,8 @@ using System;
 
 public class LevelEvents
 {
-    public event Action<TriggerChangeZone.FadeOutArgs> OnChangeZone;
-    public void ChangeZone( TriggerChangeZone.FadeOutArgs bumperUIArgs)
+    public event Action<BumperUI.FadeOutArgs> OnChangeZone;
+    public void ChangeZone( BumperUI.FadeOutArgs bumperUIArgs)
     {
         OnChangeZone?.Invoke( bumperUIArgs );
     }
