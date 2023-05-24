@@ -10,8 +10,6 @@ public class Chest : ActivableSceneObject, IInteractable
     private void Awake()
     {
         _anim = GetComponent<Animator>();
-        // TODO -> Get if CAN BE OPEN because is not OPEN FROM BEFORE from ServiceLocator SaveData
-        // if Cannot be opened then change chest anim to opened
     }
 
     public override void TriggerActivation()

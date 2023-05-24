@@ -74,7 +74,7 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsCompleted = true;
     }
 
-    private void SaveZoneInteractableData()
+    private void SaveZoneInteractableData( TriggerChangeZone.FadeOutArgs bumperUIArgs )
     {
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )

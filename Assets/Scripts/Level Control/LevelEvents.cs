@@ -3,14 +3,14 @@ using System;
 
 public class LevelEvents
 {
-    public Action OnChangeZone;
-    public void ChangeZone()
+    public event Action<TriggerChangeZone.FadeOutArgs> OnChangeZone;
+    public void ChangeZone( TriggerChangeZone.FadeOutArgs bumperUIArgs)
     {
-        OnChangeZone?.Invoke();
+        OnChangeZone?.Invoke( bumperUIArgs );
     }
     
     
-    public Action OnZoneCompleted;
+    public event Action OnZoneCompleted;
     public void ZoneCompleted()
     {
         OnZoneCompleted?.Invoke();
