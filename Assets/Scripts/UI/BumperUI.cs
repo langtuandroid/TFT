@@ -4,12 +4,6 @@ using DG.Tweening;
 
 public class BumperUI : MonoBehaviour
 {
-    public class FadeOutArgs
-    {
-        public Color fadeColor;
-        public float fadeDurationSeconds;
-    }
-
     private Image _image;
 
     private void Awake()
@@ -34,7 +28,7 @@ public class BumperUI : MonoBehaviour
         _image.DOFade( 0 , 1 ).SetEase( Ease.Linear ).Play();
     }
 
-    private void FadeOut( FadeOutArgs bumperUIArgs )
+    private void FadeOut( LevelEvents.ChangeZoneArgs bumperUIArgs )
     {
         Color startColor = new Color( bumperUIArgs.fadeColor.r , 
                                       bumperUIArgs.fadeColor.g , 

@@ -18,13 +18,13 @@ public class ZoneController : MonoBehaviour
         LoadZoneInteractableData();
         PlayerInstantation();
 
-        ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
     }
 
     private void OnDestroy()
     {
-        ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted -= ZoneComplete;
     }
 
@@ -74,8 +74,10 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsCompleted = true;
     }
 
-    private void SaveZoneInteractableData( BumperUI.FadeOutArgs bumperUIArgs )
+    private void SaveZoneData( LevelEvents.ChangeZoneArgs bumperUIArgs )
     {
+        _zoneExitSO.nextStartPointRefID = bumperUIArgs.nextStartPointRefId;
+
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
             _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );

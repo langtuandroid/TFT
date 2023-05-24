@@ -5,7 +5,6 @@ using UnityEngine;
 public class TriggerChangeZone : MonoBehaviour
 {
     [SerializeField][Range( 0, 15 )] private int _nextStartPointRefID;
-    [SerializeField] private ZoneExitSideSO _zoneExitSO;
     [SerializeField] private SceneName _nextScene;
     [SerializeField] private Color _fadeOutColor;
     
@@ -16,10 +15,12 @@ public class TriggerChangeZone : MonoBehaviour
         if ( collision.CompareTag( "Player" ) )
         {
             StartCoroutine( FadeOut() );
+            Debug.Log( _nextStartPointRefID );
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
-                new BumperUI.FadeOutArgs
+                new LevelEvents.ChangeZoneArgs
                 {
-                    fadeColor = _fadeOutColor ,
+                    nextStartPointRefId = _nextStartPointRefID,
+                    fadeColor           = _fadeOutColor ,
                     fadeDurationSeconds = _fadeOutSeconds
                 } );
         }

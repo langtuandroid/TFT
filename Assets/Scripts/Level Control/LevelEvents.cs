@@ -3,8 +3,14 @@ using System;
 
 public class LevelEvents
 {
-    public event Action<BumperUI.FadeOutArgs> OnChangeZone;
-    public void ChangeZone( BumperUI.FadeOutArgs bumperUIArgs)
+    public event Action<ChangeZoneArgs> OnChangeZone;
+    public class ChangeZoneArgs
+    {
+        public int nextStartPointRefId;
+        public UnityEngine.Color fadeColor;
+        public float fadeDurationSeconds;
+    }
+    public void ChangeZone( ChangeZoneArgs bumperUIArgs)
     {
         OnChangeZone?.Invoke( bumperUIArgs );
     }
