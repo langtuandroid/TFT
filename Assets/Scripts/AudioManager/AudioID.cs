@@ -1,6 +1,7 @@
 
 public class AudioID
 {
+    // SFX
     public const int G_PLAYER = 0;
 
     public const int S_PHYSIC_ATK = 0;
@@ -24,6 +25,15 @@ public class AudioID
     public const int S_FLAMETHROWER = 2;
     public const int S_FIRE_DEFINITIVE = 3;
 
+    // Music & Params
+    public const int M_MAIN_MENU = 0;
 
+    public const int M_WOODS = 1;
 
+    public const int M_WOODS_DUNGEON = 2;
+}
+
+public enum MusicParameterName
+{
+    Zone_0, Zone_1, Zone_2, Zone_3, Zone_4, Altar
 }

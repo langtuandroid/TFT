@@ -7,6 +7,7 @@ public class TriggerChangeZone : MonoBehaviour
     [SerializeField][Range( 0, 15 )] private int _nextStartPointRefID;
     [SerializeField] private SceneName _nextScene;
     [SerializeField] private Color _fadeOutColor;
+    [SerializeField] private MusicParameterName _musicParamName;
     
     private float _fadeOutSeconds = 1f;
 
@@ -14,8 +15,8 @@ public class TriggerChangeZone : MonoBehaviour
     {
         if ( collision.CompareTag( "Player" ) )
         {
+            AudioManager.Instance.ChangeParameter( _musicParamName , 1 );
             StartCoroutine( FadeOut() );
-            Debug.Log( _nextStartPointRefID );
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs
                 {

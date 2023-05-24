@@ -2,6 +2,7 @@
 using UnityEngine;
 using FMODUnity;
 using Audio;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.MainMenu );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.Woods );
         _musicEventInstance.start();
         _musicEventInstance.release();
 
@@ -54,10 +55,23 @@ public class AudioManager : MonoBehaviour
         _musicEventInstance.release();
     }
 
-    public void ChangeParameter( string name , float newValue )
+    public void ChangeParameter( MusicParameterName paramName , float newValue )
     {
-        _musicEventInstance.setParameterByName( name , newValue );
+        StartCoroutine( ChangeParam( paramName.ToString() , newValue ) );
     }
+
+    private IEnumerator ChangeParam( string paramName , float newValue )
+    {
+        float acumulated = 0;
+        while ( acumulated < newValue )
+        {
+            _musicEventInstance.setParameterByName ( paramName , newValue );
+
+            acumulated += Time.deltaTime;
+            yield return null;
+        }
+        _musicEventInstance.setParameterByName ( paramName , newValue );
+    } 
 
     public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {
