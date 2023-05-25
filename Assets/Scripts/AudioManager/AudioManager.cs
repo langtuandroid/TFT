@@ -36,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[AudioID.M_MAIN_MENU] );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[(int)MusicName.Main_Menu] );
         _musicEventInstance.start();
         _musicEventInstance.release();
 
@@ -47,10 +47,11 @@ public class AudioManager : MonoBehaviour
         _sfxMixer.getVolume( out _sfxVolume );
     }
 
-    public void ChangeMusic( int musicId )
+
+    public void ChangeMusic( MusicName musicId )
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        StartCoroutine( StartMusic( musicId ) );
+        StartCoroutine( StartMusic( (int)musicId ) );
     }
 
     private IEnumerator StartMusic( int musicId )
@@ -62,6 +63,7 @@ public class AudioManager : MonoBehaviour
         _musicEventInstance.release();
     }
 
+
     public void ChangeParameter( MusicParameterName paramName , bool isActivatingParam )
     {
         StartCoroutine( ChangeParam( paramName.ToString() , isActivatingParam ) );
@@ -70,7 +72,6 @@ public class AudioManager : MonoBehaviour
     private IEnumerator ChangeParam( string paramName , bool isActivatingParam )
     {
         float acumulated = 0;
-
         while ( acumulated < 1 )
         {
             _musicEventInstance.setParameterByName( paramName , isActivatingParam ? acumulated : 1 - acumulated );
@@ -80,6 +81,7 @@ public class AudioManager : MonoBehaviour
         }
         _musicEventInstance.setParameterByName( paramName , isActivatingParam ? 1 : 0 );
     } 
+
 
     public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {

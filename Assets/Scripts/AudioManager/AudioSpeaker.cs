@@ -10,7 +10,7 @@ public class AudioSpeaker
         isDevelop = !isPlayingSound;
     }
 
-    public void ChangeMusic( int musicId )
+    public void ChangeMusic( MusicName musicId )
     {
         if ( isDevelop ) return;
         AudioManager.Instance.ChangeMusic( musicId );

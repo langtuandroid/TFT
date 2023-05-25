@@ -24,13 +24,14 @@ public class AudioID
     public const int SS_FIRE_BALL_HIT = 1;
     public const int S_FLAMETHROWER = 2;
     public const int S_FIRE_DEFINITIVE = 3;
+}
 
-    // Music
-    public const int M_MAIN_MENU = 0;
-
-    public const int M_WOODS = 1;
-
-    public const int M_WOODS_DUNGEON = 2;
+public enum MusicName
+{
+    Main_Menu     = 0,
+    Woods         = 1,
+    Woods_Dungeon = 2,
+    Woods_Boss    = 3
 }
 
 public enum MusicParameterName
