@@ -7,6 +7,8 @@ namespace Services
     [DefaultExecutionOrder(-5)]
     public class ServiceInitializer : MonoBehaviour
     {
+        public bool IsRealMusicPlaying;
+
         private void Awake()
         {            
             if (!IsInitialized)
@@ -16,7 +18,11 @@ namespace Services
                 // Systems
                 AddService( optionsSave );
                 AddService( new GameInputs( optionsSave ) );
-                AddService( new AudioSpeaker() );
+#if UNITY_EDITOR
+                AddService( new AudioSpeaker( IsRealMusicPlaying ) );
+#else
+                AddService( new AudioSpeaker( true ) );
+#endif
                 AddService( new SceneLoader() );
                 // Events
                 AddService( new MagicEvents() );

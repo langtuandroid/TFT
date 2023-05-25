@@ -17,8 +17,6 @@ public class TriggerChangeZone : MonoBehaviour
         {
             ServiceLocator.GetService<AudioSpeaker>().ChangeParamater( _musicParamName , true );
 
-            StartCoroutine( FadeOut() );
-
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs
                 {
@@ -26,6 +24,8 @@ public class TriggerChangeZone : MonoBehaviour
                     fadeColor           = _fadeOutColor ,
                     fadeDurationSeconds = _fadeOutSeconds
                 } );
+
+            StartCoroutine( FadeOut() );
         }
     }
 

@@ -8888,6 +8888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsRealMusicPlaying: 0
 --- !u!4 &1894208113
 Transform:
   m_ObjectHideFlags: 0

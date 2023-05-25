@@ -74,9 +74,9 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsCompleted = true;
     }
 
-    private void SaveZoneData( LevelEvents.ChangeZoneArgs bumperUIArgs )
+    private void SaveZoneData( LevelEvents.ChangeZoneArgs changeZoneArgs )
     {
-        _zoneExitSO.nextStartPointRefID = bumperUIArgs.nextStartPointRefId;
+        _zoneExitSO.nextStartPointRefID = changeZoneArgs.nextStartPointRefId;
 
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )

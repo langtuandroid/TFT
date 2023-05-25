@@ -47,11 +47,6 @@ public class AudioManager : MonoBehaviour
         _sfxMixer.getVolume( out _sfxVolume );
     }
 
-    public void StopMusic()
-    {
-        _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-    }
-
     public void ChangeMusic( int musicId )
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );

@@ -3,13 +3,11 @@ using UnityEngine;
 
 public class AudioSpeaker
 {
-    private bool isDevelop = true;
+    private bool isDevelop;
 
-    public AudioSpeaker()
+    public AudioSpeaker( bool isPlayingSound )
     {
-#if !UNITY_EDITOR
-        isDevelop = false;
-#endif
+        isDevelop = !isPlayingSound;
     }
 
     public void ChangeMusic( int musicId )
