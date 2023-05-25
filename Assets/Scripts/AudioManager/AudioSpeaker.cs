@@ -12,6 +12,19 @@ public class AudioSpeaker
 #endif
     }
 
+    public void ChangeMusic( int musicId )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.ChangeMusic( musicId );
+    }
+
+    public void ChangeParamater( MusicParameterName paramName , bool isActivatingParam )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.ChangeParameter( paramName , isActivatingParam );
+    }
+
+
     public void PlaySound( int groupId , int soundId )
     {
         if ( isDevelop ) return;

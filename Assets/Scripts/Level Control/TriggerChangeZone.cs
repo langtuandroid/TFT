@@ -15,8 +15,10 @@ public class TriggerChangeZone : MonoBehaviour
     {
         if ( collision.CompareTag( "Player" ) )
         {
-            AudioManager.Instance.ChangeParameter( _musicParamName , 1 );
+            ServiceLocator.GetService<AudioSpeaker>().ChangeParamater( _musicParamName , true );
+
             StartCoroutine( FadeOut() );
+
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs
                 {
@@ -32,7 +34,5 @@ public class TriggerChangeZone : MonoBehaviour
         WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
         yield return waitTime;
         ServiceLocator.GetService<SceneLoader>().InstaLoad( _nextScene.ToString() );
-    }
-
-    
+    }    
 }

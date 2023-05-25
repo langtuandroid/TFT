@@ -25,7 +25,7 @@ public class AudioID
     public const int S_FLAMETHROWER = 2;
     public const int S_FIRE_DEFINITIVE = 3;
 
-    // Music & Params
+    // Music
     public const int M_MAIN_MENU = 0;
 
     public const int M_WOODS = 1;

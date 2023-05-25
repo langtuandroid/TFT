@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9082e7d3b8a2a4d4b912d690bb9a2655, type: 3}
   m_Name: 01_MagicSfxRefSO
   m_EditorClassIdentifier: 
-  Sounds: []
   SfxRef:
   - SoundName: Magic Charge
     Id: 0
