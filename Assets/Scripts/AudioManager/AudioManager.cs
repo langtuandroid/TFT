@@ -2,6 +2,7 @@
 using UnityEngine;
 using FMODUnity;
 using Audio;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class AudioManager : MonoBehaviour
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.MainMenu );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[AudioID.M_MAIN_MENU] );
         _musicEventInstance.start();
         _musicEventInstance.release();
 
@@ -46,18 +47,39 @@ public class AudioManager : MonoBehaviour
         _sfxMixer.getVolume( out _sfxVolume );
     }
 
-    public void ChangeMusic()
+    public void ChangeMusic( int musicId )
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.WoodsDungeon );
+        StartCoroutine( StartMusic( musicId ) );
+    }
+
+    private IEnumerator StartMusic( int musicId )
+    {
+        WaitForSeconds wait = new WaitForSeconds( 1.5f );
+        yield return wait;
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[musicId] );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }
 
-    public void ChangeParameter( string name , float newValue )
+    public void ChangeParameter( MusicParameterName paramName , bool isActivatingParam )
     {
-        _musicEventInstance.setParameterByName( name , newValue );
+        StartCoroutine( ChangeParam( paramName.ToString() , isActivatingParam ) );
     }
+
+    private IEnumerator ChangeParam( string paramName , bool isActivatingParam )
+    {
+        float acumulated = 0;
+
+        while ( acumulated < 1 )
+        {
+            _musicEventInstance.setParameterByName( paramName , isActivatingParam ? acumulated : 1 - acumulated );
+
+            acumulated += Time.deltaTime;
+            yield return null;
+        }
+        _musicEventInstance.setParameterByName( paramName , isActivatingParam ? 1 : 0 );
+    } 
 
     public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
     {

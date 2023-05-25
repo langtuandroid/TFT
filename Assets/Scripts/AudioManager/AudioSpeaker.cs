@@ -3,14 +3,25 @@ using UnityEngine;
 
 public class AudioSpeaker
 {
-    private bool isDevelop = true;
+    private bool isDevelop;
 
-    public AudioSpeaker()
+    public AudioSpeaker( bool isPlayingSound )
     {
-#if !UNITY_EDITOR
-        isDevelop = false;
-#endif
+        isDevelop = !isPlayingSound;
     }
+
+    public void ChangeMusic( int musicId )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.ChangeMusic( musicId );
+    }
+
+    public void ChangeParamater( MusicParameterName paramName , bool isActivatingParam )
+    {
+        if ( isDevelop ) return;
+        AudioManager.Instance.ChangeParameter( paramName , isActivatingParam );
+    }
+
 
     public void PlaySound( int groupId , int soundId )
     {
