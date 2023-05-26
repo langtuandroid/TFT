@@ -42,14 +42,14 @@ public class Fireball : MonoBehaviour
         {
             // Lo activamos
             burnable.Burn();
-            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT );
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
         }
 
         if (collision.TryGetComponent(out IInteractable interactable)
             || collision.TryGetComponent(out IPickable pickable ) )
         {
             DisappearBall();
-            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT );
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
         }
     }
 
