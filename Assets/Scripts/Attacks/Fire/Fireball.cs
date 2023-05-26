@@ -11,6 +11,7 @@ public class Fireball : MonoBehaviour
     #endregion
 
     #region Private Variables
+    private AudioSpeaker _audioSpeaker;
     private Vector3 _direction; // Dirección de movimiento
     private float _timer; // Temporizador
     #endregion
@@ -23,6 +24,7 @@ public class Fireball : MonoBehaviour
         // Ponemos una dirección de movimiento por defecto
         // (p. ej. hacia arriba)
         _direction = Vector3.up;
+        _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
     }
 
     private void Update()
@@ -36,13 +38,19 @@ public class Fireball : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Si colisiona con un elemento que es quemable
-        if (collision.TryGetComponent(out IBurnable burnable))
+        if (collision.TryGetComponent(out IBurnable burnable ) )
+        {
             // Lo activamos
             burnable.Burn();
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT );
+        }
 
         if (collision.TryGetComponent(out IInteractable interactable)
-            || collision.TryGetComponent(out IPickable pickable))
+            || collision.TryGetComponent(out IPickable pickable ) )
+        {
             DisappearBall();
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT );
+        }
     }
 
     #endregion

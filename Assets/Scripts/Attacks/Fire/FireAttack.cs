@@ -38,6 +38,8 @@ namespace Attack
 
         #region Private Variables
 
+        private AudioSpeaker _audioSpeaker;
+
         // Dirección de los ataques
         private Vector2 _direction;
 
@@ -65,6 +67,7 @@ namespace Attack
             _flamesToDestroy = new List<GameObject>();
 
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
         }
 
         #endregion
@@ -90,7 +93,7 @@ namespace Attack
                 );
 
             fireball.GetComponent<Fireball>().SetDirection(_direction);
-
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FIRE_BALL );
         }
 
         /// <summary>
@@ -119,6 +122,7 @@ namespace Attack
                 _flame.transform.position.y + Constants.PLAYER_OFFSET
                 );
 
+            //_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
             _flame.GetComponent<ParticleSystem>().Play();
         }
 
@@ -140,6 +144,7 @@ namespace Attack
         {
             // Activamos el poder
             StartCoroutine(FinalPower());
+            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FIRE_DEFINITIVE );
         }
 
         public override void SetDirection(Vector2 direction)

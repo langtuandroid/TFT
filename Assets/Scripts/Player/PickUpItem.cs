@@ -6,11 +6,18 @@ public class PickUpItem : MonoBehaviour
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private float _checkDistance = 0.6f;
     [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
-    
+
+    private AudioSpeaker _audioSpeaker;
     private Vector2 _colliderOffset;
     private IPickable _pickable;
-    public void Init() => _colliderOffset = GetComponent<Collider2D>().offset;
     public bool HasItem = false;
+
+    public void Init()
+    {
+        _colliderOffset = GetComponent<Collider2D>().offset;
+        _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+    }
+
     public bool CanPickItUp( Vector2 lookDirection )
     {
         float xRayOffset = lookDirection.y != 0 ? _rayCastOffset.x : 0;
@@ -56,6 +63,7 @@ public class PickUpItem : MonoBehaviour
     {
         HasItem = false;
         _pickable?.ThrowIt(lookDirection);
+        _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         StopPickItUp();
     }
     
