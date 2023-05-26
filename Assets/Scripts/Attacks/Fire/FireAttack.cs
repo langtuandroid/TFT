@@ -38,7 +38,7 @@ namespace Attack
 
         #region Private Variables
 
-        private AudioSpeaker _audioSpeaker;
+        private IAudioSpeaker _audioSpeaker;
 
         // Dirección de los ataques
         private Vector2 _direction;
@@ -67,7 +67,7 @@ namespace Attack
             _flamesToDestroy = new List<GameObject>();
 
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
-            _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
         }
 
         #endregion

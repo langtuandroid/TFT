@@ -15,7 +15,7 @@ public class TriggerChangeZone : MonoBehaviour
     {
         if ( collision.CompareTag( "Player" ) )
         {
-            ServiceLocator.GetService<AudioSpeaker>().ChangeParamater( _musicParamName , true );
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeParamater( _musicParamName , true );
 
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs

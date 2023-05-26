@@ -11,7 +11,7 @@ public class Fireball : MonoBehaviour
     #endregion
 
     #region Private Variables
-    private AudioSpeaker _audioSpeaker;
+    private IAudioSpeaker _audioSpeaker;
     private Vector3 _direction; // Dirección de movimiento
     private float _timer; // Temporizador
     #endregion
@@ -24,7 +24,7 @@ public class Fireball : MonoBehaviour
         // Ponemos una dirección de movimiento por defecto
         // (p. ej. hacia arriba)
         _direction = Vector3.up;
-        _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+        _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
     }
 
     private void Update()

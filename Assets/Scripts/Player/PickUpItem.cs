@@ -7,7 +7,7 @@ public class PickUpItem : MonoBehaviour
     [SerializeField] private float _checkDistance = 0.6f;
     [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
 
-    private AudioSpeaker _audioSpeaker;
+    private IAudioSpeaker _audioSpeaker;
     private Vector2 _colliderOffset;
     private IPickable _pickable;
     public bool HasItem = false;
@@ -15,7 +15,7 @@ public class PickUpItem : MonoBehaviour
     public void Init()
     {
         _colliderOffset = GetComponent<Collider2D>().offset;
-        _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+        _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
     }
 
     public bool CanPickItUp( Vector2 lookDirection )

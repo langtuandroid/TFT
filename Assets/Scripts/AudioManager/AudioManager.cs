@@ -4,7 +4,8 @@ using FMODUnity;
 using Audio;
 using System.Collections;
 
-public class AudioManager : MonoBehaviour
+[DefaultExecutionOrder(-10)]
+public class AudioManager : MonoBehaviour, IAudioSpeaker
 {
     public static AudioManager Instance { get; private set; }
 
@@ -36,15 +37,18 @@ public class AudioManager : MonoBehaviour
 
     private void Init()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[(int)MusicName.Main_Menu] );
-        _musicEventInstance.start();
-        _musicEventInstance.release();
-
         _musicMixer = RuntimeManager.GetBus( "bus:/Music" );
         _sfxMixer   = RuntimeManager.GetBus( "bus:/Sfx" );
 
         _musicMixer.getVolume( out _musicVolume );
         _sfxMixer.getVolume( out _sfxVolume );
+    }
+
+    public void StartMusic()
+    {
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[( int )MusicName.Main_Menu] );
+        _musicEventInstance.start();
+        _musicEventInstance.release();
     }
 
 
@@ -64,7 +68,7 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void ChangeParameter( MusicParameterName paramName , bool isActivatingParam )
+    public void ChangeParamater( MusicParameterName paramName , bool isActivatingParam )
     {
         StartCoroutine( ChangeParam( paramName.ToString() , isActivatingParam ) );
     }
@@ -83,11 +87,11 @@ public class AudioManager : MonoBehaviour
     } 
 
 
-    public void PlayOneShot( int groupId, int soundId , Vector3 soundOrigin = new() )
+    public void PlaySound( int groupId, int soundId , Vector3 soundPosition = new() )
     {
         Debug.Log( "[Play Sound]: " + _sfxGroupSO.list[groupId].SfxRef[soundId].SoundName + 
             ", IDSend: " + soundId + " = ID: " + _sfxGroupSO.list[groupId].SfxRef[soundId].Id );
-        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].SfxRef[soundId].Sound , soundOrigin );
+        RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].SfxRef[soundId].Sound , soundPosition );
     }
 
 

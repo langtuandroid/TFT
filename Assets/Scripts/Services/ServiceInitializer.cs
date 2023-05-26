@@ -19,10 +19,11 @@ namespace Services
                 AddService( optionsSave );
                 AddService( new GameInputs( optionsSave ) );
 #if UNITY_EDITOR
-                AddService( new AudioSpeaker( IsRealMusicPlaying ) );
+                IAudioSpeaker audio = IsRealMusicPlaying ? AudioManager.Instance : new DummyAudio();
 #else
-                AddService( new AudioSpeaker( true ) );
+                IAudioSpeaker audio = AudioManager.Instance;
 #endif
+                AddService( audio );
                 AddService( new SceneLoader() );
                 // Events
                 AddService( new MagicEvents() );
