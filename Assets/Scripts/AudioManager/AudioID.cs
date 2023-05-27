@@ -34,7 +34,7 @@ public enum MusicName
     Woods_Boss    = 3
 }
 
-public enum MusicParameterName
+public enum MusicZoneParameter
 {
-    Zone_0, Zone_1, Zone_2, Zone_3, Zone_4, Altar
+    None, Zone_0, Zone_1, Zone_2, Zone_3, Zone_4, Altar
 }

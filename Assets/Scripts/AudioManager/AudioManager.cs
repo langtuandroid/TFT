@@ -14,7 +14,8 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
     [SerializeField] private SfxGroupSO  _sfxGroupSO;
 
     [Header("Music currently playing")]
-    private static FMOD.Studio.EventInstance _musicEventInstance;
+    private FMOD.Studio.EventInstance _musicEventInstance;
+    private MusicZoneParameter _currentZoneParameter;
 
     [Header("Volumes")]
     private FMOD.Studio.Bus _musicMixer;
@@ -42,11 +43,15 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
         _musicMixer.getVolume( out _musicVolume );
         _sfxMixer.getVolume( out _sfxVolume );
+
+        _currentZoneParameter = MusicZoneParameter.None;
+
+        StartMusic();
     }
 
     public void StartMusic()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[( int )MusicName.Main_Menu] );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[( int )MusicName.Woods] );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }
@@ -68,22 +73,49 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
     }
 
 
-    public void ChangeParamater( MusicParameterName paramName , bool isActivatingParam )
+    public void ChangeZoneParamater( MusicZoneParameter paramName , bool isActivatingParam )
     {
-        StartCoroutine( ChangeParam( paramName.ToString() , isActivatingParam ) );
+        if ( _currentZoneParameter.Equals( paramName ) )
+            return;
+        StartCoroutine( ChangeParam( paramName ) );
     }
 
-    private IEnumerator ChangeParam( string paramName , bool isActivatingParam )
+    private IEnumerator ChangeParam( MusicZoneParameter paramName )
     {
-        float acumulated = 0;
-        while ( acumulated < 1 )
-        {
-            _musicEventInstance.setParameterByName( paramName , isActivatingParam ? acumulated : 1 - acumulated );
+        float acumulated = 1;
+        string paramNameStr = _currentZoneParameter.ToString();
+        Debug.Log( paramNameStr );
 
-            acumulated += Time.deltaTime;
-            yield return null;
+        if ( !_currentZoneParameter.Equals( MusicZoneParameter.None ) )
+        {
+            Debug.Log( "1st in" );
+            while ( acumulated > 0 )
+            {
+                _musicEventInstance.setParameterByName( paramNameStr , acumulated );
+
+                acumulated -= Time.deltaTime;
+                yield return null;
+            }
+            _musicEventInstance.setParameterByName( paramNameStr , 0 );
         }
-        _musicEventInstance.setParameterByName( paramName , isActivatingParam ? 1 : 0 );
+
+        _currentZoneParameter = paramName;
+        if ( !paramName.Equals( MusicZoneParameter.None ) )
+        {
+            Debug.Log( "2nd in" );
+            paramNameStr = paramName.ToString();
+            Debug.Log( paramNameStr );
+            acumulated = 0;
+
+            while ( acumulated < 1 )
+            {
+                _musicEventInstance.setParameterByName( paramNameStr , acumulated );
+
+                acumulated += Time.deltaTime;
+                yield return null;
+            }
+            _musicEventInstance.setParameterByName( paramNameStr , 1 );
+        }
     } 
 
 

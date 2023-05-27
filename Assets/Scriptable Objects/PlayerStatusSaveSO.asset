@@ -20,7 +20,7 @@ MonoBehaviour:
     maxMagic: 0
     currentSouls: 1000
     maxSouls: 1000
-    isJumpUnlocked: 1
+    isJumpUnlocked: 0
     isSwimUnlocked: 0
     isDashUnlocked: 0
     isFireWeakUnlocked: 0
