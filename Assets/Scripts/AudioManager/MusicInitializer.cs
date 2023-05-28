@@ -4,6 +4,6 @@ public class MusicInitializer : MonoBehaviour
 {
     private void OnDestroy()
     {
-        AudioManager.Instance.StartMusic();
+        ServiceLocator.GetService<IAudioSpeaker>().StartMusic();
     }
 }

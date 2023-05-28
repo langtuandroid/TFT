@@ -3,6 +3,7 @@ using UnityEngine;
 
 public interface IAudioSpeaker
 {
+    public void StartMusic();
     public void ChangeMusic( MusicName musicId );
     public void ChangeZoneParamater( MusicZoneParameter paramName , bool isActivatingParam );
     public void PlaySound( int groupId , int soundId , Vector3 soundPosition = new() );
@@ -13,6 +14,7 @@ public interface IAudioSpeaker
 }
 public class DummyAudio : IAudioSpeaker
 {
+    public void StartMusic() { }
     public void ChangeMusic( MusicName musicId ) { }
     public void ChangeZoneParamater( MusicZoneParameter paramName , bool isActivatingParam ) { }
     public float MusicVolume() { return 0; }
