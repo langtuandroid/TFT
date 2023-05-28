@@ -25,6 +25,7 @@ public class GameInputs
     private InputAction _moveAction;
 
     private OptionsSave _options;
+    private MonoTimer _rumbleTimer;
 
     public GameInputs( OptionsSave options )
     {
@@ -41,10 +42,20 @@ public class GameInputs
         return _moveAction.ReadValue<Vector2>().normalized;
     }
 
-    public void RumblePad( float lowFrequency , float highFrequency )
+    public void RumblePad( float lowFrequency , float highFrequency , float durationSeconds )
     {
         if ( _options.isVibrationActive )
-            Gamepad.current.SetMotorSpeeds( lowFrequency, highFrequency );
+        {
+            if ( Gamepad.current == null )
+                return;
+
+            if ( !_rumbleTimer )
+                _rumbleTimer = new GameObject( "Rumble" , typeof( MonoTimer ) ).GetComponent<MonoTimer>();
+            
+            Gamepad.current.SetMotorSpeeds( lowFrequency , highFrequency );
+
+            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds );
+        }
     }
 
     private void PlayerGroundMode()
