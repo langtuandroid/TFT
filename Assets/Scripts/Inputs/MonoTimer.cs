@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MonoTimer : MonoBehaviour
 {
-    public void StartTimer( Action onTimerUp , float durationSeconds )
+    private Action OnDestroyObject;
+
+    public void StartTimer( Action onTimerUp , float durationSeconds , Action onDestroyMonoTimer )
     {
+        OnDestroyObject = onDestroyMonoTimer;
         StartCoroutine( Timer( onTimerUp , durationSeconds ) );
     }
 
@@ -13,6 +16,11 @@ public class MonoTimer : MonoBehaviour
     {
         WaitForSeconds wait = new WaitForSeconds( durationSeconds );
         yield return wait;
-        onTimerUp();
+        onTimerUp?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        OnDestroyObject?.Invoke();
     }
 }

@@ -54,7 +54,8 @@ public class GameInputs
             
             Gamepad.current.SetMotorSpeeds( lowFrequency , highFrequency );
 
-            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds );
+            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds , 
+                () => _rumbleTimer = null);
         }
     }
 
