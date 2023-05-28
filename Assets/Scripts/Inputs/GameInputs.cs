@@ -50,12 +50,14 @@ public class GameInputs
                 return;
 
             if ( !_rumbleTimer )
+            {
                 _rumbleTimer = new GameObject( "Rumble" , typeof( MonoTimer ) ).GetComponent<MonoTimer>();
+                _rumbleTimer.OnDestroyObject = () => _rumbleTimer = null;
+            }
             
             Gamepad.current.SetMotorSpeeds( lowFrequency , highFrequency );
 
-            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds , 
-                () => _rumbleTimer = null);
+            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds );
         }
     }
 

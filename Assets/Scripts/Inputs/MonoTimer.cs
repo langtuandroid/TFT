@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class MonoTimer : MonoBehaviour
 {
-    private Action OnDestroyObject;
+    public Action OnDestroyObject;
 
-    public void StartTimer( Action onTimerUp , float durationSeconds , Action onDestroyMonoTimer )
+    public void StartTimer( Action onTimerUp , float durationSeconds )
     {
-        OnDestroyObject = onDestroyMonoTimer;
         StartCoroutine( Timer( onTimerUp , durationSeconds ) );
     }
 
