@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 1262885402}
   - component: {fileID: 1262885403}
   - component: {fileID: -2436258849758510410}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Alex V0.35
   m_TagString: Player
   m_Icon: {fileID: 0}

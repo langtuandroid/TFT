@@ -59,6 +59,7 @@ public class ZoneController : MonoBehaviour
 
         player.GetComponent<Player.PlayerController>().Init( startLookDirection, initialLayer );
         _camera.Follow = player.transform;
+        _camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
     }
 
     private int GetStartRefInfoIndex( int startPointRefID )

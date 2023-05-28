@@ -13,20 +13,17 @@ public class TriggerChangeZone : MonoBehaviour
 
     private void OnTriggerEnter2D( Collider2D collision )
     {
-        if ( collision.CompareTag( "Player" ) )
-        {
-            ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+        ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
 
-            ServiceLocator.GetService<LevelEvents>().ChangeZone(
-                new LevelEvents.ChangeZoneArgs
-                {
-                    nextStartPointRefId = _nextStartPointRefID,
-                    fadeColor           = _fadeOutColor ,
-                    fadeDurationSeconds = _fadeOutSeconds
-                } );
+        ServiceLocator.GetService<LevelEvents>().ChangeZone(
+            new LevelEvents.ChangeZoneArgs
+            {
+                nextStartPointRefId = _nextStartPointRefID,
+                fadeColor           = _fadeOutColor ,
+                fadeDurationSeconds = _fadeOutSeconds
+            } );
 
-            StartCoroutine( FadeOut() );
-        }
+        StartCoroutine( FadeOut() );
     }
 
     private IEnumerator FadeOut()
