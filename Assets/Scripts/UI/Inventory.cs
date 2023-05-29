@@ -1,21 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory 
+public class Inventory : MonoBehaviour
 {
-    public List<Item> items = new List<Item>();  //TODO tengo dudas de si viene de una clase
-    public int inventorySpace = 10;  //TODO no se si hace falta
-    
+    public List<Item> items = new List<Item>();
+    public int inventorySpace = 10;
+
+    public Dictionary<int, GameObject> uiItems = new Dictionary<int, GameObject>();
+    private Dictionary<int, bool> itemUIStates = new Dictionary<int, bool>(); 
+
     public bool AddItem(Item item)
     {
-        if (items.Count < inventorySpace) //TODO añadir comprobacion de si ya lo tiene?
+        if (items.Count < inventorySpace)
         {
-            items.Add(item); // TODO hay que hacer un setActive true
+            items.Add(item);
+            itemUIStates[item.itemID] = true; 
+            if (uiItems.ContainsKey(item.itemID))
+            {
+                uiItems[item.itemID].SetActive(true); 
+            }
             return true;
         }
         else
         {
-            Debug.Log("Inventario lleno. No se puede añadir " + item.name + "."); //TODO Quitar
+            Debug.Log("Inventario lleno. No se puede añadir " + item.name + ".");
             return false;
         }
     }
@@ -24,23 +32,28 @@ public class Inventory
     {
         if (items.Contains(item))
         {
-            items.Remove(item); // TODO hay que hacer un setActive false
+            items.Remove(item);
+            itemUIStates.Remove(item.itemID);
+            if (uiItems.ContainsKey(item.itemID))
+            {
+                uiItems[item.itemID].SetActive(false);
+            }
         }
         else
         {
-            Debug.Log("No se encontró " + item.name + " en el inventario.");//TODO Quitar
+            Debug.Log("No se encontró " + item.name + " en el inventario.");
         }
     }
-}
 
-//TODO añado el item para pruebas
-[System.Serializable]
-public class Item
-{
-    public string name; 
-
-    public Item(string itemName)
+    public void CheckItemInInventory(int itemID)
     {
-        name = itemName;
+        if (itemUIStates.ContainsKey(itemID))
+        {
+            bool isActive = itemUIStates[itemID];
+            if (uiItems.ContainsKey(itemID))
+            {
+                uiItems[itemID].SetActive(isActive);
+            }
+        }
     }
 }
