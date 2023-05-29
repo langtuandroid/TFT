@@ -6,8 +6,43 @@ public class Inventory : MonoBehaviour
     public List<Item> items = new List<Item>();
     public int inventorySpace = 10;
 
-    public Dictionary<int, GameObject> uiItems = new Dictionary<int, GameObject>();
-    private Dictionary<int, bool> itemUIStates = new Dictionary<int, bool>(); 
+    private Dictionary<int, GameObject> uiItems = new Dictionary<int, GameObject>();
+    private readonly Dictionary<int, bool> itemUIStates = new Dictionary<int, bool>();
+
+    private List<int> itemsNoEquipables = new List<int>();
+
+    private void Awake() //TODO quitar solo es de prueba
+    {
+        Item florAmarillenta = new Item("Flor Amarillenta", 1);
+        AddItem(florAmarillenta);
+    }
+
+    private void Start()
+    {
+        Init();
+    }
+
+    private void Init()
+    {
+        foreach (Item item in items) // Busqueda de items no equipables en la ui para añadirlas al diccionario
+        {
+            // TODO preguntar por este prefijo u otra forma de hacerlo
+            Transform uiItemTransform = transform.Find("UI_ITEM_" + item.itemID);
+            
+            if (uiItemTransform != null)
+            {
+                GameObject uiItem = uiItemTransform.gameObject;
+                
+                if (uiItem != null)
+                {
+                    uiItems[item.itemID] = uiItem; // ID DE LA UI
+                    itemUIStates[item.itemID] = true;
+                    itemsNoEquipables.Add(item.itemID);
+                    CheckItemInInventory(item.itemID);
+                }
+            }
+        }
+    }
 
     public bool AddItem(Item item)
     {
@@ -45,11 +80,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void CheckItemInInventory(int itemID)
+    private void CheckItemInInventory(int itemID)
     {
         if (itemUIStates.ContainsKey(itemID))
         {
             bool isActive = itemUIStates[itemID];
+            
             if (uiItems.ContainsKey(itemID))
             {
                 uiItems[itemID].SetActive(isActive);
