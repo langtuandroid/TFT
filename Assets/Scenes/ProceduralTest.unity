@@ -833,7 +833,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1408432122}
   - component: {fileID: 1408432121}
-  - component: {fileID: 1408432120}
   - component: {fileID: 1408432119}
   m_Layer: 0
   m_Name: CM vcam1
@@ -854,21 +853,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1408432120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408432118}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BoundingShape2D: {fileID: 0}
-  m_Damping: 0.5
-  m_MaxWindowSize: -1
 --- !u!114 &1408432121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,6 +1024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsRealMusicPlaying: 0
 --- !u!4 &1894208113
 Transform:
   m_ObjectHideFlags: 0

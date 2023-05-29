@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Procedural
@@ -18,7 +17,7 @@ namespace Procedural
 
             _isBossDoor = isBossDoor;
 
-            DestroyImmediate( isBossDoor ? _normalDoorVisual : _keyDoorVisual );
+            Destroy( isBossDoor ? _normalDoorVisual : _keyDoorVisual );
 
             OpenDoor();
 
@@ -31,16 +30,22 @@ namespace Procedural
             }
 
             roomController.OnEnterRoom += CloseDoor;
+            roomController.OnRoomFinished += OpenDoor;
         }
 
         private void OpenDoor()
         {
-            _doorCollider.enabled = false;
 
             if ( _isBossDoor )
-                _keyDoorVisual.SetActive( false );
+            {
+                //_doorCollider.enabled = false;
+                //_keyDoorVisual.SetActive( false );
+            }
             else
+            {
+                _doorCollider.enabled = false;
                 _normalDoorVisual.SetActive( false );
+            }
         }
 
         private void CloseDoor()

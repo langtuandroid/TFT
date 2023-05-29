@@ -9,6 +9,7 @@ namespace Procedural
     public class RoomController : MonoBehaviour
     {
         public event Action OnEnterRoom;
+        public event Action OnRoomFinished;
 
         private static Transform _playerTransform;
 
@@ -34,37 +35,35 @@ namespace Procedural
         private int  _enemiesLeftInRoom;
         private bool _isBossRoom;
         private bool _isMiniBossRoom;
-
+        private bool _isRoomFinished;
 
         private void OnTriggerEnter2D( Collider2D collision )
         {
-            if ( collision.gameObject.tag.Equals( "Player" ) )
-            {
-                Debug.Log( "enter room " + _playerTransform.position );
-                OnEnterRoom?.Invoke();
-            }
+            if ( _isRoomFinished ) return;
+            OnEnterRoom?.Invoke();
         }
 
         private void OnTriggerExit2D( Collider2D collision )
         {
-            if ( collision.gameObject.tag.Equals( "Player" ) )
-            {
-                Debug.Log( "room cleared" );
-                RoomHasBeenClear();
-            }
+            if ( _isRoomFinished ) return;
+            RoomHasBeenClear();
         }
-
 
 
         public void SetRoom( RoomCell roomData , Cinemachine.CinemachineVirtualCamera camera )
         {
+            GetComponentInChildren<CamaraTrigger>().AssignCamera( camera );
+
             if ( roomData.IsStartRoom )
             {
-                GameObject playerObj = Instantiate( _playerPrefab , transform.position , Quaternion.identity );
-                _playerTransform = playerObj.transform;
-                camera.Follow = playerObj.transform;
+                Vector3 startPos = new( transform.position.x , transform.position.y - 0.5f , transform.position.z );
+                GameObject playerObj = Instantiate( _playerPrefab , startPos , Quaternion.identity );
                 playerObj.GetComponent<PlayerController>().Init( Vector2.down , 0 );
-                Destroy( gameObject );
+
+                _playerTransform = playerObj.transform;
+                camera.transform.position = new Vector3( transform.position.x , transform.position.y , -10 );
+                _isRoomFinished = true;
+                SetRoomDoors( 0 , 0 );
             }
             else
             {
@@ -85,7 +84,6 @@ namespace Procedural
                                            _southDoorController ,  // 0100
                                            _westDoorController };  // 1000
 
-
             for ( int i = 0; i < _doorControllerArray.Length; i++ )
             {
                 if ( ( openSidesMask & 1 << i ) > 0 )
@@ -96,7 +94,7 @@ namespace Procedural
                     _doorControllerArray[i].SetDoor( isBossDoor , this );
                 }
                 else
-                    DestroyImmediate( _doorControllerArray[i].gameObject );
+                    Destroy( _doorControllerArray[i].gameObject );
             }
         }
 
@@ -163,8 +161,11 @@ namespace Procedural
                 //Instantiate( _treasureKeyPrefab , transform.position , Quaternion.identity );
             }
 
+            OnRoomFinished?.Invoke();
+
             OnEnterRoom = null;
-            Destroy( gameObject );
+            OnRoomFinished = null;
+            _isRoomFinished = true;
         }
     }
 }
