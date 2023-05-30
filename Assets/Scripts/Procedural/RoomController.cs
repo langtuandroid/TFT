@@ -50,10 +50,8 @@ namespace Procedural
         }
 
 
-        public void SetRoom( RoomCell roomData , Cinemachine.CinemachineVirtualCamera camera )
+        public void SetRoom( RoomCell roomData )
         {
-            GetComponentInChildren<CamaraTrigger>().AssignCamera( camera );
-
             if ( roomData.IsStartRoom )
             {
                 Vector3 startPos = new( transform.position.x , transform.position.y - 0.5f , transform.position.z );
@@ -61,7 +59,7 @@ namespace Procedural
                 playerObj.GetComponent<PlayerController>().Init( Vector2.down , 0 );
 
                 _playerTransform = playerObj.transform;
-                camera.transform.position = new Vector3( transform.position.x , transform.position.y , -10 );
+                Camera.main.transform.position = new Vector3( transform.position.x , transform.position.y , -10 );
                 _isRoomFinished = true;
                 SetRoomDoors( 0 , 0 );
             }

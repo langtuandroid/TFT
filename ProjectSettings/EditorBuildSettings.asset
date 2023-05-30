@@ -24,6 +24,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ARR_Scene.unity
     guid: a3c443ba0c229fd4db9caff550ef8f47
   - enabled: 1
-    path: Assets/Scenes/ProceduralTest.unity
+    path: Assets/Scenes/S16_Dungeon_WoodsScene.unity
     guid: 9286192ca3aac0645b93a80540b0f810
   m_configObjects: {}
