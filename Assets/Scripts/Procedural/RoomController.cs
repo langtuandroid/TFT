@@ -22,7 +22,7 @@ namespace Procedural
         [SerializeField] private DoorController _westDoorController;
 
         [Header("Enemies")]
-        [SerializeField] private GameObject _bossPrefab;
+        [SerializeField] private GameObject _bossRoomTransporterPrefab;
         [SerializeField] private GameObject _miniBossPrefab;
         [SerializeField] private List<GameObject> _enemyPrefabList;
 
@@ -33,25 +33,19 @@ namespace Procedural
         private DoorController[] _doorControllerArray;
 
         private int  _enemiesLeftInRoom;
-        private bool _isBossRoom;
         private bool _isMiniBossRoom;
-        private bool _isRoomFinished;
+        private static bool _playerHasKey;
 
         private void OnTriggerEnter2D( Collider2D collision )
         {
-            if ( _isRoomFinished ) return;
             OnEnterRoom?.Invoke();
-        }
-
-        private void OnTriggerExit2D( Collider2D collision )
-        {
-            if ( _isRoomFinished ) return;
-            RoomHasBeenClear();
         }
 
 
         public void SetRoom( RoomCell roomData )
         {
+            if ( _playerHasKey ) _playerHasKey = false;
+
             if ( roomData.IsStartRoom )
             {
                 Vector3 startPos = new( transform.position.x , transform.position.y - 0.5f , transform.position.z );
@@ -60,14 +54,22 @@ namespace Procedural
 
                 _playerTransform = playerObj.transform;
                 Camera.main.transform.position = new Vector3( transform.position.x , transform.position.y , -10 );
-                _isRoomFinished = true;
                 SetRoomDoors( 0 , 0 );
+
+                OnRoomFinished = null;
+            }
+            else 
+            if ( roomData.IsBossRoom )
+            {
+                Instantiate( _bossRoomTransporterPrefab , transform.position , Quaternion.identity );
+                SetRoomDoors( 0 , 0 );
+
+                OnRoomFinished = null;
             }
             else
             {
                 OnEnterRoom += CreateRoomEnemies;
 
-                _isBossRoom = roomData.IsBossRoom;
                 _isMiniBossRoom = roomData.IsMiniBossRoom;
 
                 SetRoomDoors( roomData.OpenSidesIntMask , roomData.BossDoorMask );
@@ -101,16 +103,11 @@ namespace Procedural
         {
             GameObject enemyInstantiated;
 
-            if ( _isBossRoom )
-            {
-                enemyInstantiated = Instantiate( _bossPrefab , transform.position , Quaternion.identity );
-                //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
-            }
-            else 
             if ( _isMiniBossRoom )
             {
                 enemyInstantiated = Instantiate( _miniBossPrefab , transform.position , Quaternion.identity );
-                //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
+                enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
+                enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
             }
             else
             {
@@ -147,23 +144,15 @@ namespace Procedural
 
         private void RoomHasBeenClear()
         {
-            if ( _isBossRoom )
-            {
-                Debug.Log( "Level Completed" );
-                // Level Complete Event
-            }
-            else
             if ( _isMiniBossRoom )
             {
-                Debug.Log( "Key Obtained" );
-                //Instantiate( _treasureKeyPrefab , transform.position , Quaternion.identity );
+                Instantiate( _treasureKeyPrefab , transform.position , Quaternion.identity );
             }
 
             OnRoomFinished?.Invoke();
 
             OnEnterRoom = null;
             OnRoomFinished = null;
-            _isRoomFinished = true;
         }
     }
 }

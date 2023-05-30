@@ -21,4 +21,11 @@ public class LevelEvents
     {
         OnZoneCompleted?.Invoke();
     }
+
+
+    public event Action OnKeyObtained;
+    public void KeyObtained()
+    {
+        OnKeyObtained?.Invoke();
+    }
 }

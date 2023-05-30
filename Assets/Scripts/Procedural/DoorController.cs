@@ -9,6 +9,16 @@ namespace Procedural
 
         private Collider2D _doorCollider;
         private bool _isBossDoor;
+        private bool _hasKey;
+
+        private void OnCollisionEnter2D( Collision2D collision )
+        {
+            if ( _isBossDoor && _hasKey )
+            {
+                _doorCollider.enabled = false;
+                _keyDoorVisual.SetActive( false );
+            }
+        }
 
 
         public void SetDoor( bool isBossDoor , RoomController roomController )
@@ -25,27 +35,23 @@ namespace Procedural
             {
                 _doorCollider.enabled = true;
                 _keyDoorVisual.SetActive( true );
-
-                //roomController.OnKeyObtained += _keyDoorVisual.GetComponent<BossDoor>().HasGetKey;
+                ServiceLocator.GetService<LevelEvents>().OnKeyObtained += LevelEvents_OnKeyObtained;
             }
+            else
+                roomController.OnRoomFinished += OpenDoor;
 
             roomController.OnEnterRoom += CloseDoor;
-            roomController.OnRoomFinished += OpenDoor;
+        }
+
+        private void LevelEvents_OnKeyObtained()
+        {
+            _hasKey = true;
         }
 
         private void OpenDoor()
         {
-
-            if ( _isBossDoor )
-            {
-                //_doorCollider.enabled = false;
-                //_keyDoorVisual.SetActive( false );
-            }
-            else
-            {
-                _doorCollider.enabled = false;
-                _normalDoorVisual.SetActive( false );
-            }
+            _doorCollider.enabled = false;
+            _normalDoorVisual.SetActive( false );
         }
 
         private void CloseDoor()
@@ -56,6 +62,12 @@ namespace Procedural
                 _keyDoorVisual.SetActive( true );
             else
                 _normalDoorVisual.SetActive( true );
+        }
+
+        private void OnDestroy()
+        {
+            if ( _isBossDoor )
+                ServiceLocator.GetService<LevelEvents>().OnKeyObtained -= LevelEvents_OnKeyObtained;
         }
     }
 }
