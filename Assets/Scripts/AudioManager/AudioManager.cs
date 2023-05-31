@@ -3,6 +3,7 @@ using UnityEngine;
 using FMODUnity;
 using Audio;
 using System.Collections;
+using System.Collections.Generic;
 
 [DefaultExecutionOrder(-10)]
 public class AudioManager : MonoBehaviour, IAudioSpeaker
@@ -23,6 +24,8 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
     private float _musicVolume;
     private float _sfxVolume;
 
+    [Header("Music List")]
+    private Dictionary<MusicName , EventReference> _gameMusicDict;
 
     private void Awake()
     {
@@ -46,28 +49,30 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
         _currentZoneParameter = MusicZoneParameter.None;
 
+        _gameMusicDict = _gameMusicSO.GameMusicDictionary();
+
         StartMusic();
     }
 
     public void StartMusic()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[( int )MusicName.Woods] );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[MusicName.Woods] );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }
 
 
-    public void ChangeMusic( MusicName musicId )
+    public void ChangeMusic( MusicName musicName )
     {
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
-        StartCoroutine( StartMusic( (int)musicId ) );
+        StartCoroutine( MusicStarter( musicName ) );
     }
 
-    private IEnumerator StartMusic( int musicId )
+    private IEnumerator MusicStarter( MusicName musicName )
     {
         WaitForSeconds wait = new WaitForSeconds( 1.5f );
         yield return wait;
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicSO.gameMusic[musicId] );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[musicName] );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }

@@ -31,3 +31,31 @@ MonoBehaviour:
       Data3: 26820484
       Data4: 93958975
     Path: event:/Woods_Dungeon
+  gameMusicList:
+  - name: Main Menu
+    musicName: 0
+    musicReference:
+      Guid:
+        Data1: -1715364381
+        Data2: 1264832484
+        Data3: 1510036159
+        Data4: -1725166958
+      Path: event:/Tecno_Music
+  - name: Woods
+    musicName: 1
+    musicReference:
+      Guid:
+        Data1: -1938153230
+        Data2: 1138739608
+        Data3: 1935118479
+        Data4: -1104429585
+      Path: event:/Woods
+  - name: Woods Dungeon
+    musicName: 2
+    musicReference:
+      Guid:
+        Data1: 535838240
+        Data2: 1080635444
+        Data3: 26820484
+        Data4: 93958975
+      Path: event:/Woods_Dungeon

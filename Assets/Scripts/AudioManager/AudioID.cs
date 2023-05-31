@@ -28,10 +28,10 @@ public class AudioID
 
 public enum MusicName
 {
-    Main_Menu     = 0,
-    Woods         = 1,
-    Woods_Dungeon = 2,
-    Woods_Boss    = 3
+    Main_Menu,
+    Woods,
+    Woods_Dungeon,
+    Woods_Boss
 }
 
 public enum MusicZoneParameter
