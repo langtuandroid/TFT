@@ -39,22 +39,11 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Si colisiona con un elemento que es quemable
-        if (collision.TryGetComponent(out IBurnable burnable ) )
-        {
-            // Lo activamos
-            burnable.Burn();
-            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
-            _gameInputs.RumblePad( 0.2f , 0.5f , 0.2f );
-        }
-
-        if (collision.TryGetComponent(out IInteractable interactable)
-            || collision.TryGetComponent(out IPickable pickable ) )
-        {
-            DisappearBall();
-            _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
-            _gameInputs.RumblePad( 0.2f , 0.5f , 0.2f );
-        }
+        collision.GetComponent<IBurnable>()?.Burn();
+        _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
+        _gameInputs.RumblePad( 0.2f , 0.5f , 0.2f );
+        
+        DisappearBall();
     }
 
     #endregion
