@@ -14,7 +14,12 @@ namespace Player
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
-            _lifeEvents.OnDeathValue += OnDeath;
+        }
+
+        private void OnDestroy()
+        {
+            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
         }
 
         public int CurrentHealth
@@ -121,11 +126,6 @@ namespace Player
         private void OnCurrentHealthValue(int value)
         {
             CurrentHealth = value;
-        }
-
-        private void OnDeath()
-        {
-
         }
     }
 }
