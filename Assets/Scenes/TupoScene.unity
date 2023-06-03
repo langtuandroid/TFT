@@ -609,6 +609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsRealMusicPlaying: 0
 --- !u!4 &690786314
 Transform:
   m_ObjectHideFlags: 0
@@ -716,6 +717,7 @@ GameObject:
   - component: {fileID: 990495467}
   - component: {fileID: 990495466}
   - component: {fileID: 990495470}
+  - component: {fileID: 990495471}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -822,6 +824,24 @@ MonoBehaviour:
   _panel: {fileID: 394543985}
   _maxPowerIcon: {fileID: 758100851}
   _maxPowerBackground: {fileID: 1508751413}
+--- !u!114 &990495471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 990495465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 167d5e3762cc44149b9b5a3dc99e35ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heartSection: {fileID: 1632829296}
+  _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
+  _heartPrefab: {fileID: 2682756011623431393, guid: 5dc691870e3a26242b60ddf697b538d8, type: 3}
+  _spriteEmptyHeart: {fileID: 1524551431, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
+  _spriteMediumHeart: {fileID: 1796308942, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
+  _fullHeart: {fileID: -643355887, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
 --- !u!1001 &1045416116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -947,6 +967,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1632829296 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 419873312310189501, guid: c56a14c051f74eb44b3b42213f42f89f, type: 3}
+  m_PrefabInstance: {fileID: 419873312091172061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2005603486
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1203,6 +1228,10 @@ PrefabInstance:
     - target: {fileID: 419873312310189500, guid: c56a14c051f74eb44b3b42213f42f89f, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 419873313247469013, guid: c56a14c051f74eb44b3b42213f42f89f, type: 3}
+      propertyPath: m_Spacing
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 419873313612690834, guid: c56a14c051f74eb44b3b42213f42f89f, type: 3}
       propertyPath: m_AnchorMax.y

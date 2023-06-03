@@ -5,6 +5,14 @@ namespace Player
     public class PlayerStatus : MonoBehaviour
     {
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
+        private LifeEvents _lifeEvents;
+
+        private void Start()
+        {
+            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnHeartsValue += OnMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
+        }
 
         public int CurrentHealth
         {
@@ -41,5 +49,18 @@ namespace Player
             get { return _playerStatusSaveSO.playerStatusSave.isJumpUnlocked; }
             set { _playerStatusSaveSO.playerStatusSave.isJumpUnlocked = value; }
         }
+
+        private void OnMaxHealthValue()
+        {
+            MaxHealth += 2;
+            _lifeEvents.ChangeCurrentLifeQuantity(MaxHealth);
+        }
+
+        private void OnCurrentHealthValue(int value)
+        {
+            CurrentHealth = value;
+        }
+
+
     }
 }

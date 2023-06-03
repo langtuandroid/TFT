@@ -15,7 +15,7 @@ MonoBehaviour:
   playerStatusSave:
     saveSlot: 0
     currentHealth: 3
-    maxHealth: 3
+    maxHealth: 6
     currentMagic: 0
     maxMagic: 0
     currentSouls: 1000
