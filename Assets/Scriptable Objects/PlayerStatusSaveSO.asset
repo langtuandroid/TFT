@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatusSave:
     saveSlot: 0
-    currentHealth: 14
+    currentHealth: 16
     maxHealth: 16
     currentMagic: 0
     maxMagic: 0

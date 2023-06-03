@@ -53,9 +53,9 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
-            _movement = new PlayerMovement( GetComponent<Rigidbody2D>() );
+            _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
             _jump = GetComponent<Jump>();
-            _interaction = new Interaction( transform , GetComponent<Collider2D>().offset , _interactableLayerMask );
+            _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
             _magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -67,18 +67,18 @@ namespace Player
         private bool _isInitialized;
         private void Start()
         {
-            if ( !_isInitialized )
-                Init( Vector2.down, 1 << 16 );
+            if (!_isInitialized)
+                Init(Vector2.down, 1 << 16);
         }
 #endif
 
-        public void Init( Vector2 startLookDirection , LayerMask initialGroundLayerMask )
+        public void Init(Vector2 startLookDirection, LayerMask initialGroundLayerMask)
         {
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
-            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask , initialGroundLayerMask );
-            _animatorBrain.Init( startLookDirection );
+            _jump.Init(_animatorBrain, GetComponent<Collider2D>().offset, _interactableLayerMask, initialGroundLayerMask);
+            _animatorBrain.Init(startLookDirection);
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
@@ -107,6 +107,12 @@ namespace Player
 
         private void Update()
         {
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud, volvemos
+            if (_playerStatus.IsDeath)
+                return;
+
+
             // Controlamos las acciones
             GetActionsInformation();
 
@@ -129,10 +135,16 @@ namespace Player
 
         private void FixedUpdate()
         {
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud, volvemos
+            if (_playerStatus.IsDeath)
+                return;
+
+            // Nos movemos
             DoMove();
         }
 
-#endregion
+        #endregion
 
         private void GetActionsInformation()
         {
@@ -165,14 +177,14 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if ( _playerStatus.IsJumpUnlocked )
+            if (_playerStatus.IsJumpUnlocked)
                 if (CanJump())
                     _isJumpInput = true;
         }
 
         private void DoJump()
         {
-            if ( IsAttacking() || _pickable.HasItem || _interaction.IsInteracting )
+            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting)
                 return;
 
             _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
@@ -189,7 +201,7 @@ namespace Player
 
         private void DoPhysicalAction()
         {
-            if ( !_jump.IsPerformingJump || !IsAttacking() )
+            if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
@@ -199,15 +211,15 @@ namespace Player
 
         private void DoInteraction()
         {
-            if ( _pickable.HasItem )
+            if (_pickable.HasItem)
                 return;
 
-            _interaction.Interact( _isPhysicActionInput , _lookDirection );
+            _interaction.Interact(_isPhysicActionInput, _lookDirection);
         }
 
         private void DoPickUpItem()
         {
-            if ( _interaction.IsInteracting ) 
+            if (_interaction.IsInteracting)
                 return;
 
             if (!_pickable.HasItem)
