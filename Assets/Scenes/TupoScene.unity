@@ -841,7 +841,7 @@ MonoBehaviour:
   _heartPrefab: {fileID: 2682756011623431393, guid: 5dc691870e3a26242b60ddf697b538d8, type: 3}
   _spriteEmptyHeart: {fileID: 1524551431, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
   _spriteMediumHeart: {fileID: 1796308942, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
-  _fullHeart: {fileID: -643355887, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
+  _spriteFullHeart: {fileID: -643355887, guid: 4a53bd2c3a7412049b1b2adeccf49f18, type: 3}
 --- !u!1001 &1045416116
 PrefabInstance:
   m_ObjectHideFlags: 0

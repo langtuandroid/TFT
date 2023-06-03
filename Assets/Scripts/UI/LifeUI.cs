@@ -37,7 +37,7 @@ public class LifeUI : MonoBehaviour
     private Sprite _spriteMediumHeart;
     [Tooltip("Sprite de corazón lleno")]
     [SerializeField]
-    private Sprite _fullHeart;
+    private Sprite _spriteFullHeart;
 
 
     #endregion
@@ -58,7 +58,6 @@ public class LifeUI : MonoBehaviour
 
     #endregion
 
-
     #region Unity methods
 
     private void Awake()
@@ -78,7 +77,6 @@ public class LifeUI : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(_playerStatusSaveSO.playerStatusSave.maxHealth);
         for (
             int i = 0;
             i < _playerStatusSaveSO.playerStatusSave.maxHealth / 2;
@@ -86,12 +84,11 @@ public class LifeUI : MonoBehaviour
             )
             OnAddHeart();
 
+        OnChangeLifeInstantly(_playerStatusSaveSO.playerStatusSave.currentHealth);
     }
 
     #endregion
 
-
-    [ContextMenu("OnAddHeart")]
     private void OnAddHeart()
     {
         GameObject heart = Instantiate(
@@ -103,14 +100,73 @@ public class LifeUI : MonoBehaviour
         UpdateSpacing();
     }
 
+    /// <summary>
+    /// Actualiza la salud (visualmente) de forma instantánea
+    /// </summary>
+    /// <param name="life"></param>
+    private void OnChangeLifeInstantly(int life)
+    {
+        int div = life / 2;
+
+        for (int i = 0; i < div; i++)
+            _heartList[i].sprite = _spriteFullHeart;
+
+        if (life % 2 == 1)
+            _heartList[div].sprite = _spriteMediumHeart;
+
+        _currentHealth = life;
+    }
+
+    /// <summary>
+    /// Actualiza la salud
+    /// </summary>
+    /// <param name="life"></param>
     private void OnChangeLife(int life)
     {
         StartCoroutine(ChangeLife(life));
+        _currentHealth = life;
     }
+
 
     private IEnumerator ChangeLife(int life)
     {
-        yield return null;
+        if (life < _currentHealth)
+            for (int i = _currentHealth; i >= life; i--)
+                yield return UpdateLife(i);
+        else
+            for (int i = _currentHealth; i <= life; i++)
+                yield return UpdateLife(i);
+    }
+
+    private IEnumerator UpdateLife(int life)
+    {
+        int div = life / 2;
+        int res = life % 2;
+
+        // Si tenemos algo de vida
+        if (div + res > 0)
+        {
+            // Si tenemos un número impar
+            if (res == 1)
+                // Ponemos medio corazón
+                _heartList[div].sprite = _spriteMediumHeart;
+            // En otro caso
+            else
+            {
+                if (div < _playerStatusSaveSO.playerStatusSave.maxHealth / 2)
+                {
+                    _heartList[div].sprite = _spriteEmptyHeart;
+                }
+
+                _heartList[div - 1].sprite = _spriteFullHeart;
+            }
+        }
+        // En caso de no tener vida
+        else
+            // Vaciamos el corazón
+            _heartList[0].sprite = _spriteEmptyHeart;
+
+        yield return new WaitForSeconds(0.2f);
     }
 
     private void UpdateSpacing()

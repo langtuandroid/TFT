@@ -10,7 +10,7 @@ namespace Player
         private void Start()
         {
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
-            _lifeEvents.OnHeartsValue += OnMaxHealthValue;
+            _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
         }
 
@@ -50,7 +50,27 @@ namespace Player
             set { _playerStatusSaveSO.playerStatusSave.isJumpUnlocked = value; }
         }
 
-        private void OnMaxHealthValue()
+        [ContextMenu("IncrementMaxHealthValue")]
+        private void IncrementMaxHealthValue()
+        {
+            _lifeEvents.AddHeart();
+        }
+
+        [ContextMenu("Prueba de take Damage")]
+        private void TakeDamage()
+        {
+            int value = Random.Range(1, 5);
+            Debug.Log($"Voy a hacer {value} de daño");
+            TakeDamage(value);
+        }
+
+        private void TakeDamage(int damage)
+        {
+            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Max(0, CurrentHealth - damage));
+        }
+
+
+        private void OnIncrementMaxHealthValue()
         {
             MaxHealth += 2;
             _lifeEvents.ChangeCurrentLifeQuantity(MaxHealth);
