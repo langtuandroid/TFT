@@ -130,7 +130,11 @@ public class LifeUI : MonoBehaviour
         StartCoroutine(ChangeLife(life));
     }
 
-
+    /// <summary>
+    /// Cambia el valor de la vida poco a poco
+    /// </summary>
+    /// <param name="life"></param>
+    /// <returns></returns>
     private IEnumerator ChangeLife(int life)
     {
         if (life < _currentHealth)
@@ -139,6 +143,11 @@ public class LifeUI : MonoBehaviour
         else
             for (int i = _currentHealth; i <= life; i++)
                 yield return UpdateLife(i);
+
+        // Si la vida llega a 0
+        if (_currentHealth == 0)
+            // Morimos
+            _lifeEvents.OnDeath();
     }
 
     private IEnumerator UpdateLife(int life)
@@ -173,6 +182,9 @@ public class LifeUI : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
     }
 
+    /// <summary>
+    /// Establece el espacio correspondiente según la cantidad de corazones
+    /// </summary>
     private void UpdateSpacing()
     {
         _verticalLayout.spacing = SPACING + SPACING / 2 * ((_heartList.Count - 1) / 8);

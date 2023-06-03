@@ -7,11 +7,14 @@ namespace Player
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
         private LifeEvents _lifeEvents;
 
+        public bool IsDeath => _lifeEvents.IsDeath;
+
         private void Start()
         {
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue += OnDeath;
         }
 
         public int CurrentHealth
@@ -74,27 +77,55 @@ namespace Player
             HealLife(value);
         }
 
+        /// <summary>
+        /// Aplica daño al jugador
+        /// </summary>
+        /// <param name="damage"></param>
         private void TakeDamage(int damage)
         {
-            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Max(0, CurrentHealth - damage));
+            _lifeEvents.ChangeCurrentLifeQuantity(
+                Mathf.Max(
+                    0,
+                    CurrentHealth - damage)
+                );
         }
 
+        /// <summary>
+        /// Cura salud al jugador
+        /// </summary>
+        /// <param name="life"></param>
         private void HealLife(int life)
         {
-            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Min(MaxHealth, CurrentHealth + life));
+            _lifeEvents.ChangeCurrentLifeQuantity(
+                Mathf.Min(
+                    MaxHealth,
+                    CurrentHealth + life
+                )
+                );
         }
 
+        /// <summary>
+        /// Incrementa la cantidad máxima de salud
+        /// (para cuando se consigue un corazón)
+        /// </summary>
         private void OnIncrementMaxHealthValue()
         {
             MaxHealth += 2;
             _lifeEvents.ChangeCurrentLifeQuantity(MaxHealth);
         }
 
+        /// <summary>
+        /// Actualiza la salud actual
+        /// </summary>
+        /// <param name="value"></param>
         private void OnCurrentHealthValue(int value)
         {
             CurrentHealth = value;
         }
 
+        private void OnDeath()
+        {
 
+        }
     }
 }
