@@ -54,7 +54,8 @@ public class LifeUI : MonoBehaviour
     // VARIABLES
     // Lista de corazones
     private List<Image> _heartList;
-    private int _currentHealth; // Salud actual
+    // Valor de la salud actual
+    private int _currentHealth;
 
     #endregion
 
@@ -123,8 +124,10 @@ public class LifeUI : MonoBehaviour
     /// <param name="life"></param>
     private void OnChangeLife(int life)
     {
+        // Detenemos corrutinas (en caso de haberlas)
+        StopAllCoroutines();
+        // Comenzamos la corrutina
         StartCoroutine(ChangeLife(life));
-        _currentHealth = life;
     }
 
 
@@ -154,9 +157,7 @@ public class LifeUI : MonoBehaviour
             else
             {
                 if (div < _playerStatusSaveSO.playerStatusSave.maxHealth / 2)
-                {
                     _heartList[div].sprite = _spriteEmptyHeart;
-                }
 
                 _heartList[div - 1].sprite = _spriteFullHeart;
             }
@@ -165,6 +166,9 @@ public class LifeUI : MonoBehaviour
         else
             // Vaciamos el corazón
             _heartList[0].sprite = _spriteEmptyHeart;
+
+        // Actualizamos la última vida
+        _currentHealth = life;
 
         yield return new WaitForSeconds(0.2f);
     }

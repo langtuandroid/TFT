@@ -56,12 +56,22 @@ namespace Player
             _lifeEvents.AddHeart();
         }
 
-        [ContextMenu("Prueba de take Damage")]
+        [ContextMenu("Prueba de take damage")]
         private void TakeDamage()
         {
-            int value = Random.Range(1, 5);
+            //int value = Random.Range(1, 5);
+            int value = 10;
             Debug.Log($"Voy a hacer {value} de daño");
             TakeDamage(value);
+        }
+
+        [ContextMenu("Prueba de heal life")]
+        private void HealLife()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Me curo {value} de salud");
+            HealLife(value);
         }
 
         private void TakeDamage(int damage)
@@ -69,6 +79,10 @@ namespace Player
             _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Max(0, CurrentHealth - damage));
         }
 
+        private void HealLife(int life)
+        {
+            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Min(MaxHealth, CurrentHealth + life));
+        }
 
         private void OnIncrementMaxHealthValue()
         {
