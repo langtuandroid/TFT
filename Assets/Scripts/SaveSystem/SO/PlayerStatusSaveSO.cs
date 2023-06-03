@@ -10,7 +10,7 @@ public class PlayerStatusSaveSO : ScriptableObject
         playerStatusSave = new PlayerStatusSave();
 
         playerStatusSave.saveSlot = saveSlot;
-        playerStatusSave.maxHealth = 3;
+        playerStatusSave.maxHealth = 6;
         playerStatusSave.currentHealth = playerStatusSave.maxHealth;
         playerStatusSave.maxSouls = 1000;
         playerStatusSave.currentSouls = playerStatusSave.maxSouls;

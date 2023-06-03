@@ -72,7 +72,6 @@ namespace Attack
 
         #endregion
 
-
         #region Interface Methods
 
         /// <summary>

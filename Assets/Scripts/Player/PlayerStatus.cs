@@ -5,6 +5,14 @@ namespace Player
     public class PlayerStatus : MonoBehaviour
     {
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
+        private LifeEvents _lifeEvents;
+
+        private void Start()
+        {
+            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
+        }
 
         public int CurrentHealth
         {
@@ -41,5 +49,52 @@ namespace Player
             get { return _playerStatusSaveSO.playerStatusSave.isJumpUnlocked; }
             set { _playerStatusSaveSO.playerStatusSave.isJumpUnlocked = value; }
         }
+
+        [ContextMenu("IncrementMaxHealthValue")]
+        private void IncrementMaxHealthValue()
+        {
+            _lifeEvents.AddHeart();
+        }
+
+        [ContextMenu("Prueba de take damage")]
+        private void TakeDamage()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Voy a hacer {value} de daño");
+            TakeDamage(value);
+        }
+
+        [ContextMenu("Prueba de heal life")]
+        private void HealLife()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Me curo {value} de salud");
+            HealLife(value);
+        }
+
+        private void TakeDamage(int damage)
+        {
+            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Max(0, CurrentHealth - damage));
+        }
+
+        private void HealLife(int life)
+        {
+            _lifeEvents.ChangeCurrentLifeQuantity(Mathf.Min(MaxHealth, CurrentHealth + life));
+        }
+
+        private void OnIncrementMaxHealthValue()
+        {
+            MaxHealth += 2;
+            _lifeEvents.ChangeCurrentLifeQuantity(MaxHealth);
+        }
+
+        private void OnCurrentHealthValue(int value)
+        {
+            CurrentHealth = value;
+        }
+
+
     }
 }

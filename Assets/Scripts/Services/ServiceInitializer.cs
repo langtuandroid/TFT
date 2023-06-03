@@ -28,6 +28,7 @@ namespace Services
                 // Events
                 AddService( new MagicEvents() );
                 AddService( new LevelEvents() );
+                AddService( new LifeEvents() );
 
                 IsInitialized = true;
             }
