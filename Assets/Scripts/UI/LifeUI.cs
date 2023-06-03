@@ -88,6 +88,12 @@ public class LifeUI : MonoBehaviour
         OnChangeLifeInstantly(_playerStatusSaveSO.playerStatusSave.currentHealth);
     }
 
+    private void OnDestroy()
+    {
+        _lifeEvents.OnHeartsValue -= OnAddHeart;
+        _lifeEvents.OnCurrentLifeValue -= OnChangeLife;
+    }
+
     #endregion
 
     private void OnAddHeart()

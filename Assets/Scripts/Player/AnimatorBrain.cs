@@ -40,6 +40,11 @@ namespace Player
 
         private LifeEvents _lifeEvents;
 
+        private void OnDestroy()
+        {
+            _lifeEvents.OnDeathValue -= Death_OnDeath;
+        }
+
         public void Init(Vector2 startLookDirection)
         {
             _playerAnimator = GetComponent<Animator>();
