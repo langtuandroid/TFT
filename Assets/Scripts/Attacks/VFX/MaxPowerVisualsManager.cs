@@ -123,10 +123,10 @@ public class MaxPowerVisualsManager : MonoBehaviour
     {
         PowerPanelData data = GetData(attack);
         _panel.color = data.Color;
+        _panel.SetImageAlpha(0);
         _maxPowerIcon.color = data.Color;
         _maxPowerBackground.color = data.Color;
-        //_maxPowerBackground.SetImageAlpha(0);
-        //_maxPowerBackground.SetImageAlpha(100f / 255f);
+        _maxPowerBackground.SetImageAlpha(100f / 255f);
     }
 
     private void OnFillAmountValueChange(float fillAmount)
