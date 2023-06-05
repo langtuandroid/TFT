@@ -7,19 +7,24 @@ namespace Player
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
         private LifeEvents _lifeEvents;
 
-        public bool IsDeath => _lifeEvents.IsDeath;
+        public bool IsDeath => _isDeath;
+
+        private bool _isDeath;
 
         private void Start()
         {
+            _isDeath = CurrentHealth == 0;
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue += OnDeathValue;
         }
 
         private void OnDestroy()
         {
             _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue -= OnDeathValue;
         }
 
         public int CurrentHealth
@@ -126,6 +131,11 @@ namespace Player
         private void OnCurrentHealthValue(int value)
         {
             CurrentHealth = value;
+        }
+
+        private void OnDeathValue()
+        {
+            _isDeath = true;
         }
     }
 }

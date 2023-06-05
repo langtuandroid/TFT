@@ -51,10 +51,6 @@ public class MaxPowerVisualsManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-    }
-
-    private void Start()
-    {
         Initialize();
 
         _magicEvents.OnAttackTypeValue += OnAttackTypeValueChange;
@@ -129,7 +125,8 @@ public class MaxPowerVisualsManager : MonoBehaviour
         _panel.color = data.Color;
         _maxPowerIcon.color = data.Color;
         _maxPowerBackground.color = data.Color;
-        _maxPowerBackground.SetImageAlpha(100f/255f);
+        //_maxPowerBackground.SetImageAlpha(0);
+        //_maxPowerBackground.SetImageAlpha(100f / 255f);
     }
 
     private void OnFillAmountValueChange(float fillAmount)

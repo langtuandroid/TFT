@@ -11,12 +11,6 @@ public class LifeEvents
 
     #endregion
 
-    #region Public variables
-
-    public bool IsDeath { get; private set; }
-
-    #endregion
-
     #region Public methods
 
     public void AddHeart()
@@ -32,7 +26,6 @@ public class LifeEvents
     public void OnDeath()
     {
         OnDeathValue.Invoke();
-        IsDeath = true;
     }
 
     #endregion
