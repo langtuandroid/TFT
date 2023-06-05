@@ -13,7 +13,6 @@ namespace Player
 
         private void Start()
         {
-            _isDeath = CurrentHealth == 0;
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
@@ -133,6 +132,10 @@ namespace Player
             CurrentHealth = value;
         }
 
+        /// <summary>
+        /// Cambia el booleano para indicar 
+        /// que fallece el personaje
+        /// </summary>
         private void OnDeathValue()
         {
             _isDeath = true;
