@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using Player;
 
 
 namespace Attack
@@ -40,8 +41,8 @@ namespace Attack
 
         private IAudioSpeaker _audioSpeaker;
 
-        // Dirección de los ataques
-        private Vector2 _direction;
+        // Status del jugador
+        private PlayerStatus _playerStatus;
 
         // Objeto del lanzallamas
         private GameObject _flame;
@@ -68,6 +69,7 @@ namespace Attack
 
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
             _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _playerStatus = GetComponent<PlayerStatus>();
         }
 
         #endregion
@@ -77,7 +79,7 @@ namespace Attack
         /// <summary>
         /// Lanza una bola de fuego
         /// </summary>
-        public override void WeakAttack()
+        public override void WeakAttack(Vector2 direction)
         {
             // Instanciamos bola de fuego
             GameObject fireball = Instantiate(
@@ -91,24 +93,27 @@ namespace Attack
                 transform.position.y + Constants.PLAYER_OFFSET
                 );
 
-            fireball.GetComponent<Fireball>().SetDirection(_direction);
+            fireball.GetComponent<Fireball>().SetDirection(direction);
             _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FIRE_BALL );
+
+            // Reseteamos el temporizador de uso de poder
+            _playerStatus.RestartMagicTimer();
         }
 
         /// <summary>
         /// Activa el lanzallamas (si corresponde)
         /// </summary>
-        public override void MediumAttack()
+        public override void MediumAttack(Vector2 direction)
         {
             GameObject prefab = null;
 
-            if (_direction.Equals(Vector2.up))
+            if (direction.Equals(Vector2.up))
                 prefab = _flamesUp;
-            else if (_direction.Equals(Vector2.down))
+            else if (direction.Equals(Vector2.down))
                 prefab = _flamesDown;
-            else if (_direction.Equals(Vector2.left))
+            else if (direction.Equals(Vector2.left))
                 prefab = _flamesLeft;
-            else if (_direction.Equals(Vector2.right))
+            else if (direction.Equals(Vector2.right))
                 prefab = _flamesRight;
 
             _flame = Instantiate(
@@ -134,21 +139,22 @@ namespace Attack
 
             _flamesToDestroy.Add(_flame);
             Invoke(nameof(DisableAndDestroy), 4f);
+
+            // Reseteamos el temporizador de uso de poder
+            _playerStatus.RestartMagicTimer();
         }
 
         /// <summary>
         /// Activa una ráfaga de bolas de fuego que afecta a toda la pantalla
         /// </summary>
-        public override void StrongAttack()
+        public override void StrongAttack(Vector2 direction)
         {
             // Activamos el poder
             StartCoroutine(FinalPower());
             _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FIRE_DEFINITIVE );
-        }
 
-        public override void SetDirection(Vector2 direction)
-        {
-            _direction = direction;
+            // Reseteamos el temporizador de uso de poder
+            _playerStatus.RestartMagicTimer();
         }
 
         #endregion

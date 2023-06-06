@@ -97,9 +97,9 @@ namespace Player
         /// </summary>
         public void WeakAttack(Vector2 direction)
         {
-            _attack.SetDirection(direction);
+            //_attack.SetDirection(direction);
 
-            _attack.WeakAttack();
+            //_attack.WeakAttack();
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace Player
         public void MediumAttack(Vector2 direction)
         {
             // Cambiamos la dirección del ataque
-            _attack.SetDirection(direction);
+            //_attack.SetDirection(direction);
             // Y ejecutamos el ataque
-            _attack.MediumAttack();
+            //_attack.MediumAttack();
         }
 
         public void StopMediumAttack()
@@ -124,7 +124,7 @@ namespace Player
         public void StrongAttack()
         {
             _maxPowerTimer = 0f;
-            _attack.StrongAttack();
+            //_attack.StrongAttack();
         }
 
 

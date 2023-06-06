@@ -66,10 +66,10 @@ public class FlameDetection : MonoBehaviour
                 transform.position
                 );
 
-            string text = $"Distancia: {distance}\n" +
-                $"Ángulo: {AngleWith(hit)}";
+            //string text = $"Distancia: {distance}\n" +
+            //    $"Ángulo: {AngleWith(hit)}";
 
-            Debug.Log(text);
+            //Debug.Log(text);
 
             // Si cumple las condiciones de distancia y ángulo,
             // y se trata de un elemento quemable

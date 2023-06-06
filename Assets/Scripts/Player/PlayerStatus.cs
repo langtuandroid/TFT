@@ -4,27 +4,20 @@ namespace Player
 {
     public class PlayerStatus : MonoBehaviour
     {
+
+        #region SerializeField
+
         [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
-        private LifeEvents _lifeEvents;
+
+        [SerializeField]
+        [Tooltip("Tiempo entre ataques mágicos")]
+        private float _timeBetweenMagicAttacks = .2f;
+
+        #endregion
+
+        #region Public variables
 
         public bool IsDeath => _isDeath;
-
-        private bool _isDeath;
-
-        private void Start()
-        {
-            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
-            _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
-            _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
-            _lifeEvents.OnDeathValue += OnDeathValue;
-        }
-
-        private void OnDestroy()
-        {
-            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
-            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
-            _lifeEvents.OnDeathValue -= OnDeathValue;
-        }
 
         public int CurrentHealth
         {
@@ -56,35 +49,90 @@ namespace Player
             get { return _playerStatusSaveSO.playerStatusSave.maxSouls; }
             set { _playerStatusSaveSO.playerStatusSave.maxSouls = value; }
         }
+        public int PrimarySkillIndex
+        {
+            get { return _playerStatusSaveSO.playerStatusSave.primarySkillIndex; }
+            set { _playerStatusSaveSO.playerStatusSave.primarySkillIndex = value; }
+        }
+        public int SecondarySkillIndex
+        {
+            get { return _playerStatusSaveSO.playerStatusSave.secondarySkillIndex; }
+            set { _playerStatusSaveSO.playerStatusSave.secondarySkillIndex = value; }
+        }
         public bool IsJumpUnlocked
         {
             get { return _playerStatusSaveSO.playerStatusSave.isJumpUnlocked; }
             set { _playerStatusSaveSO.playerStatusSave.isJumpUnlocked = value; }
         }
 
-        [ContextMenu("IncrementMaxHealthValue")]
-        private void IncrementMaxHealthValue()
+        #endregion
+
+        #region Private variables
+
+        private LifeEvents _lifeEvents; // Eventos de vida
+        private bool _isDeath; // Booleano que indica si el player ha decaído
+        private float _magicTimer; // Temporizador para los ataques mágicos
+
+        #endregion
+
+        #region Unity methods
+
+        private void Awake()
         {
-            _lifeEvents.AddHeart();
+            _magicTimer = 0f;
         }
 
-        [ContextMenu("Prueba de take damage")]
-        private void TakeDamage()
+        private void Start()
         {
-            //int value = Random.Range(1, 5);
-            int value = 10;
-            Debug.Log($"Voy a hacer {value} de daño");
-            TakeDamage(value);
+            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue += OnDeathValue;
         }
 
-        [ContextMenu("Prueba de heal life")]
-        private void HealLife()
+        private void Update()
         {
-            //int value = Random.Range(1, 5);
-            int value = 10;
-            Debug.Log($"Me curo {value} de salud");
-            HealLife(value);
+            if (_magicTimer < _timeBetweenMagicAttacks)
+                _magicTimer += Time.deltaTime;
         }
+
+        private void OnDestroy()
+        {
+            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue -= OnDeathValue;
+        }
+
+        #endregion
+
+        #region Public methods
+
+        #region Magic attacks
+
+        /// <summary>
+        /// Devuelve true si está listo para usar el siguiente hechizo
+        /// </summary>
+        /// <returns></returns>
+        public bool CanUseMagicAttacks()
+        {
+            return _magicTimer >= _timeBetweenMagicAttacks;
+        }
+
+        /// <summary>
+        /// Reinicia el contador de tiempo
+        /// </summary>
+        public void RestartMagicTimer()
+        {
+            _magicTimer = 0f;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Private methods
+
+        #region Health
 
         /// <summary>
         /// Aplica daño al jugador
@@ -140,5 +188,43 @@ namespace Player
         {
             _isDeath = true;
         }
+
+        #endregion
+
+        #endregion
+
+        #region Tests
+
+        #region Health
+
+        [ContextMenu("IncrementMaxHealthValue")]
+        private void IncrementMaxHealthValue()
+        {
+            _lifeEvents.AddHeart();
+        }
+
+        [ContextMenu("Prueba de take damage")]
+        private void TakeDamage()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Voy a hacer {value} de daño");
+            TakeDamage(value);
+        }
+
+        [ContextMenu("Prueba de heal life")]
+        private void HealLife()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Me curo {value} de salud");
+            HealLife(value);
+        }
+
+        #endregion
+
+        #endregion
+
+
     }
 }
