@@ -84,6 +84,7 @@ namespace Player
         // Events
         private LifeEvents _lifeEvents; // Eventos de vida
         private MagicEvents _magicEvents; // Eventos de magia
+        private SoulEvents _soulEvents; // Eventos de almas
 
         // Variables
         // Life
@@ -117,6 +118,9 @@ namespace Player
             _magicEvents.OnMaxPowerUsedValue += OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue += OnMaxPowerFinalizedValue;
             _magicEvents.DefineMaxPowerRechargingTime(_timeToRechargeMaxPower);
+            // Souls
+            _soulEvents = ServiceLocator.GetService<SoulEvents>();
+            _soulEvents.OnGotSoulsValue += OnGotSouls;
         }
 
         private void Update()
@@ -135,6 +139,7 @@ namespace Player
             _lifeEvents.OnDeathValue -= OnDeathValue;
             _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
+            _soulEvents.OnGotSoulsValue -= OnGotSouls;
         }
 
         #endregion
@@ -237,11 +242,18 @@ namespace Player
 
         #region Magic Attacks
 
+        /// <summary>
+        /// Indica que está usando el poder máximo
+        /// </summary>
+        /// <param name="time"></param>
         private void OnMaxPowerUsedValue(float time)
         {
             _isUsingMaxPower = true;
         }
 
+        /// <summary>
+        /// Indica que ya se ha finalizado el efecto del poder máximo
+        /// </summary>
         private void OnMaxPowerFinalizedValue()
         {
             _isUsingMaxPower = false;
@@ -250,6 +262,14 @@ namespace Player
 
         #endregion
 
+        #region Souls
+
+        private void OnGotSouls(int value)
+        {
+            CurrentSouls = Mathf.Min(MaxSouls, CurrentSouls + value);
+        }
+
+        #endregion
 
         #endregion
 

@@ -133,6 +133,9 @@ namespace Attack
             _flame.GetComponent<ParticleSystem>().Play();
         }
 
+        /// <summary>
+        /// Detiene el uso de lanzallamas
+        /// </summary>
         public override void StopMediumAttack()
         {
             // Lo quitamos
@@ -166,6 +169,9 @@ namespace Attack
 
         #region Medium Attack
 
+        /// <summary>
+        /// Desactiva y destruye el objeto de lanzallamas
+        /// </summary>
         private void DisableAndDestroy()
         {
             GameObject obj = _flamesToDestroy[0];

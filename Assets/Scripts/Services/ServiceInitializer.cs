@@ -10,25 +10,26 @@ namespace Services
         public bool IsRealMusicPlaying;
 
         private void Awake()
-        {            
+        {
             if (!IsInitialized)
             {
                 // Load or Initialize OptionsSave
                 OptionsSave optionsSave = new SaveGame().LoadOptions();
                 // Systems
-                AddService( optionsSave );
-                AddService( new GameInputs( optionsSave ) );
+                AddService(optionsSave);
+                AddService(new GameInputs(optionsSave));
 #if UNITY_EDITOR
                 IAudioSpeaker audio = IsRealMusicPlaying ? AudioManager.Instance : new DummyAudio();
 #else
                 IAudioSpeaker audio = AudioManager.Instance;
 #endif
-                AddService( audio );
-                AddService( new SceneLoader() );
+                AddService(audio);
+                AddService(new SceneLoader());
                 // Events
-                AddService( new MagicEvents() );
-                AddService( new LevelEvents() );
-                AddService( new LifeEvents() );
+                AddService(new MagicEvents());
+                AddService(new LevelEvents());
+                AddService(new LifeEvents());
+                AddService(new SoulEvents());
 
                 IsInitialized = true;
             }
