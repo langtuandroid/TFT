@@ -5,8 +5,8 @@ namespace Attack
 {
     public abstract class MagicAttack : MonoBehaviour
     {
-
-        private MagicEvents _magicEvents;
+        // Eventos
+        internal MagicEvents _magicEvents;
 
         private void Awake()
         {
@@ -22,6 +22,11 @@ namespace Attack
         }
 
         /// <summary>
+        /// Deselecciona el elemento
+        /// </summary>
+        public abstract void DeSelect();
+
+        /// <summary>
         /// Ataque débil
         /// </summary>
         public abstract void WeakAttack(Vector2 direction);
@@ -31,6 +36,9 @@ namespace Attack
         /// </summary>
         public abstract void MediumAttack(Vector2 direction);
 
+        /// <summary>
+        /// Detiene el ataque medio
+        /// </summary>
         public abstract void StopMediumAttack();
 
         /// <summary>

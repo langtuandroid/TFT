@@ -127,8 +127,10 @@ namespace Player
         private void Update()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud, volvemos
-            if (_playerStatus.IsDeath)
+            // Si el jugador ha perdido toda su salud,
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath || 
+                _playerStatus.IsUsingMaxPower)
                 return;
 
 
@@ -155,8 +157,10 @@ namespace Player
         private void FixedUpdate()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud, volvemos
-            if (_playerStatus.IsDeath)
+            // Si el jugador ha perdido toda su salud
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _playerStatus.IsUsingMaxPower)
                 return;
 
             // Nos movemos
@@ -339,6 +343,7 @@ namespace Player
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
             if (_playerStatus.CanUseMagicAttacks()
+                && _playerStatus.CanUseMaxPower()
                 //&& _magicAttack.CanUseMaxAttack()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()

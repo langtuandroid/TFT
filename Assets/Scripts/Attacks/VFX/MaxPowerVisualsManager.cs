@@ -4,16 +4,20 @@ using Utils;
 using Attack;
 using System;
 using UnityEngine.UI;
+using System.Collections;
+using DG.Tweening;
 
 public class MaxPowerVisualsManager : MonoBehaviour
 {
 
     #region SerializeFields
 
+    [Header("Scriptable Objects")]
     [SerializeField]
     [Tooltip("Lista con los datos de los distintos paneles")]
     private PowerPanelDataListScriptable _powerPanelList;
 
+    [Header("UI elements")]
     [SerializeField]
     [Tooltip("Panel con el efecto de ataque")]
     private Image _panel;
@@ -35,7 +39,8 @@ public class MaxPowerVisualsManager : MonoBehaviour
 
     #region Private variables
 
-    private MagicEvents _magicEvents;
+    // EVENTS
+    private MagicEvents _magicEvents; // Eventos mágicos
 
     #endregion
 
@@ -56,6 +61,8 @@ public class MaxPowerVisualsManager : MonoBehaviour
         _magicEvents.OnAttackTypeValue += OnAttackTypeValueChange;
         _magicEvents.OnFillAmountValue += OnFillAmountValueChange;
         _magicEvents.OnPanelAlphaValue += OnPanelAlphaValueChange;
+        _magicEvents.OnMaxPowerFinalizedValue += OnMaxPowerFinalizedValueChange;
+        _magicEvents.OnMaxPowerUsedValue += OnMaxPowerUsedValueChange;
     }
 
     private void OnDestroy()
@@ -63,6 +70,9 @@ public class MaxPowerVisualsManager : MonoBehaviour
         _magicEvents.OnAttackTypeValue -= OnAttackTypeValueChange;
         _magicEvents.OnFillAmountValue -= OnFillAmountValueChange;
         _magicEvents.OnPanelAlphaValue -= OnPanelAlphaValueChange;
+        _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValueChange;
+        _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValueChange;
+
     }
 
     #endregion
@@ -139,6 +149,21 @@ public class MaxPowerVisualsManager : MonoBehaviour
         _panel.SetImageAlpha(alpha);
     }
 
+    private void OnMaxPowerFinalizedValueChange()
+    {
+        RechargueMaxPowerFillAmount();
+    }
+
+
+    private void OnMaxPowerUsedValueChange(float time)
+    {
+        // Quitamos el fillAmount
+        _maxPowerIcon.fillAmount = 0f;
+        // Y activamos el efecto visual del panel
+        ChangeVFXPanelAlpha(time);
+    }
+
+
     #endregion
 
     #region Getting data
@@ -166,6 +191,49 @@ public class MaxPowerVisualsManager : MonoBehaviour
             return GetData(Constants.PANEL_FIRE);
 
         return null;
+    }
+
+    #endregion
+
+    #region DOTween
+
+    /// <summary>
+    /// Recarga el fillAmount del poder máximo
+    /// </summary>
+    private void RechargueMaxPowerFillAmount()
+    {
+        Tween tween = _maxPowerIcon.
+            DOFillAmount(0.9f, _magicEvents.MaxPowerRechargingTime).
+            SetEase(Ease.Linear).
+            Play().
+            OnComplete(() => _maxPowerIcon.fillAmount = 1f);
+    }
+
+    /// <summary>
+    /// Cambia el alpha del panel VFX
+    /// </summary>
+    /// <param name="time"></param>
+    private void ChangeVFXPanelAlpha(float time)
+    {
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(_panel.DOFade(25 / 255f, 0f).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(150 / 255f, time / 4).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(25 / 255f, time / 4).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(150 / 255f, time / 8).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(25 / 255f, time / 8).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(150 / 255f, time / 16).SetEase(Ease.Linear));
+        seq.Append(_panel.DOFade(25 / 255f, time / 16).SetEase(Ease.Linear));
+
+        for (int i = 0; i < 2; i++)
+        {
+            seq.Append(_panel.DOFade(150 / 255f, time / 32).SetEase(Ease.Linear));
+            seq.Append(_panel.DOFade(25 / 255f, time / 32).SetEase(Ease.Linear));
+        }
+
+        seq.OnComplete(() => _panel.SetImageAlpha(0));
+
+        seq.Play();
     }
 
     #endregion
