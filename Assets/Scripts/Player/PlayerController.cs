@@ -1,4 +1,5 @@
 using Attack;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -17,7 +18,7 @@ namespace Player
         private PickUpItem _pickable;
         // Script de salto del personaje
         private Jump _jump;
-        private PlayerMagicAttack _magicAttack;
+        //private PlayerMagicAttack _magicAttack;
 
         // Script de acción secundaria
         private SecondaryAction _secondaryAction;
@@ -26,6 +27,7 @@ namespace Player
         // VARIABLES
         // Masks
         [SerializeField] private LayerMask _interactableLayerMask;
+        // Inputs
         // Jump input
         private bool _isJumpInput;
 
@@ -46,6 +48,15 @@ namespace Player
         // Secondary action input
         private bool _isSecondaryInput;
 
+        // Lists
+        // MagicAttack (primary skill) list
+        private List<MagicAttack> _magicAttacks;
+        private int _magicIndex => _playerStatus.PrimarySkillIndex;
+
+        // Secondary action (or skill) list
+        private List<SecondaryAction> _secondaryActions;
+        private int _secondaryIndex => _playerStatus.SecondarySkillIndex;
+
         #endregion
 
         #region Unity methods
@@ -57,10 +68,17 @@ namespace Player
             _jump = GetComponent<Jump>();
             _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
-            _magicAttack = GetComponent<PlayerMagicAttack>();
+            //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _playerStatus = GetComponent<PlayerStatus>();
+
+            // Inicializamos variables
+            _magicAttacks = new List<MagicAttack>();
+            AddMagicAttacks();
+
+            _secondaryActions = new List<SecondaryAction>();
+
         }
 
 #if UNITY_EDITOR
@@ -79,6 +97,7 @@ namespace Player
 #endif
             _jump.Init(_animatorBrain, GetComponent<Collider2D>().offset, _interactableLayerMask, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection);
+            _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
@@ -108,8 +127,10 @@ namespace Player
         private void Update()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud, volvemos
-            if (_playerStatus.IsDeath)
+            // Si el jugador ha perdido toda su salud,
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath || 
+                _playerStatus.IsUsingMaxPower)
                 return;
 
 
@@ -136,8 +157,10 @@ namespace Player
         private void FixedUpdate()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud, volvemos
-            if (_playerStatus.IsDeath)
+            // Si el jugador ha perdido toda su salud
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _playerStatus.IsUsingMaxPower)
                 return;
 
             // Nos movemos
@@ -145,6 +168,11 @@ namespace Player
         }
 
         #endregion
+
+        private void AddMagicAttacks()
+        {
+            _magicAttacks.Add(GetComponent<FireAttack>());
+        }
 
         private void GetActionsInformation()
         {
@@ -284,7 +312,7 @@ namespace Player
 
         private void GameInputs_OnWeakAttackButtonStarted()
         {
-            if (_magicAttack.CanAttack()
+            if (_playerStatus.CanUseMagicAttacks()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -293,7 +321,7 @@ namespace Player
         private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
         private void GameInputs_OnMediumAttackButtonStarted()
         {
-            if (_magicAttack.CanAttack()
+            if (_playerStatus.CanUseMagicAttacks()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -307,15 +335,16 @@ namespace Player
             if (_mediumMagicUsed)
             {
                 _mediumMagicUsed = false;
-                _magicAttack.StopMediumAttack();
-                _magicAttack.ResetTimer();
+                _magicAttacks[_magicIndex].StopMediumAttack();
+                _playerStatus.RestartMagicTimer();
             }
         }
 
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
-            if (_magicAttack.CanAttack()
-                && _magicAttack.CanUseMaxAttack()
+            if (_playerStatus.CanUseMagicAttacks()
+                && _playerStatus.CanUseMaxPower()
+                //&& _magicAttack.CanUseMaxAttack()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -342,9 +371,10 @@ namespace Player
 
             // Reseteamos variables
             _isWeakMagicInput = false;
-            _magicAttack.ResetTimer();
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
             // Y activamos la magia débil
-            _magicAttack.WeakAttack(_lookDirection);
+            _magicAttacks[_magicIndex].WeakAttack(_lookDirection);
         }
 
         /// <summary>
@@ -357,7 +387,7 @@ namespace Player
 
             // Activamos las variables de magia media e invocamos el nuevo ataque
             _mediumMagicUsed = true;
-            _magicAttack.MediumAttack(_lookDirection);
+            _magicAttacks[_magicIndex].MediumAttack(_lookDirection);
 
         }
 
@@ -371,8 +401,9 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
-            _magicAttack.ResetTimer();
-            _magicAttack.StrongAttack();
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
+            _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
         #endregion
