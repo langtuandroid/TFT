@@ -31,7 +31,7 @@ namespace Player
         private SpriteRenderer _playerSprite;
         [SerializeField]
         [Tooltip("Tiempo que dura la invencibilidad tras recibir daño")]
-        private float _timeOfInvencibility = 1.5f;
+        private float _timeOfInvencibility = 2.5f;
 
         [Header("Stunning")]
         [SerializeField]
