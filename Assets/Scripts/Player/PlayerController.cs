@@ -43,7 +43,6 @@ namespace Player
         private bool _isWeakMagicInput;
         private bool _isMediumMagicInput;
         private bool _isStrongMagicInput;
-        private bool _mediumMagicUsed;
 
         // Secondary action input
         private bool _isSecondaryInput;
@@ -132,9 +131,9 @@ namespace Player
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
                 _playerStatus.IsStunned ||
-                _playerStatus.IsUsingMaxPower)
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
-                if (_mediumMagicUsed)
+                if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
                     GameInputs_OnMediumAttackButtonCanceled();
 
                 return;
@@ -169,7 +168,7 @@ namespace Player
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
                 _playerStatus.IsStunned ||
-                _playerStatus.IsUsingMaxPower)
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
                 return;
 
             // Nos movemos
@@ -189,7 +188,9 @@ namespace Player
             _direction = _gameInputs.GetDirectionNormalized();
 
 
-            if (_jump.IsPerformingJump || _mediumMagicUsed)
+            if (_jump.IsPerformingJump ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack
+                )
                 return;
 
             _lookDirection = _animatorBrain.LookDirection(_direction);
@@ -234,7 +235,6 @@ namespace Player
         #region Physical Actions
 
         private void GameInputs_OnPhysicActionButtonStarted() => _isPhysicActionInput = true;
-
 
         private void DoPhysicalAction()
         {
@@ -311,9 +311,16 @@ namespace Player
 
         private bool IsAttacking()
         {
-            return _isPhysicAttacking || _isWeakMagicInput
-                || _mediumMagicUsed || _isMediumMagicInput
-                || _isStrongMagicInput;
+            return _isPhysicAttacking ||
+                _magicAttacks[_magicIndex].IsUsingWeakAttack ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack ||
+                _magicAttacks[_magicIndex].IsUsingStrongAttack
+                ;
+
+
+            //return _isPhysicAttacking || _isWeakMagicInput
+            //    || _mediumMagicUsed || _isMediumMagicInput
+            //    || _isStrongMagicInput;
         }
 
 
@@ -341,12 +348,11 @@ namespace Player
         {
             _isMediumMagicInput = false;
 
-            if (_mediumMagicUsed)
-            {
-                _mediumMagicUsed = false;
+            // Si está usando el poder medio
+            if (_magicAttacks[_magicIndex].IsUsingMediumAttack)
+                // Lo detenemos
                 _magicAttacks[_magicIndex].StopMediumAttack();
-                _playerStatus.RestartMagicTimer();
-            }
+
         }
 
         private void GameInputs_OnStrongAttackButtonPerformed()
@@ -391,11 +397,11 @@ namespace Player
         /// </summary>
         private void DoMediumMagicAttack()
         {
-            if (!_isMediumMagicInput || _mediumMagicUsed)
+            if (!_isMediumMagicInput ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
                 return;
 
             // Activamos las variables de magia media e invocamos el nuevo ataque
-            _mediumMagicUsed = true;
             _magicAttacks[_magicIndex].MediumAttack(_lookDirection);
 
         }

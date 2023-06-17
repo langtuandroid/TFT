@@ -37,7 +37,7 @@ namespace Player
         // Duración del poder máximo
         public float MaxPowerDuration => _maxPowerDuration;
         // Indica si está usando el poder máximo
-        public bool IsUsingMaxPower => _isUsingMaxPower;
+        //public bool IsUsingMaxPower => _isUsingMaxPower;
         // Indica si está aturdido
         public bool IsStunned => _stunnedTimer < _timeStunned;
 
