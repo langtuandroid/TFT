@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Utils;
 
 public class Inventory : MonoBehaviour
 {
@@ -21,6 +24,7 @@ public class Inventory : MonoBehaviour
 
     #region Public variables
 
+    public Sprite exampleSprite;
     public List<Item> items = new List<Item>();
     public List<Item> nonEquipableList;
     public List<Image> nonEquipableButtons;
@@ -31,14 +35,15 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region Private variables
-
-
-
-
+    private Dictionary<int, Item> uiItem = new Dictionary<int, Item>();
     private Dictionary<int, GameObject> uiItems = new Dictionary<int, GameObject>();
     private readonly Dictionary<int, bool> itemUIStates = new Dictionary<int, bool>();
 
     private List<int> itemsNoEquipables = new List<int>();
+
+    // SERVICES
+    private InputAction submitAction;
+    public InputActionAsset inputActions;
 
     #endregion
 
@@ -46,6 +51,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
+        submitAction = inputActions.FindActionMap("UI").FindAction("Navigate");
         Item yellowFlower = new Item("Flor amarillenta", null, "Me encanta esta floresita que es de color amarilla");
         yellowFlower.itemID = 1;
         //Item florAmarillenta = new Item("Flor Amarillenta", 1);
@@ -57,13 +63,26 @@ public class Inventory : MonoBehaviour
         Init();
     }
 
+    private void OnEnable()
+    {
+        submitAction.performed += OnMovement;
+        submitAction.Enable();
+    }
+
+    private void OnDestroy()
+    {
+        submitAction.performed -= OnMovement;
+        submitAction.Disable();
+    }
+
     #endregion
 
     #region Private methods
 
     private void Init()
     {
-
+        foreach (var item in nonEquipableList)
+            uiItem.Add(item.itemID, item);
 
         for (int i = 0; i < nonEquipableButtons.Count; i++)
         {
@@ -73,8 +92,11 @@ public class Inventory : MonoBehaviour
                 nonEquipableButtons[i].sprite = _empty.Sprite;
         }
 
-        EventSystem.current.SetSelectedGameObject(nonEquipableButtons[0].transform.parent.gameObject);
+
+        EventSystem ev = EventSystem.current;
+        ev.SetSelectedGameObject(nonEquipableButtons[0].transform.parent.gameObject);
         _textInfo.text = nonEquipableList[0].Description;
+
 
         //foreach (Item item in items) // Busqueda de items no equipables en la ui para añadirlas al diccionario
         //{
@@ -112,6 +134,21 @@ public class Inventory : MonoBehaviour
     #endregion
 
     #region Public methods
+
+    public void OnMovement(InputAction.CallbackContext ctx)
+    {
+        Debug.Log("Cambio selección");
+        EventSystem ev = EventSystem.current;
+        int n = int.Parse(ev.currentSelectedGameObject.name);
+        if (uiItem.ContainsKey(n))
+        {
+            _textInfo.text = uiItem[n].Description;
+        }
+        else
+        {
+            _textInfo.text = _empty.Description;
+        }
+    }
 
     public bool AddItem(Item item)
     {

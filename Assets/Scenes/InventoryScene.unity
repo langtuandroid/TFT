@@ -574,6 +574,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textInfo: {fileID: 365091730}
   _empty: {fileID: 11400000, guid: abd275df74fd9174492bf0ae20083327, type: 2}
+  exampleSprite: {fileID: 0}
   items: []
   nonEquipableList:
   - {fileID: 11400000, guid: 43fbe2f25a01cbe41a7c2be037b3d4f3, type: 2}
@@ -587,6 +588,7 @@ MonoBehaviour:
   consumableList:
   - {fileID: 11400000, guid: 5818a1a21c5ccdd408e882e379f9f6e9, type: 2}
   inventorySpace: 10
+  inputActions: {fileID: -944628639613478452, guid: 17cc4108eda5b594e939e3af726a514e, type: 3}
 --- !u!1001 &174735424
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2187,7 +2189,7 @@ GameObject:
   - component: {fileID: 916769903}
   - component: {fileID: 916769902}
   m_Layer: 5
-  m_Name: Vara
+  m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2990,7 +2992,7 @@ GameObject:
   - component: {fileID: 1129148002}
   - component: {fileID: 1129148001}
   m_Layer: 5
-  m_Name: Nadar
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3416,6 +3418,7 @@ GameObject:
   - component: {fileID: 1277097302}
   - component: {fileID: 1277097301}
   - component: {fileID: 1277097303}
+  - component: {fileID: 1277097304}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -3483,6 +3486,36 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!114 &1277097304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1277097299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 17cc4108eda5b594e939e3af726a514e, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 1277097303}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1320273056
 GameObject:
   m_ObjectHideFlags: 0
@@ -4504,7 +4537,7 @@ GameObject:
   - component: {fileID: 2111407147}
   - component: {fileID: 2111407146}
   m_Layer: 5
-  m_Name: Salto
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4626,7 +4659,7 @@ GameObject:
   - component: {fileID: 2143196420}
   - component: {fileID: 2143196419}
   m_Layer: 5
-  m_Name: Coger Objeto
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
