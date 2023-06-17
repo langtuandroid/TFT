@@ -5,6 +5,11 @@ namespace Attack
 {
     public abstract class MagicAttack : MonoBehaviour
     {
+        [Header("Attack costs")]
+        [SerializeField]
+        [Tooltip("Coste de los ataques (de menor a mayor poder)")]
+        internal int[] _costs;
+
         // Eventos
         internal MagicEvents _magicEvents;
 

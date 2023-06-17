@@ -15,11 +15,19 @@ namespace Player
         [Tooltip("Tiempo entre ataques mágicos")]
         private float _timeBetweenMagicAttacks = .2f;
         [SerializeField]
+        [Tooltip("Tiempo que tarda en recuperar magia")]
+        private float _timeOfRecovering = .8f;
+        [SerializeField]
         [Tooltip("Tiempo de recarga del poder máximo")]
         private float _timeToRechargeMaxPower = 10f;
         [SerializeField]
         [Tooltip("Duración del poder máximo en pantalla")]
         private float _maxPowerDuration = 5f;
+
+        [Header("Stunning")]
+        [SerializeField]
+        [Tooltip("Tiempo que pasa el jugador aturdido")]
+        private float _timeStunned = 5f;
 
         #endregion
 
@@ -30,6 +38,8 @@ namespace Player
         public float MaxPowerDuration => _maxPowerDuration;
         // Indica si está usando el poder máximo
         public bool IsUsingMaxPower => _isUsingMaxPower;
+        // Indica si está aturdido
+        public bool IsStunned => _stunnedTimer < _timeStunned;
 
         public int CurrentHealth
         {
@@ -93,6 +103,9 @@ namespace Player
         private float _magicTimer; // Temporizador para los ataques mágicos
         private float _maxPowerTimer; // Temporizador para la carga del ataque máximo 
         private bool _isUsingMaxPower; // Indica si se está usando el poder máximo
+        private float _magicRecoverTimer; // Temporizador para recuperar magia
+        // Stunning
+        private float _stunnedTimer; // Tiempo aturdido
 
         #endregion
 
@@ -101,8 +114,10 @@ namespace Player
         private void Awake()
         {
             _magicTimer = 0f;
+            _magicRecoverTimer = 0f;
             _maxPowerTimer = _timeToRechargeMaxPower;
             _isUsingMaxPower = false;
+            _stunnedTimer = _timeStunned;
         }
 
         private void Start()
@@ -118,6 +133,7 @@ namespace Player
             _magicEvents.OnMaxPowerUsedValue += OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue += OnMaxPowerFinalizedValue;
             _magicEvents.DefineMaxPowerRechargingTime(_timeToRechargeMaxPower);
+            _magicEvents.OnUseOfMagicValue += OnUseOfMagicValue;
             // Souls
             _soulEvents = ServiceLocator.GetService<SoulEvents>();
             _soulEvents.OnGotSoulsValue += OnGotSouls;
@@ -125,20 +141,35 @@ namespace Player
 
         private void Update()
         {
+            if (IsStunned)
+            {
+                _stunnedTimer += Time.deltaTime;
+                return;
+            }
+
+            if (_isDeath || _isUsingMaxPower)
+                return;
+
             if (_magicTimer < _timeBetweenMagicAttacks)
                 _magicTimer += Time.deltaTime;
             if (_maxPowerTimer < _timeToRechargeMaxPower)
                 _maxPowerTimer += Time.deltaTime;
 
+            // Recuperamos poder mágico
+            RecoverMagic();
         }
 
         private void OnDestroy()
         {
+            // Life
             _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
             _lifeEvents.OnDeathValue -= OnDeathValue;
+            // Magic
             _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
+            _magicEvents.OnUseOfMagicValue += OnUseOfMagicValue;
+            // Souls
             _soulEvents.OnGotSoulsValue -= OnGotSouls;
         }
 
@@ -258,6 +289,35 @@ namespace Player
         {
             _isUsingMaxPower = false;
             _maxPowerTimer = 0;
+        }
+
+        /// <summary>
+        /// Consume magia
+        /// </summary>
+        /// <param name="value"></param>
+        private void OnUseOfMagicValue(int value)
+        {
+            int magic = CurrentMagic - value;
+            CurrentMagic = Mathf.Max(0, magic);
+
+            if (CurrentMagic == 0)
+                _stunnedTimer = 0f;
+        }
+
+        /// <summary>
+        /// Recupera la cantidad de magia que se usa
+        /// </summary>
+        private void RecoverMagic()
+        {
+
+            if (_magicRecoverTimer < _timeOfRecovering)
+            {
+                _magicRecoverTimer += Time.deltaTime;
+                return;
+            }
+
+            CurrentMagic = Mathf.Min(MaxMagic, CurrentMagic + 1);
+            _magicRecoverTimer = 0;
         }
 
         #endregion
