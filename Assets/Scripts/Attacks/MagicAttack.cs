@@ -5,18 +5,55 @@ namespace Attack
 {
     public abstract class MagicAttack : MonoBehaviour
     {
+
+        #region SerializeFields
+
         [Header("Attack costs")]
         [SerializeField]
         [Tooltip("Coste de los ataques (de menor a mayor poder)")]
-        internal int[] _costs;
+        internal int[] _costs = new int[3];
 
-        // Eventos
+        #endregion
+
+        #region Internal variables
+
+        // EVENTS
         internal MagicEvents _magicEvents;
+
+        // STATES
+        internal bool _isUsingWeakAttack;
+        internal bool _isUsingMediumAttack;
+        internal bool _isUsingStrongAttack;
+
+        #endregion
+
+        #region Public variables
+
+        // EVENTS
+        public bool IsUsingWeakAttack => _isUsingWeakAttack;
+        public bool IsUsingMediumAttack => _isUsingMediumAttack;
+        public bool IsUsingStrongAttack => _isUsingStrongAttack;
+
+        #endregion
+
+
+        #region Unity methods
 
         private void Awake()
         {
+            // Eventos
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
+
+            // Variables
+            _isUsingWeakAttack = false;
+            _isUsingMediumAttack = false;
+            _isUsingStrongAttack = false;
         }
+
+        #endregion
+
+
+        #region Abstract class methods
 
         /// <summary>
         /// Selecciona el tipo de ataque
@@ -50,6 +87,8 @@ namespace Attack
         /// Ataque fuerte
         /// </summary>
         public abstract void StrongAttack(Vector2 direction);
+
+        #endregion
 
     }
 

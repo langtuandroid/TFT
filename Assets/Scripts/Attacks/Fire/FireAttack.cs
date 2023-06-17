@@ -111,6 +111,9 @@ namespace Attack
         /// </summary>
         public override void WeakAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia débil
+            _isUsingWeakAttack = true;
+
             // Instanciamos bola de fuego
             GameObject fireball = Instantiate(
                 _fireballPrefab, // Prefab de la bola
@@ -126,8 +129,10 @@ namespace Attack
             fireball.GetComponent<Fireball>().SetDirection(direction);
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_BALL);
 
-            // Usamos magia
+            // Consumimos magia
             _magicEvents.UseOfMagicValue(_costs[0]);
+            // Desactivamos el uso de la magia débil
+            _isUsingWeakAttack = false;
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
         }
@@ -137,6 +142,10 @@ namespace Attack
         /// </summary>
         public override void MediumAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia media
+            _isUsingMediumAttack = true;
+
+            // Creamos el prefab
             GameObject prefab = null;
 
             if (direction.Equals(Vector2.up))
@@ -175,6 +184,9 @@ namespace Attack
             _flamesToDestroy.Add(_flame);
             Invoke(nameof(DisableAndDestroy), 4f);
 
+            // Desactivamos el uso de magia media
+            _isUsingMediumAttack = false;
+
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
         }
@@ -184,12 +196,11 @@ namespace Attack
         /// </summary>
         public override void StrongAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia fuerte
+            _isUsingStrongAttack = true;
             // Activamos el poder
             _magicEvents.MaxPowerUsed(_playerStatus.MaxPowerDuration);
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_DEFINITIVE);
-
-            // Reseteamos el temporizador de uso de poder
-            _playerStatus.RestartMagicTimer();
         }
 
         #endregion
@@ -222,7 +233,12 @@ namespace Attack
 
         private void MaxPowerFinalized()
         {
+            // Desactivamos el uso de magia fuerte
+            _isUsingStrongAttack = false;
+            // Consumimos magia
             _magicEvents.UseOfMagicValue(_costs[2]);
+            // Y reseteamos el contador de tiempo
+            _playerStatus.RestartMagicTimer();
         }
 
         #endregion
