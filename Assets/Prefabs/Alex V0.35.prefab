@@ -370,11 +370,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4fb9b2241a21f64ca9cca75394a7014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _costs: 02000000010000000f000000
   _fireballPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
   _flamesUp: {fileID: 825047999918456023, guid: 29d197734dd90ac40b42e2643be6d2d1, type: 3}
   _flamesDown: {fileID: 4186990749208588629, guid: 29962d20446fea946b64d29ca41ee944, type: 3}
   _flamesLeft: {fileID: 3329722903509604215, guid: bc25aa1a59413d34a96d6ee2a1b850d4, type: 3}
   _flamesRight: {fileID: 5727942065040346014, guid: 9599c935c9988c94386d83a75646e62d, type: 3}
+  _timeBetweenConsuming: 0.2
   _fireOrbs:
   - {fileID: 1970740085211238429}
   - {fileID: 1970740086418272728}
@@ -398,8 +400,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _timeBetweenMagicAttacks: 0.2
-  _timeToRechargeMaxPower: 10
+  _timeOfRecovering: 0.8
+  _timeToRechargeMaxPower: 30
   _maxPowerDuration: 10
+  _playerSprite: {fileID: 6456893094218507078}
+  _timeOfInvencibility: 2.5
+  _timeStunned: 5
 --- !u!1 &5931733289382357370
 GameObject:
   m_ObjectHideFlags: 0

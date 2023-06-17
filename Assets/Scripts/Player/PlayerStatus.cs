@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 namespace Player
 {
@@ -24,6 +25,14 @@ namespace Player
         [Tooltip("Duración del poder máximo en pantalla")]
         private float _maxPowerDuration = 5f;
 
+        [Header("Life & Health settings")]
+        [SerializeField]
+        [Tooltip("Sprite del personaje")]
+        private SpriteRenderer _playerSprite;
+        [SerializeField]
+        [Tooltip("Tiempo que dura la invencibilidad tras recibir daño")]
+        private float _timeOfInvencibility = 1.5f;
+
         [Header("Stunning")]
         [SerializeField]
         [Tooltip("Tiempo que pasa el jugador aturdido")]
@@ -33,14 +42,19 @@ namespace Player
 
         #region Public variables
 
-        public bool IsDeath => _isDeath; // Indica si el player ha fallecido
-        // Duración del poder máximo
-        public float MaxPowerDuration => _maxPowerDuration;
-        // Indica si está usando el poder máximo
-        //public bool IsUsingMaxPower => _isUsingMaxPower;
+        // PLAYER STATES
+        // Indica si el player ha fallecido
+        public bool IsDeath => _isDeath;
+        // Indica si el player tiene invencibilidad temporal
+        public bool HasTemporalInvencibility => _hasTemporalInvencibility;
         // Indica si está aturdido
         public bool IsStunned => _stunnedTimer < _timeStunned;
 
+        // MAGIC ATTACK VARIABLES
+        // Duración del poder máximo
+        public float MaxPowerDuration => _maxPowerDuration;
+
+        // GENERAL VARIABLES
         public int CurrentHealth
         {
             get { return _playerStatusSaveSO.playerStatusSave.currentHealth; }
@@ -99,6 +113,7 @@ namespace Player
         // Variables
         // Life
         private bool _isDeath; // Booleano que indica si el player ha decaído
+        private bool _hasTemporalInvencibility; // Booleano que indica si el player está bajo efecto de invencibilidad temporal
         // Magic Attacks
         private float _magicTimer; // Temporizador para los ataques mágicos
         private float _maxPowerTimer; // Temporizador para la carga del ataque máximo 
@@ -220,11 +235,52 @@ namespace Player
         /// <param name="damage"></param>
         private void TakeDamage(int damage)
         {
+            if (_hasTemporalInvencibility)
+                return;
+
+            // Activamos el evento de recibir daño
             _lifeEvents.ChangeCurrentLifeQuantity(
                 Mathf.Max(
                     0,
                     CurrentHealth - damage)
                 );
+            // Y aplicamos invencibilidad temporal
+            GetTemporalInvencibility();
+        }
+
+        private void GetTemporalInvencibility()
+        {
+            // Activamos la invencibilidad temporal
+            _hasTemporalInvencibility = true;
+            Sequence seq = DOTween.Sequence();
+
+            // Dividimos el tiempo en 3
+            float t = _timeOfInvencibility / 3f;
+
+            // Primera franja de parpadeo
+            for (int i = 0; i < 8; i++)
+            {
+                // Hacemos el parpadeo
+                seq.Append(_playerSprite.DOFade(60 / 255f, t / 4)).
+                    SetEase(Ease.Linear);
+                seq.Append(_playerSprite.DOFade(1f, t / 4)).
+                    SetEase(Ease.Linear);
+            }
+
+            // Segunda franja de parpadeo
+            for (int i = 0; i < 10; i++)
+            {
+                // Hacemos el parpadeo
+                seq.Append(_playerSprite.DOFade(60 / 255f, t / 10)).
+                    SetEase(Ease.Linear);
+                seq.Append(_playerSprite.DOFade(1f, t / 10)).
+                    SetEase(Ease.Linear);
+            }
+
+            seq.OnComplete(() => _hasTemporalInvencibility = false);
+            seq.Play();
+
+
         }
 
         /// <summary>
@@ -347,7 +403,7 @@ namespace Player
         private void TakeDamage()
         {
             //int value = Random.Range(1, 5);
-            int value = 10;
+            int value = 1;
             Debug.Log($"Voy a hacer {value} de daño");
             TakeDamage(value);
         }
@@ -364,7 +420,6 @@ namespace Player
         #endregion
 
         #endregion
-
 
     }
 }
