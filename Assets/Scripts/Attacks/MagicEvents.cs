@@ -5,12 +5,14 @@ public class MagicEvents
 {
     #region Events
 
-    // Eventos para recarga de los poderes máximos
+    // Eventos para uso de los poderes máximos
     public event Action<MagicAttack> OnAttackTypeValue;
     public event Action<float> OnFillAmountValue;
     public event Action<float> OnPanelAlphaValue;
     public event Action<float> OnMaxPowerUsedValue;
     public event Action OnMaxPowerFinalizedValue;
+
+    public event Action<int> OnUseOfMagicValue;
 
     #endregion
 
@@ -48,6 +50,11 @@ public class MagicEvents
     public void MaxPowerFinalized()
     {
         OnMaxPowerFinalizedValue?.Invoke();
+    }
+
+    public void UseOfMagicValue(int value)
+    {
+        OnUseOfMagicValue?.Invoke(value);
     }
 
     #endregion

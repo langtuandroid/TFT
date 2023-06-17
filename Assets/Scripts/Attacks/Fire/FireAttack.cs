@@ -29,6 +29,9 @@ namespace Attack
         [SerializeField]
         [Tooltip("Prefab del lanzallamas hacia la derecha")]
         private GameObject _flamesRight;
+        [SerializeField]
+        [Tooltip("Tiempo que debe pasar para que el lanzallamas consuma")]
+        private float _timeBetweenConsuming = .4f;
 
         [Header("Strong Attack")]
         [SerializeField]
@@ -49,6 +52,9 @@ namespace Attack
         // Lista de lanzallamas para destruirr
         private List<GameObject> _flamesToDestroy;
 
+        // Temporizador del lanzallamas
+        private float _flameTimer;
+
         #endregion
 
         #region Unity Methods
@@ -63,11 +69,31 @@ namespace Attack
         {
             // Inicializamos componentes
             _flamesToDestroy = new List<GameObject>();
+            _flameTimer = 0f;
 
             _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _playerStatus = GetComponent<PlayerStatus>();
 
             _magicEvents.OnMaxPowerUsedValue += RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue += MaxPowerFinalized;
+        }
+
+        private void Update()
+        {
+            if (
+                _flame != null &&
+                !_flamesToDestroy.Contains(_flame)
+                )
+            {
+                _flameTimer += Time.deltaTime;
+                if (_flameTimer >= _timeBetweenConsuming)
+                {
+                    _magicEvents.UseOfMagicValue(_costs[1]);
+                    _flameTimer = 0f;
+                }
+            }
+
+
         }
 
         #endregion
@@ -77,6 +103,7 @@ namespace Attack
         public override void DeSelect()
         {
             _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
         }
 
         /// <summary>
@@ -99,6 +126,8 @@ namespace Attack
             fireball.GetComponent<Fireball>().SetDirection(direction);
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_BALL);
 
+            // Usamos magia
+            _magicEvents.UseOfMagicValue(_costs[0]);
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
         }
@@ -189,6 +218,11 @@ namespace Attack
             foreach (GameObject obj in _fireOrbs)
                 // Se cambia el estado al opuesto que tiene en ese momento
                 obj.SetActive(state);
+        }
+
+        private void MaxPowerFinalized()
+        {
+            _magicEvents.UseOfMagicValue(_costs[2]);
         }
 
         #endregion

@@ -128,10 +128,17 @@ namespace Player
         {
             // TODO: GameOver
             // Si el jugador ha perdido toda su salud,
+            // si está aturdido
             // o si está usando el poder máximo, volvemos
-            if (_playerStatus.IsDeath || 
+            if (_playerStatus.IsDeath ||
+                _playerStatus.IsStunned ||
                 _playerStatus.IsUsingMaxPower)
+            {
+                if (_mediumMagicUsed)
+                    GameInputs_OnMediumAttackButtonCanceled();
+
                 return;
+            }
 
 
             // Controlamos las acciones
@@ -157,9 +164,11 @@ namespace Player
         private void FixedUpdate()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud
+            // Si el jugador ha perdido toda su salud,
+            // si está aturdido
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
+                _playerStatus.IsStunned ||
                 _playerStatus.IsUsingMaxPower)
                 return;
 
