@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class SealMovement : MonoBehaviour
 {
-    [SerializeField] private float _duration = 3f;
+    [SerializeField] private float _duration = 1.5f;
     [SerializeField] private int _pixelToMove = 3;
 
     private void Start()
