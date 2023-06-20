@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor;
 
 namespace Player
 {
@@ -245,42 +246,26 @@ namespace Player
                     CurrentHealth - damage)
                 );
             // Y aplicamos invencibilidad temporal
-            GetTemporalInvencibility();
+            tween = GetTemporalInvencibility();
         }
 
-        private void GetTemporalInvencibility()
+        private Tween tween;
+        private Tween GetTemporalInvencibility()
         {
             // Activamos la invencibilidad temporal
             _hasTemporalInvencibility = true;
             Sequence seq = DOTween.Sequence();
 
-            // Dividimos el tiempo en 3
-            float t = _timeOfInvencibility / 3f;
-
-            // Primera franja de parpadeo
-            for (int i = 0; i < 8; i++)
-            {
-                // Hacemos el parpadeo
-                seq.Append(_playerSprite.DOFade(60 / 255f, t / 4)).
-                    SetEase(Ease.Linear);
-                seq.Append(_playerSprite.DOFade(1f, t / 4)).
-                    SetEase(Ease.Linear);
-            }
-
-            // Segunda franja de parpadeo
-            for (int i = 0; i < 10; i++)
-            {
-                // Hacemos el parpadeo
-                seq.Append(_playerSprite.DOFade(60 / 255f, t / 10)).
-                    SetEase(Ease.Linear);
-                seq.Append(_playerSprite.DOFade(1f, t / 10)).
-                    SetEase(Ease.Linear);
-            }
+            seq.AppendInterval(.8f);
+            seq.Append(_playerSprite.DOFade(60 / 255f, 0f));
+            seq.Append(_playerSprite.DOFade(1f, _timeOfInvencibility))
+                .SetEase(Ease.InOutFlash, 14, -1)
+                ;
 
             seq.OnComplete(() => _hasTemporalInvencibility = false);
             seq.Play();
 
-
+            return seq;
         }
 
         /// <summary>
@@ -322,6 +307,10 @@ namespace Player
         /// </summary>
         private void OnDeathValue()
         {
+            if (tween != null)
+                tween.Kill();
+
+            _playerSprite.DOFade(1f, 0f).Play();
             _isDeath = true;
         }
 
