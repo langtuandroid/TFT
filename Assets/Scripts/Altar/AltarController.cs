@@ -1,31 +1,63 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
-public class AltarController : MonoBehaviour
+public class AltarController : MonoBehaviour, IInteractable
 {
-    [Header("Zone Related:")]
-    [SerializeField] private ZoneExitSideSO _zoneExitSO;
-    [SerializeField] private ZoneSaveSO     _zoneSaveSO;
-    [SerializeField] private StartRefInfoSO _startRefInfoSO;
-    [Header("Scene Related:")]
-    [SerializeField] private GameObject     _playerPrefab;
-    [SerializeField] private List<ActivableSceneObject> _activableObjectList;
+    [SerializeField] private Color _completedMagicColor;
+    [SerializeField] private SpriteRenderer _sealSprite;
+    [SerializeField] private ZoneSaveSO[] _zoneSaveSOArray;
+
+    [Header("To Dungeon Scene:")]
+    [SerializeField] private SceneName _nextScene;
+    [SerializeField] private Color _fadeOutColor;
+    [SerializeField] private MusicZoneParameter _musicParamName;
+    [SerializeField] private GameObject _enterIcon;
+
+    private bool _isDungeonOpen;
+    private float _fadeOutSeconds = 1f;
 
     private void Start()
     {
-        LoadZoneInteractableData();
+        ActivateAltar();
     }
 
-    private void LoadZoneInteractableData()
+    private void ActivateAltar()
     {
-        if ( _zoneSaveSO.zoneSave.IsCompleted )
-        {
-            Debug.Log( "Zone completed, TODO: Create logic" );
-        }
+        foreach ( var zoneSaveSO in _zoneSaveSOArray )
+            if ( !zoneSaveSO.zoneSave.IsCompleted )
+                return;
+        _isDungeonOpen = true;
+        _sealSprite.color = _completedMagicColor;
+    }
 
-        List<bool> activatedObjects = _zoneSaveSO.zoneSave.IsActivatedList;
-        for ( int i = 0; i < activatedObjects.Count; i++ )
-            if ( activatedObjects[i] )
-                _activableObjectList[i].TriggerActivation();
+    public void Interact( Vector2 lookDirection )
+    {
+        if ( _isDungeonOpen )
+        {
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+
+            ServiceLocator.GetService<LevelEvents>().ChangeZone(
+                new LevelEvents.ChangeZoneArgs
+                {
+                    nextStartPointRefId = 0 ,
+                    fadeColor = _fadeOutColor ,
+                    fadeDurationSeconds = _fadeOutSeconds
+                } );
+
+            StartCoroutine( FadeOut() );
+        }
+    }
+
+    public void ShowCanInteract( bool show )
+    {
+        if ( _isDungeonOpen )
+            _enterIcon.SetActive( show );
+    }
+
+    private IEnumerator FadeOut()
+    {
+        WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
+        yield return waitTime;
+        ServiceLocator.GetService<SceneLoader>().InstaLoad( _nextScene.ToString() );
     }
 }

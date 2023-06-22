@@ -1,28 +1,30 @@
 using UnityEngine;
 
-public class CircleActivation : ActivableSceneObject
+public class CircleActivation : MonoBehaviour
 {
     [SerializeField] private Color _completedMagicColor;
     private Color _activeMagicColor = Color.yellow;
     
     [Header("Zone Save SO")]
     [SerializeField] private ZoneSaveSO _previousZoneSaveSO;
+    [SerializeField] private ZoneSaveSO _thisZoneSaveSO;
 
     private void Awake()
     {
-        GetComponentInChildren<Collider2D>().enabled = false;
+        bool isColliderEnabled = false;
 
+        if ( _thisZoneSaveSO.zoneSave.IsCompleted )
+        {
+            foreach ( var item in GetComponentsInChildren<SpriteRenderer>() )
+                item.color = _completedMagicColor;
+            isColliderEnabled = true;
+        }
+        else
         if ( _previousZoneSaveSO.zoneSave.IsCompleted )
+        {
             GetComponent<SpriteRenderer>().color = _activeMagicColor;
-    }
-
-    public override void TriggerActivation()
-    {
-        base.TriggerActivation();
-
-        GetComponentInChildren<Collider2D>().enabled = true;
-
-        foreach ( var sprite in GetComponentsInChildren<SpriteRenderer>() )
-            sprite.color = _completedMagicColor;
+            isColliderEnabled = true;
+        }
+        GetComponentInChildren<Collider2D>().enabled = isColliderEnabled;
     }
 }
