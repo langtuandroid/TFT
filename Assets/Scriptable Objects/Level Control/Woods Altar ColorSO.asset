@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b5a8cf56a4490c41afa4728d1c8ec16, type: 3}
-  m_Name: Woods Zone4 SaveSO
+  m_Script: {fileID: 11500000, guid: 570787aa2ffc2e64aadcc84edd11169c, type: 3}
+  m_Name: Woods Altar ColorSO
   m_EditorClassIdentifier: 
-  zoneSave:
-    IsCompleted: 0
-    IsActivatedList: 
+  activationMagicColor: {r: 1, g: 0.9508722, b: 0.11698109, a: 1}
+  completeMagicColor: {r: 0, g: 1, b: 0.06666667, a: 1}

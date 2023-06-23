@@ -302,6 +302,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775f3e7c7aa364644b8590d9f045b8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
   _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
@@ -374,63 +375,6 @@ Transform:
   m_Father: {fileID: 861503099}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &320221430
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_Name
-      value: Alex V0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.5587797
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.2645154
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
 --- !u!1 &431367192
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,7 +469,7 @@ RectTransform:
   m_Children:
   - {fileID: 1465912143}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -633,7 +577,7 @@ Transform:
   m_Children:
   - {fileID: 656825445}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &435824116
 BoxCollider2D:
@@ -4299,7 +4243,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &656825443
 GameObject:
@@ -4510,7 +4454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4feb8878621dc60419972ac77c4e3150, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _completedMagicColor: {r: 0, g: 1, b: 0.06666667, a: 1}
+  _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
   _sealSprite: {fileID: 515678608}
   _zoneSaveSOArray:
   - {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
@@ -4530,6 +4474,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 861503099}
+  - component: {fileID: 861503100}
   m_Layer: 0
   m_Name: Altar
   m_TagString: Untagged
@@ -4556,8 +4501,23 @@ Transform:
   - {fileID: 228497075}
   - {fileID: 2092035718}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &861503100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861503098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c876f0c415a46394586175c99b51c0ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _zoneExitSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
+  _startRefInfoSO: {fileID: 11400000, guid: 5406cb53a96db2d48b2dd5daae929d12, type: 2}
+  _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
 --- !u!1 &1000654639
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,6 +4821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775f3e7c7aa364644b8590d9f045b8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
   _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
@@ -4894,6 +4855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775f3e7c7aa364644b8590d9f045b8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
   _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
@@ -5011,7 +4973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 1
+  _nextStartPointRefID: 0
   _nextScene: 0
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
@@ -5312,7 +5274,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1943295536
 GameObject:
@@ -5390,7 +5352,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2006103370
 GameObject:
@@ -5465,7 +5427,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2035552801
 GameObject:
@@ -5512,7 +5474,7 @@ Transform:
   - {fileID: 1101202362}
   - {fileID: 2055882859}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2055882858
 GameObject:
@@ -5995,6 +5957,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775f3e7c7aa364644b8590d9f045b8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
   _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}

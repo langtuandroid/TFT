@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class CircleActivation : MonoBehaviour
 {
-    [SerializeField] private Color _completedMagicColor;
-    private Color _activeMagicColor = Color.yellow;
+    [SerializeField] private AltarColorSO _altarColorSO;
     
     [Header("Zone Save SO")]
     [SerializeField] private ZoneSaveSO _previousZoneSaveSO;
@@ -16,13 +15,13 @@ public class CircleActivation : MonoBehaviour
         if ( _thisZoneSaveSO.zoneSave.IsCompleted )
         {
             foreach ( var item in GetComponentsInChildren<SpriteRenderer>() )
-                item.color = _completedMagicColor;
+                item.color = _altarColorSO.completeMagicColor;
             isColliderEnabled = true;
         }
         else
         if ( _previousZoneSaveSO.zoneSave.IsCompleted )
         {
-            GetComponent<SpriteRenderer>().color = _activeMagicColor;
+            GetComponent<SpriteRenderer>().color = _altarColorSO.activationMagicColor;
             isColliderEnabled = true;
         }
         GetComponentInChildren<Collider2D>().enabled = isColliderEnabled;

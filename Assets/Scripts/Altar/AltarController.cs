@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AltarController : MonoBehaviour, IInteractable
 {
-    [SerializeField] private Color _completedMagicColor;
+    [SerializeField] private AltarColorSO _altarColorSO;
     [SerializeField] private SpriteRenderer _sealSprite;
     [SerializeField] private ZoneSaveSO[] _zoneSaveSOArray;
 
@@ -27,7 +27,7 @@ public class AltarController : MonoBehaviour, IInteractable
             if ( !zoneSaveSO.zoneSave.IsCompleted )
                 return;
         _isDungeonOpen = true;
-        _sealSprite.color = _completedMagicColor;
+        _sealSprite.color = _altarColorSO.completeMagicColor;
     }
 
     public void Interact( Vector2 lookDirection )
