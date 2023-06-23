@@ -31,5 +31,5 @@ public class TriggerChangeZone : MonoBehaviour
         WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
         yield return waitTime;
         ServiceLocator.GetService<SceneLoader>().InstaLoad( _nextScene.ToString() );
-    }    
+    }
 }
