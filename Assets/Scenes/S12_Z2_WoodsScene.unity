@@ -40883,7 +40883,10 @@ MonoBehaviour:
   _startRefInfoSO: {fileID: 11400000, guid: 0f73ba0440bfbfc40a9dfc8a0cdbb56c, type: 2}
   _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   _camera: {fileID: 1408432121}
-  _activableObjectList: []
+  _activableObjectList:
+  - {fileID: 2120197303}
+  - {fileID: 1871618497}
+  - {fileID: 1317269866}
 --- !u!4 &702023251
 Transform:
   m_ObjectHideFlags: 0
@@ -55300,3 +55303,14 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &2120197303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2354756946539683759, guid: a5208cc6d70f74ede8a52d57ab01c5a4, type: 3}
+  m_PrefabInstance: {fileID: 395824382}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23b14f506f075c4d8b600343d39a3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
