@@ -48,7 +48,7 @@ public class ZoneController : MonoBehaviour
         {
             Debug.LogError( $"[CAGADA]: El punto de referencia ID: {_zoneExitSO.nextStartPointRefID} no existe en la zona" );
         }
-
+        Debug.Log( startRefIndex );
         StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
 
         Vector3 position           = startRefInfo.startPosition;
@@ -64,9 +64,13 @@ public class ZoneController : MonoBehaviour
 
     private int GetStartRefInfoIndex( int startPointRefID )
     {
-        foreach ( var item in _startRefInfoSO.startRefInfoArray )
-            if ( startPointRefID == item.startPointRefID )
-                return item.startPointRefID;
+        int arrayLength = _startRefInfoSO.startRefInfoArray.Length;
+        for ( int i = 0; i < arrayLength; i++ )
+        {
+            int arrayStartPointRefID = _startRefInfoSO.startRefInfoArray[i].startPointRefID;
+            if ( startPointRefID.Equals( arrayStartPointRefID ) )
+                return i;
+        }
         return -1;
     }
 
