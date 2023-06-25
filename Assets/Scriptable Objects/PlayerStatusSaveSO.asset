@@ -20,6 +20,7 @@ MonoBehaviour:
     maxMagic: 0
     currentSouls: 1000
     maxSouls: 1000
+    isPhysicAttackUnlocked: 1
     isJumpUnlocked: 1
     isSwimUnlocked: 0
     isDashUnlocked: 0
@@ -33,3 +34,6 @@ MonoBehaviour:
     isWaterMediumUnlocked: 0
     isWaterStrongUnlocked: 0
     isLightUnlocked: 0
+    isAirUnlocked: 0
+    lifeBerryUnlocked: 0
+    lifeBerryQuantity: 0
