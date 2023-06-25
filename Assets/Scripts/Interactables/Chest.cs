@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+using UnityEngine.Events;
 using UnityEngine;
 using Utils;
 
@@ -14,6 +14,8 @@ public class Chest : ActivableSceneObject, IInteractable
     [Tooltip("Objeto que aparece tras abrirlo")]
     private GameObject _givenObject;
     #endregion
+
+    public UnityEvent OnChestOpen;
 
     #region Private variables
 
@@ -51,6 +53,7 @@ public class Chest : ActivableSceneObject, IInteractable
             ShowCanInteract(false);
             _hasBeenActivated = true;
 
+            OnChestOpen?.Invoke();
             InstantiateObject();
         }
     }
