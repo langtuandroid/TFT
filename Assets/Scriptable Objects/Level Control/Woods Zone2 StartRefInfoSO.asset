@@ -34,3 +34,17 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 131072
+  - exitZoneDescription: Left Center Cave - From Z2B Right
+    startPointRefID: 3
+    startPosition: {x: -39, y: 26.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 131072
+  - exitZoneDescription: Right Cave - From Z2B Left
+    startPointRefID: 4
+    startPosition: {x: -59, y: 26.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 262144
