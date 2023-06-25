@@ -2303,8 +2303,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 17.5, y: -17.5}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938237586
 MonoBehaviour:
@@ -2965,9 +2965,9 @@ MonoBehaviour:
   _playerStatusSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _descriptions:
   - "La vara que te regal\xF3 pap\xE1. Te permite atacar y usar poderes m\xE1gicos."
-  - 
-  - 
-  - 
+  - "Unas botas m\xE1gicas con las que podr\xE1s saltar muy alto."
+  - Te permite realizar un ligero teletransporte.
+  - "Con ello podr\xE1s alzar objetos muy pesados."
   _nonEquipableButtons:
   - {fileID: 916769902}
   - {fileID: 2111407146}
@@ -4191,10 +4191,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
-    m_Right: 5
-    m_Top: 5
-    m_Bottom: 5
+    m_Left: 15
+    m_Right: 10
+    m_Top: 15
+    m_Bottom: 10
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0

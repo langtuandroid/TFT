@@ -159,15 +159,18 @@ public class Inventory : MonoBehaviour
 
         // Vara:
         if (ps.isPhysicAttackUnlocked)
-            _nonEquipableButtons[0].GetComponentInChildren<Image>().enabled = true;
+            _nonEquipableButtons[0].GetComponentsInChildren<Image>()[1].enabled = true;
+
 
         // Botas
         if (ps.isJumpUnlocked)
-            _nonEquipableButtons[1].GetComponentInChildren<Image>().enabled = true;
+            _nonEquipableButtons[1].GetComponentsInChildren<Image>()[1].enabled = true;
+
 
         // Dash
         if (ps.isDashUnlocked)
-            _nonEquipableButtons[2].GetComponentInChildren<Image>().enabled = true;
+            _nonEquipableButtons[2].GetComponentsInChildren<Image>()[1].enabled = true;
+
     }
 
     //private void CheckItemInInventory(int itemID)
