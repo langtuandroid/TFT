@@ -17,15 +17,20 @@ public class Inventory : MonoBehaviour
     [Tooltip("Información del juego")]
     private PlayerStatusSaveSO _playerStatusSO;
 
-    [SerializeField]
-    [Tooltip("Lista con las descripciones de los objetos")]
-    private List<string> _descriptions;
-
     [Header("UI elements")]
 
     [SerializeField]
     [Tooltip("Lista de botones de objetos no equipables")]
     private List<Button> _nonEquipableButtons;
+    [SerializeField]
+    [Tooltip("Lista de magias primarias (incluyendo cada subtipo)")]
+    private List<Button> _primaryMagicButtons;
+    [SerializeField]
+    [Tooltip("Lista de magias secundarias")]
+    private List<Button> _secondaryMagicButtons;
+    [SerializeField]
+    [Tooltip("Lista de objetos consumibles")]
+    private List<Button> _consumableButtons;
 
     [SerializeField]
     [Tooltip("Parte que muestra la descripción del objeto seleccionado")]
@@ -42,12 +47,6 @@ public class Inventory : MonoBehaviour
 
     #region Public variables
 
-    //public List<Item> items = new List<Item>();
-    //public List<Item> nonEquipableList;
-
-    //public List<Item> powerList;
-    //public List<ConsumableItem> consumableList;
-
     #endregion
 
     #region Private variables
@@ -55,13 +54,11 @@ public class Inventory : MonoBehaviour
     // SERVICES
     //private GameInputs _gameInputs;
 
+    // INFORMATION
+    private List<string> _descriptions;
+
     // ELEMENTS
     private Button _currentSelected;
-    //private Dictionary<int, Item> uiItem = new Dictionary<int, Item>();
-    //private Dictionary<int, GameObject> uiItems = new Dictionary<int, GameObject>();
-    //private readonly Dictionary<int, bool> itemUIStates = new Dictionary<int, bool>();
-
-    //private List<int> itemsNoEquipables = new List<int>();
 
     // SERVICES
     private InputAction submitAction;
@@ -74,24 +71,28 @@ public class Inventory : MonoBehaviour
     private void Awake() //TODO quitar solo es de prueba
     {
         submitAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
-        //Item yellowFlower = new Item("Flor amarillenta", null, "Me encanta esta floresita que es de color amarilla");
-        //yellowFlower.itemID = 1;
-        ////Item florAmarillenta = new Item("Flor Amarillenta", 1);
-        //AddItem(yellowFlower);
+
+        _descriptions = new List<string>();
+        _descriptions.Add("VARA MÁGICA\nLa vara que te regaló papá.Te permite atacar y usar poderes mágicos.");
+        _descriptions.Add("BOTAS DE SALTO\nUnas botas mágicas con las que podrás saltar muy alto.");
+        _descriptions.Add("DASH\nTe permite realizar un ligero teletransporte.");
+        _descriptions.Add("COGER OBJETOS PESADOS\nCon ello podrás alzar objetos muy pesados.");
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+            _currentSelected.Select();
     }
 
     private void OnEnable()
     {
+        // Inicializamos
         Init();
 
+        // Damos un evento al click de botón
         foreach (Button button in _nonEquipableButtons)
             button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-        submitAction.performed += OnMovement;
-        submitAction.Enable();
-
-        _currentSelected = _nonEquipableButtons[0];
-        _currentSelected.Select();
 
         if (_playerStatusSO.playerStatusSave.isPhysicAttackUnlocked)
             SetText(_descriptions[0]);
@@ -114,42 +115,13 @@ public class Inventory : MonoBehaviour
         // Mostramos los iconos
         ShowIcons();
 
+        // Activamos eventos
+        submitAction.performed += OnMovement;
+        submitAction.Enable();
 
-
-        //foreach (var item in nonEquipableList)
-        //    uiItem.Add(item.itemID, item);
-
-        //for (int i = 0; i < nonEquipableButtons.Count; i++)
-        //{
-        //    if (i < nonEquipableList.Count)
-        //        nonEquipableButtons[i].sprite = nonEquipableList[i].Sprite;
-        //    else
-        //        nonEquipableButtons[i].sprite = _empty.Sprite;
-        //}
-
-
-
-        //_textInfo.text = nonEquipableList[0].Description;
-
-
-        //foreach (Item item in items) // Busqueda de items no equipables en la ui para añadirlas al diccionario
-        //{
-        //    // TODO preguntar por este prefijo u otra forma de hacerlo
-        //    Transform uiItemTransform = transform.Find("UI_ITEM_" + item.itemID);
-
-        //    if (uiItemTransform != null)
-        //    {
-        //        GameObject uiItem = uiItemTransform.gameObject;
-
-        //        if (uiItem != null)
-        //        {
-        //            uiItems[item.itemID] = uiItem; // ID DE LA UI
-        //            itemUIStates[item.itemID] = true;
-        //            itemsNoEquipables.Add(item.itemID);
-        //            CheckItemInInventory(item.itemID);
-        //        }
-        //    }
-        //}
+        // Y activamos selección actual
+        _currentSelected = _nonEquipableButtons[0];
+        _currentSelected.Select();
     }
 
     private void ShowIcons()
@@ -173,28 +145,9 @@ public class Inventory : MonoBehaviour
 
     }
 
-    //private void CheckItemInInventory(int itemID)
-    //{
-    //    if (itemUIStates.ContainsKey(itemID))
-    //    {
-    //        bool isActive = itemUIStates[itemID];
-
-    //        if (uiItems.ContainsKey(itemID))
-    //        {
-    //            uiItems[itemID].SetActive(isActive);
-    //        }
-    //    }
-    //}
-
-    #endregion
-
-    #region Public methods
-
-    public void OnMovement(InputAction.CallbackContext ctx)
-    {
-        Invoke(nameof(ChangeText), .1f);
-    }
-
+    /// <summary>
+    /// Cambia el texto según el objeto seleccionado
+    /// </summary>
     private void ChangeText()
     {
         EventSystem current = EventSystem.current;
@@ -235,47 +188,24 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Cambia el texto descriptivo según el texto enviado
+    /// </summary>
+    /// <param name="text"></param>
     private void SetText(string text)
     {
         _textInfo.text = text;
     }
 
+    #endregion
 
-    //public bool AddItem(Item item)
-    //{
-    //    if (items.Count < inventorySpace)
-    //    {
-    //        items.Add(item);
-    //        itemUIStates[item.itemID] = true;
-    //        if (uiItems.ContainsKey(item.itemID))
-    //        {
-    //            uiItems[item.itemID].SetActive(true);
-    //        }
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("Inventario lleno. No se puede añadir " + item.Name + ".");
-    //        return false;
-    //    }
-    //}
+    #region Public methods
 
-    //public void RemoveItem(Item item)
-    //{
-    //    if (items.Contains(item))
-    //    {
-    //        items.Remove(item);
-    //        itemUIStates.Remove(item.itemID);
-    //        if (uiItems.ContainsKey(item.itemID))
-    //        {
-    //            uiItems[item.itemID].SetActive(false);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("No se encontró " + item.Name + " en el inventario.");
-    //    }
-    //}
+    public void OnMovement(InputAction.CallbackContext ctx)
+    {
+        Invoke(nameof(ChangeText), .1f);
+    }
+
 
     #endregion
 
