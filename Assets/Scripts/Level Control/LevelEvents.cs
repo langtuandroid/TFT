@@ -3,16 +3,29 @@ using System;
 
 public class LevelEvents
 {
-    public Action OnChangeZone;
-    public void ChangeZone()
+    public event Action<ChangeZoneArgs> OnChangeZone;
+    public class ChangeZoneArgs
     {
-        OnChangeZone?.Invoke();
+        public int nextStartPointRefId;
+        public UnityEngine.Color fadeColor;
+        public float fadeDurationSeconds;
+    }
+    public void ChangeZone( ChangeZoneArgs bumperUIArgs)
+    {
+        OnChangeZone?.Invoke( bumperUIArgs );
     }
     
     
-    public Action OnZoneCompleted;
+    public event Action OnZoneCompleted;
     public void ZoneCompleted()
     {
         OnZoneCompleted?.Invoke();
+    }
+
+
+    public event Action OnKeyObtained;
+    public void KeyObtained()
+    {
+        OnKeyObtained?.Invoke();
     }
 }

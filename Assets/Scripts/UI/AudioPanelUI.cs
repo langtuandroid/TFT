@@ -10,12 +10,12 @@ namespace UI
         [SerializeField] private Slider _musicVolumeSlider;
         [SerializeField] private Slider _sfxVolumeSlider;
 
-        private AudioSpeaker _audioSpeaker;
+        private IAudioSpeaker _audioSpeaker;
         private OptionsSave  _optionsSave;
 
         private void Start()
         {
-            _audioSpeaker = ServiceLocator.GetService<AudioSpeaker>();
+            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _optionsSave  = ServiceLocator.GetService<OptionsSave>();
             InitAudioSettings();
             SetSliderEvents();

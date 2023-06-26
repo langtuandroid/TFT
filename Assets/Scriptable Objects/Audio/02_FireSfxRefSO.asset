@@ -12,19 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9082e7d3b8a2a4d4b912d690bb9a2655, type: 3}
   m_Name: 02_FireSfxRefSO
   m_EditorClassIdentifier: 
-  Sounds:
-  - Guid:
-      Data1: 65194241
-      Data2: 1260443222
-      Data3: 1114857652
-      Data4: -403713491
-    Path: event:/Sfx/Magic/Fire_Weak
-  - Guid:
-      Data1: -1014883429
-      Data2: 1261173637
-      Data3: 1987998902
-      Data4: 1639661670
-    Path: event:/Sfx/Magic/Fire_Weak_Hit
   SfxRef:
   - SoundName: Fire Ball
     Id: 0
@@ -44,3 +31,21 @@ MonoBehaviour:
         Data3: 1987998902
         Data4: 1639661670
       Path: event:/Sfx/Magic/Fire_Weak_Hit
+  - SoundName: Flamethrower
+    Id: 2
+    Sound:
+      Guid:
+        Data1: 1828648746
+        Data2: 1129662071
+        Data3: -1890180214
+        Data4: -2036466157
+      Path: event:/Sfx/Magic/Fire_Medium
+  - SoundName: Definitive Fire
+    Id: 3
+    Sound:
+      Guid:
+        Data1: -511496755
+        Data2: 1112174843
+        Data3: -150459996
+        Data4: 1407066679
+      Path: event:/Sfx/Magic/Fire_Strong

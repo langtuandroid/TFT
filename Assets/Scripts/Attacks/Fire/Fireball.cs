@@ -1,5 +1,4 @@
 using UnityEngine;
-using Utils;
 
 public class Fireball : MonoBehaviour
 {
@@ -11,6 +10,8 @@ public class Fireball : MonoBehaviour
     #endregion
 
     #region Private Variables
+    private IAudioSpeaker _audioSpeaker;
+    private GameInputs _gameInputs;
     private Vector3 _direction; // Dirección de movimiento
     private float _timer; // Temporizador
     #endregion
@@ -23,6 +24,8 @@ public class Fireball : MonoBehaviour
         // Ponemos una dirección de movimiento por defecto
         // (p. ej. hacia arriba)
         _direction = Vector3.up;
+        _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        _gameInputs = ServiceLocator.GetService<GameInputs>();
     }
 
     private void Update()
@@ -35,14 +38,11 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Si colisiona con un elemento que es quemable
-        if (collision.TryGetComponent(out IBurnable burnable))
-            // Lo activamos
-            burnable.Burn();
-
-        if (collision.TryGetComponent(out IInteractable interactable)
-            || collision.TryGetComponent(out IPickable pickable))
-            DisappearBall();
+        collision.GetComponent<IBurnable>()?.Burn();
+        _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
+        _gameInputs.RumblePad( 0.2f , 0.5f , 0.2f );
+        
+        DisappearBall();
     }
 
     #endregion

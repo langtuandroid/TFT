@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
-
+using Player;
+using DG.Tweening;
 
 namespace Attack
 {
@@ -28,6 +29,9 @@ namespace Attack
         [SerializeField]
         [Tooltip("Prefab del lanzallamas hacia la derecha")]
         private GameObject _flamesRight;
+        [SerializeField]
+        [Tooltip("Tiempo que debe pasar para que el lanzallamas consuma")]
+        private float _timeBetweenConsuming = .4f;
 
         [Header("Strong Attack")]
         [SerializeField]
@@ -38,16 +42,18 @@ namespace Attack
 
         #region Private Variables
 
-        // Dirección de los ataques
-        private Vector2 _direction;
+        private IAudioSpeaker _audioSpeaker;
+
+        // Status del jugador
+        private PlayerStatus _playerStatus;
 
         // Objeto del lanzallamas
         private GameObject _flame;
         // Lista de lanzallamas para destruirr
         private List<GameObject> _flamesToDestroy;
 
-        // Evento
-        private MagicEvents _magicEvents;
+        // Temporizador del lanzallamas
+        private float _flameTimer;
 
         #endregion
 
@@ -63,20 +69,51 @@ namespace Attack
         {
             // Inicializamos componentes
             _flamesToDestroy = new List<GameObject>();
+            _flameTimer = 0f;
 
-            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _playerStatus = GetComponent<PlayerStatus>();
+
+            _magicEvents.OnMaxPowerUsedValue += RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue += MaxPowerFinalized;
+        }
+
+        private void Update()
+        {
+            if (
+                _flame != null &&
+                !_flamesToDestroy.Contains(_flame)
+                )
+            {
+                _flameTimer += Time.deltaTime;
+                if (_flameTimer >= _timeBetweenConsuming)
+                {
+                    _magicEvents.UseOfMagicValue(_costs[1]);
+                    _flameTimer = 0f;
+                }
+            }
+
+
         }
 
         #endregion
 
+        #region Abstract class methods
 
-        #region Interface Methods
+        public override void DeSelect()
+        {
+            _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
+        }
 
         /// <summary>
         /// Lanza una bola de fuego
         /// </summary>
-        public override void WeakAttack()
+        public override void WeakAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia débil
+            _isUsingWeakAttack = true;
+
             // Instanciamos bola de fuego
             GameObject fireball = Instantiate(
                 _fireballPrefab, // Prefab de la bola
@@ -89,24 +126,35 @@ namespace Attack
                 transform.position.y + Constants.PLAYER_OFFSET
                 );
 
-            fireball.GetComponent<Fireball>().SetDirection(_direction);
+            fireball.GetComponent<Fireball>().SetDirection(direction);
+            _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_BALL);
 
+            // Consumimos magia
+            _magicEvents.UseOfMagicValue(_costs[0]);
+            // Desactivamos el uso de la magia débil
+            _isUsingWeakAttack = false;
+            // Reseteamos el temporizador de uso de poder
+            _playerStatus.RestartMagicTimer();
         }
 
         /// <summary>
         /// Activa el lanzallamas (si corresponde)
         /// </summary>
-        public override void MediumAttack()
+        public override void MediumAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia media
+            _isUsingMediumAttack = true;
+
+            // Creamos el prefab
             GameObject prefab = null;
 
-            if (_direction.Equals(Vector2.up))
+            if (direction.Equals(Vector2.up))
                 prefab = _flamesUp;
-            else if (_direction.Equals(Vector2.down))
+            else if (direction.Equals(Vector2.down))
                 prefab = _flamesDown;
-            else if (_direction.Equals(Vector2.left))
+            else if (direction.Equals(Vector2.left))
                 prefab = _flamesLeft;
-            else if (_direction.Equals(Vector2.right))
+            else if (direction.Equals(Vector2.right))
                 prefab = _flamesRight;
 
             _flame = Instantiate(
@@ -119,9 +167,13 @@ namespace Attack
                 _flame.transform.position.y + Constants.PLAYER_OFFSET
                 );
 
+            //_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
             _flame.GetComponent<ParticleSystem>().Play();
         }
 
+        /// <summary>
+        /// Detiene el uso de lanzallamas
+        /// </summary>
         public override void StopMediumAttack()
         {
             // Lo quitamos
@@ -131,20 +183,24 @@ namespace Attack
 
             _flamesToDestroy.Add(_flame);
             Invoke(nameof(DisableAndDestroy), 4f);
+
+            // Desactivamos el uso de magia media
+            _isUsingMediumAttack = false;
+
+            // Reseteamos el temporizador de uso de poder
+            _playerStatus.RestartMagicTimer();
         }
 
         /// <summary>
         /// Activa una ráfaga de bolas de fuego que afecta a toda la pantalla
         /// </summary>
-        public override void StrongAttack()
+        public override void StrongAttack(Vector2 direction)
         {
+            // Activamos el uso de la magia fuerte
+            _isUsingStrongAttack = true;
             // Activamos el poder
-            StartCoroutine(FinalPower());
-        }
-
-        public override void SetDirection(Vector2 direction)
-        {
-            _direction = direction;
+            _magicEvents.MaxPowerUsed(_playerStatus.MaxPowerDuration);
+            _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_DEFINITIVE);
         }
 
         #endregion
@@ -153,6 +209,9 @@ namespace Attack
 
         #region Medium Attack
 
+        /// <summary>
+        /// Desactiva y destruye el objeto de lanzallamas
+        /// </summary>
         private void DisableAndDestroy()
         {
             GameObject obj = _flamesToDestroy[0];
@@ -164,179 +223,118 @@ namespace Attack
 
         #region Strong Attack
 
-        private void ChangeOrbsState()
+        private void ChangeOrbsState(bool state)
         {
             // Para cada orbe de la lista
             foreach (GameObject obj in _fireOrbs)
                 // Se cambia el estado al opuesto que tiene en ese momento
-                obj.SetActive(!obj.activeSelf);
+                obj.SetActive(state);
+        }
+
+        private void MaxPowerFinalized()
+        {
+            // Desactivamos el uso de magia fuerte
+            _isUsingStrongAttack = false;
+            // Consumimos magia
+            _magicEvents.UseOfMagicValue(_costs[2]);
+            // Y reseteamos el contador de tiempo
+            _playerStatus.RestartMagicTimer();
         }
 
         #endregion
 
         #endregion
 
-        #region Coroutines
+        #region DoTween
 
         #region Strong Attack
 
         /// <summary>
-        /// Aplica el poder final
+        /// Invoca la rotación de los orbes
         /// </summary>
-        /// <returns></returns>
-        private IEnumerator FinalPower()
+        /// <param name="time"></param>
+        private void RotateOrbs(float time)
         {
-            // TODO: Detener el juego
-
-            // Quitamos el fillAmount
-            _magicEvents.ChangeFillAmount(0f);
-            // Configuramos el panel
-            StartCoroutine(ChangePanel());
-            // Rotamos los orbes
-            yield return RotateOrbs();
-
-            StartCoroutine(IncrementFillAmount());
-            // TODO: Dejar de detener el juego
+            Sequence seq = DOTween.Sequence();
+            // Aplicamos rotación
+            seq.AppendCallback(() => ApplyRotation(time));
+            // Y esperamos un tiempo
+            seq.AppendInterval(time);
+            // Finalizamos el ataque final
+            seq.OnComplete(() => _magicEvents.MaxPowerFinalized());
+            // Ejecutamos la secuencia
+            seq.Play();
         }
 
         /// <summary>
-        /// Cambia el alfa del poder máximo
+        /// Aplica la rotación
         /// </summary>
-        /// <returns></returns>
-        private IEnumerator ChangePanel()
-        {
-            float alpha = 25 / 255f;
-            // Cambiamos el alfa de la imagen del panel a 25
-            _magicEvents.ChangePanelAlphaAmount(alpha);
-            // Indicamos que debe crecer
-            bool grow = true;
-
-            // Cada cierto tiempo hasta llegar al tiempo de duración del ataque final
-            for (float t = 0f; t < Constants.TIME_FIRE_STRONG_ATTACK; t += 0.002f)
-            {
-                // Según deba crecer o no, aumentamos o decrementamos su valor
-                alpha += grow ?
-                    0.1f / 255f : -0.1f / 255f;
-
-                // Si el alfa llega a un tope por arriba
-                if (alpha >= 100f / 255f)
-                    // Indicamos que decrezca
-                    grow = false;
-                // En caso contrario, si llega a un tope por debajo
-                else if (alpha <= 25f / 255f)
-                    // Indicamos que crezca
-                    grow = true;
-
-                // Cambiamos el alfa de la imagen del panel
-
-                _magicEvents.ChangePanelAlphaAmount(alpha);
-
-                // Y esperamos un tiempo
-                yield return new WaitForSecondsRealtime(0.002f);
-            }
-
-            _magicEvents.ChangePanelAlphaAmount(0f);
-        }
-
-        /// <summary>
-        /// Aplica rotación circular a los orbes del poder final
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator RotateOrbs()
+        /// <param name="time"></param>
+        private void ApplyRotation(float time)
         {
             // Cambiamos el estado de los orbes (para activarlos)
-            ChangeOrbsState();
-
-            // Tiempo a esperar
-            float timeToWait = 0.002f;
-            // Grados
-            float degrees = 0f;
-            // Posición
-            Vector2 posInCircle = Vector2.zero;
-
-            // Se aplica durante 5 segs
-            for (float i = 0f; i < Constants.TIME_FIRE_STRONG_ATTACK; i += timeToWait)
-            {
-                // Velocidad de rotación
-                float speedRot = 180f + i * 200f;
-
-                // Grados y radianes
-                degrees += timeToWait * speedRot;
-                float radians = degrees * Mathf.Deg2Rad;
-
-                // Cálculo de la posición en el círculo
-                posInCircle.x = Mathf.Cos(radians);
-                posInCircle.y = Mathf.Sin(radians);
-
-                // Para cada objeto de la lista de orbes
-                for (int j = 0; j < _fireOrbs.Count; j++)
+            ChangeOrbsState(true);
+            float angle = 0f;
+            // Iniciamos un tween para dar 4 vueltas
+            Tween tween = DOTween.To(() => angle, x => angle = x, 4 * 360f, time)
+                .SetEase(Ease.InQuad)
+                .OnUpdate(() =>
                 {
-                    GameObject obj = _fireOrbs[j];
-                    int n = j + 1;
+                    float radians = angle * Mathf.Deg2Rad;
+                    Vector2 posInCircle = new Vector2(
+                        Mathf.Cos(radians),
+                        Mathf.Sin(radians)
+                        );
 
-                    // Aplicamos la transformación de su posición local
-                    switch (n % 8)
+                    // Cogemos cada orbe
+                    for (int i = 0; i < _fireOrbs.Count; i++)
                     {
-                        case 0:
-                            obj.transform.localPosition = new Vector2
-                                (posInCircle[0], -posInCircle[1]);
-                            break;
-                        case 1:
-                            obj.transform.localPosition = posInCircle;
-                            break;
-                        case 2:
-                            obj.transform.localPosition = new Vector2
-                                (-posInCircle[0], posInCircle[1]);
-                            break;
-                        case 3:
-                            obj.transform.localPosition = -posInCircle;
-                            break;
-                        case 4:
-                            obj.transform.localPosition = new Vector2
-                                (posInCircle[1], posInCircle[0]);
-                            break;
-                        case 5:
-                            obj.transform.localPosition = new Vector2
-                                (-posInCircle[1], posInCircle[0]);
-                            break;
-                        case 6:
-                            obj.transform.localPosition = new Vector2
-                                (-posInCircle[1], -posInCircle[0]);
-                            break;
-                        case 7:
-                            obj.transform.localPosition = new Vector2
-                                (posInCircle[1], -posInCircle[0]);
-                            break;
+                        GameObject obj = _fireOrbs[i];
+                        int n = i + 1;
+                        // Aplicamos la transformación de su posición local
+                        switch (n % 8)
+                        {
+                            case 0:
+                                obj.transform.localPosition = new Vector2
+                                    (posInCircle[0], -posInCircle[1]);
+                                break;
+                            case 1:
+                                obj.transform.localPosition = posInCircle;
+                                break;
+                            case 2:
+                                obj.transform.localPosition = new Vector2
+                                    (-posInCircle[0], posInCircle[1]);
+                                break;
+                            case 3:
+                                obj.transform.localPosition = -posInCircle;
+                                break;
+                            case 4:
+                                obj.transform.localPosition = new Vector2
+                                    (posInCircle[1], posInCircle[0]);
+                                break;
+                            case 5:
+                                obj.transform.localPosition = new Vector2
+                                    (-posInCircle[1], posInCircle[0]);
+                                break;
+                            case 6:
+                                obj.transform.localPosition = new Vector2
+                                    (-posInCircle[1], -posInCircle[0]);
+                                break;
+                            case 7:
+                                obj.transform.localPosition = new Vector2
+                                    (posInCircle[1], -posInCircle[0]);
+                                break;
+                        }
+
+                        // Y multiplicamos según su distancia
+                        obj.transform.localPosition *= n;
                     }
 
-                    // Y multiplicamos según su distancia
-                    obj.transform.localPosition *= n;
-                }
+                }).
+                // Cuando finalizamos, cambiamos el estado de los orbes
+                OnComplete(() => ChangeOrbsState(false)).
+                Play();
 
-                // Esperamos el tiempo estipulado
-                yield return new WaitForSecondsRealtime(timeToWait);
-            }
-
-            // Cambiamos el estado de los orbes (para desactivarlos)
-            ChangeOrbsState();
-        }
-
-        /// <summary>
-        /// Bucle que va incrementando el fillAmount de la carga de poder máximo
-        /// de un evento
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        private IEnumerator IncrementFillAmount()
-        {
-            for (float i = 0f; i < 1f; i += 0.001f)
-            {
-                _magicEvents.ChangeFillAmount(i);
-                yield return new WaitForSeconds(0.005f);
-            }
-
-            // Finalmente, se pone a 1 exacto
-            _magicEvents.ChangeFillAmount(1f);
         }
 
         #endregion

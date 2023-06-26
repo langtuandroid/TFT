@@ -12,23 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9082e7d3b8a2a4d4b912d690bb9a2655, type: 3}
   m_Name: 01_MagicSfxRefSO
   m_EditorClassIdentifier: 
-  Sounds: []
   SfxRef:
   - SoundName: Magic Charge
     Id: 0
     Sound:
       Guid:
-        Data1: -1998152685
-        Data2: 1297817317
-        Data3: -7870589
-        Data4: 992459901
-      Path: event:/Fire_Ball_Cast
+        Data1: 65194241
+        Data2: 1260443222
+        Data3: 1114857652
+        Data4: -403713491
+      Path: event:/Sfx/Magic/Fire_Weak
   - SoundName: Magic Charge Full
     Id: 1
     Sound:
       Guid:
-        Data1: -1998152685
-        Data2: 1297817317
-        Data3: -7870589
-        Data4: 992459901
-      Path: event:/Fire_Ball_Cast
+        Data1: 65194241
+        Data2: 1260443222
+        Data3: 1114857652
+        Data4: -403713491
+      Path: event:/Sfx/Magic/Fire_Weak

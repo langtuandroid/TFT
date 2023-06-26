@@ -1,4 +1,5 @@
 using Attack;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -17,7 +18,7 @@ namespace Player
         private PickUpItem _pickable;
         // Script de salto del personaje
         private Jump _jump;
-        private PlayerMagicAttack _magicAttack;
+        //private PlayerMagicAttack _magicAttack;
 
         // Script de acción secundaria
         private SecondaryAction _secondaryAction;
@@ -26,6 +27,7 @@ namespace Player
         // VARIABLES
         // Masks
         [SerializeField] private LayerMask _interactableLayerMask;
+        // Inputs
         // Jump input
         private bool _isJumpInput;
 
@@ -41,10 +43,18 @@ namespace Player
         private bool _isWeakMagicInput;
         private bool _isMediumMagicInput;
         private bool _isStrongMagicInput;
-        private bool _mediumMagicUsed;
 
         // Secondary action input
         private bool _isSecondaryInput;
+
+        // Lists
+        // MagicAttack (primary skill) list
+        private List<MagicAttack> _magicAttacks;
+        private int _magicIndex => _playerStatus.PrimarySkillIndex;
+
+        // Secondary action (or skill) list
+        private List<SecondaryAction> _secondaryActions;
+        private int _secondaryIndex => _playerStatus.SecondarySkillIndex;
 
         #endregion
 
@@ -53,32 +63,40 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
-            _movement = new PlayerMovement( GetComponent<Rigidbody2D>() );
+            _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
             _jump = GetComponent<Jump>();
-            _interaction = new Interaction( transform , GetComponent<Collider2D>().offset , _interactableLayerMask );
+            _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
-            _magicAttack = GetComponent<PlayerMagicAttack>();
+            //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _playerStatus = GetComponent<PlayerStatus>();
+
+            // Inicializamos variables
+            _magicAttacks = new List<MagicAttack>();
+            AddMagicAttacks();
+
+            _secondaryActions = new List<SecondaryAction>();
+
         }
 
 #if UNITY_EDITOR
         private bool _isInitialized;
         private void Start()
         {
-            if ( !_isInitialized )
-                Init( Vector2.down, 1 << 16 );
+            if (!_isInitialized)
+                Init(Vector2.down, 1 << 16);
         }
 #endif
 
-        public void Init( Vector2 startLookDirection , LayerMask initialGroundLayerMask )
+        public void Init(Vector2 startLookDirection, LayerMask initialGroundLayerMask)
         {
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
-            _jump.Init( _animatorBrain , GetComponent<Collider2D>().offset , _interactableLayerMask , initialGroundLayerMask );
-            _animatorBrain.Init( startLookDirection );
+            _jump.Init(_animatorBrain, GetComponent<Collider2D>().offset, _interactableLayerMask, initialGroundLayerMask);
+            _animatorBrain.Init(startLookDirection);
+            _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
@@ -107,6 +125,21 @@ namespace Player
 
         private void Update()
         {
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud,
+            // si está aturdido
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _playerStatus.IsStunned ||
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+            {
+                if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
+                    GameInputs_OnMediumAttackButtonCanceled();
+
+                return;
+            }
+
+
             // Controlamos las acciones
             GetActionsInformation();
 
@@ -129,10 +162,25 @@ namespace Player
 
         private void FixedUpdate()
         {
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud,
+            // si está aturdido
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _playerStatus.IsStunned ||
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+                return;
+
+            // Nos movemos
             DoMove();
         }
 
-#endregion
+        #endregion
+
+        private void AddMagicAttacks()
+        {
+            _magicAttacks.Add(GetComponent<FireAttack>());
+        }
 
         private void GetActionsInformation()
         {
@@ -140,7 +188,9 @@ namespace Player
             _direction = _gameInputs.GetDirectionNormalized();
 
 
-            if (_jump.IsPerformingJump || _mediumMagicUsed)
+            if (_jump.IsPerformingJump ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack
+                )
                 return;
 
             _lookDirection = _animatorBrain.LookDirection(_direction);
@@ -165,14 +215,14 @@ namespace Player
         private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
         private void GameInputs_OnJumpButtonStarted()
         {
-            if ( _playerStatus.IsJumpUnlocked )
+            if (_playerStatus.IsJumpUnlocked)
                 if (CanJump())
                     _isJumpInput = true;
         }
 
         private void DoJump()
         {
-            if ( IsAttacking() || _pickable.HasItem || _interaction.IsInteracting )
+            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting)
                 return;
 
             _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
@@ -186,10 +236,9 @@ namespace Player
 
         private void GameInputs_OnPhysicActionButtonStarted() => _isPhysicActionInput = true;
 
-
         private void DoPhysicalAction()
         {
-            if ( !_jump.IsPerformingJump || !IsAttacking() )
+            if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
@@ -199,15 +248,15 @@ namespace Player
 
         private void DoInteraction()
         {
-            if ( _pickable.HasItem )
+            if (_pickable.HasItem)
                 return;
 
-            _interaction.Interact( _isPhysicActionInput , _lookDirection );
+            _interaction.Interact(_isPhysicActionInput, _lookDirection);
         }
 
         private void DoPickUpItem()
         {
-            if ( _interaction.IsInteracting ) 
+            if (_interaction.IsInteracting)
                 return;
 
             if (!_pickable.HasItem)
@@ -262,9 +311,16 @@ namespace Player
 
         private bool IsAttacking()
         {
-            return _isPhysicAttacking || _isWeakMagicInput
-                || _mediumMagicUsed || _isMediumMagicInput
-                || _isStrongMagicInput;
+            return _isPhysicAttacking ||
+                _magicAttacks[_magicIndex].IsUsingWeakAttack ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack ||
+                _magicAttacks[_magicIndex].IsUsingStrongAttack
+                ;
+
+
+            //return _isPhysicAttacking || _isWeakMagicInput
+            //    || _mediumMagicUsed || _isMediumMagicInput
+            //    || _isStrongMagicInput;
         }
 
 
@@ -272,7 +328,7 @@ namespace Player
 
         private void GameInputs_OnWeakAttackButtonStarted()
         {
-            if (_magicAttack.CanAttack()
+            if (_playerStatus.CanUseMagicAttacks()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -281,7 +337,7 @@ namespace Player
         private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
         private void GameInputs_OnMediumAttackButtonStarted()
         {
-            if (_magicAttack.CanAttack()
+            if (_playerStatus.CanUseMagicAttacks()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -292,18 +348,18 @@ namespace Player
         {
             _isMediumMagicInput = false;
 
-            if (_mediumMagicUsed)
-            {
-                _mediumMagicUsed = false;
-                _magicAttack.StopMediumAttack();
-                _magicAttack.ResetTimer();
-            }
+            // Si está usando el poder medio
+            if (_magicAttacks[_magicIndex].IsUsingMediumAttack)
+                // Lo detenemos
+                _magicAttacks[_magicIndex].StopMediumAttack();
+
         }
 
         private void GameInputs_OnStrongAttackButtonPerformed()
         {
-            if (_magicAttack.CanAttack()
-                && _magicAttack.CanUseMaxAttack()
+            if (_playerStatus.CanUseMagicAttacks()
+                && _playerStatus.CanUseMaxPower()
+                //&& _magicAttack.CanUseMaxAttack()
                 && !_jump.IsPerformingJump
                 && !IsAttacking()
                 )
@@ -330,9 +386,10 @@ namespace Player
 
             // Reseteamos variables
             _isWeakMagicInput = false;
-            _magicAttack.ResetTimer();
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
             // Y activamos la magia débil
-            _magicAttack.WeakAttack(_lookDirection);
+            _magicAttacks[_magicIndex].WeakAttack(_lookDirection);
         }
 
         /// <summary>
@@ -340,12 +397,12 @@ namespace Player
         /// </summary>
         private void DoMediumMagicAttack()
         {
-            if (!_isMediumMagicInput || _mediumMagicUsed)
+            if (!_isMediumMagicInput ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
                 return;
 
             // Activamos las variables de magia media e invocamos el nuevo ataque
-            _mediumMagicUsed = true;
-            _magicAttack.MediumAttack(_lookDirection);
+            _magicAttacks[_magicIndex].MediumAttack(_lookDirection);
 
         }
 
@@ -359,8 +416,9 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
-            _magicAttack.ResetTimer();
-            _magicAttack.StrongAttack();
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
+            _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
         #endregion

@@ -12,6 +12,10 @@ public class PlayerStatusSave
     public int currentSouls;
     public int maxSouls;
 
+    // Currently equiped skills
+    public int primarySkillIndex;
+    public int secondarySkillIndex;
+
     // Physics Skills
     public bool isPhysicAttackUnlocked; // Si tiene el cetro
     public bool isJumpUnlocked;

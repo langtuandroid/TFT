@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Utils;
 
 public class Torch : MonoBehaviour, IBurnable, IInteractable
@@ -8,6 +9,10 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
     [SerializeField]
     [Tooltip("Llama de la antorcha")]
     private GameObject _fire;
+
+    [Header("Events on fire on/off effects")]
+    public UnityEvent OnFireActivation;
+    public UnityEvent OnFireOff;
 
     #endregion
 
@@ -63,6 +68,8 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
         _fire.SetActive(true);
         // E indicamos que se ha activado
         _activated = true;
+
+        OnFireActivation?.Invoke();
     }
 
     /// <summary>
@@ -74,6 +81,8 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
         _fire.SetActive(false);
         // E indicamos que se ha desactivado
         _activated = false;
+
+        OnFireOff?.Invoke();
     }
 
     #endregion

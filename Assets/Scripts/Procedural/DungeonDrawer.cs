@@ -18,9 +18,6 @@ namespace Procedural
         [SerializeField] private GameObject _roomControllerPrefab;
         private Vector3 _roomOffset = new Vector3( 10 , 5.5f );
 
-        [Header("Player Related:")]
-        [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
-
         private int _roomWidth;
         private int _roomHeight;
 
@@ -75,7 +72,7 @@ namespace Procedural
 
             GameObject roomControllerObj = Instantiate( _roomControllerPrefab , worldPos , Quaternion.identity );
 
-            roomControllerObj.GetComponent<RoomController>().SetRoom( room , _camera );
+            roomControllerObj.GetComponent<RoomController>().SetRoom( room );
         }
 
 

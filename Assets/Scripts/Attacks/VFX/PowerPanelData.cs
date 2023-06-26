@@ -9,7 +9,6 @@ namespace Scriptable
         public string PowerName;
         public Color Color;
 
-
         public PowerPanelData(string name, Color color) 
         { 
             PowerName = name;

@@ -12,19 +12,20 @@ public class ZoneController : MonoBehaviour
     [SerializeField] private GameObject     _playerPrefab;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
     [SerializeField] private List<ActivableSceneObject> _activableObjectList;
+    [SerializeField] private Collider2D[] _cameraConfinerColliderArray;
 
     private void Start()
     {
         LoadZoneInteractableData();
         PlayerInstantation();
 
-        ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
     }
 
     private void OnDestroy()
     {
-        ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneInteractableData;
+        ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted -= ZoneComplete;
     }
 
@@ -48,7 +49,7 @@ public class ZoneController : MonoBehaviour
         {
             Debug.LogError( $"[CAGADA]: El punto de referencia ID: {_zoneExitSO.nextStartPointRefID} no existe en la zona" );
         }
-
+        Debug.Log( startRefIndex );
         StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
 
         Vector3 position           = startRefInfo.startPosition;
@@ -59,23 +60,34 @@ public class ZoneController : MonoBehaviour
 
         player.GetComponent<Player.PlayerController>().Init( startLookDirection, initialLayer );
         _camera.Follow = player.transform;
+
+        Cinemachine.CinemachineConfiner2D cinemaConfiner = _camera.GetComponent<Cinemachine.CinemachineConfiner2D>();
+        cinemaConfiner.InvalidateCache();
+        cinemaConfiner.m_BoundingShape2D = _cameraConfinerColliderArray[startRefInfo.confinerColliderIndex];
+        //_camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
     }
 
     private int GetStartRefInfoIndex( int startPointRefID )
     {
-        foreach ( var item in _startRefInfoSO.startRefInfoArray )
-            if ( startPointRefID == item.startPointRefID )
-                return item.startPointRefID;
+        int arrayLength = _startRefInfoSO.startRefInfoArray.Length;
+        for ( int i = 0; i < arrayLength; i++ )
+        {
+            int arrayStartPointRefID = _startRefInfoSO.startRefInfoArray[i].startPointRefID;
+            if ( startPointRefID.Equals( arrayStartPointRefID ) )
+                return i;
+        }
         return -1;
     }
 
-    private void ZoneComplete()
+    public void ZoneComplete()
     {
         _zoneSaveSO.zoneSave.IsCompleted = true;
     }
 
-    private void SaveZoneInteractableData()
+    private void SaveZoneData( LevelEvents.ChangeZoneArgs changeZoneArgs )
     {
+        _zoneExitSO.nextStartPointRefID = changeZoneArgs.nextStartPointRefId;
+
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
             _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );

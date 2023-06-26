@@ -12,4 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
   m_Name: Woods Zone1 StartRefInfoSO
   m_EditorClassIdentifier: 
-  startRefInfoArray: []
+  startRefInfoArray:
+  - exitZoneDescription: East Enter - From Altar
+    startPointRefID: 0
+    startPosition: {x: 7, y: 0}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536

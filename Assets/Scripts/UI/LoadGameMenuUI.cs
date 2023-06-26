@@ -107,13 +107,13 @@ namespace UI
 
             switch ( _gameSaveDataArray[_slotToLoadIndex].startSavePoint )
             {
-                case 0: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                case 0: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;
-                case 1: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                case 1: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;
-                case 2: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                case 2: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;
-                case 3: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_WOODS_Z0 );
+                case 3: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;
                 default: Debug.LogError( $"Bad Load]: Start Save Point {_gameSaveDataArray[_slotToLoadIndex].startSavePoint} doesn't exist" );
                     break; 

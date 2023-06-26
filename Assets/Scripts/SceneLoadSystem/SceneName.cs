@@ -1,14 +1,13 @@
 
-public class SceneName
+public enum SceneName
 {
-    public const string S00_MAIN_MENU = "00_MainMenuScene";
-    public const string S01_LOADING = "01_LoadingScene";
-    public const string S10_WOODS_Z0 = "10_Z0_WoodsScene";
+    S00_MainMenuScene,
+    S01_LoadingScene,
+    S10_Z0_WoodsScene,
+    S11_Z1_WoodsScene,
+    S12_Z2_WoodsScene,
+    S12_Z2a_WoodsScene,
+    S12_Z2b_WoodsScene,
+    S15_Altar_WoodsScene,
+    S16_Dungeon_WoodsScene
 }
-
-//public enum SceneName
-//{
-//    S00_MainMenuScene,
-//    S01_LoadingScene,
-//    S10_Z0_WoodsScene
-//}

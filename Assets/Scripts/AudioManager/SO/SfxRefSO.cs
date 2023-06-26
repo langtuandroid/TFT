@@ -15,7 +15,6 @@ namespace Audio
             public EventReference Sound;
         }
 
-        public EventReference[] Sounds;
         public Sfx[] SfxRef;
     }
 }

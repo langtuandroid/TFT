@@ -32,7 +32,7 @@ namespace Player
         private float _maxJumpHeight  = 1f;
         private float _checkRayLength = 0.55f;
 
-        private AudioSpeaker _audioSpeaker;
+        private IAudioSpeaker _audioSpeaker;
 
         private JumpState _jumpState;
         private Timer     _cooldownTimer;
@@ -51,7 +51,7 @@ namespace Player
             _yOffset       = _playerVisuals.localPosition.y;
             _jumpState     = JumpState.Grounded;
 
-            _audioSpeaker   = ServiceLocator.GetService<AudioSpeaker>();
+            _audioSpeaker   = ServiceLocator.GetService<IAudioSpeaker>();
             _colliderOffset = colliderOffset;
             _jumpableMask   = jumpableLayerMask;
 

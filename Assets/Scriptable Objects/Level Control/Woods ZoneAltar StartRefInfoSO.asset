@@ -12,4 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
   m_Name: Woods ZoneAltar StartRefInfoSO
   m_EditorClassIdentifier: 
-  startRefInfoArray: []
+  startRefInfoArray:
+  - exitZoneDescription: South - From Zone 0
+    startPointRefID: 1
+    startPosition: {x: 0.5, y: -5}
+    _playerStartLookDirection: 0
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+  - exitZoneDescription: I - From Zone 1
+    startPointRefID: 0
+    startPosition: {x: -6.0625, y: -2}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+  - exitZoneDescription: II - From Zone 2
+    startPointRefID: 2
+    startPosition: {x: -3, y: 0}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+  - exitZoneDescription: III - From Zone 3
+    startPointRefID: 3
+    startPosition: {x: 4, y: 0}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+  - exitZoneDescription: IV - From Zone 4
+    startPointRefID: 4
+    startPosition: {x: 7.0625, y: -2}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
