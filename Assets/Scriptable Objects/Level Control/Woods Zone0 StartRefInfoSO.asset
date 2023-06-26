@@ -20,6 +20,7 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 65536
+    confinerColliderIndex: 0
   - exitZoneDescription: North Enter - From Altar
     startPointRefID: 1
     startPosition: {x: 19.5, y: 81}
@@ -27,3 +28,4 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 65536
+    confinerColliderIndex: 1

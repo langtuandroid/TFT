@@ -12,4 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
   m_Name: Woods Zone2 StartRefInfoSO
   m_EditorClassIdentifier: 
-  startRefInfoArray: []
+  startRefInfoArray:
+  - exitZoneDescription: SouthEast - From Altar
+    startPointRefID: 2
+    startPosition: {x: 1, y: -3}
+    _playerStartLookDirection: 0
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+    confinerColliderIndex: 0
+  - exitZoneDescription: Floor 0 Cave - From Z2A Right
+    startPointRefID: 0
+    startPosition: {x: 1, y: 16.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+    confinerColliderIndex: 0
+  - exitZoneDescription: Right Center Cave - From Z2A Right
+    startPointRefID: 1
+    startPosition: {x: -15, y: 14.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 131072
+    confinerColliderIndex: 1
+  - exitZoneDescription: Left Center Cave - From Z2B Right
+    startPointRefID: 3
+    startPosition: {x: -39, y: 26.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 131072
+    confinerColliderIndex: 1
+  - exitZoneDescription: Right Cave - From Z2B Left
+    startPointRefID: 4
+    startPosition: {x: -59, y: 26.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 262144
+    confinerColliderIndex: 2

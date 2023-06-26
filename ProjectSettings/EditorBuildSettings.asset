@@ -21,6 +21,18 @@ EditorBuildSettings:
     path: Assets/Scenes/S10_Z0_WoodsScene.unity
     guid: b93d116bfd236a848b92cf37b34ba749
   - enabled: 1
+    path: Assets/Scenes/S11_Z1_WoodsScene.unity
+    guid: 4c5257cebced80440a25347b927ab309
+  - enabled: 1
+    path: Assets/Scenes/S12_Z2_WoodsScene.unity
+    guid: 2875647b900a83344b56374d66f551b6
+  - enabled: 1
+    path: Assets/Scenes/S12_Z2a_WoodsScene.unity
+    guid: 70738f0def68c684b9b229e69d365a07
+  - enabled: 1
+    path: Assets/Scenes/S12_Z2b_WoodsScene.unity
+    guid: f7f7878d2aa29234d8b53dd2d86a9aee
+  - enabled: 1
     path: Assets/Scenes/S15_Altar_WoodsScene.unity
     guid: cea748390a62aef41a6e14c2f96792b5
   - enabled: 1

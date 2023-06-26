@@ -1,6 +1,7 @@
 // ************ @autor: Álvaro Repiso Romero *************
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TriggerChangeZone : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class TriggerChangeZone : MonoBehaviour
     [SerializeField] private SceneName _nextScene;
     [SerializeField] private Color _fadeOutColor;
     [SerializeField] private MusicZoneParameter _musicParamName;
+
+    public UnityEvent OnZoneChanged;
     
     private float _fadeOutSeconds = 1f;
 
@@ -22,6 +25,8 @@ public class TriggerChangeZone : MonoBehaviour
                 fadeColor           = _fadeOutColor ,
                 fadeDurationSeconds = _fadeOutSeconds
             } );
+
+        OnZoneChanged?.Invoke();
 
         StartCoroutine( FadeOut() );
     }

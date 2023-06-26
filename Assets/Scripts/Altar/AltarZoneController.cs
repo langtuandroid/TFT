@@ -28,6 +28,8 @@ public class AltarZoneController : MonoBehaviour
 
         StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
 
+        Debug.Log( $"From: {startRefInfo.exitZoneDescription}" );
+
         Vector3 position           = startRefInfo.startPosition;
         Vector2 startLookDirection = startRefInfo.PlayerStartLookDirection();
         LayerMask initialLayer     = startRefInfo.initialLayerMask;
@@ -39,9 +41,13 @@ public class AltarZoneController : MonoBehaviour
 
     private int GetStartRefInfoIndex( int startPointRefID )
     {
-        foreach ( var item in _startRefInfoSO.startRefInfoArray )
-            if ( startPointRefID == item.startPointRefID )
-                return item.startPointRefID;
+        int arrayLength = _startRefInfoSO.startRefInfoArray.Length;
+        for ( int i = 0; i < arrayLength; i++ )
+        {
+            int arrayStartPointRefID = _startRefInfoSO.startRefInfoArray[i].startPointRefID;
+            if ( startPointRefID.Equals( arrayStartPointRefID ) )
+                return i;
+        }
         return -1;
     }
 

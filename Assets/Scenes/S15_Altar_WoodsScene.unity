@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 2
-  _nextScene: 0
+  _nextScene: 4
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
 --- !u!58 &147860201
@@ -303,7 +303,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
-  _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
 --- !u!212 &228497074
@@ -4115,7 +4114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 4
-  _nextScene: 0
+  _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
 --- !u!58 &582713106
@@ -4461,7 +4460,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
   - {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
   - {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
-  _nextScene: 4
+  _nextScene: 8
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
   _enterIcon: {fileID: 529944125}
@@ -4822,7 +4821,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
-  _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 1e7fda68bf64ae5429f5d190387857cd, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
 --- !u!1 &1339536459
@@ -4856,7 +4854,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
-  _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
 --- !u!212 &1339536461
@@ -4974,7 +4971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 0
-  _nextScene: 0
+  _nextScene: 3
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
 --- !u!58 &1401623118
@@ -5212,7 +5209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 3
-  _nextScene: 0
+  _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
 --- !u!58 &1739364372
@@ -5958,7 +5955,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _altarColorSO: {fileID: 11400000, guid: a31541413445bca49a8c5dee0cd9897e, type: 2}
-  _completedMagicColor: {r: 0, g: 1, b: 0.06738901, a: 1}
   _previousZoneSaveSO: {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
   _thisZoneSaveSO: {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
 --- !u!212 &2092035717
