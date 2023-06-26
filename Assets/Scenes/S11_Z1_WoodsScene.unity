@@ -42421,7 +42421,14 @@ MonoBehaviour:
   _startRefInfoSO: {fileID: 11400000, guid: 8ebde18e38a95104dbcdc7d5d6528a77, type: 2}
   _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   _camera: {fileID: 1408432121}
-  _activableObjectList: []
+  _activableObjectList:
+  - {fileID: 1503560464}
+  _cameraConfinerColliderArray:
+  - {fileID: 1438112500}
+  - {fileID: 776236337}
+  - {fileID: 1334684769}
+  - {fileID: 1963662539}
+  - {fileID: 926212827}
 --- !u!4 &940207571
 Transform:
   m_ObjectHideFlags: 0
@@ -43893,6 +43900,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5208cc6d70f74ede8a52d57ab01c5a4, type: 3}
+--- !u!114 &1503560464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2354756946539683759, guid: a5208cc6d70f74ede8a52d57ab01c5a4, type: 3}
+  m_PrefabInstance: {fileID: 1503560463}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f23b14f506f075c4d8b600343d39a3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1546217435
 GameObject:
   m_ObjectHideFlags: 0

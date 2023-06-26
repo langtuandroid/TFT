@@ -12,6 +12,7 @@ public class ZoneController : MonoBehaviour
     [SerializeField] private GameObject     _playerPrefab;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
     [SerializeField] private List<ActivableSceneObject> _activableObjectList;
+    [SerializeField] private Collider2D[] _cameraConfinerColliderArray;
 
     private void Start()
     {
@@ -59,7 +60,11 @@ public class ZoneController : MonoBehaviour
 
         player.GetComponent<Player.PlayerController>().Init( startLookDirection, initialLayer );
         _camera.Follow = player.transform;
-        _camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
+
+        Cinemachine.CinemachineConfiner2D cinemaConfiner = _camera.GetComponent<Cinemachine.CinemachineConfiner2D>();
+        cinemaConfiner.InvalidateCache();
+        cinemaConfiner.m_BoundingShape2D = _cameraConfinerColliderArray[startRefInfo.confinerColliderIndex];
+        //_camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
     }
 
     private int GetStartRefInfoIndex( int startPointRefID )

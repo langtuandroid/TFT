@@ -536,6 +536,8 @@ MonoBehaviour:
   _camera: {fileID: 1408432121}
   _activableObjectList:
   - {fileID: 499969315}
+  _cameraConfinerColliderArray:
+  - {fileID: 2040847048}
 --- !u!4 &206645720
 Transform:
   m_ObjectHideFlags: 0

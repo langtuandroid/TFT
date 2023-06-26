@@ -8895,3 +8895,5 @@ MonoBehaviour:
   _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   _camera: {fileID: 1408432121}
   _activableObjectList: []
+  _cameraConfinerColliderArray:
+  - {fileID: 1474980905}

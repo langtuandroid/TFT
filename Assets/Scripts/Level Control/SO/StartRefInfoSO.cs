@@ -20,6 +20,7 @@ public class StartRefInfoSO : ScriptableObject
         [SerializeField] private LookDirection _playerStartLookDirection;
 
         public LayerMask initialLayerMask;
+        [Range(0, 10)] public int confinerColliderIndex; 
 
         public Vector2 PlayerStartLookDirection()
         {
