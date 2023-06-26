@@ -15,7 +15,7 @@ MonoBehaviour:
   startRefInfoArray:
   - exitZoneDescription: SouthEast - From Altar
     startPointRefID: 2
-    startPosition: {x: 1.5, y: -3.5}
+    startPosition: {x: 1, y: -3}
     _playerStartLookDirection: 0
     initialLayerMask:
       serializedVersion: 2
