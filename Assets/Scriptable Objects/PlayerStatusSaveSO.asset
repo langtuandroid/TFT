@@ -20,23 +20,21 @@ MonoBehaviour:
     maxMagic: 30
     currentSouls: 1000
     maxSouls: 1000
-
     primarySkillIndex: 0
     secondarySkillIndex: 0
-
     isPhysicAttackUnlocked: 1
     isJumpUnlocked: 1
-    isSwimUnlocked: 0
-    isDashUnlocked: 0
-    isFireWeakUnlocked: 0
-    isFireMediumUnlocked: 0
-    isFireStrongUnlocked: 0
-    isPlantWeakUnlocked: 0
-    isPlantMediumUnlocked: 0
-    isPlantStrongUnlocked: 0
-    isWaterWeakUnlocked: 0
-    isWaterMediumUnlocked: 0
-    isWaterStrongUnlocked: 0
+    isSwimUnlocked: 1
+    isDashUnlocked: 1
+    isFireWeakUnlocked: 1
+    isFireMediumUnlocked: 1
+    isFireStrongUnlocked: 1
+    isPlantWeakUnlocked: 1
+    isPlantMediumUnlocked: 1
+    isPlantStrongUnlocked: 1
+    isWaterWeakUnlocked: 1
+    isWaterMediumUnlocked: 1
+    isWaterStrongUnlocked: 1
     isLightUnlocked: 0
     isAirUnlocked: 0
     lifeBerryUnlocked: 0
