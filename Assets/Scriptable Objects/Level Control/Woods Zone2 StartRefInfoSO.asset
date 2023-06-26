@@ -20,6 +20,7 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 65536
+    confinerColliderIndex: 0
   - exitZoneDescription: Floor 0 Cave - From Z2A Right
     startPointRefID: 0
     startPosition: {x: 1, y: 16.5}
@@ -27,6 +28,7 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 65536
+    confinerColliderIndex: 0
   - exitZoneDescription: Right Center Cave - From Z2A Right
     startPointRefID: 1
     startPosition: {x: -15, y: 14.5}
@@ -34,6 +36,7 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 131072
+    confinerColliderIndex: 1
   - exitZoneDescription: Left Center Cave - From Z2B Right
     startPointRefID: 3
     startPosition: {x: -39, y: 26.5}
@@ -41,6 +44,7 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 131072
+    confinerColliderIndex: 1
   - exitZoneDescription: Right Cave - From Z2B Left
     startPointRefID: 4
     startPosition: {x: -59, y: 26.5}
@@ -48,3 +52,4 @@ MonoBehaviour:
     initialLayerMask:
       serializedVersion: 2
       m_Bits: 262144
+    confinerColliderIndex: 2

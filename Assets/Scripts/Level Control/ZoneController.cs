@@ -79,7 +79,7 @@ public class ZoneController : MonoBehaviour
         return -1;
     }
 
-    private void ZoneComplete()
+    public void ZoneComplete()
     {
         _zoneSaveSO.zoneSave.IsCompleted = true;
     }

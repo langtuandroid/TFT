@@ -34824,7 +34824,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.99998224, y: -0.375, z: -10}
+  m_LocalPosition: {x: -1, y: -0.375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35831,7 +35831,7 @@ GameObject:
   - component: {fileID: 1198695894}
   - component: {fileID: 1198695893}
   m_Layer: 8
-  m_Name: Trigger Change Zone
+  m_Name: Trigger Change Zone Altar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35853,6 +35853,21 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  OnZoneChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1126054786}
+        m_TargetAssemblyTypeName: ZoneController, Assembly-CSharp
+        m_MethodName: ZoneComplete
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!61 &1198695894
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -36218,6 +36233,9 @@ MonoBehaviour:
   _nextScene: 0
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  OnZoneChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!61 &1956844617
 BoxCollider2D:
   m_ObjectHideFlags: 0
