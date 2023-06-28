@@ -7,6 +7,7 @@ public class GameStatus
 {
     private bool isPaused = false;
     public event Action<bool> OnPauseStateChanged;
+    public Action OnPlayerStopInteraction; 
 
     public void PauseGame()
     {
@@ -20,5 +21,10 @@ public class GameStatus
         isPaused = false;
         //Time.timeScale = 1f;
         OnPauseStateChanged?.Invoke(isPaused);
+    }
+    
+    public void PlayerStopInteraction()
+    {
+        OnPlayerStopInteraction?.Invoke();
     }
 }
