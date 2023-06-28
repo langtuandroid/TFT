@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -25,15 +26,17 @@ public class EnemySlime : MonoBehaviour
     [SerializeField]
     [Tooltip("Radio del sentido del oído.")]
     private float _earRadious;
-    
+
     #endregion
     
     #region REFERENCES
     private ContactFilter2D _contactFilter = new ContactFilter2D();
     
-    private LayerMask _layer = 0;
-
+    private LayerMask _layer = 3;
+    
     private GameObject _player;
+
+    private Collider2D boundsCollider;
 
     private float _timer;
     
@@ -48,8 +51,6 @@ public class EnemySlime : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     
     private float _nextWanderTime;
-
-    private Collider2D boundsCollider;
 
     private FsmEnemySlime _actualState;
     public FsmEnemySlime ActualState
@@ -68,6 +69,7 @@ public class EnemySlime : MonoBehaviour
     {
         if ( !_isOnProcedural )
         {
+            boundsCollider = GetComponentInParent<Collider2D>();
             PrepareComponent();
             Init();
         }
@@ -77,6 +79,7 @@ public class EnemySlime : MonoBehaviour
     {
         if ( _isOnProcedural )
         {
+            
             Vector3 direction = _player.transform.position - transform.position;
             transform.position += Time.deltaTime * _speed * direction.normalized;
         }
@@ -87,14 +90,14 @@ public class EnemySlime : MonoBehaviour
     private void PrepareComponent()
     {
         //Player
-        if (_player == null)
-            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
+        //if (_player == null)
+            //_player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
 
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
         
         //Collider donde patrulla el slime
-        boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
+        //boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
         //boundsCollider = GetComponentInParent<Collider2D>();
     }
 
@@ -119,27 +122,19 @@ public class EnemySlime : MonoBehaviour
     public bool CanSeePlayer()
     {
         _canSeePlayer = false;
-        
-        Collider2D[] results = new Collider2D[5];
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _earRadious, _contactFilter, results);
+        //var hitColliders = Physics2D.OverlapCircle(center, radius, 1 << LayerMask.NameToLayer("Enemies")); 
+        Collider2D results = Physics2D.OverlapCircle(transform.position, _earRadious, LayerMask.GetMask(Constants.TAG_PLAYER));
 
-        if (objectsDetected > 0)
+        if (results != null)
         {
-            foreach (var item in results)
+            if (results.CompareTag(Constants.TAG_PLAYER))
             {
-                if (item != null)
-                {
-                    if (item.CompareTag(Constants.TAG_PLAYER))
-                    {
-                        _canSeePlayer = true;
-                        break;
-                    }
-                }
-
+                _canSeePlayer = true;
+                _player = results.gameObject;
             }
         }
-
+        
         return _canSeePlayer;
     }
     #endregion
