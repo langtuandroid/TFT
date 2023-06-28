@@ -56,6 +56,7 @@ namespace UI
             {
                 _firstSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 0;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
@@ -75,6 +76,7 @@ namespace UI
             {
                 _secondSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 1;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
@@ -94,6 +96,7 @@ namespace UI
             {
                 _thirdSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 2;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
