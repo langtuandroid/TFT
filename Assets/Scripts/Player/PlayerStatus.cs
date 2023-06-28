@@ -14,16 +14,16 @@ namespace Player
 
         [Header("Magic Attack settings")]
         [SerializeField]
-        [Tooltip("Tiempo entre ataques mágicos")]
+        [Tooltip("Tiempo entre ataques mï¿½gicos")]
         private float _timeBetweenMagicAttacks = .2f;
         [SerializeField]
         [Tooltip("Tiempo que tarda en recuperar magia")]
         private float _timeOfRecovering = .8f;
         [SerializeField]
-        [Tooltip("Tiempo de recarga del poder máximo")]
+        [Tooltip("Tiempo de recarga del poder mï¿½ximo")]
         private float _timeToRechargeMaxPower = 10f;
         [SerializeField]
-        [Tooltip("Duración del poder máximo en pantalla")]
+        [Tooltip("Duraciï¿½n del poder mï¿½ximo en pantalla")]
         private float _maxPowerDuration = 5f;
 
         [Header("Life & Health settings")]
@@ -31,7 +31,7 @@ namespace Player
         [Tooltip("Sprite del personaje")]
         private SpriteRenderer _playerSprite;
         [SerializeField]
-        [Tooltip("Tiempo que dura la invencibilidad tras recibir daño")]
+        [Tooltip("Tiempo que dura la invencibilidad tras recibir daï¿½o")]
         private float _timeOfInvencibility = 2.5f;
 
         [Header("Stunning")]
@@ -48,11 +48,11 @@ namespace Player
         public bool IsDeath => _isDeath;
         // Indica si el player tiene invencibilidad temporal
         public bool HasTemporalInvencibility => _hasTemporalInvencibility;
-        // Indica si está aturdido
+        // Indica si estï¿½ aturdido
         public bool IsStunned => _stunnedTimer < _timeStunned;
 
         // MAGIC ATTACK VARIABLES
-        // Duración del poder máximo
+        // Duraciï¿½n del poder mï¿½ximo
         public float MaxPowerDuration => _maxPowerDuration;
 
         // GENERAL VARIABLES
@@ -113,12 +113,12 @@ namespace Player
 
         // Variables
         // Life
-        private bool _isDeath; // Booleano que indica si el player ha decaído
-        private bool _hasTemporalInvencibility; // Booleano que indica si el player está bajo efecto de invencibilidad temporal
+        private bool _isDeath; // Booleano que indica si el player ha decaï¿½do
+        private bool _hasTemporalInvencibility; // Booleano que indica si el player estï¿½ bajo efecto de invencibilidad temporal
         // Magic Attacks
-        private float _magicTimer; // Temporizador para los ataques mágicos
-        private float _maxPowerTimer; // Temporizador para la carga del ataque máximo 
-        private bool _isUsingMaxPower; // Indica si se está usando el poder máximo
+        private float _magicTimer; // Temporizador para los ataques mï¿½gicos
+        private float _maxPowerTimer; // Temporizador para la carga del ataque mï¿½ximo 
+        private bool _isUsingMaxPower; // Indica si se estï¿½ usando el poder mï¿½ximo
         private float _magicRecoverTimer; // Temporizador para recuperar magia
         // Stunning
         private float _stunnedTimer; // Tiempo aturdido
@@ -171,7 +171,7 @@ namespace Player
             if (_maxPowerTimer < _timeToRechargeMaxPower)
                 _maxPowerTimer += Time.deltaTime;
 
-            // Recuperamos poder mágico
+            // Recuperamos poder mï¿½gico
             RecoverMagic();
         }
 
@@ -196,7 +196,7 @@ namespace Player
         #region Magic attacks
 
         /// <summary>
-        /// Devuelve true si está listo para usar el siguiente hechizo
+        /// Devuelve true si estï¿½ listo para usar el siguiente hechizo
         /// </summary>
         /// <returns></returns>
         public bool CanUseMagicAttacks()
@@ -205,7 +205,7 @@ namespace Player
         }
 
         /// <summary>
-        /// Devuelve true si el ataque máximo ya está recargado
+        /// Devuelve true si el ataque mï¿½ximo ya estï¿½ recargado
         /// </summary>
         /// <returns></returns>
         public bool CanUseMaxPower()
@@ -231,15 +231,15 @@ namespace Player
         #region Health
 
         /// <summary>
-        /// Aplica daño al jugador
+        /// Aplica daï¿½o al jugador
         /// </summary>
         /// <param name="damage"></param>
-        private void TakeDamage(int damage)
+        public void TakeDamage(int damage)
         {
             if (_hasTemporalInvencibility)
                 return;
 
-            // Activamos el evento de recibir daño
+            // Activamos el evento de recibir daï¿½o
             _lifeEvents.ChangeCurrentLifeQuantity(
                 Mathf.Max(
                     0,
@@ -283,8 +283,8 @@ namespace Player
         }
 
         /// <summary>
-        /// Incrementa la cantidad máxima de salud
-        /// (para cuando se consigue un corazón)
+        /// Incrementa la cantidad mï¿½xima de salud
+        /// (para cuando se consigue un corazï¿½n)
         /// </summary>
         private void OnIncrementMaxHealthValue()
         {
@@ -319,7 +319,7 @@ namespace Player
         #region Magic Attacks
 
         /// <summary>
-        /// Indica que está usando el poder máximo
+        /// Indica que estï¿½ usando el poder mï¿½ximo
         /// </summary>
         /// <param name="time"></param>
         private void OnMaxPowerUsedValue(float time)
@@ -328,7 +328,7 @@ namespace Player
         }
 
         /// <summary>
-        /// Indica que ya se ha finalizado el efecto del poder máximo
+        /// Indica que ya se ha finalizado el efecto del poder mï¿½ximo
         /// </summary>
         private void OnMaxPowerFinalizedValue()
         {
@@ -393,7 +393,7 @@ namespace Player
         {
             //int value = Random.Range(1, 5);
             int value = 1;
-            Debug.Log($"Voy a hacer {value} de daño");
+            Debug.Log($"Voy a hacer {value} de daï¿½o");
             TakeDamage(value);
         }
 

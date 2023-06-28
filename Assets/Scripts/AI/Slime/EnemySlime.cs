@@ -1,4 +1,5 @@
 using System;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -132,8 +133,13 @@ public class EnemySlime : MonoBehaviour
         {
             if (results.CompareTag(Constants.TAG_PLAYER))
             {
-                _canSeePlayer = true;
-                _player = results.gameObject;
+                if (results.GetComponent<PlayerStatus>().HasTemporalInvencibility)
+                    _canSeePlayer = false;
+                else
+                {
+                    _canSeePlayer = true;
+                    _player = results.gameObject;
+                }
             }
         }
         
