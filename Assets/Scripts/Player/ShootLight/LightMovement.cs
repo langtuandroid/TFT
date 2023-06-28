@@ -15,7 +15,7 @@ public class LightMovement : MonoBehaviour
 
     private void Awake()
     {
-        _direction = Vector3.right;
+        //_direction = Vector3.right;
         // Set light timer and initial size
         lightTimer = lightDuration;
         transform.localScale = new Vector3(lightSize, lightSize, 1);
@@ -25,11 +25,6 @@ public class LightMovement : MonoBehaviour
     {
         Movement();
         LiveTime();
-
-        //transform.localScale = new Vector3(lightSize, lightSize, 1);
-        
-
-
     }
 
 
@@ -40,6 +35,8 @@ public class LightMovement : MonoBehaviour
    
     private void LiveTime()
     {
+        if (_direction == Vector3.zero) return;
+        
         lightTimer -= Time.deltaTime;
 
         if (lightTimer >= 0f)
