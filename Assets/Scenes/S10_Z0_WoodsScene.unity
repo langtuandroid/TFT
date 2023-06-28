@@ -43730,7 +43730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883b0da4984c54bb18a24cd8ec6c1e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 3
   _secondsToChangeDirection: 0.0001
   _earRadious: 3
 --- !u!114 &6274960950923869566
@@ -44110,7 +44110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883b0da4984c54bb18a24cd8ec6c1e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 3
   _secondsToChangeDirection: 3
   _earRadious: 3
 --- !u!114 &6274960952470271554
