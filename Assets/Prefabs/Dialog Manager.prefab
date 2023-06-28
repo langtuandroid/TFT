@@ -166,8 +166,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5755202153762094771}
-  - component: {fileID: 1263967480}
-  - component: {fileID: 1263967481}
+  - component: {fileID: 5750364219528745836}
+  - component: {fileID: 4495885180583467543}
   m_Layer: 0
   m_Name: Dialog Manager
   m_TagString: Untagged
@@ -191,7 +191,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1263967480
+--- !u!114 &5750364219528745836
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -206,7 +206,7 @@ MonoBehaviour:
   dialogImageObj: {fileID: 6936692406617370294}
   dialogImage: {fileID: 2086924469824280995}
   characterImage: {fileID: 648457295}
---- !u!114 &1263967481
+--- !u!114 &4495885180583467543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,8 +221,8 @@ MonoBehaviour:
   PlayerControl: 0
   dialogManager: {fileID: 7936080100635497474}
   nextBtn: {fileID: 3234858486045871979}
-  characterName: {fileID: 648457293}
-  characterText: {fileID: 1359167021}
+  characterName: {fileID: 1359167019}
+  characterText: {fileID: 331471783350849549}
 --- !u!1 &1605522698632917712
 GameObject:
   m_ObjectHideFlags: 0
