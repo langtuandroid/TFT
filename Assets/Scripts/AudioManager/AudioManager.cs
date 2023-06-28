@@ -51,12 +51,12 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
         _gameMusicDict = _gameMusicSO.GameMusicDictionary();
 
-        StartMusic();
+        //StartMusic();
     }
 
     public void StartMusic()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[MusicName.Woods] );
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[MusicName.Main_Menu] );
         _musicEventInstance.start();
         _musicEventInstance.release();
     }
