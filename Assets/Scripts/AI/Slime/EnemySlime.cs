@@ -105,6 +105,8 @@ public class EnemySlime : MonoBehaviour
     { 
         _navMeshAgent.speed = _speed;
 
+        _nextWanderTime = _secondsToChangeDirection;
+
         _actualState =  new EnemySlimePatrolState();
         
         Patrol();

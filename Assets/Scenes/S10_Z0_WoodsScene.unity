@@ -34795,7 +34795,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.99985045
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -35019,6 +35019,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2144130765}
     m_Modifications:
+    - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8864211369235329875, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -35106,6 +35122,22 @@ PrefabInstance:
     - target: {fileID: 8864211369235329876, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_Name
       value: Visuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211370289252384, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211370289252384, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211370289252384, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211370289252384, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
@@ -42170,21 +42202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518447b2eedea407e9e579ef64d76272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6274960950923869446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6274960950923869564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3823f9b2c65461d81c823a7bf69a60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 1
-  _secondsToChangeDirection: 4
-  _earRadious: 4
 --- !u!70 &6274960950923869447
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -42325,8 +42342,8 @@ GameObject:
   - component: {fileID: 6274960950923869563}
   - component: {fileID: 6274960950923869447}
   - component: {fileID: 6274960950923869560}
-  - component: {fileID: 6274960950923869446}
   - component: {fileID: 1182801759514296604}
+  - component: {fileID: 6274960950923869565}
   m_Layer: 6
   m_Name: Slime Enemy 2
   m_TagString: Untagged
@@ -42334,6 +42351,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6274960950923869565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274960950923869564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883b0da4984c54bb18a24cd8ec6c1e6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 10
+  _secondsToChangeDirection: 0.0001
+  _earRadious: 3
 --- !u!1 &6274960951375021408
 GameObject:
   m_ObjectHideFlags: 0
@@ -42549,8 +42581,8 @@ GameObject:
   - component: {fileID: 6274960952470271548}
   - component: {fileID: 6274960952470271552}
   - component: {fileID: 6274960952470271551}
-  - component: {fileID: 6274960952470271553}
   - component: {fileID: 1182801757837904475}
+  - component: {fileID: 6274960952470271553}
   m_Layer: 6
   m_Name: Slime Enemy 1
   m_TagString: Untagged
@@ -42694,9 +42726,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6274960952470271547}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b3823f9b2c65461d81c823a7bf69a60, type: 3}
+  m_Script: {fileID: 11500000, guid: 883b0da4984c54bb18a24cd8ec6c1e6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 2
-  _secondsToChangeDirection: 4
-  _earRadious: 4
+  _speed: 10
+  _secondsToChangeDirection: 3
+  _earRadious: 3
