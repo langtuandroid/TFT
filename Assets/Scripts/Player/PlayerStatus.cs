@@ -245,6 +245,7 @@ namespace Player
                     0,
                     CurrentHealth - damage)
                 );
+
             // Y aplicamos invencibilidad temporal
             tween = GetTemporalInvencibility();
         }
@@ -256,7 +257,6 @@ namespace Player
             _hasTemporalInvencibility = true;
             Sequence seq = DOTween.Sequence();
 
-            seq.AppendInterval(.8f);
             seq.Append(_playerSprite.DOFade(60 / 255f, 0f));
             seq.Append(_playerSprite.DOFade(1f, _timeOfInvencibility))
                 .SetEase(Ease.InOutFlash, 14, -1)
@@ -312,6 +312,13 @@ namespace Player
 
             _playerSprite.DOFade(1f, 0f).Play();
             _isDeath = true;
+
+            Invoke(nameof(ReturnToMainMenu), 5f);
+        }
+
+        private void ReturnToMainMenu()
+        {
+            ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString());
         }
 
         #endregion
