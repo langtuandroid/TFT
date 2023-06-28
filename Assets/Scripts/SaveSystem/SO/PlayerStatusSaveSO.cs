@@ -15,6 +15,6 @@ public class PlayerStatusSaveSO : ScriptableObject
         playerStatusSave.maxMagic = 30;
         playerStatusSave.currentMagic = playerStatusSave.maxMagic;
         playerStatusSave.maxSouls = 1000;
-        playerStatusSave.currentSouls = playerStatusSave.maxSouls;
+        playerStatusSave.currentSouls = 0;
     }
 }

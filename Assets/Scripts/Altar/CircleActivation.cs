@@ -24,6 +24,6 @@ public class CircleActivation : MonoBehaviour
             GetComponent<SpriteRenderer>().color = _altarColorSO.activationMagicColor;
             isColliderEnabled = true;
         }
-        GetComponentInChildren<Collider2D>().enabled = isColliderEnabled;
+        //GetComponentInChildren<Collider2D>().enabled = isColliderEnabled;
     }
 }
