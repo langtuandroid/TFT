@@ -318,6 +318,7 @@ namespace Player
 
         private void ReturnToMainMenu()
         {
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Main_Menu );
             ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString());
         }
 

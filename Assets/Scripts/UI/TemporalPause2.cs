@@ -17,7 +17,10 @@ public class TemporalPause2 : MonoBehaviour
     private void Awake()
     {
         _buttons[0].onClick.AddListener(() => gameObject.SetActive(false)); ;
-        _buttons[1].onClick.AddListener(() => ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString()));
+        _buttons[1].onClick.AddListener(() => {
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Main_Menu );
+            ServiceLocator.GetService<SceneLoader>().Load( SceneName.S00_MainMenuScene.ToString()); 
+        } );
     }
 
 
