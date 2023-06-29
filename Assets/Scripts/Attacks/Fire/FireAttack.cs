@@ -61,6 +61,9 @@ namespace Attack
 
         private void OnDestroy()
         {
+            _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
+
             foreach (GameObject f in _flamesToDestroy)
                 Destroy(f);
         }
