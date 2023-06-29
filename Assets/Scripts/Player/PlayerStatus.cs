@@ -184,7 +184,7 @@ namespace Player
             // Magic
             _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
-            _magicEvents.OnUseOfMagicValue += OnUseOfMagicValue;
+            _magicEvents.OnUseOfMagicValue -= OnUseOfMagicValue;
             // Souls
             _soulEvents.OnGotSoulsValue -= OnGotSouls;
         }
