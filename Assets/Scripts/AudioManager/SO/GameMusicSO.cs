@@ -24,7 +24,11 @@ namespace Audio
             Dictionary<MusicName, EventReference> musicDict = new();
 
             foreach (GameMusic music in gameMusicList )
+            {
+                if ( musicDict.ContainsKey( music.musicName ) )
+                    Debug.LogError( $"El enum {music.musicName} está doble, comprobar {music.name} en GameMusicSO asset" );
                 musicDict.Add( music.musicName , music.musicReference );
+            }
 
             return musicDict;
         }

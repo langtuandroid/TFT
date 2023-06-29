@@ -64,6 +64,7 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
     public void ChangeMusic( MusicName musicName )
     {
+        if ( musicName.Equals( MusicName.None ) ) return;
         _musicEventInstance.stop( FMOD.Studio.STOP_MODE.ALLOWFADEOUT );
         StartCoroutine( MusicStarter( musicName ) );
     }

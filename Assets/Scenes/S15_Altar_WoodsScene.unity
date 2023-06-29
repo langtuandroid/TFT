@@ -256,6 +256,7 @@ MonoBehaviour:
   _nextScene: 4
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 0
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4255,6 +4256,7 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 0
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4604,6 +4606,7 @@ MonoBehaviour:
   _nextScene: 8
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 8
   _enterIcon: {fileID: 529944125}
 --- !u!1 &861503098
 GameObject:
@@ -5115,6 +5118,7 @@ MonoBehaviour:
   _nextScene: 3
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 0
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5356,6 +5360,7 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 0
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5532,6 +5537,7 @@ MonoBehaviour:
   _nextScene: 2
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 1
+  _musicName: 2
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
