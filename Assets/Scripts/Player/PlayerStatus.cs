@@ -102,6 +102,63 @@ namespace Player
             set { _playerStatusSaveSO.playerStatusSave.isJumpUnlocked = value; }
         }
 
+        public bool IsWeakMagicUnlocked
+        {
+            get
+            {
+                switch (PrimarySkillIndex)
+                {
+                    case 0:
+                        return _playerStatusSaveSO.playerStatusSave.isFireWeakUnlocked;
+                    case 1:
+                        return _playerStatusSaveSO.playerStatusSave.isPlantWeakUnlocked;
+                    case 2:
+                        return _playerStatusSaveSO.playerStatusSave.isWaterWeakUnlocked;
+                    default:
+                        return false;
+                }
+
+            }
+        }
+
+        public bool IsMediumMagicUnlocked
+        {
+            get
+            {
+                switch (PrimarySkillIndex)
+                {
+                    case 0:
+                        return _playerStatusSaveSO.playerStatusSave.isFireMediumUnlocked;
+                    case 1:
+                        return _playerStatusSaveSO.playerStatusSave.isPlantMediumUnlocked;
+                    case 2:
+                        return _playerStatusSaveSO.playerStatusSave.isWaterMediumUnlocked;
+                    default:
+                        return false;
+                }
+
+            }
+        }
+
+        public bool IsStrongMagicUnlocked
+        {
+            get
+            {
+                switch (PrimarySkillIndex)
+                {
+                    case 0:
+                        return _playerStatusSaveSO.playerStatusSave.isFireStrongUnlocked;
+                    case 1:
+                        return _playerStatusSaveSO.playerStatusSave.isPlantStrongUnlocked;
+                    case 2:
+                        return _playerStatusSaveSO.playerStatusSave.isWaterStrongUnlocked;
+                    default:
+                        return false;
+                }
+
+            }
+        }
+
         #endregion
 
         #region Private variables
@@ -318,7 +375,7 @@ namespace Player
 
         private void ReturnToMainMenu()
         {
-            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Main_Menu );
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic(MusicName.Main_Menu);
             ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString());
         }
 

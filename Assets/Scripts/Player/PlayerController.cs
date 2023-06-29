@@ -371,9 +371,12 @@ namespace Player
         /// </summary>
         private void DoMagicAttack()
         {
-            DoWeakMagicAttack();
-            DoMediumMagicAttack();
-            DoStrongMagicAttack();
+            if (_playerStatus.IsWeakMagicUnlocked)
+                DoWeakMagicAttack();
+            if (_playerStatus.IsMediumMagicUnlocked)
+                DoMediumMagicAttack();
+            if (_playerStatus.IsStrongMagicUnlocked)
+                DoStrongMagicAttack();
         }
 
         /// <summary>
