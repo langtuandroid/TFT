@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -28,6 +29,10 @@ public class EnemySlime : MonoBehaviour
     [Tooltip("Radio del sentido del oído.")]
     private float _earRadious;
 
+    [SerializeField] 
+    [Tooltip("Icono exclamación")]
+    private GameObject _exclamation;
+    
     #endregion
     
     #region REFERENCES
@@ -40,10 +45,6 @@ public class EnemySlime : MonoBehaviour
     private Collider2D boundsCollider;
 
     private float _timer;
-    
-    private bool _canPatrol;
-
-    private bool _canFollow;
 
     private bool _canCheckDistance;
 
@@ -61,10 +62,24 @@ public class EnemySlime : MonoBehaviour
     }
 
     private bool _isOnProcedural;
+    
+    private SpriteRenderer spriteRenderer;
+    
+    private Rigidbody2D _rb;
+
+    private bool _followState;
+    
+    private bool _canFollow;
 
     #endregion
     
     #region UNITY METHODS
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        _rb = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
@@ -78,6 +93,15 @@ public class EnemySlime : MonoBehaviour
     
     void Update()
     {
+        Debug.Log(_rb.velocity.x);
+        if (_rb.velocity.x > 0f)
+        {
+            spriteRenderer.transform.localScale = new Vector2(spriteRenderer.transform.localScale.x * -1, spriteRenderer.transform.localScale.y);
+        } else if (_rb.velocity.x < 0f)
+        {
+            spriteRenderer.transform.localScale = new Vector2(spriteRenderer.transform.localScale.x * -1, spriteRenderer.transform.localScale.y);
+        }
+   
         if ( _isOnProcedural )
         {
             
@@ -142,6 +166,12 @@ public class EnemySlime : MonoBehaviour
                 }
             }
         }
+
+        if (_canSeePlayer && !_followState)
+        {
+            _followState = true;
+            StartCoroutine(nameof(AlertExclamation));
+        }
         
         return _canSeePlayer;
     }
@@ -153,18 +183,16 @@ public class EnemySlime : MonoBehaviour
     {
         if (TimeToChangeDirection())
         {
+            _followState = false;
+            _canFollow = false;
             UpdatePatrolMovement(GetRandomPosition());
         }
     }
 
-    public void ChangeDirectionAndPatrol()
-    {
-        UpdatePatrolMovement(GetRandomPosition());
-    }
-    
     private Vector3 GetRandomPosition()
     {
-        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        //Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x * 5;
         Vector3 targetPosition = new Vector3(boundsCollider.bounds.center.x + randomPoint.x, boundsCollider.bounds.center.y + randomPoint.y, 0);
 
         return targetPosition;
@@ -190,7 +218,19 @@ public class EnemySlime : MonoBehaviour
     
     public void Follow()
     {
-        _navMeshAgent.destination = _player.transform.position;
+        if(_canFollow)
+            _navMeshAgent.destination = _player.transform.position;
+    }
+
+    private IEnumerator AlertExclamation()
+    {
+        _exclamation.SetActive(true);
+        
+        yield return new WaitForSeconds(1f);
+        
+        _exclamation.SetActive(false);
+
+        _canFollow = true;
     }
 
     public void SetAsProceduralEnemy( Transform playerTransform )
@@ -199,6 +239,7 @@ public class EnemySlime : MonoBehaviour
         _player = playerTransform.gameObject;
         GetComponent<NavMeshAgent>().enabled = false;
     }
+
 
     #endregion
 
