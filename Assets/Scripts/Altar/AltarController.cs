@@ -11,6 +11,7 @@ public class AltarController : MonoBehaviour, IInteractable
     [SerializeField] private SceneName _nextScene;
     [SerializeField] private Color _fadeOutColor;
     [SerializeField] private MusicZoneParameter _musicParamName;
+    [SerializeField] private MusicName _musicName;
     [SerializeField] private GameObject _enterIcon;
 
     private bool _isDungeonOpen;
@@ -34,7 +35,8 @@ public class AltarController : MonoBehaviour, IInteractable
     {
         if ( _isDungeonOpen )
         {
-            ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+            //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _musicName );
 
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs
@@ -58,6 +60,6 @@ public class AltarController : MonoBehaviour, IInteractable
     {
         WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
         yield return waitTime;
-        ServiceLocator.GetService<SceneLoader>().InstaLoad( _nextScene.ToString() );
+        ServiceLocator.GetService<SceneLoader>().Load( _nextScene.ToString() );
     }
 }

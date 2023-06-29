@@ -28,8 +28,14 @@ public class AudioID
 
 public enum MusicName
 {
+    None,
     Main_Menu,
-    Woods,
+    Woods_Zone_0,
+    Woods_Zone_1,
+    Woods_Zone_2,
+    Woods_Zone_3,
+    Woods_Zone_4,
+    Woods_Altar,
     Woods_Dungeon,
     Woods_Boss
 }

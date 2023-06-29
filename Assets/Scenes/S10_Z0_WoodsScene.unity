@@ -36377,6 +36377,7 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 7
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls:
@@ -37447,6 +37448,7 @@ MonoBehaviour:
   _nextScene: 0
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 1
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
