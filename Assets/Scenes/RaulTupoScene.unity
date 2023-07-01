@@ -4189,7 +4189,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 0.9995192
+    height: 0.9986758
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -4332,7 +4332,7 @@ MonoBehaviour:
   m_Intensity: 0.7
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 2dbf05ceed242a4a55fc7a98a9fa056cb7aacb30d9d9cb7400000000
+  m_ApplyToSortingLayers: 2dbf05ceed242a4a55fc7a98a9fa056cb7aacb3000000000
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -4993,6 +4993,7 @@ MonoBehaviour:
   _nextScene: 0
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
+  _musicName: 0
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
