@@ -295,6 +295,7 @@ namespace Player
                 return;
 
             // Activamos el efecto de la acción secundaria
+            Debug.Log(_lookDirection);
             _secondaryAction.SetDirection(_lookDirection);
             _secondaryAction.Effect();
             _isSecondaryInput = false;

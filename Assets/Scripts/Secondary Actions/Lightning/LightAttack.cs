@@ -11,6 +11,8 @@ namespace Attack
         [Tooltip("Prefab de la bola de luz")]
         private GameObject _lightPrefab;
 
+        private LightMovement _lightScript;
+
         #endregion
 
         #region Inherited Methodss
@@ -23,17 +25,20 @@ namespace Attack
             // Instanciamos bola de luz
             GameObject lightBall = Instantiate(
                 _lightPrefab, // Prefab de la bola
-                transform.position, // Posición del jugador
+                transform.position, // PosiciÃ³n del jugador
                 Quaternion.identity // Quaternion identity
                 );
 
+            _lightScript = lightBall.GetComponent<LightMovement>();
+            
+            Vector2 directionFixed = new Vector2(direction.x, direction.y).normalized * Constants.PLAYER_OFFSET;
+            
             lightBall.transform.position = new Vector2(
-                _lightPrefab.transform.position.x,
-                _lightPrefab.transform.position.y + Constants.PLAYER_OFFSET
-                );
+                transform.position.x + directionFixed.x,
+                transform.position.y + directionFixed.y
+            );
 
-            //Y modificamos su dirección
-            SetBallDirection(lightBall.GetComponent<LightMovement>());
+            SetBallDirection(directionFixed.normalized);
         }
 
         #endregion
@@ -41,13 +46,13 @@ namespace Attack
         #region Private Methods
 
         /// <summary>
-        /// Cambia la dirección de la bola de luz conforme a la dirección
+        /// Cambia la direcciÃ³n de la bola de luz conforme a la direcciÃ³n
         /// a la que mira el jugador
         /// </summary>
         /// <param name="lightScript"></param>
-        private void SetBallDirection(LightMovement lightScript)
+        private void SetBallDirection(Vector2 lightDirection)
         {
-            lightScript.HandleMovement(direction);
+            _lightScript.HandleMovement(lightDirection);
         }
 
         #endregion
