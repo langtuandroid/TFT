@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5956584670632887419
 Transform:
   m_ObjectHideFlags: 0
@@ -67,24 +67,24 @@ MonoBehaviour:
   m_ShadowVolumeIntensity: 0.75
   m_Vertices:
   - position: {x: -0.5, y: 0.5, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
     uv: {x: 0, y: 1}
-  - position: {x: -0.3125, y: -0.4375, z: 0}
+  - position: {x: 0.5, y: 0.5, z: 0}
     color: {r: 0, g: 0, b: 0, a: 1}
-    uv: {x: 0.34375, y: 0.640625}
-  - position: {x: -0.125, y: -0.5625, z: 0}
+    uv: {x: 1, y: 1}
+  - position: {x: -0.5, y: -0.5, z: 0}
     color: {r: 0, g: 0, b: 0, a: 1}
-    uv: {x: 0.4375, y: 0.609375}
-  - position: {x: 0.875, y: 1, z: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.5, y: -0.5, z: 0}
     color: {r: 0, g: 0, b: 0, a: 1}
-    uv: {x: 0.9375, y: 1}
-  - position: {x: 1, y: -0.6875, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 1}
-    uv: {x: 1, y: 0.578125}
-  - position: {x: 1, y: 0.8125, z: 0}
-    color: {r: 0, g: 0, b: 0, a: 1}
-    uv: {x: 1, y: 0.953125}
-  m_Triangles: 000001000d0002000d000100
+    uv: {x: 1, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  m_Triangles: 000001000200020001000300
   m_LocalBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0.5, y: 0.5, z: 0}
@@ -118,7 +118,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1068080482283480631
 Transform:
   m_ObjectHideFlags: 0
@@ -247,7 +247,7 @@ PrefabInstance:
     - target: {fileID: 1262885401, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: _lightPrefab
       value: 
-      objectReference: {fileID: 5408952623506489828, guid: c001cdb09d2874b6e827ad0ce25e8947, type: 3}
+      objectReference: {fileID: 8151965325498104194, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
     - target: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_Name
       value: Alex V0.35 Light
@@ -262,7 +262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 75.12
+      value: 77.02
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.z
