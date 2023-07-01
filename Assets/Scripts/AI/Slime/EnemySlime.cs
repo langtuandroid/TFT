@@ -63,26 +63,28 @@ public class EnemySlime : MonoBehaviour
 
     private bool _isOnProcedural;
     
-    private SpriteRenderer spriteRenderer;
-    
-    private Rigidbody2D _rb;
-
     private bool _followState;
     
     private bool _canFollow;
+
+    private bool _slimeLoaded;
+
+    private LifeEvents _lifeEvents;
 
     #endregion
     
     #region UNITY METHODS
 
-    private void Awake()
+    private void OnDestroy()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        _rb = GetComponent<Rigidbody2D>();
+        _lifeEvents.OnDeathValue -= OnStopFollow;
     }
 
     void Start()
     {
+        _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+        _lifeEvents.OnDeathValue += OnStopFollow;
+        
         if ( !_isOnProcedural )
         {
             boundsCollider = GetComponentInParent<Collider2D>();
@@ -93,15 +95,8 @@ public class EnemySlime : MonoBehaviour
     
     void Update()
     {
-        Debug.Log(_rb.velocity.x);
-        if (_rb.velocity.x > 0f)
-        {
-            spriteRenderer.transform.localScale = new Vector2(spriteRenderer.transform.localScale.x * -1, spriteRenderer.transform.localScale.y);
-        } else if (_rb.velocity.x < 0f)
-        {
-            spriteRenderer.transform.localScale = new Vector2(spriteRenderer.transform.localScale.x * -1, spriteRenderer.transform.localScale.y);
-        }
-   
+        if (!_slimeLoaded) return;
+
         if ( _isOnProcedural )
         {
             
@@ -114,20 +109,12 @@ public class EnemySlime : MonoBehaviour
     
     private void PrepareComponent()
     {
-        //Player
-        //if (_player == null)
-            //_player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-
-        //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        
-        //Collider donde patrulla el slime
-        //boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
-        //boundsCollider = GetComponentInParent<Collider2D>();
+        _slimeLoaded = true;
     }
 
     private void Init()
-    { 
+    {
         _navMeshAgent.speed = _speed;
 
         _nextWanderTime = _secondsToChangeDirection;
@@ -189,6 +176,11 @@ public class EnemySlime : MonoBehaviour
         }
     }
 
+    private void OnStopFollow()
+    {
+        _slimeLoaded = false;
+    }
+    
     private Vector3 GetRandomPosition()
     {
         //Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
