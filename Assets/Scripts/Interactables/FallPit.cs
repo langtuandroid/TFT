@@ -1,3 +1,4 @@
+using Player;
 using UnityEngine;
 
 public class FallPit : MonoBehaviour
@@ -25,12 +26,14 @@ public class FallPit : MonoBehaviour
         { 
             if ( _isBroken )
             {
-                Vector3 direction =  transform.position - _playerRb.transform.position;
+                Vector2 playerPos = _playerRb.position + _playerColOffest;
+                Vector2 direction =  transform.position;
+                direction -= playerPos;
                 _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
                 
-                if ( _pitCollider.OverlapPoint( _playerRb.position + _playerColOffest ) )
+                if ( _pitCollider.OverlapPoint( playerPos ) )
                 {
-                    Debug.Log( "AAAAAaaaaaaaahhh!!!!!" );
+                    _playerRb.GetComponent<PlayerController>().Fall();
                 }
             }
             else

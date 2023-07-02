@@ -446,5 +446,10 @@ namespace Player
                 return;
             _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
+
+        public void Fall()
+        {
+            _animatorBrain.SetFall();
+        }
     }
 }

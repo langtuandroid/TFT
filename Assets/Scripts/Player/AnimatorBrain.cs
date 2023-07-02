@@ -32,6 +32,7 @@ namespace Player
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
         private const string DEATH = "DeathTree";
+        private const string FALL = "DeathTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
@@ -147,6 +148,11 @@ namespace Player
         private void Death_OnDeath()
         {
             PlayPlayer(DEATH);
+        }
+
+        public void SetFall()
+        {
+            PlayPlayer( FALL );
         }
 
         public void IsWalking(bool isWalking)
