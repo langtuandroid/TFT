@@ -48,36 +48,23 @@ namespace Player
         public Jump( Vector2 colliderOffset , LayerMask jumpableLayerMask ,
             Transform transform , Transform playerVisuals , LayerMask boundsLayerMask )
         {
-            _transform = transform;
+            _transform     = transform;
             _playerVisuals = playerVisuals;
 
             _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 0.6f );
-            _yOffset = _playerVisuals.localPosition.y;
+            _yOffset   = _playerVisuals.localPosition.y;
             _jumpState = JumpState.Grounded;
 
             _colliderOffset = colliderOffset;
-            _jumpableMask = jumpableLayerMask;
-            _boundsMask = boundsLayerMask;
+            _jumpableMask   = jumpableLayerMask;
+            _boundsMask     = boundsLayerMask;
         }
 
         public void Init( AnimatorBrain animatorBrain , IAudioSpeaker audioSpeaker , LayerMask initialGroundLayerMask )
         {
-            //_transform     = transform;
-            //_playerVisuals = playerVisuals;
-
-            //_cooldownTimer = new Timer( 0.1f );
-            //_jumpDownTimer = new Timer( 0.6f );
-            //_yOffset       = _playerVisuals.localPosition.y;
-            //_jumpState     = JumpState.Grounded;
-
-            _audioSpeaker   = audioSpeaker;
-            //_colliderOffset = colliderOffset;
-            //_jumpableMask   = jumpableLayerMask;
-            //_boundsMask     = boundsLayerMask;
-
+            _audioSpeaker = audioSpeaker;
             _currentFloorBitPosition = initialGroundLayerMask.value;
-            Debug.Log( _currentFloorBitPosition );
 
             animatorBrain.OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
             animatorBrain.OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
@@ -232,8 +219,6 @@ namespace Player
             for ( int i = 0; i < numOfFloors; i++ )
                 _currentFloorBitPosition /= 2;
 
-            Debug.Log( _currentFloorBitPosition );
-
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
                 descendDirection = lookDirection,
@@ -245,7 +230,6 @@ namespace Player
         {
             _jumpState = JumpState.Grounded;
             _transform.position = jumpDownLandArgs.landedPosition;
-            Debug.Log( _transform.position );
         }
 
         private void CheckJumpable( Vector2 lookDirection )
@@ -327,7 +311,6 @@ namespace Player
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition *= 2;
             _transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
-            Debug.Log( _currentFloorBitPosition );
         }
 
         public bool IsPerformingJump => !_jumpState.Equals( JumpState.Grounded );

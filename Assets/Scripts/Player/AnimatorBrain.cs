@@ -52,7 +52,6 @@ namespace Player
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
 
-            //Jump jump = GetComponentInParent<Jump>();
             jump.OnJumpStarted += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
