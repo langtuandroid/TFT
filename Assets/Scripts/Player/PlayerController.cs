@@ -27,6 +27,7 @@ namespace Player
         // VARIABLES
         // Masks
         [SerializeField] private LayerMask _interactableLayerMask;
+        [SerializeField] private LayerMask _boundsLayerMask;
         // Inputs
         // Jump input
         private bool _isJumpInput;
@@ -63,9 +64,11 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
+            Collider2D collider = GetComponent<Collider2D>();
             _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
-            _jump = GetComponent<Jump>();
-            _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
+            _jump = new Jump( collider.offset , _interactableLayerMask , transform , 
+                transform.Find( "CharacterVisuals" ) , _boundsLayerMask );
+            _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -94,8 +97,9 @@ namespace Player
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
-            _jump.Init(_animatorBrain, GetComponent<Collider2D>().offset, _interactableLayerMask, initialGroundLayerMask);
-            _animatorBrain.Init(startLookDirection);
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init( _animatorBrain , audioSpeaker , initialGroundLayerMask );
+            _animatorBrain.Init(startLookDirection, _jump);
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();

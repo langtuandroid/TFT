@@ -5,7 +5,7 @@ using DG.Tweening;
 
 namespace Player
 {
-    public class Jump : MonoBehaviour
+    public class Jump
     {
         public event Action OnJumpStarted;
         public event Action OnJumpFinished;
@@ -21,8 +21,9 @@ namespace Player
 
         private enum JumpState { Grounded, Jumping, Falling, Cooldown , Jumpable }
 
-        [SerializeField] private Transform _playerVisuals;
-        [SerializeField] private LayerMask _boundsMask;
+        private Transform _transform;
+        private Transform _playerVisuals;
+        private LayerMask _boundsMask;
 
         private LayerMask _jumpableMask;
         private int _currentFloorBitPosition;
@@ -44,16 +45,36 @@ namespace Player
         private Vector2   _colliderOffset;
         private Vector2   _rayCastOffset = new( 0.2f , 0.2f );
 
-        public void Init( AnimatorBrain animatorBrain , Vector2 colliderOffset , LayerMask jumpableLayerMask , LayerMask initialGroundLayerMask )
+        public Jump( Vector2 colliderOffset , LayerMask jumpableLayerMask ,
+            Transform transform , Transform playerVisuals , LayerMask boundsLayerMask )
         {
+            _transform = transform;
+            _playerVisuals = playerVisuals;
+
             _cooldownTimer = new Timer( 0.1f );
             _jumpDownTimer = new Timer( 0.6f );
-            _yOffset       = _playerVisuals.localPosition.y;
-            _jumpState     = JumpState.Grounded;
+            _yOffset = _playerVisuals.localPosition.y;
+            _jumpState = JumpState.Grounded;
 
-            _audioSpeaker   = ServiceLocator.GetService<IAudioSpeaker>();
             _colliderOffset = colliderOffset;
-            _jumpableMask   = jumpableLayerMask;
+            _jumpableMask = jumpableLayerMask;
+            _boundsMask = boundsLayerMask;
+        }
+
+        public void Init( AnimatorBrain animatorBrain , IAudioSpeaker audioSpeaker , LayerMask initialGroundLayerMask )
+        {
+            //_transform     = transform;
+            //_playerVisuals = playerVisuals;
+
+            //_cooldownTimer = new Timer( 0.1f );
+            //_jumpDownTimer = new Timer( 0.6f );
+            //_yOffset       = _playerVisuals.localPosition.y;
+            //_jumpState     = JumpState.Grounded;
+
+            _audioSpeaker   = audioSpeaker;
+            //_colliderOffset = colliderOffset;
+            //_jumpableMask   = jumpableLayerMask;
+            //_boundsMask     = boundsLayerMask;
 
             _currentFloorBitPosition = initialGroundLayerMask.value;
             Debug.Log( _currentFloorBitPosition );
@@ -152,8 +173,8 @@ namespace Player
 
         private void CheckJumpDown( Vector2 lookDirection )
         {
-            Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
-                                          _colliderOffset.y + transform.position.y );
+            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x ,
+                                          _colliderOffset.y + _transform.position.y );
 
             RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _currentFloorBitPosition );
 
@@ -178,7 +199,7 @@ namespace Player
                 float maxNumOfFloors = 3;
                 for ( int i = numOfFloors; i <= maxNumOfFloors; i++ )
                 {
-                    posToCheck = transform.position + Vector3.down * i;
+                    posToCheck = _transform.position + Vector3.down * i;
 
                     if ( Physics2D.OverlapPoint( posToCheck , _boundsMask ) )
                         return;
@@ -194,12 +215,12 @@ namespace Player
             }
             else if ( lookDirection == Vector3.up )
             {
-                posToCheck = transform.position + Vector3.up * 1.5f;
+                posToCheck = _transform.position + Vector3.up * 1.5f;
                 relativePos = Vector3.up * 1.5f;
             }
             else
             {
-                posToCheck = transform.position + lookDirection * 1.5f + Vector3.down;
+                posToCheck = _transform.position + lookDirection * 1.5f + Vector3.down;
                 relativePos = lookDirection * 1.5f + Vector3.down;
             }
 
@@ -223,8 +244,8 @@ namespace Player
         private void Jump_OnJumpDownHasLanded( AnimatorBrain.OnJumpDownHasLandedArgs jumpDownLandArgs )
         {
             _jumpState = JumpState.Grounded;
-            transform.position = jumpDownLandArgs.landedPosition;
-            Debug.Log( transform.position );
+            _transform.position = jumpDownLandArgs.landedPosition;
+            Debug.Log( _transform.position );
         }
 
         private void CheckJumpable( Vector2 lookDirection )
@@ -235,8 +256,8 @@ namespace Player
             float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
 
-            Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x + xRayOffset,
-                                          _colliderOffset.y + transform.position.y + yRayOffset );
+            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
+                                          _colliderOffset.y + _transform.position.y + yRayOffset );
 
             RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
 
@@ -250,8 +271,8 @@ namespace Player
                 }
 
 
-            origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
-                                  _colliderOffset.y + transform.position.y - yRayOffset );
+            origin = new Vector2( _colliderOffset.x + _transform.position.x - xRayOffset ,
+                                  _colliderOffset.y + _transform.position.y - yRayOffset );
 
             hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
 
@@ -272,7 +293,7 @@ namespace Player
                 _jumpState = JumpState.Jumpable;
                 _jumpable.JumpIn();
 
-                transform.DOMove( jumpablePos , 0.5f )
+                _transform.DOMove( jumpablePos , 0.5f )
                     .SetRelative( false )
                     .SetEase( Ease.Linear )
                     .SetLoops( 1 )
@@ -290,8 +311,8 @@ namespace Player
             jumpablePos = Vector3.zero;
             float minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
             
-            Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x ,
-                                          _colliderOffset.y + transform.position.y );
+            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x ,
+                                          _colliderOffset.y + _transform.position.y );
             float radius = 0.05f;
             RaycastHit2D hit = Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
             if ( hit )
@@ -305,7 +326,7 @@ namespace Player
         {
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition *= 2;
-            transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
+            _transform.position += new Vector3( 0 , onJumpableHasLanded.yLandPosition , 0);
             Debug.Log( _currentFloorBitPosition );
         }
 
