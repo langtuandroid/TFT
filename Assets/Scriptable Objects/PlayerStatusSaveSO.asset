@@ -16,14 +16,14 @@ MonoBehaviour:
     saveSlot: 1
     currentHealth: 0
     maxHealth: 12
-    currentMagic: 298
+    currentMagic: 300
     maxMagic: 300
     currentSouls: 0
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0
     isPhysicAttackUnlocked: 0
-    isJumpUnlocked: 0
+    isJumpUnlocked: 1
     isSwimUnlocked: 0
     isDashUnlocked: 0
     isFireWeakUnlocked: 1
