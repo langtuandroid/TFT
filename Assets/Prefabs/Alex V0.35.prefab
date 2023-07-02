@@ -329,6 +329,7 @@ MonoBehaviour:
     m_Bits: 64
   _checkDistance: 0.6
   _rayCastOffset: {x: 0.2, y: 0.2}
+  _pickUpPoint: {fileID: 1536486320}
   HasItem: 0
 --- !u!114 &6393048233429952891
 MonoBehaviour:

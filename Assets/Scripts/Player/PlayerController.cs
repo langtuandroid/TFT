@@ -273,6 +273,7 @@ namespace Player
             {
                 if (_isPhysicActionInput)
                 {
+                    Debug.Log("Entro");
                     _pickable.ThrowIt(_lookDirection);
                 }
             }

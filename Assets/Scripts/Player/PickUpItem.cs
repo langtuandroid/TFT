@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PickUpItem : MonoBehaviour
@@ -6,11 +7,17 @@ public class PickUpItem : MonoBehaviour
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private float _checkDistance = 0.6f;
     [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+    [SerializeField] private Transform _pickUpPoint;  
 
     private IAudioSpeaker _audioSpeaker;
     private Vector2 _colliderOffset;
     private IPickable _pickable;
     public bool HasItem = false;
+
+    private void Awake()
+    {
+        ServiceLocator.AddService<PickUpItem>(this);
+    }
 
     public void Init()
     {
@@ -56,7 +63,7 @@ public class PickUpItem : MonoBehaviour
     {
         HasItem = true;
         _pickable?.ShowCanPickUpItem( false );
-        _pickable?.PickItUp( lookDirection );
+        _pickable?.PickItUp( lookDirection, _pickUpPoint );
     }
     
     public void ThrowIt(Vector2 lookDirection)
