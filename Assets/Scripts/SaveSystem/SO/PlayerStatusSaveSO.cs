@@ -16,5 +16,7 @@ public class PlayerStatusSaveSO : ScriptableObject
         playerStatusSave.currentMagic = playerStatusSave.maxMagic;
         playerStatusSave.maxSouls = 1000;
         playerStatusSave.currentSouls = 0;
+
+        playerStatusSave.isFireWeakUnlocked = true;
     }
 }
