@@ -67,6 +67,7 @@ namespace Player
             _jump = GetComponent<Jump>();
             _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
+            _pickable.Init(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
@@ -268,13 +269,17 @@ namespace Player
                         _pickable.PickItUp(_lookDirection);
                     }
                 }
+                else
+                {
+                    //_pickable.ShowCanPickUpItem(false);
+                }
             }
             else
             {
                 if (_isPhysicActionInput)
                 {
-                    Debug.Log("Entro");
-                    _pickable.ThrowIt(_lookDirection);
+                    if(_pickable != null)
+                        _pickable.ThrowIt(_lookDirection);
                 }
             }
         }

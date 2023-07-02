@@ -21,9 +21,9 @@ public class Pickable : MonoBehaviour, IPickable
         {
             _canPickItUp = false;
             _collider.enabled = false;
+            transform.DOMove(pickUpPoint.position, 0.3f).SetEase(Ease.Linear).Play();
             transform.parent = pickUpPoint;
             ShowCanPickUpItem(false);
-            transform.DOMove(pickUpPoint.position, 0.3f).SetEase(Ease.Linear).Play();
         }
     }
 
@@ -35,9 +35,7 @@ public class Pickable : MonoBehaviour, IPickable
 
         transform.parent = null;
         
-        
         Vector3 jumpTarget = lookDirection * 2f;
-      
         
         transform.DOJump(jumpTarget + transform.position, 1f, 1, 1f).SetEase(Ease.OutQuad).OnComplete(() =>
         {
