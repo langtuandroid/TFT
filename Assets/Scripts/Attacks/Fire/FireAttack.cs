@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
@@ -95,8 +95,12 @@ namespace Attack
                     _flameTimer = 0f;
                 }
             }
+        }
 
-
+        private void OnDrawGizmos()
+        {
+            UnityEditor.Handles.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, 8);
         }
 
         #endregion
@@ -236,6 +240,9 @@ namespace Attack
 
         private void MaxPowerFinalized()
         {
+            // Comprobamos las colisiones (para dañar enemigos)
+            CheckMaxPowerCollisions();
+
             // Desactivamos el uso de magia fuerte
             _isUsingStrongAttack = false;
             // Consumimos magia
@@ -337,8 +344,26 @@ namespace Attack
                 // Cuando finalizamos, cambiamos el estado de los orbes
                 OnComplete(() => ChangeOrbsState(false)).
                 Play();
+        }
+
+        /// <summary>
+        /// Comprueba en un rango circular las colisiones
+        /// </summary>
+        private void CheckMaxPowerCollisions()
+        {
+            // Lista de colisiones
+            Collider2D[] collisions = Physics2D.OverlapCircleAll(
+                transform.position, // Origen
+                _fireOrbs.Count, // Radio
+                LayerMask.GetMask(Constants.LAYER_INTERACTABLE) // Capa a la que afecta
+                );
+
+            // Para cada colisión, activamos el quemado
+            foreach (Collider2D collision in collisions)
+                collision.GetComponent<IBurnable>()?.Burn();
 
         }
+
 
         #endregion
 

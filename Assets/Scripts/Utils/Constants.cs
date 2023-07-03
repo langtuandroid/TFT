@@ -27,6 +27,13 @@ namespace Utils
         #endregion
         #endregion
 
+        #region Layers
+
+        public const string LAYER_PLAYER = "Player";
+        public const string LAYER_INTERACTABLE = "Interactable";
+
+        #endregion
+
         #region Animations variables
 
         #region Player
