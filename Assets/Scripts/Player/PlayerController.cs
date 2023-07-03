@@ -66,8 +66,8 @@ namespace Player
             // Obtenemos componentes
             Collider2D collider = GetComponent<Collider2D>();
             _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
-            _jump = new Jump( collider.offset , _interactableLayerMask , transform , 
-                transform.Find( "CharacterVisuals" ) , _boundsLayerMask );
+            _jump = new Jump(collider.offset, _interactableLayerMask, transform,
+                transform.Find("CharacterVisuals"), _boundsLayerMask);
             _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
@@ -98,7 +98,7 @@ namespace Player
             _isInitialized = true;
 #endif
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init( _animatorBrain , audioSpeaker , initialGroundLayerMask );
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
             _magicAttacks[_magicIndex].Select();
 
@@ -134,7 +134,6 @@ namespace Player
             // si está aturdido
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
-                _playerStatus.IsStunned ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
@@ -142,6 +141,10 @@ namespace Player
 
                 return;
             }
+
+            if (_playerStatus.IsStunned &&
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
+                GameInputs_OnMediumAttackButtonCanceled();
 
 
             // Controlamos las acciones
@@ -171,7 +174,6 @@ namespace Player
             // si está aturdido
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
-                _playerStatus.IsStunned ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
                 return;
 
@@ -321,11 +323,6 @@ namespace Player
                 _magicAttacks[_magicIndex].IsUsingMediumAttack ||
                 _magicAttacks[_magicIndex].IsUsingStrongAttack
                 ;
-
-
-            //return _isPhysicAttacking || _isWeakMagicInput
-            //    || _mediumMagicUsed || _isMediumMagicInput
-            //    || _isStrongMagicInput;
         }
 
 
