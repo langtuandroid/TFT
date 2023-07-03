@@ -75,7 +75,7 @@ public class Inventory : MonoBehaviour
         _descriptions = new List<string>();
 
         // OBJETOS NO EQUIPABLES
-        _descriptions.Add("VARA MÁGICA\nLa vara que te regaló papá.Te permite atacar y usar poderes mágicos.");
+        _descriptions.Add("VARA MÁGICA\nLa vara que te regaló papá. Se puede usar para golpear e invocar poderes mágicos.");
         _descriptions.Add("BOTAS DE SALTO\nUnas botas mágicas con las que podrás saltar muy alto.");
         _descriptions.Add("ALETAS\nCon ellas podrás meterte en el agua y nadar sin miedo a ahogarte.");
         _descriptions.Add("DASH\nTe permite realizar un ligero teletransporte.");
