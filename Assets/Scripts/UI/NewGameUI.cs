@@ -56,6 +56,7 @@ namespace UI
             {
                 _firstSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 0;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
@@ -75,6 +76,7 @@ namespace UI
             {
                 _secondSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 1;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
@@ -94,6 +96,7 @@ namespace UI
             {
                 _thirdSlotButton.onClick.AddListener( () => {
                     _slotToSaveIndex = 2;
+                    ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= GameInputs_OnCancelPerformed;
                     NewGame();
                 } );
             }
@@ -121,6 +124,8 @@ namespace UI
             foreach ( var zoneSaveSO in _gameZoneSavesSO.zones )
                 zoneSaveSO.NewGameReset();
 
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Woods_Zone_0 );
+            //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( MusicZoneParameter.Zone_0, true );
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
             //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
         }

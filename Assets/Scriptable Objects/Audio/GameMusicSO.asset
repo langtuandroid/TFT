@@ -12,28 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06e178b00ed83ee4ab13fcb500833343, type: 3}
   m_Name: GameMusicSO
   m_EditorClassIdentifier: 
-  gameMusic:
-  - Guid:
-      Data1: -1715364381
-      Data2: 1264832484
-      Data3: 1510036159
-      Data4: -1725166958
-    Path: event:/Tecno_Music
-  - Guid:
-      Data1: -1938153230
-      Data2: 1138739608
-      Data3: 1935118479
-      Data4: -1104429585
-    Path: event:/Woods
-  - Guid:
-      Data1: 535838240
-      Data2: 1080635444
-      Data3: 26820484
-      Data4: 93958975
-    Path: event:/Woods_Dungeon
   gameMusicList:
   - name: Main Menu
-    musicName: 0
+    musicName: 1
     musicReference:
       Guid:
         Data1: -1715364381
@@ -41,21 +22,75 @@ MonoBehaviour:
         Data3: 1510036159
         Data4: -1725166958
       Path: event:/Tecno_Music
-  - name: Woods
-    musicName: 1
-    musicReference:
-      Guid:
-        Data1: -1938153230
-        Data2: 1138739608
-        Data3: 1935118479
-        Data4: -1104429585
-      Path: event:/Woods
-  - name: Woods Dungeon
+  - name: Woods Zone 0
     musicName: 2
     musicReference:
       Guid:
-        Data1: 535838240
-        Data2: 1080635444
-        Data3: 26820484
-        Data4: 93958975
-      Path: event:/Woods_Dungeon
+        Data1: -763404372
+        Data2: 1139046998
+        Data3: -1129615980
+        Data4: -648707071
+      Path: event:/Woods Music/Woods_Zone_0
+  - name: Woods Zone 1
+    musicName: 3
+    musicReference:
+      Guid:
+        Data1: 922056271
+        Data2: 1214213395
+        Data3: 825710783
+        Data4: 89315819
+      Path: event:/Woods Music/Woods_Zone_1
+  - name: Woods Zone 2
+    musicName: 4
+    musicReference:
+      Guid:
+        Data1: -763404372
+        Data2: 1139046998
+        Data3: -1129615980
+        Data4: -648707071
+      Path: event:/Woods Music/Woods_Zone_0
+  - name: Woods Zone 3
+    musicName: 5
+    musicReference:
+      Guid:
+        Data1: 1844702979
+        Data2: 1257688283
+        Data3: -1625344608
+        Data4: -255004093
+      Path: event:/Woods Music/Woods_Zone_4
+  - name: Woods Zone 4
+    musicName: 6
+    musicReference:
+      Guid:
+        Data1: 1844702979
+        Data2: 1257688283
+        Data3: -1625344608
+        Data4: -255004093
+      Path: event:/Woods Music/Woods_Zone_4
+  - name: Woods Altar
+    musicName: 7
+    musicReference:
+      Guid:
+        Data1: 922056271
+        Data2: 1214213395
+        Data3: 825710783
+        Data4: 89315819
+      Path: event:/Woods Music/Woods_Zone_1
+  - name: Woods Dungeon
+    musicName: 8
+    musicReference:
+      Guid:
+        Data1: 670374799
+        Data2: 1320019063
+        Data3: 1083858310
+        Data4: -6861321
+      Path: event:/Dungeon Music/Dungeon
+  - name: Woods Boos
+    musicName: 9
+    musicReference:
+      Guid:
+        Data1: -1454006230
+        Data2: 1305094570
+        Data3: -517762114
+        Data4: -1218463270
+      Path: event:/Dungeon Music/Boss

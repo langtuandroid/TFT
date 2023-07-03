@@ -1,4 +1,4 @@
-// ************ @autor: Álvaro Repiso Romero *************
+// ************ @autor: ï¿½lvaro Repiso Romero *************
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -138,6 +138,19 @@ public class GameInputs
     private void MenuModeDisable()
     {
         _playerInputActions.UI.Disable();
+    }
+    
+    public void ActivateUIMode()
+    {
+        _playerInputActions.UI.Enable();
+        //_playerInputActions.UI.Cancel.performed += Cancel_Performed;
+        _playerInputActions.PlayerGround.Disable();
+    }
+
+    public void ActivatePlayerGroundMode()
+    {
+        _playerInputActions.UI.Disable();
+        _playerInputActions.PlayerGround.Enable();
     }
 
     private void Cancel_Performed(InputAction.CallbackContext ctx)

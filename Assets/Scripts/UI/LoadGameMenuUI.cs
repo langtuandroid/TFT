@@ -101,10 +101,11 @@ namespace UI
             _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
 
             int arrayLength = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray.Length;
+            Debug.Log( arrayLength );
             for ( int i = 0; i < arrayLength; i++ )
                 _gameZoneSavesSO.zones[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
 
-
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Woods_Zone_0 );
             switch ( _gameSaveDataArray[_slotToLoadIndex].startSavePoint )
             {
                 case 0: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );

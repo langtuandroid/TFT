@@ -27,6 +27,7 @@ namespace Player
         // VARIABLES
         // Masks
         [SerializeField] private LayerMask _interactableLayerMask;
+        [SerializeField] private LayerMask _boundsLayerMask;
         // Inputs
         // Jump input
         private bool _isJumpInput;
@@ -63,9 +64,11 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
+            Collider2D collider = GetComponent<Collider2D>();
             _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
-            _jump = GetComponent<Jump>();
-            _interaction = new Interaction(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
+            _jump = new Jump(collider.offset, _interactableLayerMask, transform,
+                transform.Find("CharacterVisuals"), _boundsLayerMask);
+            _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
             _pickable = GetComponent<PickUpItem>();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -94,8 +97,9 @@ namespace Player
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
-            _jump.Init(_animatorBrain, GetComponent<Collider2D>().offset, _interactableLayerMask, initialGroundLayerMask);
-            _animatorBrain.Init(startLookDirection);
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
+            _animatorBrain.Init(startLookDirection, _jump);
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -130,7 +134,6 @@ namespace Player
             // si está aturdido
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
-                _playerStatus.IsStunned ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
@@ -138,6 +141,10 @@ namespace Player
 
                 return;
             }
+
+            if (_playerStatus.IsStunned &&
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
+                GameInputs_OnMediumAttackButtonCanceled();
 
 
             // Controlamos las acciones
@@ -167,7 +174,6 @@ namespace Player
             // si está aturdido
             // o si está usando el poder máximo, volvemos
             if (_playerStatus.IsDeath ||
-                _playerStatus.IsStunned ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
                 return;
 
@@ -295,6 +301,7 @@ namespace Player
                 return;
 
             // Activamos el efecto de la acción secundaria
+            Debug.Log(_lookDirection);
             _secondaryAction.SetDirection(_lookDirection);
             _secondaryAction.Effect();
             _isSecondaryInput = false;
@@ -316,11 +323,6 @@ namespace Player
                 _magicAttacks[_magicIndex].IsUsingMediumAttack ||
                 _magicAttacks[_magicIndex].IsUsingStrongAttack
                 ;
-
-
-            //return _isPhysicAttacking || _isWeakMagicInput
-            //    || _mediumMagicUsed || _isMediumMagicInput
-            //    || _isStrongMagicInput;
         }
 
 
@@ -371,9 +373,12 @@ namespace Player
         /// </summary>
         private void DoMagicAttack()
         {
-            DoWeakMagicAttack();
-            DoMediumMagicAttack();
-            DoStrongMagicAttack();
+            if (_playerStatus.IsWeakMagicUnlocked)
+                DoWeakMagicAttack();
+            if (_playerStatus.IsMediumMagicUnlocked)
+                DoMediumMagicAttack();
+            if (_playerStatus.IsStrongMagicUnlocked)
+                DoStrongMagicAttack();
         }
 
         /// <summary>

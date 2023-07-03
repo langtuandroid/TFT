@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -25,21 +28,23 @@ public class EnemySlime : MonoBehaviour
     [SerializeField]
     [Tooltip("Radio del sentido del oído.")]
     private float _earRadious;
+
+    [SerializeField] 
+    [Tooltip("Icono exclamación")]
+    private GameObject _exclamation;
     
     #endregion
     
     #region REFERENCES
     private ContactFilter2D _contactFilter = new ContactFilter2D();
     
-    private LayerMask _layer = 0;
-
+    private LayerMask _layer = 3;
+    
     private GameObject _player;
 
-    private float _timer;
-    
-    private bool _canPatrol;
+    private Collider2D boundsCollider;
 
-    private bool _canFollow;
+    private float _timer;
 
     private bool _canCheckDistance;
 
@@ -49,8 +54,6 @@ public class EnemySlime : MonoBehaviour
     
     private float _nextWanderTime;
 
-    private Collider2D boundsCollider;
-
     private FsmEnemySlime _actualState;
     public FsmEnemySlime ActualState
     {
@@ -59,15 +62,32 @@ public class EnemySlime : MonoBehaviour
     }
 
     private bool _isOnProcedural;
+    
+    private bool _followState;
+    
+    private bool _canFollow;
+
+    private bool _slimeLoaded;
+
+    private LifeEvents _lifeEvents;
 
     #endregion
     
     #region UNITY METHODS
 
+    private void OnDestroy()
+    {
+        _lifeEvents.OnDeathValue -= OnStopFollow;
+    }
+
     void Start()
     {
+        _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+        _lifeEvents.OnDeathValue += OnStopFollow;
+        
         if ( !_isOnProcedural )
         {
+            boundsCollider = GetComponentInParent<Collider2D>();
             PrepareComponent();
             Init();
         }
@@ -75,8 +95,11 @@ public class EnemySlime : MonoBehaviour
     
     void Update()
     {
+        if (!_slimeLoaded) return;
+
         if ( _isOnProcedural )
         {
+            
             Vector3 direction = _player.transform.position - transform.position;
             transform.position += Time.deltaTime * _speed * direction.normalized;
         }
@@ -86,21 +109,15 @@ public class EnemySlime : MonoBehaviour
     
     private void PrepareComponent()
     {
-        //Player
-        if (_player == null)
-            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-
-        //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        
-        //Collider donde patrulla el slime
-        boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
-        //boundsCollider = GetComponentInParent<Collider2D>();
+        _slimeLoaded = true;
     }
 
     private void Init()
-    { 
+    {
         _navMeshAgent.speed = _speed;
+
+        _nextWanderTime = _secondsToChangeDirection;
 
         _actualState =  new EnemySlimePatrolState();
         
@@ -119,27 +136,30 @@ public class EnemySlime : MonoBehaviour
     public bool CanSeePlayer()
     {
         _canSeePlayer = false;
-        
-        Collider2D[] results = new Collider2D[5];
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _earRadious, _contactFilter, results);
+        //var hitColliders = Physics2D.OverlapCircle(center, radius, 1 << LayerMask.NameToLayer("Enemies")); 
+        Collider2D results = Physics2D.OverlapCircle(transform.position, _earRadious, LayerMask.GetMask(Constants.TAG_PLAYER));
 
-        if (objectsDetected > 0)
+        if (results != null)
         {
-            foreach (var item in results)
+            if (results.CompareTag(Constants.TAG_PLAYER))
             {
-                if (item != null)
+                if (results.GetComponent<PlayerStatus>().HasTemporalInvencibility)
+                    _canSeePlayer = false;
+                else
                 {
-                    if (item.CompareTag(Constants.TAG_PLAYER))
-                    {
-                        _canSeePlayer = true;
-                        break;
-                    }
+                    _canSeePlayer = true;
+                    _player = results.gameObject;
                 }
-
             }
         }
 
+        if (_canSeePlayer && !_followState)
+        {
+            _followState = true;
+            StartCoroutine(nameof(AlertExclamation));
+        }
+        
         return _canSeePlayer;
     }
     #endregion
@@ -150,18 +170,21 @@ public class EnemySlime : MonoBehaviour
     {
         if (TimeToChangeDirection())
         {
+            _followState = false;
+            _canFollow = false;
             UpdatePatrolMovement(GetRandomPosition());
         }
     }
 
-    public void ChangeDirectionAndPatrol()
+    private void OnStopFollow()
     {
-        UpdatePatrolMovement(GetRandomPosition());
+        _slimeLoaded = false;
     }
     
     private Vector3 GetRandomPosition()
     {
-        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        //Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x * 5;
         Vector3 targetPosition = new Vector3(boundsCollider.bounds.center.x + randomPoint.x, boundsCollider.bounds.center.y + randomPoint.y, 0);
 
         return targetPosition;
@@ -187,7 +210,19 @@ public class EnemySlime : MonoBehaviour
     
     public void Follow()
     {
-        _navMeshAgent.destination = _player.transform.position;
+        if(_canFollow)
+            _navMeshAgent.destination = _player.transform.position;
+    }
+
+    private IEnumerator AlertExclamation()
+    {
+        _exclamation.SetActive(true);
+        
+        yield return new WaitForSeconds(1f);
+        
+        _exclamation.SetActive(false);
+
+        _canFollow = true;
     }
 
     public void SetAsProceduralEnemy( Transform playerTransform )
@@ -196,6 +231,7 @@ public class EnemySlime : MonoBehaviour
         _player = playerTransform.gameObject;
         GetComponent<NavMeshAgent>().enabled = false;
     }
+
 
     #endregion
 

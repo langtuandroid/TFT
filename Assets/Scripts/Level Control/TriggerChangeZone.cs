@@ -9,6 +9,7 @@ public class TriggerChangeZone : MonoBehaviour
     [SerializeField] private SceneName _nextScene;
     [SerializeField] private Color _fadeOutColor;
     [SerializeField] private MusicZoneParameter _musicParamName;
+    [SerializeField] private MusicName _musicName;
 
     public UnityEvent OnZoneChanged;
     
@@ -16,7 +17,8 @@ public class TriggerChangeZone : MonoBehaviour
 
     private void OnTriggerEnter2D( Collider2D collision )
     {
-        ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+        //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+        ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _musicName );
 
         ServiceLocator.GetService<LevelEvents>().ChangeZone(
             new LevelEvents.ChangeZoneArgs

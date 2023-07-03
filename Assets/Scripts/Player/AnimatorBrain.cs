@@ -45,14 +45,14 @@ namespace Player
             _lifeEvents.OnDeathValue -= Death_OnDeath;
         }
 
-        public void Init(Vector2 startLookDirection)
+        public void Init(Vector2 startLookDirection, Jump jump)
         {
             _playerAnimator = GetComponent<Animator>();
 
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
 
-            Jump jump = GetComponentInParent<Jump>();
+            //Jump jump = GetComponentInParent<Jump>();
             jump.OnJumpStarted += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
