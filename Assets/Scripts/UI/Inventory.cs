@@ -61,8 +61,7 @@ public class Inventory : MonoBehaviour
     private Button _currentSelected;
 
     // SERVICES
-    private InputAction submitAction;
-
+    private InputAction navigateAction;
 
     #endregion
 
@@ -70,7 +69,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
-        submitAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
+        navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
 
         _descriptions = new List<string>();
 
@@ -129,8 +128,8 @@ public class Inventory : MonoBehaviour
 
     private void OnDestroy()
     {
-        submitAction.performed -= OnMovement;
-        submitAction.Disable();
+        navigateAction.performed -= OnMovement;
+        navigateAction.Disable();
     }
 
     #endregion
@@ -145,8 +144,8 @@ public class Inventory : MonoBehaviour
         ShowIcons();
 
         // Activamos eventos
-        submitAction.performed += OnMovement;
-        submitAction.Enable();
+        navigateAction.performed += OnMovement;
+        navigateAction.Enable();
 
         // Y activamos selección actual
         _currentSelected = _nonEquipableButtons[0];
