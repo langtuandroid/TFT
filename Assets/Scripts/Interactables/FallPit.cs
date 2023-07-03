@@ -27,13 +27,16 @@ public class FallPit : MonoBehaviour
             if ( _isBroken )
             {
                 Vector2 playerPos = _playerRb.position + _playerColOffest;
-                Vector2 direction =  transform.position;
+                Vector2 direction = transform.position;
                 direction -= playerPos;
-                _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
                 
                 if ( _pitCollider.OverlapPoint( playerPos ) )
                 {
                     _playerRb.GetComponent<PlayerController>().Fall();
+                }
+                else
+                {
+                    _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
                 }
             }
             else
