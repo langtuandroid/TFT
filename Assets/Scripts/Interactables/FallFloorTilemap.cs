@@ -28,7 +28,6 @@ public class FallFloorTilemap : MonoBehaviour
 
             if ( _pitCollider.OverlapPoint( playerPos ) )
             {
-                //_playerRb.GetComponent<PlayerController>().Fall();
                 _playerController.Fall();
             }
             else if ( _playerController.IsGrounded )

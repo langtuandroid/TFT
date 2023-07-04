@@ -12,6 +12,7 @@ public class FallPit : MonoBehaviour
     private bool _isBroken;
 
     private Rigidbody2D _playerRb;
+    private PlayerController _playerController;
     private Vector2 _playerColOffest;
 
     private void Awake()
@@ -32,9 +33,9 @@ public class FallPit : MonoBehaviour
                 
                 if ( _pitCollider.OverlapPoint( playerPos ) )
                 {
-                    _playerRb.GetComponent<PlayerController>().Fall();
+                    _playerController.Fall();
                 }
-                else
+                else if( _playerController.IsGrounded )
                 {
                     _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
                 }
@@ -55,6 +56,7 @@ public class FallPit : MonoBehaviour
         {
             _playerRb = collision.GetComponent<Rigidbody2D>();
             _playerColOffest = _playerRb.GetComponent<Collider2D>().offset;
+            _playerController = _playerRb.GetComponent<PlayerController>();
         }
     }
 
