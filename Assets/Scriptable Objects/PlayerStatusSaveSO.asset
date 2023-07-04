@@ -37,5 +37,10 @@ MonoBehaviour:
     isWaterStrongUnlocked: 1
     isLightUnlocked: 1
     isAirUnlocked: 1
-    lifeBerryUnlocked: 0
+    isHeavyMovementUnlocked: 1
+    lifeBerryUnlocked: 1
     lifeBerryQuantity: 0
+    magicBerryUnlocked: 1
+    magicBerryQuantity: 5
+    bombBerryUnlocked: 1
+    bombBerryQuantity: 90

@@ -29,8 +29,11 @@ public class Inventory : MonoBehaviour
     [Tooltip("Lista de magias secundarias")]
     private List<Button> _secondaryMagicButtons;
     [SerializeField]
-    [Tooltip("Lista de objetos consumibles")]
-    private List<Button> _consumableButtons;
+    [Tooltip("Lista de bayas")]
+    private List<Button> _berryButtons;
+    [SerializeField]
+    [Tooltip("Textos con cantidades de bayas")]
+    private List<TMP_Text> _berryQuantities;
 
     [SerializeField]
     [Tooltip("Parte en la que se ve el nombre del objeto seleccionado")]
@@ -75,10 +78,11 @@ public class Inventory : MonoBehaviour
     {
         navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
 
+        // Inicializamos variables
         _titles = new List<string>();
-
         _descriptions = new List<string>();
 
+        // TEXTOS
         // OBJETOS NO EQUIPABLES
         _titles.Add("VARA MÁGICA");
         _descriptions.Add("La vara que te regaló papá. Se puede usar para golpear e invocar poderes mágicos.");
@@ -123,10 +127,17 @@ public class Inventory : MonoBehaviour
         _descriptions.Add("Lanza una bola de luz que te permite ver a oscuras.");
         _titles.Add("MAGIA DE AIRE");
         _descriptions.Add("Te permite lanzar ráfagas de aire para empujar a tus enemigos.");
+        _titles.Add("MAGIA QUITAPESOS");
+        _descriptions.Add("Un hechizo que te permite alzar objetos muy pesados.");
 
-        // OBJETOS CONSUMIBLES
-        _titles.Add("COGER OBJETOS PESADOS");
-        _descriptions.Add("Con ello podrás alzar objetos muy pesados.");
+        // OBJETOS CONSUMIBLES (BAYAS)
+        _titles.Add("BAYA CURATIVA");
+        _descriptions.Add("Una baya que te ayudará a restaurar parte de tu salud.");
+        _titles.Add("BAYA MÁGICA");
+        _descriptions.Add("Con esta baya nunca te faltará magia para lanzar tus hechizos.");
+        _titles.Add("BAYA BOMBA");
+        _descriptions.Add("Una baya que explota y produce mucho daño.");
+
     }
 
     private void Update()
@@ -147,8 +158,13 @@ public class Inventory : MonoBehaviour
         foreach (Button button in _primaryMagicButtons)
             button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
 
-        if (_playerStatusSO.playerStatusSave.isPhysicAttackUnlocked)
-            SetText(_titles[0], _descriptions[0]);
+        foreach (Button button in _secondaryMagicButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+
+        foreach (Button button in _berryButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+
+
     }
 
     private void OnDestroy()
@@ -175,6 +191,9 @@ public class Inventory : MonoBehaviour
         // Y activamos selección actual
         _currentSelected = _nonEquipableButtons[0];
         _currentSelected.Select();
+
+        if (_playerStatusSO.playerStatusSave.isPhysicAttackUnlocked)
+            SetText(_titles[0], _descriptions[0]);
     }
 
     private void ShowIcons()
@@ -248,6 +267,59 @@ public class Inventory : MonoBehaviour
         if (ps.isWaterStrongUnlocked)
             _primaryMagicButtons[11].GetComponentsInChildren<Image>()[1].enabled = true;
 
+        // MAGIAS SECUNDARIAS
+        // LUZ
+        if (ps.isLightUnlocked)
+            _secondaryMagicButtons[0].GetComponentsInChildren<Image>()[1].enabled = true;
+        // AIRE
+        if (ps.isAirUnlocked)
+            _secondaryMagicButtons[1].GetComponentsInChildren<Image>()[1].enabled = true;
+        // MOVER OBJETOS
+        if (ps.isHeavyMovementUnlocked)
+            _secondaryMagicButtons[2].GetComponentsInChildren<Image>()[1].enabled = true;
+
+        // OBJETOS CONSUMIBLES (BAYAS)
+        // BAYA CURATIVA
+        if (ps.lifeBerryUnlocked)
+        {
+            // Activamos imágenes
+            CanvasGroup canvas = _berryButtons[0].GetComponentInChildren<CanvasGroup>();
+            // Añadimos alpha a los iconos
+            if (ps.lifeBerryQuantity == 0)
+                canvas.alpha = 100f / 255f;
+            else
+                canvas.alpha = 1f;
+            // Y añadimos el texto con la cantidad
+            _berryQuantities[0].text = ps.lifeBerryQuantity.ToString();
+
+        }
+        // BAYA MÁGICA
+        if (ps.magicBerryUnlocked)
+        {
+            // Activamos imágenes
+            CanvasGroup canvas = _berryButtons[1].GetComponentInChildren<CanvasGroup>();
+            // Añadimos alpha a los iconos
+            if (ps.magicBerryQuantity == 0)
+                canvas.alpha = 100f / 255f;
+            else
+                canvas.alpha = 1f;
+            // Y añadimos el texto con la cantidad
+            _berryQuantities[1].text = ps.magicBerryQuantity.ToString();
+        }
+        // BAYA BOMBA
+        if (ps.bombBerryUnlocked)
+        {
+            // Activamos imágenes
+            CanvasGroup canvas = _berryButtons[2].GetComponentInChildren<CanvasGroup>();
+            // Añadimos alpha a los iconos
+            if (ps.bombBerryQuantity == 0)
+                canvas.alpha = 100f / 255f;
+            else
+                canvas.alpha = 1f;
+            // Y añadimos el texto con la cantidad
+            _berryQuantities[2].text = ps.bombBerryQuantity.ToString();
+        }
+
     }
 
     /// <summary>
@@ -266,7 +338,7 @@ public class Inventory : MonoBehaviour
         else if (_secondaryMagicButtons.Contains(_currentSelected))
             SetTextToSecondaryMagic();
         else
-            SetTextToConsumableMagic();
+            SetTextToBerry();
     }
 
     private void SetTextToNonEquipableObject()
@@ -313,35 +385,35 @@ public class Inventory : MonoBehaviour
         {
             case 0: // Magia de fuego
                 if (ps.isFireWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count], 
+                    SetText(_titles[_nonEquipableButtons.Count],
                         _descriptions[_nonEquipableButtons.Count]);
                 else
                     SetText("", "");
                 break;
             case 1: // Magia de fuego (débil)
                 if (ps.isFireWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 1], 
+                    SetText(_titles[_nonEquipableButtons.Count + 1],
                         _descriptions[_nonEquipableButtons.Count + 1]);
                 else
                     SetText("", "");
                 break;
             case 2: // Magia de fuego (media)
                 if (ps.isFireMediumUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 2], 
+                    SetText(_titles[_nonEquipableButtons.Count + 2],
                         _descriptions[_nonEquipableButtons.Count + 2]);
                 else
                     SetText("", "");
                 break;
             case 3: // Magia de fuego (fuerte)
                 if (ps.isFireStrongUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 3], 
+                    SetText(_titles[_nonEquipableButtons.Count + 3],
                         _descriptions[_nonEquipableButtons.Count + 3]);
                 else
                     SetText("", "");
                 break;
             case 4: // Magia de planta
                 if (ps.isPlantWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 4], 
+                    SetText(_titles[_nonEquipableButtons.Count + 4],
                         _descriptions[_nonEquipableButtons.Count + 4]);
                 else
                     SetText("", "");
@@ -404,22 +476,49 @@ public class Inventory : MonoBehaviour
 
     private void SetTextToSecondaryMagic()
     {
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         switch (_secondaryMagicButtons.IndexOf(_currentSelected))
         {
             case 0: // Luz
+                if (ps.isLightUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count]);
                 break;
             case 1: // Aire
+                if (ps.isAirUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 1],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 1]);
+                break;
+            case 2: // Mover objetos pesados
+                if (ps.isHeavyMovementUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 2],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 2]);
+                break;
             default: // Elemento no definido
                 SetText("", "");
                 break;
         }
     }
 
-    private void SetTextToConsumableMagic()
+    private void SetTextToBerry()
     {
-        switch (_consumableButtons.IndexOf(_currentSelected))
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
+        switch (_berryButtons.IndexOf(_currentSelected))
         {
             case 0: // Baya de vida
+                if (ps.lifeBerryUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count]);
+                break;
+            case 1: // Baya de magia
+                if (ps.magicBerryUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 1],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 1]);
+                break;
+            case 2: // Baya bomba
+                if (ps.bombBerryUnlocked)
+                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 2],
+                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 2]);
                 break;
             default: // Elemento no definido
                 SetText("", "");
