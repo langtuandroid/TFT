@@ -80,7 +80,6 @@ namespace Player
             AddMagicAttacks();
 
             _secondaryActions = new List<SecondaryAction>();
-
         }
 
 #if UNITY_EDITOR
@@ -442,6 +441,11 @@ namespace Player
             if (_jump.IsPerformingJump)
                 return;
             _animatorBrain.IsWalking(_direction.magnitude > 0);
+        }
+        public bool IsGrounded => !_jump.IsPerformingJump;
+        public void Fall()
+        {
+            _animatorBrain.SetFall();
         }
     }
 }

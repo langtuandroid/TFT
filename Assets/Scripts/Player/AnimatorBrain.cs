@@ -32,6 +32,7 @@ namespace Player
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
         private const string DEATH = "DeathTree";
+        private const string FALL = "DeathTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
@@ -52,7 +53,6 @@ namespace Player
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
 
-            //Jump jump = GetComponentInParent<Jump>();
             jump.OnJumpStarted += Jump_OnJumpStarted;
             jump.OnJumpFinished += Jump_OnJumpFinished;
             jump.OnJumpableActionStarted += Jump_OnJumpableActionStarted;
@@ -148,6 +148,11 @@ namespace Player
         private void Death_OnDeath()
         {
             PlayPlayer(DEATH);
+        }
+
+        public void SetFall()
+        {
+            PlayPlayer( FALL );
         }
 
         public void IsWalking(bool isWalking)
