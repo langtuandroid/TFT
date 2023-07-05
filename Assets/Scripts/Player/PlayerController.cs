@@ -69,8 +69,7 @@ namespace Player
             _jump = new Jump(collider.offset, _interactableLayerMask, transform,
                 transform.Find("CharacterVisuals"), _boundsLayerMask);
             _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
-            _pickable = GetComponent<PickUpItem>();
-            _pickable.Init(transform, GetComponent<Collider2D>().offset, _interactableLayerMask);
+            _pickable = new PickUpItem();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
@@ -81,6 +80,7 @@ namespace Player
             AddMagicAttacks();
 
             _secondaryActions = new List<SecondaryAction>();
+            _pickable.Init(transform, transform.Find("CharacterVisuals").Find("PickUpPoint"), GetComponent<Collider2D>().offset, _interactableLayerMask, _animatorBrain);
         }
 
 #if UNITY_EDITOR

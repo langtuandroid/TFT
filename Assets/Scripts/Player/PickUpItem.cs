@@ -1,27 +1,32 @@
 using System;
+using Player;
 using UnityEngine;
 
-public class PickUpItem : MonoBehaviour
+public class PickUpItem
 {
     [Header("Pickable")]
-    [SerializeField] private float _checkDistance = 0.6f;
-    [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
-    [SerializeField] private Transform _pickUpPoint;  
+    private float _checkDistance = 0.6f;
+    private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+    private Transform _pickUpPoint;  
 
     private Transform _transform;
     private Vector2 _colliderOffset;
     private LayerMask _interactableLayer;
+    private AnimatorBrain _animatorBrain;
     
     private IAudioSpeaker _audioSpeaker;
     private IPickable _pickable;
     public bool HasItem = false;
     
-    public void Init(Transform playerTransform , Vector2 colliderOffset , LayerMask interactableLayerMask)
+    public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
     {
         _transform         = playerTransform;
+        _pickUpPoint = pickUpPoint;
         _colliderOffset    = colliderOffset;
         _interactableLayer = interactableLayerMask;
+        _animatorBrain = animatorBrain;
         _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        Debug.Log(_pickUpPoint);
     }
 
     public bool CanPickItUp( Vector2 lookDirection )
@@ -64,6 +69,7 @@ public class PickUpItem : MonoBehaviour
         HasItem = true;
         _pickable?.ShowCanPickUpItem( false );
         _pickable?.PickItUp( lookDirection, _pickUpPoint );
+        _animatorBrain.PickUpItem();
     }
     
     public void ThrowIt(Vector2 lookDirection)

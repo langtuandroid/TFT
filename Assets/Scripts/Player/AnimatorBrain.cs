@@ -33,6 +33,7 @@ namespace Player
         private const string JUMP = "JumpTree";
         private const string DEATH = "DeathTree";
         private const string FALL = "DeathTree";
+        private const string PICKUP = "PickItUpTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
@@ -160,6 +161,11 @@ namespace Player
             _playerAnimator.SetBool(IS_WALKING, isWalking);
         }
 
+        public void PickUpItem()
+        {
+            PlayPlayer(PICKUP);
+        }
+        
         public Vector2 LookDirection(Vector2 direction)
         {
             if (direction.magnitude > 0)
