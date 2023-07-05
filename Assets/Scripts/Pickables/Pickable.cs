@@ -21,7 +21,7 @@ public class Pickable : MonoBehaviour, IPickable
         {
             _canPickItUp = false;
             _collider.enabled = false;
-            transform.DOMove(pickUpPoint.position, 0.3f).SetEase(Ease.Linear).Play();
+            //transform.DOMove(pickUpPoint.position, 0.3f).SetEase(Ease.Linear).Play();
             transform.parent = pickUpPoint;
             ShowCanPickUpItem(false);
         }
