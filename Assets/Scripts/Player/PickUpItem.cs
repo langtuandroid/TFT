@@ -1,20 +1,26 @@
+using System;
 using UnityEngine;
 
 public class PickUpItem : MonoBehaviour
 {
     [Header("Pickable")]
-    [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private float _checkDistance = 0.6f;
     [SerializeField] private Vector2 _rayCastOffset = new( 0.2f , 0.2f );
+    [SerializeField] private Transform _pickUpPoint;  
 
-    private IAudioSpeaker _audioSpeaker;
+    private Transform _transform;
     private Vector2 _colliderOffset;
+    private LayerMask _interactableLayer;
+    
+    private IAudioSpeaker _audioSpeaker;
     private IPickable _pickable;
     public bool HasItem = false;
-
-    public void Init()
+    
+    public void Init(Transform playerTransform , Vector2 colliderOffset , LayerMask interactableLayerMask)
     {
-        _colliderOffset = GetComponent<Collider2D>().offset;
+        _transform         = playerTransform;
+        _colliderOffset    = colliderOffset;
+        _interactableLayer = interactableLayerMask;
         _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
     }
 
@@ -23,32 +29,33 @@ public class PickUpItem : MonoBehaviour
         float xRayOffset = lookDirection.y != 0 ? _rayCastOffset.x : 0;
         float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
+        _pickable?.ShowCanPickUpItem( false );
 
-        Vector2 origin = new Vector2( _colliderOffset.x + transform.position.x + xRayOffset,
-            _colliderOffset.y + transform.position.y + yRayOffset );
+        Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
+            _colliderOffset.y + _transform.position.y + yRayOffset );
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
         _pickable = hit.collider?.GetComponent<IPickable>();
         if ( _pickable != null )
         {
-            _pickable?.ShowCanPickUpItem( true );
+            _pickable.ShowCanPickUpItem(true);
             return true;
         }
 
-        origin = new Vector2( _colliderOffset.x + transform.position.x - xRayOffset ,
-            _colliderOffset.y + transform.position.y - yRayOffset );
+
+        origin = new Vector2( _colliderOffset.x + _transform.position.x - xRayOffset ,
+            _colliderOffset.y + _transform.position.y - yRayOffset );
 
         hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
 
         _pickable = hit.collider?.GetComponent<IPickable>();
-        if ( _pickable != null )
+        if ( _pickable != null ) 
         {
-            _pickable?.ShowCanPickUpItem( true );
+            _pickable.ShowCanPickUpItem(true);
             return true;
         }
-
-        StopPickItUp();
+        
         return false;
     }
     
@@ -56,7 +63,7 @@ public class PickUpItem : MonoBehaviour
     {
         HasItem = true;
         _pickable?.ShowCanPickUpItem( false );
-        _pickable?.PickItUp( lookDirection );
+        _pickable?.PickItUp( lookDirection, _pickUpPoint );
     }
     
     public void ThrowIt(Vector2 lookDirection)
@@ -73,5 +80,10 @@ public class PickUpItem : MonoBehaviour
 
         _pickable?.ShowCanPickUpItem( false );
         _pickable = null;
+    }
+
+    public void ShowCanPickUpItem(bool show)
+    {
+        _pickable?.ShowCanPickUpItem(show);
     }
 }
