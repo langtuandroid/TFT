@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3802100364704232762}
   - component: {fileID: 3802100364704232760}
+  - component: {fileID: 520639783}
   m_Layer: 0
   m_Name: Fall Pit
   m_TagString: Untagged
@@ -108,7 +109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3802100364704232767}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.5, y: -15.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -144,6 +145,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &520639783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3802100364704232767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f13ba43a386cb24cabe97bc6d3e894c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3802100365651823532
 GameObject:
   m_ObjectHideFlags: 0

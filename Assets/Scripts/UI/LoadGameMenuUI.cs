@@ -101,6 +101,7 @@ namespace UI
             _playerStatusSaveSO.playerStatusSave = _gameSaveDataArray[_slotToLoadIndex].playerStatusSave;
 
             int arrayLength = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray.Length;
+            Debug.Log( arrayLength );
             for ( int i = 0; i < arrayLength; i++ )
                 _gameZoneSavesSO.zones[i].zoneSave = _gameSaveDataArray[_slotToLoadIndex].zoneSavesArray[i];
 

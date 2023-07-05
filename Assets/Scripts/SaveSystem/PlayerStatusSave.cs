@@ -27,12 +27,12 @@ public class PlayerStatusSave
     public bool isFireWeakUnlocked;
     public bool isFireMediumUnlocked;
     public bool isFireStrongUnlocked;
-    
+
     // Plant power
     public bool isPlantWeakUnlocked;
     public bool isPlantMediumUnlocked;
     public bool isPlantStrongUnlocked;
-    
+
     // Water power
     public bool isWaterWeakUnlocked;
     public bool isWaterMediumUnlocked;
@@ -43,8 +43,14 @@ public class PlayerStatusSave
     public bool isLightUnlocked;
     // Air power
     public bool isAirUnlocked;
+    // Heavy movement
+    public bool isHeavyMovementUnlocked;
 
     // Objects
     public bool lifeBerryUnlocked;
     public int lifeBerryQuantity;
+    public bool magicBerryUnlocked;
+    public int magicBerryQuantity;
+    public bool bombBerryUnlocked;
+    public int bombBerryQuantity;
 }
