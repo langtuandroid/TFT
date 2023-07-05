@@ -16,26 +16,31 @@ MonoBehaviour:
     saveSlot: 1
     currentHealth: 12
     maxHealth: 12
-    currentMagic: 300
+    currentMagic: 276
     maxMagic: 300
-    currentSouls: 0
+    currentSouls: 2
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0
-    isPhysicAttackUnlocked: 0
-    isJumpUnlocked: 0
-    isSwimUnlocked: 0
-    isDashUnlocked: 0
+    isPhysicAttackUnlocked: 1
+    isJumpUnlocked: 1
+    isSwimUnlocked: 1
+    isDashUnlocked: 1
     isFireWeakUnlocked: 1
-    isFireMediumUnlocked: 0
-    isFireStrongUnlocked: 0
-    isPlantWeakUnlocked: 0
-    isPlantMediumUnlocked: 0
-    isPlantStrongUnlocked: 0
-    isWaterWeakUnlocked: 0
-    isWaterMediumUnlocked: 0
-    isWaterStrongUnlocked: 0
-    isLightUnlocked: 0
-    isAirUnlocked: 0
-    lifeBerryUnlocked: 0
+    isFireMediumUnlocked: 1
+    isFireStrongUnlocked: 1
+    isPlantWeakUnlocked: 1
+    isPlantMediumUnlocked: 1
+    isPlantStrongUnlocked: 1
+    isWaterWeakUnlocked: 1
+    isWaterMediumUnlocked: 1
+    isWaterStrongUnlocked: 1
+    isLightUnlocked: 1
+    isAirUnlocked: 1
+    isHeavyMovementUnlocked: 1
+    lifeBerryUnlocked: 1
     lifeBerryQuantity: 0
+    magicBerryUnlocked: 1
+    magicBerryQuantity: 5
+    bombBerryUnlocked: 1
+    bombBerryQuantity: 90
