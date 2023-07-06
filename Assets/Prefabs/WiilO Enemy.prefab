@@ -115,8 +115,9 @@ MonoBehaviour:
   _torchList:
   - {fileID: 0}
   - {fileID: 0}
-  _listenRadio: 2
-  _sightAware: 3
+  _playerInitialPosition: {fileID: 0}
+  _sightRadio: 5
+  _teleportRatio: 3
   _playerFollowDistance: 2
   _resetSeconds: 2
   _resetEarSenseSeconds: 2
