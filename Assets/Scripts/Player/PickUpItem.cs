@@ -20,13 +20,12 @@ public class PickUpItem
     
     public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
     {
-        _transform         = playerTransform;
+        _transform = playerTransform;
         _pickUpPoint = pickUpPoint;
-        _colliderOffset    = colliderOffset;
+        _colliderOffset = colliderOffset;
         _interactableLayer = interactableLayerMask;
         _animatorBrain = animatorBrain;
         _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-        Debug.Log(_pickUpPoint);
     }
 
     public bool CanPickItUp( Vector2 lookDirection )
@@ -35,7 +34,7 @@ public class PickUpItem
         float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
         _pickable?.ShowCanPickUpItem( false );
-
+        
         Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
             _colliderOffset.y + _transform.position.y + yRayOffset );
 
@@ -44,7 +43,7 @@ public class PickUpItem
         _pickable = hit.collider?.GetComponent<IPickable>();
         if ( _pickable != null )
         {
-            _pickable.ShowCanPickUpItem(true);
+            _pickable?.ShowCanPickUpItem( true );
             return true;
         }
 
@@ -57,7 +56,7 @@ public class PickUpItem
         _pickable = hit.collider?.GetComponent<IPickable>();
         if ( _pickable != null ) 
         {
-            _pickable.ShowCanPickUpItem(true);
+            _pickable?.ShowCanPickUpItem( true );
             return true;
         }
         
