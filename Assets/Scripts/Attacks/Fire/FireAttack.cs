@@ -99,8 +99,10 @@ namespace Attack
 
         private void OnDrawGizmos()
         {
-            UnityEditor.Handles.color = Color.yellow;
+#if UNITY_EDITOR
+            Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, 8);
+#endif
         }
 
         #endregion
