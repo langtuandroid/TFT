@@ -6,11 +6,23 @@ using Utils;
 public class FlameDetection : MonoBehaviour
 {
 
+    #region SerializeFields
+
     [SerializeField]
+    [Tooltip("Distancia máxima de impacto")]
     private float _maxDistance = 4f;
 
     [SerializeField]
-    FlameDirection _direction;
+    [Tooltip("Dirección de la llama")]
+    private FlameDirection _direction;
+
+    [SerializeField]
+    [Tooltip("Daño que produce la llama")]
+    private int _damage = 1;
+
+    #endregion
+
+    #region Private variables
 
     private enum FlameDirection
     {
@@ -23,6 +35,10 @@ public class FlameDetection : MonoBehaviour
 
     private float _lifeTime;
     private float _stopTime;
+
+    #endregion
+
+    #region Unity methods
 
     private void Awake()
     {
@@ -57,6 +73,10 @@ public class FlameDetection : MonoBehaviour
         CheckCollisions();
     }
 
+    #endregion
+
+    #region Private methods
+
     private void CheckCollisions()
     {
         foreach (Collider2D hit in _collisions)
@@ -77,7 +97,7 @@ public class FlameDetection : MonoBehaviour
                 distance >= _stopTime)
                 //AngleWith(hit) <= Constants.ANGLE_FLAMETHROWER &&
                 // Lo activamos
-                hit.gameObject.GetComponent<IBurnable>()?.Burn();
+                hit.gameObject.GetComponent<IBurnable>()?.Burn(_damage);
 
 
         }
@@ -106,7 +126,6 @@ public class FlameDetection : MonoBehaviour
         return dir;
     }
 
-
     private float AngleWith(Collider2D obj)
     {
         // Vector 3
@@ -114,4 +133,7 @@ public class FlameDetection : MonoBehaviour
 
         return Vector3.Angle(GetDirection(), playerDir);
     }
+
+    #endregion
+
 }

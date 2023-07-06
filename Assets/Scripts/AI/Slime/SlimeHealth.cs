@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
-using Utils;
 
 public class SlimeHealth : MonoBehaviour, IBurnable
 {
@@ -21,7 +20,7 @@ public class SlimeHealth : MonoBehaviour, IBurnable
             .OnComplete(() => Destroy(gameObject)).Play();
     }
 
-    public void Burn()
+    public void Burn(int damage)
     {
         PlayDeathAnimation();
     }
