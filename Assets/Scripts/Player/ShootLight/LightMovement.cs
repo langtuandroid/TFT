@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class LightMovement : MonoBehaviour
 {
     [SerializeField]
     private float _speed;
+
+    [SerializeField] private Light2D _light2DVolumen;
 
     private Vector3 _direction;
     private float lightDuration = 3.0f;
@@ -44,7 +47,7 @@ public class LightMovement : MonoBehaviour
             float normalizedTime = lightTimer / lightDuration;
             float currentSize = Mathf.Lerp(0, lightSize, normalizedTime);
             transform.localScale = new Vector3(currentSize, currentSize, 1);
-
+            _light2DVolumen.pointLightOuterRadius = Mathf.Lerp(0, _light2DVolumen.pointLightOuterRadius, normalizedTime);
         }
         else
         {
