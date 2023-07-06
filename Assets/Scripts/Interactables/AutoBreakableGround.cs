@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AutoBreakableGround : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _breakGroundList;
+    [SerializeField] private List<AutoBreakableUnitController> _breakGroundList;
 
     private bool _isActivated;
 
@@ -31,7 +31,7 @@ public class AutoBreakableGround : MonoBehaviour
 
         while ( _breakGroundList.Count > 0 )
         {
-            _breakGroundList[0].SetActive( false );
+            _breakGroundList[0].Break();
             _breakGroundList.RemoveAt( 0 );
             yield return waitSecondsBetweenBreak;
         }
