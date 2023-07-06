@@ -9,11 +9,17 @@ namespace AI
     public class EnemyWillOWisp : MonoBehaviour
     {        
     #region CONFIGURATION
-    
+
     [Header("Tags Necesarios:\n" +
             "Player: Transform del Player.\n" +
             "WayPoint: Transform de cada punto de platrulla.\n" +
             "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
+    
+    [SerializeField]
+    private List<Transform> _wayPointsList;
+    
+    [SerializeField]
+    private List<GameObject> _torchList;
     
     [SerializeField]
     [Tooltip("Radio del sentido escucha.")]
@@ -49,13 +55,8 @@ namespace AI
     #endregion
     
     #region WAYPOINTS
-    [Header("WayPoints")]
-    private List<Transform> _wayPointsList = new List<Transform>();
-    
     private int _actualWayPoint = 0;
-    
-    private List<GameObject> _torch;
-    
+
     private List<Torch> _torchScript;
     #endregion
     
@@ -79,14 +80,14 @@ namespace AI
 
     //private LayerMask _playerLayer = 0;
     
-    private GameObject _player;
+    /*private GameObject _player;
     
     public GameObject Player
     {
         get => _player;
-    }
+    }*/
     
-    private Rigidbody2D _playerRB;
+    //private Rigidbody2D _playerRB;
 
     private Vector2 _direction;
 
@@ -115,14 +116,9 @@ namespace AI
     #endregion
     
     #region UNITY METHODS
-    private void Awake()
-    {
-        PrepareComponent();
-    }
-
     void Start()
     {
-        Init();
+        PrepareComponent();
     }
     
     void Update()
@@ -132,17 +128,11 @@ namespace AI
     
     private void PrepareComponent()
     {
-        //Player
-        if (_player == null)
-            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-        
-        _playerRB = _player.GetComponent<Rigidbody2D>();
-
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
         
         //Torch
-        _torch = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_TORCH));
+       /* _torch = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_TORCH));
         
         if (_torch != null)
         {
@@ -155,18 +145,20 @@ namespace AI
                     _torchScript.Add(torchComponent);
                 }
             }
-        }
+        }*/
         
         //WayPoints
-        List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
+        //List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
 
-        foreach (var wayPoint in wayPointsObjectList)
+       /* foreach (var wayPoint in wayPointsObjectList)
         {
             _wayPointsList.Add(wayPoint.GetComponent<Transform>());   
-        }
+        }*/
         
         //Posición Inicial del Player
-        _playerInitialPosition = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_INITIAL_POSITION).GetComponent<Transform>();
+        //_playerInitialPosition = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_INITIAL_POSITION).GetComponent<Transform>();
+        
+        Init();
     }
 
     private void Init()
@@ -240,13 +232,14 @@ namespace AI
     //Sacamos al jugador del nivel
     public bool CheckPlayerDistance()
     {
-        return Vector3.Distance(transform.position, _player.transform.position) < _playerFollowDistance;
+       // return Vector3.Distance(transform.position, _player.transform.position) < _playerFollowDistance;
+       return false;
     }
 
     //Persigo Jugador
     public void FollowPlayer()
     {
-        UpdatePatrolWayPoint(_player.transform);
+       // UpdatePatrolWayPoint(_player.transform);
     }
 
     
@@ -317,14 +310,15 @@ namespace AI
     //Veo al jugador?
     public bool SeePlayer()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) < _sightAware)
+       /* if (Vector3.Distance(transform.position, _player.transform.position) < _sightAware)
         {
                 return PlayerDetection();
         }
         else
         {
             return false;
-        }
+        }*/
+        return false;
     }
     
     //¿Hay antorchas encendidas?
@@ -333,7 +327,7 @@ namespace AI
         bool result = false;
         
         _torchOnList = new List<Transform>();
-        if (_torch != null)
+        if (_torchList != null)
         {
             //Compruebo si hay alguna antorcha encendida
             for (int i = 0; i < _torchScript.Count; i++)
@@ -379,7 +373,7 @@ namespace AI
     {
         yield return new WaitForSeconds(_resetSeconds);
         
-        _player.transform.position = PlayerInitialPosition.position;
+        //_player.transform.position = PlayerInitialPosition.position;
 
         Init();
     }
@@ -392,14 +386,14 @@ namespace AI
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _sightAware);
 
-        if (_player != null)
+       /* if (_player != null)
         {
             Vector3 playerPos = _player.transform.position;
             Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos);
             Vector3 direction = transform.TransformDirection(localPlayerPos);
             Gizmos.color = Color.magenta;
             Gizmos.DrawRay(transform.position, direction);
-        }
+        }*/
 
      
 

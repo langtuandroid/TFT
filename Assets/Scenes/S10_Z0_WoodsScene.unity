@@ -35032,7 +35032,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 0.9994635
+    height: 0.99945295
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -35688,7 +35688,7 @@ PrefabInstance:
     - target: {fileID: 2414445487527078199, guid: c7c723b0ac35b4846801ac5f89656513, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 07af842e15e7845fc941632dd727fc0d, type: 2}
+      objectReference: {fileID: 23800000, guid: db43232492c384aa3a630c2befe9ae39, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7c723b0ac35b4846801ac5f89656513, type: 3}
 --- !u!1 &815697594
