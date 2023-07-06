@@ -37,6 +37,9 @@ namespace Attack
         [SerializeField]
         [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
         private List<GameObject> _fireOrbs;
+        [SerializeField]
+        [Tooltip("Cantidad de daño que produce el poder máximo")]
+        private int _strongAttackDamage = 10;
 
         #endregion
 
@@ -362,7 +365,7 @@ namespace Attack
 
             // Para cada colisión, activamos el quemado
             foreach (Collider2D collision in collisions)
-                collision.GetComponent<IBurnable>()?.Burn();
+                collision.GetComponent<IBurnable>()?.Burn(_strongAttackDamage);
 
         }
 
