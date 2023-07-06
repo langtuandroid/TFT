@@ -80,7 +80,8 @@ namespace Player
             AddMagicAttacks();
 
             _secondaryActions = new List<SecondaryAction>();
-            _pickable.Init(transform, transform.Find("CharacterVisuals").Find("PickUpPoint"), GetComponent<Collider2D>().offset, _interactableLayerMask, _animatorBrain);
+            _pickable.Init(transform, transform.Find("CharacterVisuals").Find("PickUpPoint"), 
+                GetComponent<Collider2D>().offset, _interactableLayerMask, _animatorBrain);
         }
 
 #if UNITY_EDITOR
@@ -273,10 +274,6 @@ namespace Player
                     {
                         _pickable.PickItUp(_lookDirection);
                     }
-                }
-                else
-                {
-                    //_pickable.ShowCanPickUpItem(false);
                 }
             }
             else
