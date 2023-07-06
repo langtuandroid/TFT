@@ -32,8 +32,9 @@ namespace Player
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
         private const string DEATH = "DeathTree";
-        private const string FALL = "DeathTree";
+        private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
+        private const string MAGIC_ATTACK = "MagicAtkTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
@@ -159,6 +160,11 @@ namespace Player
         public void IsWalking(bool isWalking)
         {
             _playerAnimator.SetBool(IS_WALKING, isWalking);
+        }
+
+        public void SetMagicAttack()
+        {
+            PlayPlayer( MAGIC_ATTACK );
         }
 
         public void PickUpItem()
