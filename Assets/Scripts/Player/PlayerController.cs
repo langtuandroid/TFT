@@ -1,5 +1,6 @@
 using Attack;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -137,6 +138,9 @@ namespace Player
             if (_playerStatus.IsDeath ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
+                //if (_magicAttacks[_magicIndex].IsUsingStrongAttack)
+                //    _animatorBrain.IsWalking(false);
+
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
                     GameInputs_OnMediumAttackButtonCanceled();
 
@@ -441,8 +445,12 @@ namespace Player
         private void SetWalkingAnim()
         {
             // Si está saltando
-            if (_jump.IsPerformingJump)
+            if (_jump.IsPerformingJump || 
+                _magicAttacks[_magicIndex].IsUsingStrongAttack)
+            {
                 return;
+            }
+
             _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
         public bool IsGrounded => !_jump.IsPerformingJump;
