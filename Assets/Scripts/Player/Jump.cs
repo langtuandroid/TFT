@@ -45,8 +45,8 @@ namespace Player
         private Vector2   _colliderOffset;
         private Vector2   _rayCastOffset = new( 0.2f , 0.2f );
 
-        public Jump( Vector2 colliderOffset , LayerMask jumpableLayerMask ,
-            Transform transform , Transform playerVisuals , LayerMask boundsLayerMask )
+        public Jump( Vector2 colliderOffset , Transform transform , Transform playerVisuals , 
+            PlayerPhysicalDataSO physicalData )
         {
             _transform     = transform;
             _playerVisuals = playerVisuals;
@@ -57,8 +57,8 @@ namespace Player
             _jumpState = JumpState.Grounded;
 
             _colliderOffset = colliderOffset;
-            _jumpableMask   = jumpableLayerMask;
-            _boundsMask     = boundsLayerMask;
+            _jumpableMask   = physicalData.interactableLayerMask;
+            _boundsMask     = physicalData.boundsLayerMask;
         }
 
         public void Init( AnimatorBrain animatorBrain , IAudioSpeaker audioSpeaker , LayerMask initialGroundLayerMask )

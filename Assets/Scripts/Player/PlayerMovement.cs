@@ -4,14 +4,16 @@ namespace Player
 {
     public class PlayerMovement
     {
-        private float _speed = 4; // Velocidad de movimiento del personaje
-        private float _accelerationOnAir = 8; // Aceleración presente en el personaje en el aire
+        private float _speed; // Velocidad de movimiento del personaje
+        private float _accelerationOnAir; // Aceleración presente en el personaje en el aire
         private float _currentSpeedOnAir; // Velocidad de movimiento del personaje en el aire
         private Rigidbody2D _rb; // RigidBody del personaje
 
-        public PlayerMovement( Rigidbody2D rigidbody2d)
+        public PlayerMovement( Rigidbody2D rigidbody2d , PlayerPhysicalDataSO physicalData )
         {
             _rb = rigidbody2d;
+            _speed = physicalData.moveSpeed;
+            _accelerationOnAir = physicalData.accelerationOnAir;
         }
 
         /// <summary>

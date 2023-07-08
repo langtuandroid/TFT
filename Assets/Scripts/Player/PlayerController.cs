@@ -1,6 +1,5 @@
 using Attack;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -26,10 +25,9 @@ namespace Player
         private SecondaryAction _secondaryAction;
         private AnimatorBrain _animatorBrain;
 
-        // VARIABLES
-        // Masks
-        [SerializeField] private LayerMask _interactableLayerMask;
-        [SerializeField] private LayerMask _boundsLayerMask;
+        // DATA
+        [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
+
         // Inputs
         // Jump input
         private bool _isJumpInput;
@@ -67,10 +65,13 @@ namespace Player
         {
             // Obtenemos componentes
             Collider2D collider = GetComponent<Collider2D>();
-            _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
-            _jump = new Jump(collider.offset, _interactableLayerMask, transform,
-                transform.Find("CharacterVisuals"), _boundsLayerMask);
-            _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            Transform characterVisualTrans = transform.Find( _physicalDataSO.visualObjName );
+            Transform pickUpPointTrans = characterVisualTrans.transform.Find( _physicalDataSO.pickUpPointObjName );
+
+            _movement = new PlayerMovement(rb , _physicalDataSO);
+            _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
+            _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
             _pickable = new PickUpItem();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -82,8 +83,8 @@ namespace Player
             AddMagicAttacks();
 
             _secondaryActions = new List<SecondaryAction>();
-            _pickable.Init(transform, transform.Find("CharacterVisuals").Find("PickUpPoint"), 
-                GetComponent<Collider2D>().offset, _interactableLayerMask, _animatorBrain);
+            _pickable.Init(transform, pickUpPointTrans , collider.offset, 
+                _physicalDataSO.interactableLayerMask , _animatorBrain);
         }
 
 #if UNITY_EDITOR
@@ -219,7 +220,7 @@ namespace Player
 
         private void DoMove()
         {
-            if (_jump.IsOnAir)
+            if ( _jump.IsOnAir )
                 _movement.MoveOnAir(_direction);
             else
             if (_jump.IsCooldown)
@@ -227,7 +228,6 @@ namespace Player
             else
             if (!_jump.IsPerformingJump)
                 _movement.Move(_direction);
-
             else
                 _movement.Stop();
         }
