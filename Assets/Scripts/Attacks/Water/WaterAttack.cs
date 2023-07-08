@@ -7,7 +7,7 @@ using DG.Tweening;
 
 namespace Attack
 {
-    public class FireAttack : MagicAttack
+    public class WaterAttack : MagicAttack
     {
         #region SerializeFields
 
@@ -37,9 +37,6 @@ namespace Attack
         [SerializeField]
         [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
         private List<GameObject> _fireOrbs;
-        [SerializeField]
-        [Tooltip("Cantidad de daño que produce el poder máximo")]
-        private int _strongAttackDamage = 10;
 
         #endregion
 
@@ -102,10 +99,8 @@ namespace Attack
 
         private void OnDrawGizmos()
         {
-#if UNITY_EDITOR
-            Gizmos.color = Color.yellow;
+            UnityEditor.Handles.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, 8);
-#endif
         }
 
         #endregion
@@ -359,7 +354,7 @@ namespace Attack
 
             // Para cada colisión, activamos el quemado
             foreach (Collider2D collision in collisions)
-                collision.GetComponent<IBurnable>()?.Burn(_strongAttackDamage);
+                collision.GetComponent<IBurnable>()?.Burn();
 
         }
 

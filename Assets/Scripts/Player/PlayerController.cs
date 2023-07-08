@@ -10,6 +10,7 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
+        private InventoryEvents _inventoryEvents;
 
         // SCRIPTS DEL JUGADOR
         private PlayerStatus _playerStatus;
@@ -114,6 +115,11 @@ namespace Player
             _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
+
+
+            _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            _inventoryEvents.OnPrimarySkillChange += OnChangeMagic;
+
         }
 
         private void OnDestroy()
@@ -127,6 +133,8 @@ namespace Player
             _gameInputs.OnWeakAttackButtonCanceled -= GameInputs_OnWeakAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
+
+            _inventoryEvents.OnPrimarySkillChange -= OnChangeMagic;
         }
 
         private void Update()
@@ -191,6 +199,8 @@ namespace Player
         private void AddMagicAttacks()
         {
             _magicAttacks.Add(GetComponent<FireAttack>());
+            _magicAttacks.Add(GetComponent<PlantAttack>());
+            _magicAttacks.Add(GetComponent<WaterAttack>());
         }
 
         private void GetActionsInformation()
@@ -437,9 +447,10 @@ namespace Player
         #endregion
 
         // TODO: Selecci�n de tipo de acci�n
-        private void SelectElement()
+        private void OnChangeMagic(int idx)
         {
-
+            _playerStatus.PrimarySkillIndex = idx;
+            _magicAttacks[idx].Select();
         }
 
         private void SetWalkingAnim()

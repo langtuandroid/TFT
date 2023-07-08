@@ -1,3 +1,4 @@
+using Attack;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -58,7 +59,7 @@ public class Inventory : MonoBehaviour
     #region Private variables
 
     // SERVICES
-    //private GameInputs _gameInputs;
+    private InventoryEvents _inventoryEvent;
 
     // INFORMATION
     private List<string> _titles;
@@ -68,7 +69,7 @@ public class Inventory : MonoBehaviour
     private Button _currentSelected;
 
     // SERVICES
-    private InputAction navigateAction;
+    private InputAction _navigateAction;
 
     #endregion
 
@@ -76,7 +77,7 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
-        navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
+        _navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
 
         // Inicializamos variables
         _titles = new List<string>();
@@ -85,7 +86,7 @@ public class Inventory : MonoBehaviour
         // TEXTOS
         // OBJETOS NO EQUIPABLES
         _titles.Add("VARA MÁGICA");
-        _descriptions.Add("La vara que te regaló papá. Se puede usar para golpear e invocar poderes mágicos.");
+        _descriptions.Add("La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.");
         _titles.Add("BOTAS DE SALTO");
         _descriptions.Add("Unas botas mágicas con las que podrás saltar muy alto.");
         _titles.Add("ALETAS");
@@ -127,7 +128,7 @@ public class Inventory : MonoBehaviour
         _descriptions.Add("Lanza una bola de luz que te permite ver a oscuras.");
         _titles.Add("MAGIA DE AIRE");
         _descriptions.Add("Te permite lanzar ráfagas de aire para empujar a tus enemigos.");
-        _titles.Add("MAGIA QUITAPESOS");
+        _titles.Add("MAGIA PESOPLUMA");
         _descriptions.Add("Un hechizo que te permite alzar objetos muy pesados.");
 
         // OBJETOS CONSUMIBLES (BAYAS)
@@ -140,10 +141,45 @@ public class Inventory : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        // EVENTOS
+        _inventoryEvent = ServiceLocator.GetService<InventoryEvents>();
+
+
+        // Damos un evento al click de botón
+        foreach (Button button in _nonEquipableButtons)
+            // TODO: Añadir sonido de "error" al pulsar, ya que no se pueden equipar
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+
+        for (int i = 0; i < _primaryMagicButtons.Count; i++)
+        {
+            int number = i;
+            // Si se pulsa en los botones grandes
+            if (i % 4 == 0)
+            {
+                _primaryMagicButtons[number].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(number / 4));
+            }
+            else
+            {
+                // TODO: No hacer nada, ya que no se puede seleccionar
+                _primaryMagicButtons[number].onClick.AddListener(() => Debug.Log(_primaryMagicButtons[number].gameObject.name));
+            }
+        }
+
+        // TODO (para últimas 2 partes): Añadir cambio de secondarySkillIndex
+        foreach (Button button in _secondaryMagicButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+
+        foreach (Button button in _berryButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+    }
+
     private void Update()
     {
         if (EventSystem.current.currentSelectedGameObject == null)
             _currentSelected.Select();
+
     }
 
     private void OnEnable()
@@ -151,26 +187,12 @@ public class Inventory : MonoBehaviour
         // Inicializamos
         Init();
 
-        // Damos un evento al click de botón
-        foreach (Button button in _nonEquipableButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-        foreach (Button button in _primaryMagicButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-        foreach (Button button in _secondaryMagicButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-        foreach (Button button in _berryButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-
     }
 
     private void OnDestroy()
     {
-        navigateAction.performed -= OnMovement;
-        navigateAction.Disable();
+        _navigateAction.performed -= OnMovement;
+        _navigateAction.Disable();
     }
 
     #endregion
@@ -185,8 +207,8 @@ public class Inventory : MonoBehaviour
         ShowIcons();
 
         // Activamos eventos
-        navigateAction.performed += OnMovement;
-        navigateAction.Enable();
+        _navigateAction.performed += OnMovement;
+        _navigateAction.Enable();
 
         // Y activamos selección actual
         _currentSelected = _nonEquipableButtons[0];
