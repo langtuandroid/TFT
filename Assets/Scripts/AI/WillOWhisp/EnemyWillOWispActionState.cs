@@ -21,7 +21,8 @@ namespace AI
                 }
                 else
                 {
-                    agent.TorchPatrol();
+                    if (agent.TorchPatrol()) return;
+                    else agent.ChangeState(new EnemyWillOWispAlertState());
                 }
             }
         }

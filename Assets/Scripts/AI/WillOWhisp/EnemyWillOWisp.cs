@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Utils;
+using DG.Tweening;
 
 namespace AI
 {
@@ -59,13 +60,7 @@ namespace AI
     }
 
     #endregion
-    
-    #region WAYPOINTS
-    private int _actualWayPoint = 0; //TODO
 
-    //private List<Torch> _torchScript;
-    #endregion
-    
     #region IA
     private FsmEnemyWillOWisp _actualState;
 
@@ -79,6 +74,8 @@ namespace AI
 
         set => _canListen = value;
     }
+    
+    private int _actualWayPoint = 0;
     #endregion
     
     #region REFERENCIAS
@@ -94,6 +91,8 @@ namespace AI
     }
 
     private bool _isTorchAction;
+
+    //private GameObject torchPatrol;
 
     private float _teleportRate = 1.5f;
 
@@ -112,6 +111,8 @@ namespace AI
     
     private List<Transform> _torchOnListTransform = new List<Transform>();
     
+    //private Transform _torchTransform; 
+    
     public List<Transform> TorchOnList
     {
         get => _torchOnListTransform;
@@ -121,7 +122,7 @@ namespace AI
     {
         get => _playerInitialPosition;
     }
-
+    
     #endregion
     
     #region UNITY METHODS
@@ -150,7 +151,7 @@ namespace AI
         _canListen = true; //Activo el sentido del oído
         
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
-        
+
         UpdatePatrolWayPoint(GetNextWayPoint());
     }
     #endregion
@@ -228,24 +229,72 @@ namespace AI
     }
     
     // Patrullo por las antorchas
-    public void TorchPatrol()
+    public bool TorchPatrol()
     {
+        bool result = false;
+        
         if (_torchOnListTransform.Count > 0)
         {
             Torch torch = _torchOnListTransform[0].GetComponent<Torch>();
+            
             if (torch != null && torch.Activated)
             {
-                Debug.Log("Posicion de la antorcha encendida: " + _torchOnListTransform[0].position);
-                UpdatePatrolWayPoint(_torchOnListTransform[0]);
+                result = true;
+                GameObject torchPatrol = new GameObject();   
+                torchPatrol.transform.position = new Vector3(_torchOnListTransform[0].position.x,
+                    _torchOnListTransform[0].position.y, 0f);
+                
+                UpdatePatrolWayPoint(torchPatrol.transform);
+                
+                SetTorchOff(torchPatrol.transform.position);
             }
             else
             {
-               // _torchOnListTransform.RemoveAt(0);
+                _torchOnListTransform.RemoveAt(0);
+            }
+        }
+
+        return result;
+    }
+
+    public void SetTorchOff(Vector3 torchPos)
+    {
+        Vector3 origin = transform.position;
+        Vector2 direction = torchPos - origin;
+        float distance = direction.magnitude;
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, LayerMask.GetMask(Constants.LAYER_INTERACTABLE));
+
+        if (hit.collider != null)
+        {
+            Torch torch = hit.collider.GetComponent<Torch>();
+
+            if (torch != null)
+            {
+                Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
+
+                Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
+                float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
+                Debug.Log(invertedDistance);
+                if (invertedDistance < 0.5f)
+                {
+                    Sequence sequence = DOTween.Sequence();
+                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -90f), 0.2f, RotateMode.Fast));
+                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -360f), 1.5f, RotateMode.FastBeyond360));
+                    sequence.Append(willOwhispVisual.DORotate(Vector3.zero, 0.2f));
+                    sequence.OnComplete(() =>
+                    {
+                        torch.DeactivateTorch();
+                    });
+                    sequence.Play();
+                }
             }
         }
     }
 
 
+
+    
     public void TorchReset()
     {
         for (int i = 0; i < _torchList.Count; i++)
@@ -309,7 +358,7 @@ namespace AI
                 if (_torchList[i].GetComponent<Torch>().Activated)
                 {
                     //Guardo las posiciones de las antorchas encendidas
-                    _torchOnListTransform.Add(_torchList[i].GetComponent<Torch>().transform);
+                    _torchOnListTransform.Add(_torchList[i].transform);
                     result = true;
                 }
             }
