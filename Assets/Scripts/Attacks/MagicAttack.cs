@@ -64,11 +64,6 @@ namespace Attack
         }
 
         /// <summary>
-        /// Deselecciona el elemento
-        /// </summary>
-        public abstract void DeSelect();
-
-        /// <summary>
         /// Ataque débil
         /// </summary>
         public abstract void WeakAttack(Vector2 direction);

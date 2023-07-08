@@ -319,9 +319,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.049707603
+    y: 0
     width: 1
-    height: 0.8996711
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -846,6 +846,51 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 8089369154503021126, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+--- !u!1 &1045416117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+  m_PrefabInstance: {fileID: 1045416116}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1045416118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045416117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1198af2392a07e64c84257858bb18c0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _costs: 000000000000000000000000
+  _fireballPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
+  _flamesUp: {fileID: 825047999918456023, guid: 29d197734dd90ac40b42e2643be6d2d1, type: 3}
+  _flamesDown: {fileID: 4186990749208588629, guid: 29962d20446fea946b64d29ca41ee944, type: 3}
+  _flamesLeft: {fileID: 3329722903509604215, guid: bc25aa1a59413d34a96d6ee2a1b850d4, type: 3}
+  _flamesRight: {fileID: 5727942065040346014, guid: 9599c935c9988c94386d83a75646e62d, type: 3}
+  _timeBetweenConsuming: 0.4
+  _fireOrbs: []
+--- !u!114 &1045416119
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1045416117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 459c913c2b70cea4488d121d5444afd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _costs: 000000000000000000000000
+  _fireballPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
+  _flamesUp: {fileID: 825047999918456023, guid: 29d197734dd90ac40b42e2643be6d2d1, type: 3}
+  _flamesDown: {fileID: 4186990749208588629, guid: 29962d20446fea946b64d29ca41ee944, type: 3}
+  _flamesLeft: {fileID: 3329722903509604215, guid: bc25aa1a59413d34a96d6ee2a1b850d4, type: 3}
+  _flamesRight: {fileID: 5727942065040346014, guid: 9599c935c9988c94386d83a75646e62d, type: 3}
+  _timeBetweenConsuming: 0.4
+  _fireOrbs: []
 --- !u!1001 &1446327054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1222,7 +1267,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -44.999992
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y

@@ -27,6 +27,7 @@ namespace Services
                 AddService(new SceneLoader());
                 // Events
                 AddService(new MagicEvents());
+                AddService(new InventoryEvents());
                 AddService(new LevelEvents());
                 AddService(new LifeEvents());
                 AddService(new SoulEvents());

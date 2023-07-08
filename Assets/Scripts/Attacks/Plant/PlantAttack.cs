@@ -7,7 +7,7 @@ using DG.Tweening;
 
 namespace Attack
 {
-    public class FireAttack : MagicAttack
+    public class PlantAttack : MagicAttack
     {
         #region SerializeFields
 

@@ -892,6 +892,7 @@ GameObject:
   - component: {fileID: 117217188}
   - component: {fileID: 117217187}
   - component: {fileID: 117217186}
+  - component: {fileID: 117217190}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -983,6 +984,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &117217190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117217185}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0538cbe8eea9e2b4faa03004f75803ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pause: {fileID: 1106150951}
 --- !u!1 &118145904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2446,7 +2460,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -6494,6 +6508,7 @@ GameObject:
   - component: {fileID: 1106150954}
   - component: {fileID: 1106150953}
   - component: {fileID: 1106150955}
+  - component: {fileID: 1106150956}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -6608,6 +6623,36 @@ MonoBehaviour:
   _titleInfo: {fileID: 365091730}
   _textInfo: {fileID: 613704326}
   _inputActions: {fileID: -944628639613478452, guid: 17cc4108eda5b594e939e3af726a514e, type: 3}
+--- !u!114 &1106150956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106150951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 17cc4108eda5b594e939e3af726a514e, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1116611380
 GameObject:
   m_ObjectHideFlags: 0
