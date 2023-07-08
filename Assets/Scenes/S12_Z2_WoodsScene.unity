@@ -41048,8 +41048,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.99898064
-    height: 0.99999994
+    width: 1
+    height: 0.99941033
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42760,24 +42760,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1813486909 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1813486909, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
-  m_PrefabInstance: {fileID: 730027996}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1813486912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813486909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5f627a94e7c14cb18ad3e2337ca10b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _translation: 1
 --- !u!1 &1846583523
 GameObject:
   m_ObjectHideFlags: 0
@@ -43022,6 +43004,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1396535340}
     m_Modifications:
+    - target: {fileID: 229365699689713837, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114712, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_Name
       value: Torch
