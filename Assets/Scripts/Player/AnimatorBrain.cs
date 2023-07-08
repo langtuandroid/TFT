@@ -166,6 +166,11 @@ namespace Player
             PlayPlayer(FALL);
         }
 
+        public void SetThrow()
+        {
+            PlayPlayer( IDLE ); // aqí debe ir la animación de lanzar
+        }
+
         public void IsWalking(bool isWalking)
         {
             _playerAnimator.SetBool(IS_WALKING, isWalking);
