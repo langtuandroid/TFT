@@ -63,7 +63,7 @@ namespace AI
     #region WAYPOINTS
     private int _actualWayPoint = 0; //TODO
 
-    private List<Torch> _torchScript;
+    //private List<Torch> _torchScript;
     #endregion
     
     #region IA
@@ -110,11 +110,11 @@ namespace AI
         set => _isTorchAction = value;
     }
     
-    private List<Transform> _torchOnList = new List<Transform>();
+    private List<Transform> _torchOnListTransform = new List<Transform>();
     
     public List<Transform> TorchOnList
     {
-        get => _torchOnList;
+        get => _torchOnListTransform;
     }
 
     public Transform PlayerInitialPosition
@@ -139,34 +139,7 @@ namespace AI
     {
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        
-        //Torch
-        _torchScript = new List<Torch>();
 
-        if (_torchList != null)
-        {
-            _torchScript = new List<Torch>();
-            for (int i = 0; i < _torchList.Count; i++)
-            {
-                Torch torchComponent = _torchList[i].GetComponent<Torch>();
-                if (torchComponent != null)
-                {
-                    _torchScript.Add(torchComponent);
-                }
-            }
-        }
-        
-        //WayPoints
-        //List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
-
-       /* foreach (var wayPoint in wayPointsObjectList)
-        {
-            _wayPointsList.Add(wayPoint.GetComponent<Transform>());   
-        }*/
-        
-        //Posición Inicial del Player
-        //_playerInitialPosition = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_INITIAL_POSITION).GetComponent<Transform>();
-        
         Init();
     }
 
@@ -203,6 +176,7 @@ namespace AI
 
     public void ChangeNavMeshAgentSpeed(float vel)
     {
+        Debug.Log("La velocidad ha cambiado: " + vel);
         _navMeshAgent.speed = vel;
     }
 
@@ -254,35 +228,29 @@ namespace AI
     }
     
     // Patrullo por las antorchas
-    public void TorchPatrol(){
-        if (_torchOnList.Count > 0)
+    public void TorchPatrol()
+    {
+        if (_torchOnListTransform.Count > 0)
         {
-            UpdatePatrolWayPoint(_torchOnList[0]);
-
-            // Si llegamos a nuestro destino, cambiamos nuestro destino al siguiente waypoint
-            if (Vector3.Distance(transform.position, _torchOnList[0].position) < 1f)
+            Torch torch = _torchOnListTransform[0].GetComponent<Torch>();
+            if (torch != null && torch.Activated)
             {
-                for (int i = 0; i < _torchScript.Count; i++)
-                {
-                 if(_torchOnList[0] == _torchScript[i].gameObject.transform)
-                     _torchScript[i].Activated = false;
-                }
-               
-                _torchOnList.RemoveAt(0);
-
-                if (_torchOnList.Count > 0)
-                {
-                    UpdatePatrolWayPoint(_torchOnList[0]);
-                }
+                Debug.Log("Posicion de la antorcha encendida: " + _torchOnListTransform[0].position);
+                UpdatePatrolWayPoint(_torchOnListTransform[0]);
+            }
+            else
+            {
+               // _torchOnListTransform.RemoveAt(0);
             }
         }
     }
 
+
     public void TorchReset()
     {
-        for (int i = 0; i < _torchScript.Count; i++)
+        for (int i = 0; i < _torchList.Count; i++)
         {
-            _torchScript[i].Activated = false;
+            _torchList[i].GetComponent<Torch>().Activated = false;
         }
     }
 
@@ -336,12 +304,12 @@ namespace AI
         if (_torchList != null)
         {
             //Compruebo si hay alguna antorcha encendida
-            for (int i = 0; i < _torchScript.Count; i++)
+            for (int i = 0; i < _torchList.Count; i++)
             {
-                if (_torchScript[i].Activated)
+                if (_torchList[i].GetComponent<Torch>().Activated)
                 {
                     //Guardo las posiciones de las antorchas encendidas
-                    _torchOnList.Add(_torchScript[i].gameObject.transform);
+                    _torchOnListTransform.Add(_torchList[i].GetComponent<Torch>().transform);
                     result = true;
                 }
             }
