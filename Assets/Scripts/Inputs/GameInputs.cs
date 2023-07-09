@@ -17,8 +17,16 @@ public class GameInputs
     public event Action OnSecondaryPerformed;
 
     // UI
-    public event Action OnCancelPerformed;
     public event Action OnPausePerformed;
+    public event Action OnCancelPerformed;
+    public event Action OnSubmitPerformed;
+    public event Action OnNextMenuPerformed;
+    public event Action OnPrevMenuPerformed;
+
+    // TODO: Definir aquí la función OnNavigatePerformed
+    // que sea la que coja Inventory en vez de definir ahí el
+    // NavigateAction.performed
+    public InputAction NavigateAction;
 
 
     private PlayerInputActions _playerInputActions;
@@ -27,7 +35,7 @@ public class GameInputs
     private OptionsSave _options;
     private MonoTimer _rumbleTimer;
 
-    public GameInputs( OptionsSave options )
+    public GameInputs(OptionsSave options)
     {
         _playerInputActions = new PlayerInputActions();
         _options = options;
@@ -42,22 +50,22 @@ public class GameInputs
         return _moveAction.ReadValue<Vector2>().normalized;
     }
 
-    public void RumblePad( float lowFrequency , float highFrequency , float durationSeconds )
+    public void RumblePad(float lowFrequency, float highFrequency, float durationSeconds)
     {
-        if ( _options.isVibrationActive )
+        if (_options.isVibrationActive)
         {
-            if ( Gamepad.current == null )
+            if (Gamepad.current == null)
                 return;
 
-            if ( !_rumbleTimer )
+            if (!_rumbleTimer)
             {
-                _rumbleTimer = new GameObject( "Rumble" , typeof( MonoTimer ) ).GetComponent<MonoTimer>();
+                _rumbleTimer = new GameObject("Rumble", typeof(MonoTimer)).GetComponent<MonoTimer>();
                 _rumbleTimer.OnDestroyObject = () => _rumbleTimer = null;
             }
-            
-            Gamepad.current.SetMotorSpeeds( lowFrequency , highFrequency );
 
-            _rumbleTimer.StartTimer( () => Gamepad.current.SetMotorSpeeds( 0 , 0 ) , durationSeconds );
+            Gamepad.current.SetMotorSpeeds(lowFrequency, highFrequency);
+
+            _rumbleTimer.StartTimer(() => Gamepad.current.SetMotorSpeeds(0, 0), durationSeconds);
         }
     }
 
@@ -65,6 +73,7 @@ public class GameInputs
     {
         _playerInputActions.PlayerGround.Enable();
         _moveAction = _playerInputActions.PlayerGround.Move;
+
         _playerInputActions.PlayerGround.Jump.started += Jump_started;
         _playerInputActions.PlayerGround.Jump.canceled += Jump_canceled;
         _playerInputActions.PlayerGround.PhysicAction.started += PhysicAction_started;
@@ -127,34 +136,58 @@ public class GameInputs
     {
         OnPausePerformed?.Invoke();
         // TODO: if game is paused -> MenuMode()
-    }
-
-    private void MenuModeEnable()
-    {
-        _playerInputActions.UI.Enable();
-        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
-    }
-
-    private void MenuModeDisable()
-    {
-        _playerInputActions.UI.Disable();
-    }
-    
-    public void ActivateUIMode()
-    {
-        _playerInputActions.UI.Enable();
-        //_playerInputActions.UI.Cancel.performed += Cancel_Performed;
-        _playerInputActions.PlayerGround.Disable();
-    }
-
-    public void ActivatePlayerGroundMode()
-    {
-        _playerInputActions.UI.Disable();
-        _playerInputActions.PlayerGround.Enable();
+        // MenuModeEnable();
     }
 
     private void Cancel_Performed(InputAction.CallbackContext ctx)
     {
         OnCancelPerformed?.Invoke();
     }
+
+    private void Submit_Performed(InputAction.CallbackContext ctx)
+    {
+        OnSubmitPerformed?.Invoke();
+    }
+
+    private void NextMenu_Performed(InputAction.CallbackContext ctx)
+    {
+        OnNextMenuPerformed?.Invoke();
+    }
+
+    private void PrevMenu_Performed(InputAction.CallbackContext ctx)
+    {
+        OnPrevMenuPerformed?.Invoke();
+    }
+
+    private void MenuModeEnable()
+    {
+        _playerInputActions.UI.Enable();
+        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
+        _playerInputActions.UI.Submit.performed += Submit_Performed;
+        _playerInputActions.UI.NextMenu.performed += NextMenu_Performed;
+        _playerInputActions.UI.PrevMenu.performed += PrevMenu_Performed;
+
+        NavigateAction = _playerInputActions.UI.Navigate;
+    }
+
+    private void MenuModeDisable()
+    {
+        _playerInputActions.UI.Disable();
+    }
+
+    public void ActivateUIMode()
+    {
+        _playerInputActions.UI.Enable();
+        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
+        _playerInputActions.PlayerGround.Disable();
+    }
+
+    public void ActivatePlayerGroundMode()
+    {
+        _playerInputActions.UI.Disable();
+        _playerInputActions.UI.Cancel.performed -= Cancel_Performed;
+        _playerInputActions.PlayerGround.Enable();
+    }
+
+
 }

@@ -194,6 +194,10 @@ public class MaxPowerVisualsManager : MonoBehaviour
 
         if (type == typeof(FireAttack))
             return GetData(Constants.PANEL_FIRE);
+        else if (type == typeof(PlantAttack))
+            return GetData(Constants.PANEL_LEAF);
+        else if (type == typeof(WaterAttack))
+            return GetData(Constants.PANEL_WATER);
 
         return null;
     }
