@@ -98,6 +98,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""NextMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""04266e18-7a22-4832-b815-c69631176016"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PrevMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""eb81c29d-5b17-4a32-8339-a2daa07124e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -287,6 +305,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ScrollWheel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9d6ddc5c-2e7d-4930-8056-ce9b23d08485"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""NextMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1456fa37-1453-4e46-9fb7-1e3e72693451"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""NextMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86a12161-d5eb-4957-a31e-1b5c07b76efd"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PrevMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbc69fcf-d61d-4362-9125-7b8d1571baee"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PrevMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -398,7 +460,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8950f129-87ac-40ed-bd4c-20608193cddc"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -829,6 +891,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_MiddleClick = m_UI.FindAction("MiddleClick", throwIfNotFound: true);
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
+        m_UI_NextMenu = m_UI.FindAction("NextMenu", throwIfNotFound: true);
+        m_UI_PrevMenu = m_UI.FindAction("PrevMenu", throwIfNotFound: true);
         // PlayerGround
         m_PlayerGround = asset.FindActionMap("PlayerGround", throwIfNotFound: true);
         m_PlayerGround_Pause = m_PlayerGround.FindAction("Pause", throwIfNotFound: true);
@@ -911,6 +975,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_MiddleClick;
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_ScrollWheel;
+    private readonly InputAction m_UI_NextMenu;
+    private readonly InputAction m_UI_PrevMenu;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -923,6 +989,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MiddleClick => m_Wrapper.m_UI_MiddleClick;
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
+        public InputAction @NextMenu => m_Wrapper.m_UI_NextMenu;
+        public InputAction @PrevMenu => m_Wrapper.m_UI_PrevMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -956,6 +1024,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollWheel.started += instance.OnScrollWheel;
             @ScrollWheel.performed += instance.OnScrollWheel;
             @ScrollWheel.canceled += instance.OnScrollWheel;
+            @NextMenu.started += instance.OnNextMenu;
+            @NextMenu.performed += instance.OnNextMenu;
+            @NextMenu.canceled += instance.OnNextMenu;
+            @PrevMenu.started += instance.OnPrevMenu;
+            @PrevMenu.performed += instance.OnPrevMenu;
+            @PrevMenu.canceled += instance.OnPrevMenu;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -984,6 +1058,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ScrollWheel.started -= instance.OnScrollWheel;
             @ScrollWheel.performed -= instance.OnScrollWheel;
             @ScrollWheel.canceled -= instance.OnScrollWheel;
+            @NextMenu.started -= instance.OnNextMenu;
+            @NextMenu.performed -= instance.OnNextMenu;
+            @NextMenu.canceled -= instance.OnNextMenu;
+            @PrevMenu.started -= instance.OnPrevMenu;
+            @PrevMenu.performed -= instance.OnPrevMenu;
+            @PrevMenu.canceled -= instance.OnPrevMenu;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1155,6 +1235,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMiddleClick(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
         void OnScrollWheel(InputAction.CallbackContext context);
+        void OnNextMenu(InputAction.CallbackContext context);
+        void OnPrevMenu(InputAction.CallbackContext context);
     }
     public interface IPlayerGroundActions
     {

@@ -9,18 +9,12 @@ public class TemporalPauseInventory : MonoBehaviour
     [SerializeField]
     GameObject _pause;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         gameInputs = ServiceLocator.GetService<GameInputs>();
         gameInputs.OnPausePerformed += OnPausePerformed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnPausePerformed()
     {

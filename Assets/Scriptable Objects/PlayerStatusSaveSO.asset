@@ -16,25 +16,25 @@ MonoBehaviour:
     saveSlot: 1
     currentHealth: 12
     maxHealth: 12
-    currentMagic: 276
+    currentMagic: 300
     maxMagic: 300
-    currentSouls: 2
+    currentSouls: 12
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0
     isPhysicAttackUnlocked: 1
     isJumpUnlocked: 1
     isSwimUnlocked: 1
-    isDashUnlocked: 1
+    isDashUnlocked: 0
     isFireWeakUnlocked: 1
     isFireMediumUnlocked: 1
     isFireStrongUnlocked: 1
     isPlantWeakUnlocked: 1
-    isPlantMediumUnlocked: 1
-    isPlantStrongUnlocked: 1
+    isPlantMediumUnlocked: 0
+    isPlantStrongUnlocked: 0
     isWaterWeakUnlocked: 1
-    isWaterMediumUnlocked: 1
-    isWaterStrongUnlocked: 1
+    isWaterMediumUnlocked: 0
+    isWaterStrongUnlocked: 0
     isLightUnlocked: 1
     isAirUnlocked: 1
     isHeavyMovementUnlocked: 1

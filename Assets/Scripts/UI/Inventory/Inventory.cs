@@ -1,12 +1,9 @@
-using Attack;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Utils;
 
 public class Inventory : MonoBehaviour
 {
@@ -51,7 +48,6 @@ public class Inventory : MonoBehaviour
 
     #endregion
 
-
     #region Public variables
 
     #endregion
@@ -60,6 +56,7 @@ public class Inventory : MonoBehaviour
 
     // SERVICES
     private InventoryEvents _inventoryEvent;
+    private GameInputs _gameInputs;
 
     // INFORMATION
     private List<string> _titles;
@@ -69,7 +66,11 @@ public class Inventory : MonoBehaviour
     private Button _currentSelected;
 
     // SERVICES
+    // QUITAR EN UN FUTURO CUANDO SE DEFINA EL PERFORMED EN GAMEINPUTS
     private InputAction _navigateAction;
+    private InputAction _cancelAction;
+    private InputAction _nextMenuAction;
+    private InputAction _prevMenuAction;
 
     #endregion
 
@@ -78,6 +79,9 @@ public class Inventory : MonoBehaviour
     private void Awake() //TODO quitar solo es de prueba
     {
         _navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
+        _cancelAction = _inputActions.FindActionMap("UI").FindAction("Cancel");
+        _prevMenuAction = _inputActions.FindActionMap("UI").FindAction("PrevMenu");
+        _nextMenuAction = _inputActions.FindActionMap("UI").FindAction("NextMenu");
 
         // Inicializamos variables
         _titles = new List<string>();
@@ -145,34 +149,14 @@ public class Inventory : MonoBehaviour
     {
         // EVENTOS
         _inventoryEvent = ServiceLocator.GetService<InventoryEvents>();
+        _gameInputs = ServiceLocator.GetService<GameInputs>();
 
-
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         // Damos un evento al click de botón
         foreach (Button button in _nonEquipableButtons)
             // TODO: Añadir sonido de "error" al pulsar, ya que no se pueden equipar
             button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
 
-        for (int i = 0; i < _primaryMagicButtons.Count; i++)
-        {
-            int number = i;
-            // Si se pulsa en los botones grandes
-            if (i % 4 == 0)
-            {
-                _primaryMagicButtons[number].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(number / 4));
-            }
-            else
-            {
-                // TODO: No hacer nada, ya que no se puede seleccionar
-                _primaryMagicButtons[number].onClick.AddListener(() => Debug.Log(_primaryMagicButtons[number].gameObject.name));
-            }
-        }
-
-        // TODO (para últimas 2 partes): Añadir cambio de secondarySkillIndex
-        foreach (Button button in _secondaryMagicButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
-
-        foreach (Button button in _berryButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
     }
 
     private void Update()
@@ -189,10 +173,36 @@ public class Inventory : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        // Quitamos listeners
+        RemoveListeners();
+
+        // Desactivamos eventos
+        _navigateAction.performed -= GameInputs_OnNavigate;
+        _cancelAction.performed -= GameInputs_OnCancel;
+        _nextMenuAction.performed -= GameInputs_OnNextMenu;
+        _prevMenuAction.performed -= GameInputs_OnPrevMenu;
+
+        // Desactivamos inputs
+        _nextMenuAction.Disable();
+        _prevMenuAction.Disable();
+    }
+
     private void OnDestroy()
     {
-        _navigateAction.performed -= OnMovement;
-        _navigateAction.Disable();
+        // Quitamos listeners
+        RemoveListeners();
+
+        // Desactivamos eventos
+        _navigateAction.performed -= GameInputs_OnNavigate;
+        _cancelAction.performed -= GameInputs_OnCancel;
+        _nextMenuAction.performed -= GameInputs_OnNextMenu;
+        _prevMenuAction.performed -= GameInputs_OnPrevMenu;
+
+        // Desactivamos inputs
+        _nextMenuAction.Disable();
+        _prevMenuAction.Disable();
     }
 
     #endregion
@@ -201,14 +211,21 @@ public class Inventory : MonoBehaviour
 
     private void Init()
     {
-        //_gameInputs = ServiceLocator.GetService<GameInputs>();
-
         // Mostramos los iconos
         ShowIcons();
 
+        // Añadimos los listeners
+        AddListeners();
+
+        // Activamos inputs
+        _nextMenuAction.Enable();
+        _prevMenuAction.Enable();
+
         // Activamos eventos
-        _navigateAction.performed += OnMovement;
-        _navigateAction.Enable();
+        _navigateAction.performed += GameInputs_OnNavigate;
+        _cancelAction.performed += GameInputs_OnCancel;
+        _nextMenuAction.performed += GameInputs_OnNextMenu;
+        _prevMenuAction.performed += GameInputs_OnPrevMenu;
 
         // Y activamos selección actual
         _currentSelected = _nonEquipableButtons[0];
@@ -217,6 +234,8 @@ public class Inventory : MonoBehaviour
         if (_playerStatusSO.playerStatusSave.isPhysicAttackUnlocked)
             SetText(_titles[0], _descriptions[0]);
     }
+
+    #region Icons
 
     private void ShowIcons()
     {
@@ -343,6 +362,63 @@ public class Inventory : MonoBehaviour
         }
 
     }
+
+    #endregion
+
+    #region Button listeners
+
+    private void AddListeners()
+    {
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
+
+        // PRIMARY SKILL ASSIGNMENT
+        if (ps.isFireWeakUnlocked)
+            _primaryMagicButtons[0].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(0));
+        else
+            // TODO: Añadir sonido de error, ya que no se puede asignar
+            _primaryMagicButtons[0].onClick.AddListener(() => Debug.Log("No se puede asignar poder de fuego"));
+
+        if (ps.isPlantWeakUnlocked)
+            _primaryMagicButtons[4].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(1));
+        else
+            // TODO: Añadir sonido de error, ya que no se puede asignar
+            _primaryMagicButtons[4].onClick.AddListener(() => Debug.Log("No se puede asignar poder de planta"));
+
+        if (ps.isWaterWeakUnlocked)
+            _primaryMagicButtons[8].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(2));
+        else
+            // TODO: Añadir sonido de error, ya que no se puede asignar
+            _primaryMagicButtons[8].onClick.AddListener(() => Debug.Log("No se puede asignar poder de agua"));
+
+
+        // SECONDARY SKILL ASSIGNMENT
+        // TODO (para últimas 2 partes): Añadir cambio de secondarySkillIndex
+        foreach (Button button in _secondaryMagicButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+
+        foreach (Button button in _berryButtons)
+            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+    }
+
+    private void RemoveListeners()
+    {
+        // Quitamos todos los listeners
+        // PRIMARY SKILLS
+        _primaryMagicButtons[0].onClick.RemoveAllListeners();
+        _primaryMagicButtons[4].onClick.RemoveAllListeners();
+        _primaryMagicButtons[8].onClick.RemoveAllListeners();
+
+        // SECONDARY SKILLS
+        foreach (Button button in _secondaryMagicButtons)
+            button.onClick.RemoveAllListeners();
+        foreach (Button button in _berryButtons)
+            button.onClick.RemoveAllListeners();
+    }
+
+    #endregion
+
+
+    #region Description
 
     /// <summary>
     /// Cambia el texto según el objeto seleccionado
@@ -560,13 +636,42 @@ public class Inventory : MonoBehaviour
 
     #endregion
 
-    #region Public methods
+    #region GameInputs
 
-    public void OnMovement(InputAction.CallbackContext ctx)
+    private void GameInputs_OnNavigate(InputAction.CallbackContext ctx)
     {
-        Invoke(nameof(ChangeText), .1f);
+        Invoke(nameof(ChangeText), .01f);
     }
 
+    private void GameInputs_OnCancel(InputAction.CallbackContext ctx)
+    {
+        // TODO: Reproducir sonido
+        gameObject.SetActive(false);
+    }
+
+    private void GameInputs_OnNextMenu(
+        InputAction.CallbackContext ctx
+        )
+    {
+        // TODO: Pasar a siguiente panel (configuración)
+        Debug.Log("Abrimos panel sistema");
+    }
+
+    private void GameInputs_OnPrevMenu(
+        InputAction.CallbackContext ctx
+        )
+    {
+        // TODO: Pasar a panel anterior (mapa)
+        Debug.Log("Abrimos panel mapa");
+    }
+
+
+    #endregion
+
+
+    #endregion
+
+    #region Public methods
 
     #endregion
 
