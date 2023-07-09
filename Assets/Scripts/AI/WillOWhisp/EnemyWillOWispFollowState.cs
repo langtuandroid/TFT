@@ -7,30 +7,19 @@ namespace AI
         public override void Execute(EnemyWillOWisp agent)
         {
             agent.ChangeStatusColor("Danger");
-            if (agent.SeePlayer() || agent.ListenPlayer())
-            {
-                if (!agent.SeePlayer())
+           
+                if (!agent.SeePlayer()) //Si dejo de verle
                 {
+                    agent.ResetTimer();
                     agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
                 } 
-                else if (agent.SeePlayer())
+                else if (agent.SeePlayer()) // Persigo al jugador
                 {
-                    if (agent.TeleporPlayer)
-                    {
-                        agent.IsTorchAction = false;
-                        agent.ChangeState(new EnemyWillOWispActionState());     
-                    }
-                    else
-                    {
-                        //Continuo siguiendole si estoy dentro del rango y no le he alcanzado
+                    if (agent.CheckPlayerDistance()) // Si le alcanzo le saco fuera
+                        agent.Reset();
+                    else // Si no le persigo
                         agent.FollowPlayer();
-                    }
                 }
-            } else if(!agent.SeePlayer() && !agent.ListenPlayer())  //Si dejo de verle o sale del ratio teleport
-            {
-                agent.ResetTimer();
-                agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
-            }
         }
     
     }  

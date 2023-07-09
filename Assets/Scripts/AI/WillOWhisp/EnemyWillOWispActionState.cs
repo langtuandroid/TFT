@@ -1,50 +1,27 @@
 using UnityEngine;
-
 namespace AI
-{
-    public class EnemyWillOWispActionState : FsmEnemyWillOWisp
     {
-        public override void Execute(EnemyWillOWisp agent)
+        public class EnemyWillOWispActionState : FsmEnemyWillOWisp
         {
-            //Si alcanzo al jugador
-            if (!agent.IsTorchAction)
+            public override void Execute(EnemyWillOWisp agent)
             {
-                //TransitionManager.instance.CrossFade();
-               if(agent.CheckPlayerDistance())
-                agent.Reset();
-            }
-            //Peligro: apagar antorchas
-            else
-            {
-                if (agent.SeePlayer())
-                {
-                    agent.IsTorchAction = false;
-                    agent.ChangeState(new EnemyWillOWispFollowState());
-                }
-                else
-                {
-                    if (agent.CheckTorchOn()) //Si apagando alguna antorcha veo o escucho al jugador voy a por el
+                //Peligro: apagar antorchas
+                if (agent.SeePlayer()) //Si le veo mientras voy a apagar antorchas
                     {
-                        if (agent.SeePlayer() || agent.ListenPlayer())
+                        agent.ChangeState(new EnemyWillOWispFollowState());
+                    }
+                else if(!agent.SeePlayer())//Si no le veo
+                    {
+                        if (agent.CheckTorchOn()) // Apago antorchas
                         {
-                            agent.IsTorchAction = false;
-                            agent.ChangeState(new EnemyWillOWispAlertState());
-                        }
-                        else if (!agent.SeePlayer() && !agent.ListenPlayer())
-                        {
-                            agent.Init();
-                        }
-                        else
-                        {
+                            agent.ChangeStatusColor("Torch");
                             agent.TorchPatrol();
                         }
-                    }
-                    else
-                    {
-                        agent.Init();
+                        else //Si no hay antorchas encendidas y no le veo ni le escucho
+                        {
+                            agent.ChangeState(new EnemyWillOWispPatrolState());
+                        }
                     }
                 }
-            }
-        }
-    } 
-}
+        } 
+    }

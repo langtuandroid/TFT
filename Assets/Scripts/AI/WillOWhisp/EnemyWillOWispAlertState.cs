@@ -7,6 +7,7 @@ namespace AI
         public override void Execute(EnemyWillOWisp agent)
         {
             agent.ChangeStatusColor("Alert");
+            
             if (agent.SeePlayer() && agent.ListenPlayer()) // Si veo y escucho al jugador
             {
                 agent.ChangeNavMeshAgentSpeed(3.5f);
@@ -15,7 +16,6 @@ namespace AI
             {
                 if (agent.CheckTorchOn()) //Voy a por las antorchas si hay alguna encendida
                 {
-                    agent.IsTorchAction = true;
                     agent.ChangeNavMeshAgentSpeed(3.5f);
                     agent.ChangeState(new EnemyWillOWispActionState());
                 }

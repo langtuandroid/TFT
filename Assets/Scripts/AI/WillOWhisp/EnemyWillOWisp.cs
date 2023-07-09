@@ -89,19 +89,6 @@ namespace AI
 
     private Vector2 _direction;
 
-    private bool _teleportPlayer;
-
-    public bool TeleporPlayer
-    {
-        get => _teleportPlayer;
-    }
-
-    private bool _isTorchAction;
-
-    //private GameObject torchPatrol;
-
-    private float _teleportRate = 1.5f;
-
     private Transform _playerTransform;
 
     public Transform PlayerTransform
@@ -109,16 +96,8 @@ namespace AI
         get => _playerTransform;
     }
 
-    public bool IsTorchAction
-    {
-        get => _isTorchAction;
-        set => _isTorchAction = value;
-    }
-    
     private List<Transform> _torchOnListTransform = new List<Transform>();
-    
-    //private Transform _torchTransform; 
-    
+
     public List<Transform> TorchOnList
     {
         get => _torchOnListTransform;
@@ -128,7 +107,7 @@ namespace AI
     {
         get => _playerInitialPosition;
     }
-    
+
     #endregion
     
     #region UNITY METHODS
@@ -156,8 +135,6 @@ namespace AI
         
         _canListen = true; //Activo el sentido del oído
 
-        _isTorchAction = false; //No estoy apagando las antorchas
-        
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
 
         ResetWayPoints();
@@ -168,10 +145,14 @@ namespace AI
     
     #region MOVEMENT & NAVMESH
     
-    //Patrulla waypoints
     public void UpdatePatrolWayPoint(Transform waypoint)
     {
         _navMeshAgent.destination = waypoint.position;
+    }
+
+    public void Patrol()
+    {
+        _navMeshAgent.destination = ActualWayPoint().position;
     }
     
     public Transform GetNextWayPoint()
@@ -195,48 +176,7 @@ namespace AI
     {
         _navMeshAgent.speed = vel;
     }
-
-    //Método que lanza un raycast para detectar si tenemos delante
-    //al jugador o una pared
-    public bool PlayerDetection()
-    {
-        Collider2D[] colliders = new Collider2D[5];
-
-        var result = false;
-        
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightAware, _contactFilter, colliders);
-
-        if (objectsDetected > 0)
-        {
-            foreach (var item in colliders)
-            {
-                if (item != null)
-                {
-                    if (item.CompareTag(Constants.TAG_PLAYER))
-                    {
-                        _playerTransform = item.transform;
-                        Debug.Log(Vector3.Distance(transform.position, _playerTransform.position));
-                        if (Vector3.Distance(transform.position, _playerTransform.position) < _teleportRate)
-                        {
-                            _teleportPlayer = true;
-                            result = true;
-                        }
-                        else
-                        {
-                            _teleportPlayer = false;
-                            result = true;
-                        }
-                            
-                        break;
-                    }
-                }
-
-            }
-        }
-
-        return result;
-    }
-
+    
     //Persigo Jugador
     public void FollowPlayer()
     {
@@ -267,8 +207,8 @@ namespace AI
                 _torchOnListTransform.RemoveAt(0);
             }
         }
-    }
-
+    } 
+    
     public void SetTorchOff(Vector3 torchPos)
     {
         Vector3 origin = transform.position;
@@ -283,29 +223,19 @@ namespace AI
 
             if (torch != null)
             {
+   
                 Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
 
                 Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
                 float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
 
-                if (invertedDistance < 1.1f)
+                if (invertedDistance < 0.5f)
                 {
-                    Sequence sequence = DOTween.Sequence();
-                    sequence.Append(willOwhispVisual.DORotate(new Vector3(-90f, 0f, 0f), 0.2f, RotateMode.Fast));
-                    sequence.Append(willOwhispVisual.DORotate(new Vector3(-360f, 0f, 0f), 1.5f, RotateMode.FastBeyond360));
-                    sequence.Append(willOwhispVisual.DORotate(Vector3.zero, 1f));
-                    sequence.OnComplete(() =>
-                    {
-                        torch.DeactivateTorch();
-                    });
-                    sequence.Play();
+                    torch.DeactivateTorch();
                 }
             }
         }
     }
-
-
-
     
     public void TorchReset()
     {
@@ -321,25 +251,16 @@ namespace AI
     //Escucho al jugador?
     public bool ListenPlayer()
     {
-        bool result = false;
-        
-        Collider2D[] colliders = new Collider2D[5];
+        var result = false;
+       
+        Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
+            LayerMask.GetMask(Constants.LAYER_PLAYER));
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightRadio, _contactFilter, colliders);
-
-        if (objectsDetected > 0)
+        if (objectDetected != null)
         {
-            foreach (var item in colliders)
+            if (objectDetected.CompareTag(Constants.TAG_PLAYER) && _canListen)
             {
-                if (item != null)
-                {
-                    if (item.CompareTag(Constants.TAG_PLAYER) && _canListen)
-                    {
-                        result = true;
-                        break;
-                    }
-                }
-
+                result = true;
             }
         }
 
@@ -352,9 +273,33 @@ namespace AI
         return PlayerDetection();
     }
     
+    //¿Estoy viendo al jugador?
+    public bool PlayerDetection()
+    {
+        var result = false;
+       
+        Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
+            LayerMask.GetMask(Constants.LAYER_INTERACTABLE, Constants.LAYER_PLAYER));
+
+        if (objectDetected != null)
+        {
+            Debug.Log("Colisión en la vista: " + objectDetected.name);
+            if (objectDetected.CompareTag(Constants.TAG_PLAYER))
+            {
+                _playerTransform = objectDetected.transform;
+                result = true;
+            }
+        }
+
+        return result;
+    }
+    
     public bool CheckPlayerDistance()
     {
-        return Vector3.Distance(transform.position, _playerTransform.position) < _playerFollowDistance;
+        if (_playerTransform != null)
+            return Vector3.Distance(transform.position, _playerTransform.position) < _playerFollowDistance;
+        else
+            return false;
     }
     
     //¿Hay antorchas encendidas?
@@ -432,12 +377,16 @@ namespace AI
                 _light2D.color = alertColor;
                 break;
             case "Danger":
-                ColorUtility.TryParseHtmlString("A91A00", out Color dangerColor); // Rojo
+                ColorUtility.TryParseHtmlString("#A91A00", out Color dangerColor); // Rojo
                 _light2D.color = dangerColor;
                 break;
             case "Patrol":
                 ColorUtility.TryParseHtmlString("#FF00E3", out Color patrolColor); // Morado
                 _light2D.color = patrolColor;
+                break;
+            case "Torch":
+                ColorUtility.TryParseHtmlString("#000EA8", out Color torchColor); // Azul
+                _light2D.color = torchColor;
                 break;
         }
     }
