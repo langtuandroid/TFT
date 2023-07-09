@@ -4,9 +4,14 @@ public class Fireball : MonoBehaviour
 {
     #region SerializeFields
     [SerializeField]
-    private float _speed; // Velocidad de movimiento
+    [Tooltip("Velocidad de movimiento")]
+    private float _speed;
     [SerializeField]
-    private float _lifeTime; // Tiempo de vida del objeto
+    [Tooltip("Tiempo de vida del objeto")]
+    private float _lifeTime;
+    [SerializeField]
+    [Tooltip("Daño que hace al impactar")]
+    private int _damage = 1;
     #endregion
 
     #region Private Variables
@@ -38,10 +43,10 @@ public class Fireball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        collision.GetComponent<IBurnable>()?.Burn();
-        _audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.SS_FIRE_BALL_HIT , transform.position );
-        _gameInputs.RumblePad( 0.2f , 0.5f , 0.2f );
-        
+        collision.GetComponent<IBurnable>()?.Burn(_damage);
+        _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.SS_FIRE_BALL_HIT, transform.position);
+        _gameInputs.RumblePad(0.2f, 0.5f, 0.2f);
+
         DisappearBall();
     }
 

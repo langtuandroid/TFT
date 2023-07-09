@@ -7,14 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1661607488720817769, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1969517044945058560, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
-      propertyPath: m_ShadowIntensityEnabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8151965325498104193, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -62,10 +54,6 @@ PrefabInstance:
     - target: {fileID: 8151965325498104194, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
       propertyPath: m_Name
       value: LightSprite
-      objectReference: {fileID: 0}
-    - target: {fileID: 8151965325498104194, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}

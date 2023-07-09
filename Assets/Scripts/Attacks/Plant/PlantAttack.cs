@@ -354,7 +354,7 @@ namespace Attack
 
             // Para cada colisión, activamos el quemado
             foreach (Collider2D collision in collisions)
-                collision.GetComponent<IBurnable>()?.Burn();
+                collision.GetComponent<IBurnable>()?.Burn(1);
 
         }
 

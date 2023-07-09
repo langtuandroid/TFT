@@ -224,7 +224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &147860199
 Transform:
   m_ObjectHideFlags: 0
@@ -256,7 +256,7 @@ MonoBehaviour:
   _nextScene: 4
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
-  _musicName: 0
+  _musicName: 4
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4224,7 +4224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &582713104
 Transform:
   m_ObjectHideFlags: 0
@@ -4256,7 +4256,7 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
-  _musicName: 0
+  _musicName: 6
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5086,7 +5086,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1401623116
 Transform:
   m_ObjectHideFlags: 0
@@ -5118,7 +5118,7 @@ MonoBehaviour:
   _nextScene: 3
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
-  _musicName: 0
+  _musicName: 3
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5328,7 +5328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1739364370
 Transform:
   m_ObjectHideFlags: 0
@@ -5360,7 +5360,7 @@ MonoBehaviour:
   _nextScene: 7
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
-  _musicName: 0
+  _musicName: 5
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []

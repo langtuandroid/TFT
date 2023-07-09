@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IBurnable
 {
-    public void Burn();
+    public void Burn(int damage);
 
 }
