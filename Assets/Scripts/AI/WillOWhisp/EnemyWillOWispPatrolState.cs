@@ -6,6 +6,7 @@ namespace AI
 {
     public override void Execute(EnemyWillOWisp agent)
     {
+        agent.ChangeStatusColor("Patrol");
         //Escucho al jugador y no le veo
         if (agent.ListenPlayer() && !agent.SeePlayer()) 
         {

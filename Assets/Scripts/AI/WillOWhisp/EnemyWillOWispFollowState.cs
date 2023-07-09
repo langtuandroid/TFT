@@ -6,7 +6,7 @@ namespace AI
     {
         public override void Execute(EnemyWillOWisp agent)
         {
-            //Si el jugador entra en teleport o en sentido vista
+            agent.ChangeStatusColor("Danger");
             if (agent.SeePlayer() || agent.ListenPlayer())
             {
                 if (!agent.SeePlayer())

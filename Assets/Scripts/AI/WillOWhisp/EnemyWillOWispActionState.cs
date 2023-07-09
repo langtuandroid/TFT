@@ -10,6 +10,7 @@ namespace AI
             if (!agent.IsTorchAction)
             {
                 //TransitionManager.instance.CrossFade();
+               if(agent.CheckPlayerDistance())
                 agent.Reset();
             }
             //Peligro: apagar antorchas
@@ -18,11 +19,30 @@ namespace AI
                 if (agent.SeePlayer())
                 {
                     agent.IsTorchAction = false;
+                    agent.ChangeState(new EnemyWillOWispFollowState());
                 }
                 else
                 {
-                    if (agent.TorchPatrol()) return;
-                    else agent.ChangeState(new EnemyWillOWispAlertState());
+                    if (agent.CheckTorchOn()) //Si apagando alguna antorcha veo o escucho al jugador voy a por el
+                    {
+                        if (agent.SeePlayer() || agent.ListenPlayer())
+                        {
+                            agent.IsTorchAction = false;
+                            agent.ChangeState(new EnemyWillOWispAlertState());
+                        }
+                        else if (!agent.SeePlayer() && !agent.ListenPlayer())
+                        {
+                            agent.Init();
+                        }
+                        else
+                        {
+                            agent.TorchPatrol();
+                        }
+                    }
+                    else
+                    {
+                        agent.Init();
+                    }
                 }
             }
         }
