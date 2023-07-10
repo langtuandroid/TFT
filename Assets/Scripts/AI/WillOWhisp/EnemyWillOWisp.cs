@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine.Serialization;
 using Utils;
 using DG.Tweening;
+using UnityEngine.Rendering.Universal;
 
 namespace AI
 {
@@ -18,20 +19,25 @@ namespace AI
             "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
     
     [SerializeField]
+    [Tooltip("Lista de waypoints para patrulla.")]
     private List<Transform> _wayPointsList;
     
     [SerializeField]
+    [Tooltip("Lista de antorchas para apagar.")]
     private List<GameObject> _torchList;
     
     [SerializeField]
+    [Tooltip("Posición original a la que mandamos al player.")]
     private Transform _playerInitialPosition;
     
-    [FormerlySerializedAs("_listenRadio")]
+    [SerializeField]
+    [Tooltip("Posición original a la que mandamos al player.")]
+    private Light2D _light2D;
+    
     [SerializeField]
     [Tooltip("Radio del sentido escucha.")]
     private float _sightRadio;
     
-    [FormerlySerializedAs("_teleportRatio")]
     [SerializeField]
     [Tooltip("Distancia a la que vemos al player.")]
     private float _sightAware;
@@ -58,6 +64,14 @@ namespace AI
         get => _secondsListening;
         set => _secondsListening = value;
     }
+    
+    private float _secondsSeeing = 0.5f;
+    private float _secondsSeeingSaved;
+    public float SecondsSeeing
+    {
+        get => _secondsSeeing;
+        set => _secondsSeeing = value;
+    }
 
     #endregion
 
@@ -74,6 +88,15 @@ namespace AI
 
         set => _canListen = value;
     }
+
+    private bool _canSee;
+    
+    public bool CanSee
+    {
+        get => _canSee;
+
+        set => _canSee = value;
+    }
     
     private int _actualWayPoint = 0;
     #endregion
@@ -83,19 +106,6 @@ namespace AI
 
     private Vector2 _direction;
 
-    private bool _teleportPlayer;
-
-    public bool TeleporPlayer
-    {
-        get => _teleportPlayer;
-    }
-
-    private bool _isTorchAction;
-
-    //private GameObject torchPatrol;
-
-    private float _teleportRate = 1.5f;
-
     private Transform _playerTransform;
 
     public Transform PlayerTransform
@@ -103,16 +113,8 @@ namespace AI
         get => _playerTransform;
     }
 
-    public bool IsTorchAction
-    {
-        get => _isTorchAction;
-        set => _isTorchAction = value;
-    }
-    
     private List<Transform> _torchOnListTransform = new List<Transform>();
-    
-    //private Transform _torchTransform; 
-    
+
     public List<Transform> TorchOnList
     {
         get => _torchOnListTransform;
@@ -122,7 +124,7 @@ namespace AI
     {
         get => _playerInitialPosition;
     }
-    
+
     #endregion
     
     #region UNITY METHODS
@@ -144,24 +146,34 @@ namespace AI
         Init();
     }
 
-    private void Init()
+    public void Init()
     {
         _secondsListeningSaved = _secondsListening; //  Guardo los segundos configurados por el jugador 
         
-        _canListen = true; //Activo el sentido del oído
+        _secondsSeeingSaved = _secondsSeeing; //  Guardo los segundos para la vista 
         
+        _canListen = true; //Activo el sentido del oído
+
+        _canSee = true; //Activo el sentido de la vista
+
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
 
+        ResetWayPoints();
+        
         UpdatePatrolWayPoint(GetNextWayPoint());
     }
     #endregion
     
     #region MOVEMENT & NAVMESH
     
-    //Patrulla waypoints
     public void UpdatePatrolWayPoint(Transform waypoint)
     {
         _navMeshAgent.destination = waypoint.position;
+    }
+
+    public void Patrol()
+    {
+        _navMeshAgent.destination = ActualWayPoint().position;
     }
     
     public Transform GetNextWayPoint()
@@ -175,53 +187,17 @@ namespace AI
         return _wayPointsList[_actualWayPoint];
     }
 
+
+    public void ResetWayPoints()
+    {
+        _actualWayPoint = 0;
+    }
+    
     public void ChangeNavMeshAgentSpeed(float vel)
     {
-        Debug.Log("La velocidad ha cambiado: " + vel);
         _navMeshAgent.speed = vel;
     }
-
-    //Método que lanza un raycast para detectar si tenemos delante
-    //al jugador o una pared
-    public bool PlayerDetection()
-    {
-        Collider2D[] colliders = new Collider2D[5];
-
-        var result = false;
-        
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightAware, _contactFilter, colliders);
-
-        if (objectsDetected > 0)
-        {
-            foreach (var item in colliders)
-            {
-                if (item != null)
-                {
-                    if (item.CompareTag(Constants.TAG_PLAYER))
-                    {
-                        _playerTransform = item.transform;
-                        Debug.Log(Vector3.Distance(transform.position, _playerTransform.position));
-                        if (Vector3.Distance(transform.position, _playerTransform.position) < _teleportRate)
-                        {
-                            _teleportPlayer = true;
-                            result = true;
-                        }
-                        else
-                        {
-                            _teleportPlayer = false;
-                            result = true;
-                        }
-                            
-                        break;
-                    }
-                }
-
-            }
-        }
-
-        return result;
-    }
-
+    
     //Persigo Jugador
     public void FollowPlayer()
     {
@@ -229,17 +205,14 @@ namespace AI
     }
     
     // Patrullo por las antorchas
-    public bool TorchPatrol()
+    public void TorchPatrol()
     {
-        bool result = false;
-        
         if (_torchOnListTransform.Count > 0)
         {
             Torch torch = _torchOnListTransform[0].GetComponent<Torch>();
             
             if (torch != null && torch.Activated)
             {
-                result = true;
                 GameObject torchPatrol = new GameObject();   
                 torchPatrol.transform.position = new Vector3(_torchOnListTransform[0].position.x,
                     _torchOnListTransform[0].position.y, 0f);
@@ -247,16 +220,16 @@ namespace AI
                 UpdatePatrolWayPoint(torchPatrol.transform);
                 
                 SetTorchOff(torchPatrol.transform.position);
+                
+                Destroy(torchPatrol);
             }
             else
             {
                 _torchOnListTransform.RemoveAt(0);
             }
         }
-
-        return result;
-    }
-
+    } 
+    
     public void SetTorchOff(Vector3 torchPos)
     {
         Vector3 origin = transform.position;
@@ -271,29 +244,19 @@ namespace AI
 
             if (torch != null)
             {
-                Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
-
-                Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
-                float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
-                Debug.Log(invertedDistance);
-                if (invertedDistance < 0.5f)
+   
+                //Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
+                //Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
+                //float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
+                //Debug.Log("Distancia invertida: " + invertedDistance);
+                
+                if (Vector3.Distance(transform.position, torch.transform.position) - 90f < 1.08f) // Restamos 90 por el giro del sprite en el navmesh
                 {
-                    Sequence sequence = DOTween.Sequence();
-                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -90f), 0.2f, RotateMode.Fast));
-                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -360f), 1.5f, RotateMode.FastBeyond360));
-                    sequence.Append(willOwhispVisual.DORotate(Vector3.zero, 0.2f));
-                    sequence.OnComplete(() =>
-                    {
-                        torch.DeactivateTorch();
-                    });
-                    sequence.Play();
+                    torch.DeactivateTorch();
                 }
             }
         }
     }
-
-
-
     
     public void TorchReset()
     {
@@ -339,10 +302,37 @@ namespace AI
     {
         return PlayerDetection();
     }
+
+    //¿Estoy viendo al jugador?
+    public bool PlayerDetection()
+    {
+        var result = false;
+       
+        Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
+            LayerMask.GetMask(Constants.LAYER_INTERACTABLE, Constants.LAYER_PLAYER));
+
+        if (objectDetected != null)
+        {
+          if (objectDetected.CompareTag(Constants.TAG_PLAYER))
+            {
+                _playerTransform = objectDetected.transform;
+                result = true;
+            }
+          else
+          {
+              _canSee = false;
+          }
+        }
+
+        return result;
+    }
     
     public bool CheckPlayerDistance()
     {
-        return Vector3.Distance(transform.position, _playerTransform.position) < _playerFollowDistance;
+        if (_playerTransform != null)
+            return Vector3.Distance(transform.position, _playerTransform.position) < _playerFollowDistance;
+        else
+            return false;
     }
     
     //¿Hay antorchas encendidas?
@@ -373,7 +363,7 @@ namespace AI
         _actualState = newState;
     }
     
-    public void ResetTimer()
+    public void ResetListenTimer()
     {
         StartCoroutine(nameof(WaitUntilResetTimer));
     }
@@ -385,6 +375,24 @@ namespace AI
         _secondsListening = _secondsListeningSaved;
 
         _canListen = true;
+    }
+    
+    public void ResetSeeTimer()
+    {
+        _secondsSeeing = _secondsSeeingSaved;
+    }
+
+    public void ResetSeeSense()
+    {
+        if (_secondsSeeing > 0f)
+        {
+            _secondsSeeing -= Time.deltaTime;
+        }
+        else
+        {
+            _canSee = true;
+            ResetSeeTimer();
+        }
     }
 
     public void Reset()
@@ -409,6 +417,31 @@ namespace AI
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _sightAware);
     }
+
+    public void ChangeStatusColor(string state)
+    {
+        switch (state)
+        {
+            case "Alert":
+                ColorUtility.TryParseHtmlString("FFC400", out Color alertColor); // Amarillo
+                _light2D.color = alertColor;
+                break;
+            case "Danger":
+                ColorUtility.TryParseHtmlString("#A91A00", out Color dangerColor); // Rojo
+                _light2D.color = dangerColor;
+                break;
+            case "Patrol":
+                ColorUtility.TryParseHtmlString("#FF00E3", out Color patrolColor); // Morado
+                _light2D.color = patrolColor;
+                break;
+            case "Torch":
+                ColorUtility.TryParseHtmlString("#000EA8", out Color torchColor); // Azul
+                _light2D.color = torchColor;
+                break;
+        }
+    }
+
+
     #endregion
     }
 }
