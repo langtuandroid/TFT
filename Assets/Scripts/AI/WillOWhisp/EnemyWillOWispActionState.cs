@@ -8,7 +8,14 @@ namespace AI
                 //Peligro: apagar antorchas
                 if (agent.SeePlayer()) //Si le veo mientras voy a apagar antorchas
                     {
-                        agent.ChangeState(new EnemyWillOWispFollowState());
+                        if (!agent.CanSee) // He detectado alguna colision que no es el player
+                        {
+                            agent.ChangeState(new EnemyWillOWispAlertState()); //Me pongo en alerta 
+                        }
+                        else
+                        {
+                            agent.ChangeState(new EnemyWillOWispFollowState());   
+                        }
                     }
                 else if(!agent.SeePlayer())//Si no le veo
                     {

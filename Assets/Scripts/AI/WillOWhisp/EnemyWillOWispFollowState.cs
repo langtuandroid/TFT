@@ -10,15 +10,15 @@ namespace AI
            
                 if (!agent.SeePlayer()) //Si dejo de verle
                 {
-                    agent.ResetTimer();
-                    agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
+                    if(!agent.CanSee)
+                        agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
                 } 
                 else if (agent.SeePlayer()) // Persigo al jugador
                 {
                     if (agent.CheckPlayerDistance()) // Si le alcanzo le saco fuera
-                        agent.Reset();
+                            agent.Reset();
                     else // Si no le persigo
-                        agent.FollowPlayer();
+                            agent.FollowPlayer();
                 }
         }
     

@@ -21854,6 +21854,10 @@ PrefabInstance:
       value: WiilO Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _playerFollowDistance
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
       propertyPath: _playerInitialPosition
       value: 
       objectReference: {fileID: 1156964718}
@@ -21892,11 +21896,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114714, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.403946
+      value: -26.153946
       objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114714, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.446789
+      value: -2.8842888
       objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114714, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -41048,8 +41052,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.998705
-    height: 1
+    width: 1
+    height: 0.9997719
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -41466,11 +41470,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.56
+      value: -35.375
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.34
+      value: 2.6875
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -42249,7 +42253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1317269865
 Transform:
   m_ObjectHideFlags: 0
@@ -42567,7 +42571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000008
+      value: -45.000015
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -43051,7 +43055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114714, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.446789
+      value: -2.821789
       objectReference: {fileID: 0}
     - target: {fileID: 3629534353920114714, guid: 64977e36990dca4498a70e7cf03edfcd, type: 3}
       propertyPath: m_LocalPosition.z

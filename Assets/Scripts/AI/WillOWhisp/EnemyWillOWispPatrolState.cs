@@ -10,15 +10,21 @@ namespace AI
         //Escucho al jugador y no le veo
         if (agent.ListenPlayer() && !agent.SeePlayer()) 
         {
-            agent.ResetTimer();
             agent.ChangeState(new EnemyWillOWispAlertState()); //Me pongo en alerta 
         }
         //Veo al jugador
-        else if (agent.SeePlayer()) 
+        else if (agent.ListenPlayer() && agent.SeePlayer()) 
         {
-            agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo 
+            if (!agent.CanSee) // He detectado alguna colision que no es el player
+            {
+                agent.ChangeState(new EnemyWillOWispAlertState()); //Me pongo en alerta 
+            }
+            else
+            {
+                agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo        
+            }
         }
-        //Si detecto alguna antorcha encendida si no le veo ni escucho
+        //Si detecto alguna antorcha encendida y no le veo ni escucho
         else if (!agent.ListenPlayer() && !agent.SeePlayer() && agent.CheckTorchOn())
         {
             agent.ChangeState(new EnemyWillOWispActionState());

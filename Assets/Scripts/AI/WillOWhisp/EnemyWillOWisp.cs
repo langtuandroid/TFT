@@ -64,6 +64,14 @@ namespace AI
         get => _secondsListening;
         set => _secondsListening = value;
     }
+    
+    private float _secondsSeeing = 0.5f;
+    private float _secondsSeeingSaved;
+    public float SecondsSeeing
+    {
+        get => _secondsSeeing;
+        set => _secondsSeeing = value;
+    }
 
     #endregion
 
@@ -79,6 +87,15 @@ namespace AI
         get => _canListen;
 
         set => _canListen = value;
+    }
+
+    private bool _canSee;
+    
+    public bool CanSee
+    {
+        get => _canSee;
+
+        set => _canSee = value;
     }
     
     private int _actualWayPoint = 0;
@@ -133,7 +150,11 @@ namespace AI
     {
         _secondsListeningSaved = _secondsListening; //  Guardo los segundos configurados por el jugador 
         
+        _secondsSeeingSaved = _secondsSeeing; //  Guardo los segundos para la vista 
+        
         _canListen = true; //Activo el sentido del oído
+
+        _canSee = true; //Activo el sentido de la vista
 
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
 
@@ -224,12 +245,12 @@ namespace AI
             if (torch != null)
             {
    
-                Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
-
-                Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
-                float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
-
-                if (invertedDistance < 0.5f)
+                //Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
+                //Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
+                //float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
+                //Debug.Log("Distancia invertida: " + invertedDistance);
+                
+                if (Vector3.Distance(transform.position, torch.transform.position) - 90f < 1.08f) // Restamos 90 por el giro del sprite en el navmesh
                 {
                     torch.DeactivateTorch();
                 }
@@ -251,16 +272,25 @@ namespace AI
     //Escucho al jugador?
     public bool ListenPlayer()
     {
-        var result = false;
-       
-        Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
-            LayerMask.GetMask(Constants.LAYER_PLAYER));
+        bool result = false;
+        
+        Collider2D[] colliders = new Collider2D[5];
 
-        if (objectDetected != null)
+        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightRadio, _contactFilter, colliders);
+
+        if (objectsDetected > 0)
         {
-            if (objectDetected.CompareTag(Constants.TAG_PLAYER) && _canListen)
+            foreach (var item in colliders)
             {
-                result = true;
+                if (item != null)
+                {
+                    if (item.CompareTag(Constants.TAG_PLAYER) && _canListen)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+
             }
         }
 
@@ -272,7 +302,7 @@ namespace AI
     {
         return PlayerDetection();
     }
-    
+
     //¿Estoy viendo al jugador?
     public bool PlayerDetection()
     {
@@ -283,12 +313,15 @@ namespace AI
 
         if (objectDetected != null)
         {
-            Debug.Log("Colisión en la vista: " + objectDetected.name);
-            if (objectDetected.CompareTag(Constants.TAG_PLAYER))
+          if (objectDetected.CompareTag(Constants.TAG_PLAYER))
             {
                 _playerTransform = objectDetected.transform;
                 result = true;
             }
+          else
+          {
+              _canSee = false;
+          }
         }
 
         return result;
@@ -330,7 +363,7 @@ namespace AI
         _actualState = newState;
     }
     
-    public void ResetTimer()
+    public void ResetListenTimer()
     {
         StartCoroutine(nameof(WaitUntilResetTimer));
     }
@@ -342,6 +375,24 @@ namespace AI
         _secondsListening = _secondsListeningSaved;
 
         _canListen = true;
+    }
+    
+    public void ResetSeeTimer()
+    {
+        _secondsSeeing = _secondsSeeingSaved;
+    }
+
+    public void ResetSeeSense()
+    {
+        if (_secondsSeeing > 0f)
+        {
+            _secondsSeeing -= Time.deltaTime;
+        }
+        else
+        {
+            _canSee = true;
+            ResetSeeTimer();
+        }
     }
 
     public void Reset()
@@ -369,7 +420,6 @@ namespace AI
 
     public void ChangeStatusColor(string state)
     {
-        Debug.Log("Color Actual: " + state);
         switch (state)
         {
             case "Alert":
