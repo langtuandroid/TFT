@@ -14,4 +14,4 @@ Actual version in development.
 How to report a vulnerability: 
 
 
-©NG NONAMEGAMES
+©NNG NONAMEGAMES
