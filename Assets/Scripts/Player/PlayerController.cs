@@ -9,6 +9,7 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
+        private InventoryEvents _inventoryEvents;
 
         // SCRIPTS DEL JUGADOR
         private PlayerStatus _playerStatus;
@@ -24,10 +25,9 @@ namespace Player
         private SecondaryAction _secondaryAction;
         private AnimatorBrain _animatorBrain;
 
-        // VARIABLES
-        // Masks
-        [SerializeField] private LayerMask _interactableLayerMask;
-        [SerializeField] private LayerMask _boundsLayerMask;
+        // DATA
+        [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
+
         // Inputs
         // Jump input
         private bool _isJumpInput;
@@ -65,10 +65,13 @@ namespace Player
         {
             // Obtenemos componentes
             Collider2D collider = GetComponent<Collider2D>();
-            _movement = new PlayerMovement(GetComponent<Rigidbody2D>());
-            _jump = new Jump(collider.offset, _interactableLayerMask, transform,
-                transform.Find("CharacterVisuals"), _boundsLayerMask);
-            _interaction = new Interaction(transform, collider.offset, _interactableLayerMask);
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            Transform characterVisualTrans = transform.Find( _physicalDataSO.visualObjName );
+            Transform pickUpPointTrans = characterVisualTrans.transform.Find( _physicalDataSO.pickUpPointObjName );
+
+            _movement = new PlayerMovement(rb , _physicalDataSO);
+            _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
+            _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
             _pickable = new PickUpItem();
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
@@ -80,8 +83,8 @@ namespace Player
             AddMagicAttacks();
 
             _secondaryActions = new List<SecondaryAction>();
-            _pickable.Init(transform, transform.Find("CharacterVisuals").Find("PickUpPoint"), 
-                GetComponent<Collider2D>().offset, _interactableLayerMask, _animatorBrain);
+            _pickable.Init(transform, pickUpPointTrans , collider.offset, 
+                _physicalDataSO.interactableLayerMask , _animatorBrain);
         }
 
 #if UNITY_EDITOR
@@ -113,6 +116,11 @@ namespace Player
             _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
+
+
+            _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            _inventoryEvents.OnPrimarySkillChange += OnChangeMagic;
+
         }
 
         private void OnDestroy()
@@ -126,6 +134,8 @@ namespace Player
             _gameInputs.OnWeakAttackButtonCanceled -= GameInputs_OnWeakAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
+
+            _inventoryEvents.OnPrimarySkillChange -= OnChangeMagic;
         }
 
         private void Update()
@@ -137,6 +147,9 @@ namespace Player
             if (_playerStatus.IsDeath ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
+                //if (_magicAttacks[_magicIndex].IsUsingStrongAttack)
+                //    _animatorBrain.IsWalking(false);
+
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
                     GameInputs_OnMediumAttackButtonCanceled();
 
@@ -187,6 +200,8 @@ namespace Player
         private void AddMagicAttacks()
         {
             _magicAttacks.Add(GetComponent<FireAttack>());
+            _magicAttacks.Add(GetComponent<PlantAttack>());
+            _magicAttacks.Add(GetComponent<WaterAttack>());
         }
 
         private void GetActionsInformation()
@@ -205,7 +220,7 @@ namespace Player
 
         private void DoMove()
         {
-            if (_jump.IsOnAir)
+            if ( _jump.IsOnAir )
                 _movement.MoveOnAir(_direction);
             else
             if (_jump.IsCooldown)
@@ -213,7 +228,6 @@ namespace Player
             else
             if (!_jump.IsPerformingJump)
                 _movement.Move(_direction);
-
             else
                 _movement.Stop();
         }
@@ -433,16 +447,21 @@ namespace Player
         #endregion
 
         // TODO: Selecci�n de tipo de acci�n
-        private void SelectElement()
+        private void OnChangeMagic(int idx)
         {
-
+            _playerStatus.PrimarySkillIndex = idx;
+            _magicAttacks[idx].Select();
         }
 
         private void SetWalkingAnim()
         {
             // Si está saltando
-            if (_jump.IsPerformingJump)
+            if (_jump.IsPerformingJump || 
+                _magicAttacks[_magicIndex].IsUsingStrongAttack)
+            {
                 return;
+            }
+
             _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
         public bool IsGrounded => !_jump.IsPerformingJump;

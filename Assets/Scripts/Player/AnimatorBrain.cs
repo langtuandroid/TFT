@@ -32,8 +32,9 @@ namespace Player
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
         private const string DEATH = "DeathTree";
-        private const string FALL = "DeathTree";
+        private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
+        private const string MAGIC_ATTACK = "MagicAtkTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
@@ -41,10 +42,12 @@ namespace Player
         private const string IS_WALKING = "IsWalking";
 
         private LifeEvents _lifeEvents;
+        private MagicEvents _magicEvents;
 
         private void OnDestroy()
         {
             _lifeEvents.OnDeathValue -= Death_OnDeath;
+            _magicEvents.OnMaxPowerUsedValue -= MaxPower_OnUsed;
         }
 
         public void Init(Vector2 startLookDirection, Jump jump)
@@ -63,6 +66,9 @@ namespace Player
 
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnDeathValue += Death_OnDeath;
+
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _magicEvents.OnMaxPowerUsedValue += MaxPower_OnUsed;
         }
 
         private void PlayPlayer(string stateName) => _playerAnimator.Play(stateName);
@@ -145,6 +151,10 @@ namespace Player
             PlayPlayer(JUMP);
         }
 
+        private void MaxPower_OnUsed(float value)
+        {
+            IsWalking(false);
+        }
 
         private void Death_OnDeath()
         {
@@ -153,7 +163,12 @@ namespace Player
 
         public void SetFall()
         {
-            PlayPlayer( FALL );
+            PlayPlayer(FALL);
+        }
+
+        public void SetThrow()
+        {
+            PlayPlayer( IDLE ); // aqí debe ir la animación de lanzar
         }
 
         public void IsWalking(bool isWalking)
@@ -161,11 +176,16 @@ namespace Player
             _playerAnimator.SetBool(IS_WALKING, isWalking);
         }
 
+        public void SetMagicAttack()
+        {
+            PlayPlayer(MAGIC_ATTACK);
+        }
+
         public void PickUpItem()
         {
             PlayPlayer(PICKUP);
         }
-        
+
         public Vector2 LookDirection(Vector2 direction)
         {
             if (direction.magnitude > 0)

@@ -4,8 +4,8 @@ using Utils;
 using Attack;
 using System;
 using UnityEngine.UI;
-using System.Collections;
 using DG.Tweening;
+using System.Collections.Generic;
 
 public class MaxPowerVisualsManager : MonoBehaviour
 {
@@ -28,6 +28,11 @@ public class MaxPowerVisualsManager : MonoBehaviour
     [SerializeField]
     [Tooltip("Fondo de la carga del poder máximo")]
     private Image _maxPowerBackground;
+
+    [Header("Sprites")]
+    [SerializeField]
+    [Tooltip("Lista de sprites con los poderes")]
+    private List<Sprite> _sprites;
 
     #endregion
 
@@ -189,6 +194,10 @@ public class MaxPowerVisualsManager : MonoBehaviour
 
         if (type == typeof(FireAttack))
             return GetData(Constants.PANEL_FIRE);
+        else if (type == typeof(PlantAttack))
+            return GetData(Constants.PANEL_LEAF);
+        else if (type == typeof(WaterAttack))
+            return GetData(Constants.PANEL_WATER);
 
         return null;
     }

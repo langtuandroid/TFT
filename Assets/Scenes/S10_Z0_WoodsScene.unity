@@ -35030,9 +35030,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.049707603
-    width: 1
-    height: 0.8996711
+    y: 0.09537037
+    width: 0.23281251
+    height: 0.2328125
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -35061,7 +35061,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: -0.375, z: -10}
+  m_LocalPosition: {x: -0.99998224, y: -0.375, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35315,7 +35315,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -44.99996
+      value: -44.99997
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -36346,7 +36346,6 @@ GameObject:
   - component: {fileID: 1198695895}
   - component: {fileID: 1198695894}
   - component: {fileID: 1198695893}
-  - component: {fileID: 1198695896}
   m_Layer: 8
   m_Name: Trigger Change Zone Altar
   m_TagString: Untagged
@@ -36377,18 +36376,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1126054786}
         m_TargetAssemblyTypeName: ZoneController, Assembly-CSharp
         m_MethodName: ZoneComplete
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1198695896}
-        m_TargetAssemblyTypeName: DemoSetSaveLevelSO, Assembly-CSharp
-        m_MethodName: SetComplete
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -36439,23 +36426,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1198695896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198695892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ea641ba083800340ad6f3b973f2a6c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  zoneSaveSoArray:
-  - {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
-  - {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
-  - {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
-  - {fileID: 11400000, guid: 8b72a4221f97eb348ac3c1a2b7e56284, type: 2}
 --- !u!4 &1249590879 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8816098764511090206, guid: 250bb265b18e28a4580d153ea65da2cc, type: 3}

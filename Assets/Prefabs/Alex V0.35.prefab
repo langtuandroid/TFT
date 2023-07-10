@@ -318,12 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfec20faf94314e498841e8e39db1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactableLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _boundsLayerMask:
-    serializedVersion: 2
-    m_Bits: 32832
+  _physicalDataSO: {fileID: 11400000, guid: e61427823f55fec4287fcce88b930f15, type: 2}
 --- !u!114 &1262885401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,6 +360,7 @@ MonoBehaviour:
   - {fileID: 1970740085243759157}
   - {fileID: 1970740087029343002}
   - {fileID: 1970740086699538759}
+  _strongAttackDamage: 10
 --- !u!114 &-2436258849758510410
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -55,16 +55,15 @@ public class Plant : MonoBehaviour, IBurnable, IInteractable
         _levels[_lifes].SetActive(true);
 
         // Cambiamos el collider
-        ChangeCollider();
+        ChangeCollider(_lifes);
     }
 
     #endregion
 
     #region Public methods
 
-    public void Burn()
+    public void Burn(int damage)
     {
-
         // Desactivamos corrutina
         if (_coroutine != null)
             StopCoroutine(_coroutine);
@@ -78,14 +77,18 @@ public class Plant : MonoBehaviour, IBurnable, IInteractable
             return;
         }
 
-        // Desactivamos la planta actual
-        _levels[_lifes].SetActive(false);
+        for (int i = _lifes; i > Mathf.Max(_lifes - damage, 0); i--)
+        {
+            // Desactivamos la planta actual
+            _levels[i].SetActive(false);
+            // Cambiamos el collider
+            ChangeCollider(i);
+        }
+
         // Se reduce la vida
-        _lifes--;
-        // Y activamos el nivel actual
+        _lifes = Mathf.Max(_lifes - damage, 0);
+        // Activamos el nivel actual
         _levels[_lifes].SetActive(true);
-        // Cambiamos el collider
-        ChangeCollider();
 
         // Finalmente, activamos corrutina
         ActivateCoroutine();
@@ -116,7 +119,7 @@ public class Plant : MonoBehaviour, IBurnable, IInteractable
         _levels[_lifes].SetActive(false);
         _lifes++;
         _levels[_lifes].SetActive(true);
-        ChangeCollider();
+        ChangeCollider(_lifes);
 
         if (_lifes < _levels.Count - 1)
             _coroutine = StartCoroutine(RestoreSize());
@@ -136,39 +139,39 @@ public class Plant : MonoBehaviour, IBurnable, IInteractable
     /// <summary>
     /// Modifica las dimensiones del collider según la dirección
     /// </summary>
-    private void ChangeCollider()
+    private void ChangeCollider(int life)
     {
         switch (_direction)
         {
             case Direction.Left:
-                _collider.size = new Vector2(_lifes + 1, 1f);
+                _collider.size = new Vector2(life + 1, 1f);
                 _collider.offset =
                     new Vector2(
-                        -0.5f * _lifes,
+                        -0.5f * life,
                         0f
                         );
                 break;
             case Direction.Right:
-                _collider.size = new Vector2(_lifes + 1, 1f);
+                _collider.size = new Vector2(life + 1, 1f);
                 _collider.offset =
                     new Vector2(
-                        0.5f * _lifes,
+                        0.5f * life,
                         0f
                         );
                 break;
             case Direction.Up:
-                _collider.size = new Vector2(1f, _lifes + 1);
+                _collider.size = new Vector2(1f, life + 1);
                 _collider.offset = new Vector2(
                     0f,
-                    0.5f * _lifes
+                    0.5f * life
                     );
                 break;
             case Direction.Down:
-                _collider.size = new Vector2(1f, _lifes + 1);
+                _collider.size = new Vector2(1f, life + 1);
                 _collider.offset =
                     new Vector2(
                         0f,
-                        -0.5f * _lifes
+                        -0.5f * life
                         );
                 break;
         }

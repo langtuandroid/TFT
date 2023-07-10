@@ -37,7 +37,7 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
 
     #region Public Methods
 
-    public void Burn()
+    public void Burn(int damage)
     {
         // Si se quema, activamos la antorcha
         ActivateTorch();
