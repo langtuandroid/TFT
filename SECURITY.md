@@ -12,4 +12,6 @@ Actual version in development.
 ## Reporting a Vulnerability
 
 How to report a vulnerability: 
-##TODO
+
+
+©NG NONAMEGAMES
