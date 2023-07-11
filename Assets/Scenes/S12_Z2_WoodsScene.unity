@@ -21854,8 +21854,8 @@ PrefabInstance:
       value: WiilO Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
-      propertyPath: _playerFollowDistance
-      value: 1.5
+      propertyPath: _secondsSeeing
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
       propertyPath: _playerInitialPosition
@@ -21877,6 +21877,10 @@ PrefabInstance:
       propertyPath: _wayPointsList.Array.data[1]
       value: 
       objectReference: {fileID: 1954252245}
+    - target: {fileID: 8959827620793883894, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_Color.a
+      value: 0.47058824
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
 --- !u!1001 &362698960
@@ -41052,8 +41056,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.9997719
+    width: 0.9997173
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42145,7 +42149,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1156964717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.36, y: 15.78, z: 0}
+  m_LocalPosition: {x: -36.26, y: 7.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

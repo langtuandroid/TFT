@@ -65,7 +65,9 @@ namespace AI
         set => _secondsListening = value;
     }
     
-    private float _secondsSeeing = 0.5f;
+    [SerializeField] 
+    [Tooltip("Tiempo que tardo en ir a perseguir al jugador.")]
+    private float _secondsSeeing;
     private float _secondsSeeingSaved;
     public float SecondsSeeing
     {
