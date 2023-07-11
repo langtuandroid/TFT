@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
@@ -68,9 +69,6 @@ public class Inventory : MonoBehaviour
     // SERVICES
     // QUITAR EN UN FUTURO CUANDO SE DEFINA EL PERFORMED EN GAMEINPUTS
     private InputAction _navigateAction;
-    private InputAction _cancelAction;
-    private InputAction _nextMenuAction;
-    private InputAction _prevMenuAction;
 
     #endregion
 
@@ -78,11 +76,6 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
-        _navigateAction = _inputActions.FindActionMap("UI").FindAction("Navigate");
-        _cancelAction = _inputActions.FindActionMap("UI").FindAction("Cancel");
-        _prevMenuAction = _inputActions.FindActionMap("UI").FindAction("PrevMenu");
-        _nextMenuAction = _inputActions.FindActionMap("UI").FindAction("NextMenu");
-
         // Inicializamos variables
         _titles = new List<string>();
         _descriptions = new List<string>();
@@ -150,6 +143,13 @@ public class Inventory : MonoBehaviour
         // EVENTOS
         _inventoryEvent = ServiceLocator.GetService<InventoryEvents>();
         _gameInputs = ServiceLocator.GetService<GameInputs>();
+        _gameInputs.OnCancelPerformed += GameInputs_OnCancel;
+        _gameInputs.OnNextMenuPerformed += GameInputs_OnNextMenu;
+        _gameInputs.OnPrevMenuPerformed += GameInputs_OnPrevMenu;
+
+        _navigateAction = _gameInputs.NavigateAction;
+        _navigateAction.performed += GameInputs_OnNavigate;
+
 
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         // Damos un evento al click de botón
@@ -177,16 +177,6 @@ public class Inventory : MonoBehaviour
     {
         // Quitamos listeners
         RemoveListeners();
-
-        // Desactivamos eventos
-        _navigateAction.performed -= GameInputs_OnNavigate;
-        _cancelAction.performed -= GameInputs_OnCancel;
-        _nextMenuAction.performed -= GameInputs_OnNextMenu;
-        _prevMenuAction.performed -= GameInputs_OnPrevMenu;
-
-        // Desactivamos inputs
-        _nextMenuAction.Disable();
-        _prevMenuAction.Disable();
     }
 
     private void OnDestroy()
@@ -195,14 +185,15 @@ public class Inventory : MonoBehaviour
         RemoveListeners();
 
         // Desactivamos eventos
-        _navigateAction.performed -= GameInputs_OnNavigate;
-        _cancelAction.performed -= GameInputs_OnCancel;
-        _nextMenuAction.performed -= GameInputs_OnNextMenu;
-        _prevMenuAction.performed -= GameInputs_OnPrevMenu;
 
-        // Desactivamos inputs
-        _nextMenuAction.Disable();
-        _prevMenuAction.Disable();
+        if (_gameInputs != null)
+        {
+            _navigateAction.performed -= GameInputs_OnNavigate;
+            _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
+            _gameInputs.OnNextMenuPerformed -= GameInputs_OnNextMenu;
+            _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
+        }
+
     }
 
     #endregion
@@ -216,16 +207,6 @@ public class Inventory : MonoBehaviour
 
         // Añadimos los listeners
         AddListeners();
-
-        // Activamos inputs
-        _nextMenuAction.Enable();
-        _prevMenuAction.Enable();
-
-        // Activamos eventos
-        _navigateAction.performed += GameInputs_OnNavigate;
-        _cancelAction.performed += GameInputs_OnCancel;
-        _nextMenuAction.performed += GameInputs_OnNextMenu;
-        _prevMenuAction.performed += GameInputs_OnPrevMenu;
 
         // Y activamos selección actual
         _currentSelected = _nonEquipableButtons[0];
@@ -416,7 +397,6 @@ public class Inventory : MonoBehaviour
     }
 
     #endregion
-
 
     #region Description
 
@@ -643,23 +623,19 @@ public class Inventory : MonoBehaviour
         Invoke(nameof(ChangeText), .01f);
     }
 
-    private void GameInputs_OnCancel(InputAction.CallbackContext ctx)
+    private void GameInputs_OnCancel()
     {
         // TODO: Reproducir sonido
         gameObject.SetActive(false);
     }
 
-    private void GameInputs_OnNextMenu(
-        InputAction.CallbackContext ctx
-        )
+    private void GameInputs_OnNextMenu()
     {
         // TODO: Pasar a siguiente panel (configuración)
         Debug.Log("Abrimos panel sistema");
     }
 
-    private void GameInputs_OnPrevMenu(
-        InputAction.CallbackContext ctx
-        )
+    private void GameInputs_OnPrevMenu()
     {
         // TODO: Pasar a panel anterior (mapa)
         Debug.Log("Abrimos panel mapa");
