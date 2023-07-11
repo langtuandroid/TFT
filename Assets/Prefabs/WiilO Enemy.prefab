@@ -119,10 +119,11 @@ MonoBehaviour:
   _light2D: {fileID: 8959827620793883894}
   _sightRadio: 5
   _sightAware: 3
-  _playerFollowDistance: 1
+  _playerFollowDistance: 1.5
   _resetSeconds: 2
   _resetEarSenseSeconds: 2
   _secondsListening: 2
+  _secondsSeeing: 0.05
 --- !u!212 &205474512
 SpriteRenderer:
   m_ObjectHideFlags: 0
