@@ -21855,7 +21855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
       propertyPath: _secondsSeeing
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
       propertyPath: _playerInitialPosition
@@ -41056,8 +41056,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9997173
-    height: 1
+    width: 1
+    height: 0.9973404
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42257,7 +42257,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1317269865
 Transform:
   m_ObjectHideFlags: 0
