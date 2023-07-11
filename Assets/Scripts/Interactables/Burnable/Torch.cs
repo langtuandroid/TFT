@@ -37,7 +37,7 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
 
     #region Public Methods
 
-    public void Burn()
+    public void Burn(int damage)
     {
         // Si se quema, activamos la antorcha
         ActivateTorch();
@@ -75,7 +75,7 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
     /// <summary>
     /// Desactiva la antorcha
     /// </summary>
-    private void DeactivateTorch()
+    public void DeactivateTorch()
     {
         // Cambiamos el sprite a apagado
         _fire.SetActive(false);

@@ -13,11 +13,11 @@ public class Interaction
 
     public bool IsInteracting { get; private set; }
 
-    public Interaction( Transform playerTransform , Vector2 colliderOffset , LayerMask interactableLayerMask )
+    public Interaction( Transform playerTransform , Vector2 colliderOffset , PlayerPhysicalDataSO physicalData )
     {
         _transform         = playerTransform;
         _colliderOffset    = colliderOffset;
-        _interactableLayer = interactableLayerMask;
+        _interactableLayer = physicalData.interactableLayerMask;
     }
 
     public void Interact( bool interactInput , Vector2 lookDirection )

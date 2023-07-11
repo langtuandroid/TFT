@@ -37,7 +37,7 @@ Transform:
   - {fileID: 1970740087029343000}
   - {fileID: 1970740086699538757}
   m_Father: {fileID: 5879475305411568787}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1536486319
 GameObject:
@@ -48,6 +48,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1536486320}
+  - component: {fileID: 173204067}
   m_Layer: 0
   m_Name: PickUpPoint
   m_TagString: PickUp
@@ -62,14 +63,25 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1536486319}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.036458, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5879475305411568787}
-  m_RootOrder: 2
+  m_Father: {fileID: 4067148498380675311}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &173204067
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536486319}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -1
 --- !u!1 &2113861222575301533
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +113,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.8125, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1536486320}
   m_Father: {fileID: 5879475305411568787}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -146,7 +159,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 698504609, guid: 8f50d303103f539468e5e73b03e8d0cc, type: 3}
+  m_Sprite: {fileID: 1063048652, guid: d5b111673a4ea4102bd1c756d14d7e80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -216,7 +229,6 @@ GameObject:
   - component: {fileID: 5879475305411568789}
   - component: {fileID: 934885534806572623}
   - component: {fileID: 5797619827965401374}
-  - component: {fileID: 4857403397467978039}
   - component: {fileID: 6393048233429952891}
   - component: {fileID: 1262885401}
   - component: {fileID: 1262885403}
@@ -242,7 +254,6 @@ Transform:
   m_Children:
   - {fileID: 4067148498380675311}
   - {fileID: 5246607844475586443}
-  - {fileID: 1536486320}
   - {fileID: 1073009157}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -295,24 +306,6 @@ SortingGroup:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4857403397467978039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5879475305411568785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3ad3f34afe714e1c8084f971bda15f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactableLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _checkDistance: 0.6
-  _rayCastOffset: {x: 0.2, y: 0.2}
-  HasItem: 0
 --- !u!114 &6393048233429952891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,12 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfec20faf94314e498841e8e39db1fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactableLayerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _boundsLayerMask:
-    serializedVersion: 2
-    m_Bits: 32832
+  _physicalDataSO: {fileID: 11400000, guid: e61427823f55fec4287fcce88b930f15, type: 2}
 --- !u!114 &1262885401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +360,7 @@ MonoBehaviour:
   - {fileID: 1970740085243759157}
   - {fileID: 1970740087029343002}
   - {fileID: 1970740086699538759}
+  _strongAttackDamage: 10
 --- !u!114 &-2436258849758510410
 MonoBehaviour:
   m_ObjectHideFlags: 0

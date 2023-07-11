@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Bush : MonoBehaviour, IBurnable
 {
-    public void Burn()
+    public void Burn(int damage)
     {
-        gameObject.SetActive( false );
+        gameObject.SetActive(false);
     }
 }

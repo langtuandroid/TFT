@@ -2,23 +2,36 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 using Utils;
+using DG.Tweening;
 
 namespace AI
 {
     public class EnemyWillOWisp : MonoBehaviour
     {        
     #region CONFIGURATION
-    
+
     [Header("Tags Necesarios:\n" +
             "Player: Transform del Player.\n" +
             "WayPoint: Transform de cada punto de platrulla.\n" +
             "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
     
     [SerializeField]
-    [Tooltip("Radio del sentido escucha.")]
-    private float _listenRadio;
+    private List<Transform> _wayPointsList;
     
+    [SerializeField]
+    private List<GameObject> _torchList;
+    
+    [SerializeField]
+    private Transform _playerInitialPosition;
+    
+    [FormerlySerializedAs("_listenRadio")]
+    [SerializeField]
+    [Tooltip("Radio del sentido escucha.")]
+    private float _sightRadio;
+    
+    [FormerlySerializedAs("_teleportRatio")]
     [SerializeField]
     [Tooltip("Distancia a la que vemos al player.")]
     private float _sightAware;
@@ -47,18 +60,7 @@ namespace AI
     }
 
     #endregion
-    
-    #region WAYPOINTS
-    [Header("WayPoints")]
-    private List<Transform> _wayPointsList = new List<Transform>();
-    
-    private int _actualWayPoint = 0;
-    
-    private List<GameObject> _torch;
-    
-    private List<Torch> _torchScript;
-    #endregion
-    
+
     #region IA
     private FsmEnemyWillOWisp _actualState;
 
@@ -72,25 +74,34 @@ namespace AI
 
         set => _canListen = value;
     }
+    
+    private int _actualWayPoint = 0;
     #endregion
     
     #region REFERENCIAS
     private readonly ContactFilter2D _contactFilter = new ContactFilter2D();
 
-    //private LayerMask _playerLayer = 0;
-    
-    private GameObject _player;
-    
-    public GameObject Player
-    {
-        get => _player;
-    }
-    
-    private Rigidbody2D _playerRB;
-
     private Vector2 _direction;
 
+    private bool _teleportPlayer;
+
+    public bool TeleporPlayer
+    {
+        get => _teleportPlayer;
+    }
+
     private bool _isTorchAction;
+
+    //private GameObject torchPatrol;
+
+    private float _teleportRate = 1.5f;
+
+    private Transform _playerTransform;
+
+    public Transform PlayerTransform
+    {
+        get => _playerTransform;
+    }
 
     public bool IsTorchAction
     {
@@ -98,31 +109,26 @@ namespace AI
         set => _isTorchAction = value;
     }
     
-    private List<Transform> _torchOnList;
+    private List<Transform> _torchOnListTransform = new List<Transform>();
+    
+    //private Transform _torchTransform; 
     
     public List<Transform> TorchOnList
     {
-        get => _torchOnList;
+        get => _torchOnListTransform;
     }
-    
-    private Transform _playerInitialPosition;
 
     public Transform PlayerInitialPosition
     {
         get => _playerInitialPosition;
     }
-
+    
     #endregion
     
     #region UNITY METHODS
-    private void Awake()
-    {
-        PrepareComponent();
-    }
-
     void Start()
     {
-        Init();
+        PrepareComponent();
     }
     
     void Update()
@@ -132,41 +138,10 @@ namespace AI
     
     private void PrepareComponent()
     {
-        //Player
-        if (_player == null)
-            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-        
-        _playerRB = _player.GetComponent<Rigidbody2D>();
-
         //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        
-        //Torch
-        _torch = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_TORCH));
-        
-        if (_torch != null)
-        {
-            _torchScript = new List<Torch>();
-            for (int i = 0; i < _torch.Count; i++)
-            {
-                Torch torchComponent = _torch[i].GetComponent<Torch>();
-                if (torchComponent != null)
-                {
-                    _torchScript.Add(torchComponent);
-                }
-            }
-        }
-        
-        //WayPoints
-        List<GameObject> wayPointsObjectList = new List<GameObject>(FindGameObject.AllWithCaseInsensitiveTag(Constants.TAG_WAYPOINT));
 
-        foreach (var wayPoint in wayPointsObjectList)
-        {
-            _wayPointsList.Add(wayPoint.GetComponent<Transform>());   
-        }
-        
-        //Posición Inicial del Player
-        _playerInitialPosition = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER_INITIAL_POSITION).GetComponent<Transform>();
+        Init();
     }
 
     private void Init()
@@ -176,7 +151,7 @@ namespace AI
         _canListen = true; //Activo el sentido del oído
         
         _actualState = new EnemyWillOWispPatrolState(); //Comenzamos con patrulla
-        
+
         UpdatePatrolWayPoint(GetNextWayPoint());
     }
     #endregion
@@ -202,6 +177,7 @@ namespace AI
 
     public void ChangeNavMeshAgentSpeed(float vel)
     {
+        Debug.Log("La velocidad ha cambiado: " + vel);
         _navMeshAgent.speed = vel;
     }
 
@@ -223,7 +199,19 @@ namespace AI
                 {
                     if (item.CompareTag(Constants.TAG_PLAYER))
                     {
-                        result = true;
+                        _playerTransform = item.transform;
+                        Debug.Log(Vector3.Distance(transform.position, _playerTransform.position));
+                        if (Vector3.Distance(transform.position, _playerTransform.position) < _teleportRate)
+                        {
+                            _teleportPlayer = true;
+                            result = true;
+                        }
+                        else
+                        {
+                            _teleportPlayer = false;
+                            result = true;
+                        }
+                            
                         break;
                     }
                 }
@@ -232,54 +220,86 @@ namespace AI
         }
 
         return result;
-
-    }
-    
-    //Método que devuelve la distancia entre fuego fatuo y jugador
-    //Si estoy persiguiendo al jugador y la distancia es menor que la deseada 
-    //Sacamos al jugador del nivel
-    public bool CheckPlayerDistance()
-    {
-        return Vector3.Distance(transform.position, _player.transform.position) < _playerFollowDistance;
     }
 
     //Persigo Jugador
     public void FollowPlayer()
     {
-        UpdatePatrolWayPoint(_player.transform);
+        UpdatePatrolWayPoint(_playerTransform);
     }
-
     
     // Patrullo por las antorchas
-    public void TorchPatrol(){
-        if (_torchOnList.Count > 0)
+    public bool TorchPatrol()
+    {
+        bool result = false;
+        
+        if (_torchOnListTransform.Count > 0)
         {
-            UpdatePatrolWayPoint(_torchOnList[0]);
-
-            // Si llegamos a nuestro destino, cambiamos nuestro destino al siguiente waypoint
-            if (Vector3.Distance(transform.position, _torchOnList[0].position) < 1f)
+            Torch torch = _torchOnListTransform[0].GetComponent<Torch>();
+            
+            if (torch != null && torch.Activated)
             {
-                for (int i = 0; i < _torchScript.Count; i++)
-                {
-                 if(_torchOnList[0] == _torchScript[i].gameObject.transform)
-                     _torchScript[i].Activated = false;
-                }
-               
-                _torchOnList.RemoveAt(0);
+                result = true;
+                GameObject torchPatrol = new GameObject();   
+                torchPatrol.transform.position = new Vector3(_torchOnListTransform[0].position.x,
+                    _torchOnListTransform[0].position.y, 0f);
+                
+                UpdatePatrolWayPoint(torchPatrol.transform);
+                
+                SetTorchOff(torchPatrol.transform.position);
+            }
+            else
+            {
+                _torchOnListTransform.RemoveAt(0);
+            }
+        }
 
-                if (_torchOnList.Count > 0)
+        return result;
+    }
+
+    public void SetTorchOff(Vector3 torchPos)
+    {
+        Vector3 origin = transform.position;
+        Vector2 direction = torchPos - origin;
+        float distance = direction.magnitude;
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, distance, LayerMask.GetMask(Constants.LAYER_INTERACTABLE));
+
+        if (hit.collider != null)
+        {
+            Torch torch = hit.collider.GetComponent<Torch>();
+
+            if (torch != null)
+            {
+                Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
+
+                Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
+                float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
+                Debug.Log(invertedDistance);
+                if (invertedDistance < 0.5f)
                 {
-                    UpdatePatrolWayPoint(_torchOnList[0]);
+                    Sequence sequence = DOTween.Sequence();
+                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -90f), 0.2f, RotateMode.Fast));
+                    sequence.Append(willOwhispVisual.DORotate(new Vector3(0f, 0f, -360f), 1.5f, RotateMode.FastBeyond360));
+                    sequence.Append(willOwhispVisual.DORotate(Vector3.zero, 0.2f));
+                    sequence.OnComplete(() =>
+                    {
+                        torch.DeactivateTorch();
+                    });
+                    sequence.Play();
                 }
             }
         }
     }
 
+
+
+    
     public void TorchReset()
     {
-        for (int i = 0; i < _torchScript.Count; i++)
+        for (int i = 0; i < _torchList.Count; i++)
         {
-            _torchScript[i].Activated = false;
+            _torchList[i].GetComponent<Torch>().Activated = false;
         }
     }
 
@@ -293,7 +313,7 @@ namespace AI
         
         Collider2D[] colliders = new Collider2D[5];
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _listenRadio, _contactFilter, colliders);
+        int objectsDetected = Physics2D.OverlapCircle(transform.position, _sightRadio, _contactFilter, colliders);
 
         if (objectsDetected > 0)
         {
@@ -317,14 +337,12 @@ namespace AI
     //Veo al jugador?
     public bool SeePlayer()
     {
-        if (Vector3.Distance(transform.position, _player.transform.position) < _sightAware)
-        {
-                return PlayerDetection();
-        }
-        else
-        {
-            return false;
-        }
+        return PlayerDetection();
+    }
+    
+    public bool CheckPlayerDistance()
+    {
+        return Vector3.Distance(transform.position, _playerTransform.position) < _playerFollowDistance;
     }
     
     //¿Hay antorchas encendidas?
@@ -332,16 +350,15 @@ namespace AI
     {
         bool result = false;
         
-        _torchOnList = new List<Transform>();
-        if (_torch != null)
+        if (_torchList != null)
         {
             //Compruebo si hay alguna antorcha encendida
-            for (int i = 0; i < _torchScript.Count; i++)
+            for (int i = 0; i < _torchList.Count; i++)
             {
-                if (_torchScript[i].Activated)
+                if (_torchList[i].GetComponent<Torch>().Activated)
                 {
                     //Guardo las posiciones de las antorchas encendidas
-                    _torchOnList.Add(_torchScript[i].gameObject.transform);
+                    _torchOnListTransform.Add(_torchList[i].transform);
                     result = true;
                 }
             }
@@ -372,14 +389,14 @@ namespace AI
 
     public void Reset()
     {
-        StartCoroutine(nameof(WaitUntilReset));
+        StartCoroutine(nameof(WaitUntilReset), _playerTransform);
     }
 
-    private IEnumerator WaitUntilReset()
+    private IEnumerator WaitUntilReset(Transform player)
     {
         yield return new WaitForSeconds(_resetSeconds);
         
-        _player.transform.position = PlayerInitialPosition.position;
+        player.transform.position = PlayerInitialPosition.position;
 
         Init();
     }
@@ -387,23 +404,10 @@ namespace AI
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _listenRadio);
+        Gizmos.DrawWireSphere(transform.position, _sightRadio);
         
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _sightAware);
-
-        if (_player != null)
-        {
-            Vector3 playerPos = _player.transform.position;
-            Vector3 localPlayerPos = transform.InverseTransformPoint(playerPos);
-            Vector3 direction = transform.TransformDirection(localPlayerPos);
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(transform.position, direction);
-        }
-
-     
-
-
     }
     #endregion
     }

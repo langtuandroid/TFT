@@ -11,8 +11,8 @@ public class Chest : ActivableSceneObject, IInteractable
     private GameObject _exclamationIcon;
 
     [SerializeField]
-    [Tooltip("Objeto que aparece tras abrirlo")]
-    private GameObject _givenObject;
+    [Tooltip("Prefab del objeto que aparece tras abrirlo")]
+    private GameObject _givenObjectPrefab;
     #endregion
 
     public UnityEvent OnChestOpen;
@@ -87,11 +87,12 @@ public class Chest : ActivableSceneObject, IInteractable
                 outsidePos.x, outsidePos.y + .815f / 2
                 );
 
-        // Damos esta posición al objeto
-        _givenObject.transform.localPosition = outsidePos;
-
-        // Y finalmente, lo activamos
-        _givenObject.SetActive(true);
+        // Instanciamos el objeto
+        Instantiate(
+            _givenObjectPrefab, // prefab
+            outsidePos, // posición
+            Quaternion.identity // rotación
+            );
     }
 
     #endregion
