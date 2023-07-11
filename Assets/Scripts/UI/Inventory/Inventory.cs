@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Honeti;
 
 public class Inventory : MonoBehaviour
 {
@@ -86,11 +87,16 @@ public class Inventory : MonoBehaviour
         // Inicializamos variables
         _titles = new List<string>();
         _descriptions = new List<string>();
+        
+        //Cambiar idioma desde codigo
+        I18N.instance.setLanguage(LanguageCode.EN);
+        Debug.Log("Idioma: " + I18N.Instance.gameLang);
 
         // TEXTOS
         // OBJETOS NO EQUIPABLES
         _titles.Add("VARA MÁGICA");
-        _descriptions.Add("La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.");
+        //_descriptions.Add("La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.");
+        _descriptions.Add(I18N.instance.getValue("^inventario_vara"));
         _titles.Add("BOTAS DE SALTO");
         _descriptions.Add("Unas botas mágicas con las que podrás saltar muy alto.");
         _titles.Add("ALETAS");
