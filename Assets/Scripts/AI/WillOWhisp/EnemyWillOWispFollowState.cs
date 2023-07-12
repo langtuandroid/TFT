@@ -8,10 +8,10 @@ namespace AI
         {
             if (agent.SeePlayer()) // Persigo al jugador
             {
-                    if (!agent.CanSee) // Si dejo de verle
+                    if (agent.ObstacleDetection()) // Si hay algo entre fuego fatuo y player
                     {
-                        agent.ChangeNavMeshAgentSpeed(0f);
                         agent.ResetListenTimer();
+                        agent.ChangeState(new EnemyWillOWispAlertState());
                     }
                     else
                     {
