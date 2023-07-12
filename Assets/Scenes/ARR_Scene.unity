@@ -7161,7 +7161,7 @@ GameObject:
   - component: {fileID: 1059166246}
   - component: {fileID: 1059166249}
   - component: {fileID: 1059166250}
-  m_Layer: 15
+  m_Layer: 14
   m_Name: Hole Floor Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8469,11 +8469,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3
+      value: 7.5
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.625
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568787, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10011,7 +10011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1428541994}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Center Of Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}

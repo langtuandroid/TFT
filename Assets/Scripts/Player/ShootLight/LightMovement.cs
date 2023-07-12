@@ -47,7 +47,7 @@ public class LightMovement : MonoBehaviour
             float normalizedTime = lightTimer / lightDuration;
             float currentSize = Mathf.Lerp(0, lightSize, normalizedTime);
             transform.localScale = new Vector3(currentSize, currentSize, 1);
-            _light2DVolumen.pointLightOuterRadius = Mathf.Lerp(0, _light2DVolumen.pointLightOuterRadius, normalizedTime);
+            //_light2DVolumen.pointLightOuterRadius = Mathf.Lerp(0, _light2DVolumen.pointLightOuterRadius, normalizedTime);
         }
         else
         {

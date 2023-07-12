@@ -7,6 +7,78 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 435716565361707054, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ShadowIntensityEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_PointLightInnerRadius
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ShadowIntensityEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_LightVolumeIntensityEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[0]
+      value: -838484179
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[1]
+      value: 1244275949
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[2]
+      value: -1736770475
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[3]
+      value: 1812331177
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[4]
+      value: 818653879
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[5]
+      value: 1959516633
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[7]
+      value: -129005993
+      objectReference: {fileID: 0}
+    - target: {fileID: 1661607488720817769, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1969517044945058560, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2977559610559263891, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8151965325498104193, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -55,5 +127,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: LightSprite
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1969517044945058560, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
