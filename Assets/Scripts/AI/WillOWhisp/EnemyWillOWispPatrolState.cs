@@ -9,7 +9,6 @@ namespace AI
         //Escucho al jugador
         if (agent.ListenPlayer()) 
         {
-            agent.ResetListenTimer();
             agent.ChangeState(new EnemyWillOWispAlertState());
 
         }

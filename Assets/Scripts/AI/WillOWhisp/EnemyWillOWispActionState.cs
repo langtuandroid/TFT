@@ -8,9 +8,7 @@ namespace AI
                 //Peligro: apagar antorchas
                 if (agent.SeePlayer()) //Si le veo mientras voy a apagar antorchas
                 {
-                    if (agent.ObstacleDetection() && agent.CheckTorchOn()) agent.TorchPatrol();
-                    else
-                       agent.ChangeState(new EnemyWillOWispFollowState());   
+                    agent.ChangeState(new EnemyWillOWispFollowState());   
                 }
                 else if(!agent.SeePlayer())//Si no le veo
                 {
@@ -21,8 +19,7 @@ namespace AI
                       }
                       else //Si no hay antorchas encendidas y no le veo ni le escucho
                       {
-                          agent.ChangeNavMeshAgentSpeed(0f);
-                           agent.ChangeState(new EnemyWillOWispAlertState());
+                          agent.ChangeState(new EnemyWillOWispAlertState());
                       }
                     }
             }

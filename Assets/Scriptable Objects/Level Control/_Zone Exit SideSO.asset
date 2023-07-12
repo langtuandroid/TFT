@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8916dbe1473af9749978ddf00f9e33ce, type: 3}
   m_Name: _Zone Exit SideSO
   m_EditorClassIdentifier: 
-  nextStartPointRefID: 2
+  nextStartPointRefID: 1
