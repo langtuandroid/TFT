@@ -10,8 +10,17 @@ namespace AI
             {
                 if (agent.SeePlayer())
                 {
-                    agent.ChangeNavMeshAgentSpeed(3.5f);
-                    agent.ChangeState(new EnemyWillOWispFollowState()); //Persigo al jugador si lo veo    
+                    if (agent.ObstacleDetection())
+                    {
+                        agent.ChangeNavMeshAgentSpeed(3.5f);
+                        agent.ChangeState(new EnemyWillOWispPatrolState()); 
+                    }
+                    else
+                    {
+                        agent.ChangeNavMeshAgentSpeed(3.5f);
+                        agent.ChangeState(new EnemyWillOWispFollowState());
+                    }
+
                 }
                 else if (agent.CheckTorchOn()) //Voy a por las antorchas si hay alguna encendida
                 {
