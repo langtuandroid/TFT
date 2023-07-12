@@ -75,6 +75,8 @@ namespace AI
         set => _secondsSeeing = value;
     }
 
+    public float fieldOfViewAngle = 90f;
+    public float viewDistance = 5f;
     #endregion
 
     #region IA
@@ -288,6 +290,7 @@ namespace AI
                 {
                     if (item.CompareTag(Constants.TAG_PLAYER) && _canListen)
                     {
+                        _playerTransform = item.transform;
                         result = true;
                         break;
                     }
@@ -302,12 +305,6 @@ namespace AI
     //Veo al jugador?
     public bool SeePlayer()
     {
-        return PlayerDetection();
-    }
-
-    //¿Estoy viendo al jugador?
-    public bool PlayerDetection()
-    {
         var result = false;
        
         Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
@@ -315,19 +312,33 @@ namespace AI
 
         if (objectDetected != null)
         {
-          if (objectDetected.CompareTag(Constants.TAG_PLAYER))
+            if (objectDetected.CompareTag(Constants.TAG_PLAYER))
             {
                 _playerTransform = objectDetected.transform;
                 result = true;
             }
-          else
-          {
-              _canSee = false;
-          }
         }
 
         return result;
     }
+    
+    public bool ObstacleDetection()
+    {
+        var result = false;
+
+        Vector2 direction = _playerTransform.position - transform.position;
+        
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, viewDistance,
+            LayerMask.GetMask(Constants.LAYER_INTERACTABLE));
+
+        if (hit.collider != null)
+        {
+            result = true;
+        }
+        
+        return result;
+    }
+
     
     public bool CheckPlayerDistance()
     {
@@ -415,10 +426,34 @@ namespace AI
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _sightRadio);
-        
+
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _sightAware);
+
+        // Angulo de vision
+        Gizmos.color = Color.yellow;
+
+        Vector2 forward = transform.up;
+        Vector2 startDirection = Quaternion.Euler(0f, 0f, -fieldOfViewAngle * 0.5f) * forward;
+        Vector2 endDirection = Quaternion.Euler(0f, 0f, fieldOfViewAngle * 0.5f) * forward;
+
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)startDirection * viewDistance);
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)endDirection * viewDistance);
+
+        int segments = 20;
+        float stepAngle = fieldOfViewAngle / segments;
+        float currentAngle = -fieldOfViewAngle * 0.5f;
+
+        for (int i = 0; i <= segments; i++)
+        {
+            Vector2 lineStart = Quaternion.Euler(0f, 0f, currentAngle) * forward * viewDistance;
+            Vector2 lineEnd = Quaternion.Euler(0f, 0f, currentAngle + stepAngle) * forward * viewDistance;
+
+            Gizmos.DrawLine(transform.position + (Vector3)lineStart, transform.position + (Vector3)lineEnd);
+            currentAngle += stepAngle;
+        }
     }
+
 
     public void ChangeStatusColor(string state)
     {

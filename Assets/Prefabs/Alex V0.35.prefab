@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d100fde841e9d204d83b13a19e9cdec4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lightPrefab: {fileID: 8151965325498104194, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+  _lightPrefab: {fileID: 6412931199246942018, guid: 30258dd91e20b4f31a6ed1af4718cefe, type: 3}
 --- !u!114 &1262885403
 MonoBehaviour:
   m_ObjectHideFlags: 0
