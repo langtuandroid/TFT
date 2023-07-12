@@ -2148,8 +2148,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9979036
-    height: 1
+    width: 1
+    height: 0.9992088
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -2178,7 +2178,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.519999, y: 79.625, z: -10}
+  m_LocalPosition: {x: 17.519997, y: 79.625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2265,6 +2265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 619394802}
   - component: {fileID: 619394801}
+  - component: {fileID: 619394803}
   m_Layer: 0
   m_Name: Global Light 2D
   m_TagString: Untagged
@@ -2366,6 +2367,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619394803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619394800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abfd7dad940d84d999ef541489a92434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightIncrement: 0.025
 --- !u!1001 &622933598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2432,6 +2446,18 @@ PrefabInstance:
     - target: {fileID: 9043349040124012329, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: m_LocalPosition.y
       value: 77.6875
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseLightIntensity
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightCave, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
@@ -5714,6 +5740,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 75.6875
       objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseLightIntensity
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
 --- !u!4 &1748463214 stripped
@@ -5876,6 +5914,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 80.75
       objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseLightIntensity
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
 --- !u!4 &1892208420 stripped
@@ -5995,6 +6045,18 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 83.625
       objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: IncreaseLightIntensity
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
 --- !u!4 &1934402396 stripped
@@ -6089,7 +6151,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.00001
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
