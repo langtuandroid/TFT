@@ -74,9 +74,8 @@ namespace AI
         get => _secondsSeeing;
         set => _secondsSeeing = value;
     }
-
-    public float fieldOfViewAngle = 90f;
-    public float viewDistance = 5f;
+    
+    private float viewDistance = 5f;
     #endregion
 
     #region IA
@@ -129,6 +128,12 @@ namespace AI
         get => _playerInitialPosition;
     }
 
+    private bool _canStart = false;
+
+    private bool _followingPlayer = false;
+    private bool _canFollow = false;
+    public bool CanFollow { get; set; }
+
     #endregion
     
     #region UNITY METHODS
@@ -139,7 +144,8 @@ namespace AI
     
     void Update()
     {
-        _actualState.Execute(this);
+        if(_canStart)
+            _actualState.Execute(this);
     }
     
     private void PrepareComponent()
@@ -165,6 +171,8 @@ namespace AI
         ResetWayPoints();
         
         UpdatePatrolWayPoint(GetNextWayPoint());
+
+        _canStart = true;
     }
     #endregion
     
@@ -205,6 +213,8 @@ namespace AI
     //Persigo Jugador
     public void FollowPlayer()
     {
+        _followingPlayer = true;
+        
         UpdatePatrolWayPoint(_playerTransform);
     }
     
@@ -220,7 +230,7 @@ namespace AI
                 GameObject torchPatrol = new GameObject();   
                 torchPatrol.transform.position = new Vector3(_torchOnListTransform[0].position.x,
                     _torchOnListTransform[0].position.y, 0f);
-                
+
                 UpdatePatrolWayPoint(torchPatrol.transform);
                 
                 SetTorchOff(torchPatrol.transform.position);
@@ -248,13 +258,7 @@ namespace AI
 
             if (torch != null)
             {
-   
-                //Transform willOwhispVisual = gameObject.GetComponentInChildren<Transform>();
-                //Vector3 globalWillOPos = transform.InverseTransformPoint(willOwhispVisual.position);
-                //float invertedDistance = Vector3.Distance(Vector3.zero, globalWillOPos);
-                //Debug.Log("Distancia invertida: " + invertedDistance);
-                
-                if (Vector3.Distance(transform.position, torch.transform.position) - 90f < 1.08f) // Restamos 90 por el giro del sprite en el navmesh
+                if (Vector3.Distance(transform.position, torch.transform.position) < 1.5f)
                 {
                     torch.DeactivateTorch();
                 }
@@ -276,6 +280,8 @@ namespace AI
     //Escucho al jugador?
     public bool ListenPlayer()
     {
+        CheckIfFollowed();
+        
         bool result = false;
         
         Collider2D[] colliders = new Collider2D[5];
@@ -295,16 +301,16 @@ namespace AI
                         break;
                     }
                 }
-
             }
         }
-
         return result;
     }
 
     //Veo al jugador?
     public bool SeePlayer()
     {
+        CheckIfFollowed();
+        
         var result = false;
        
         Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAware, 
@@ -338,7 +344,6 @@ namespace AI
         
         return result;
     }
-
     
     public bool CheckPlayerDistance()
     {
@@ -347,7 +352,26 @@ namespace AI
         else
             return false;
     }
-    
+
+    private bool CheckIfFollowed()
+    {
+        _canFollow = true;
+        
+        if (_followingPlayer && _canFollow) // Significa que vengo de perseguir al player
+        {
+            _canFollow = false;
+            StartCoroutine(nameof(FollowPlayer));
+        }
+
+        return _canFollow;
+    }
+
+    private IEnumerator FollowCoolDown()
+    {
+        yield return new WaitForSeconds(2f);
+
+        _followingPlayer = false;
+    }
     //¿Hay antorchas encendidas?
     public bool CheckTorchOn()
     {
@@ -410,6 +434,7 @@ namespace AI
 
     public void Reset()
     {
+        _canStart = false; 
         StartCoroutine(nameof(WaitUntilReset), _playerTransform);
     }
 
@@ -433,50 +458,33 @@ namespace AI
         // Angulo de vision
         Gizmos.color = Color.yellow;
 
-        Vector2 forward = transform.up;
-        Vector2 startDirection = Quaternion.Euler(0f, 0f, -fieldOfViewAngle * 0.5f) * forward;
-        Vector2 endDirection = Quaternion.Euler(0f, 0f, fieldOfViewAngle * 0.5f) * forward;
 
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)startDirection * viewDistance);
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)endDirection * viewDistance);
-
-        int segments = 20;
-        float stepAngle = fieldOfViewAngle / segments;
-        float currentAngle = -fieldOfViewAngle * 0.5f;
-
-        for (int i = 0; i <= segments; i++)
-        {
-            Vector2 lineStart = Quaternion.Euler(0f, 0f, currentAngle) * forward * viewDistance;
-            Vector2 lineEnd = Quaternion.Euler(0f, 0f, currentAngle + stepAngle) * forward * viewDistance;
-
-            Gizmos.DrawLine(transform.position + (Vector3)lineStart, transform.position + (Vector3)lineEnd);
-            currentAngle += stepAngle;
-        }
     }
 
 
-    public void ChangeStatusColor(string state)
+public void ChangeStatusColor(string state)
+{
+    switch (state)
     {
-        switch (state)
-        {
-            case "Alert":
-                ColorUtility.TryParseHtmlString("FFC400", out Color alertColor); // Amarillo
-                _light2D.color = alertColor;
-                break;
-            case "Danger":
-                ColorUtility.TryParseHtmlString("#A91A00", out Color dangerColor); // Rojo
-                _light2D.color = dangerColor;
-                break;
-            case "Patrol":
-                ColorUtility.TryParseHtmlString("#FF00E3", out Color patrolColor); // Morado
-                _light2D.color = patrolColor;
-                break;
-            case "Torch":
-                ColorUtility.TryParseHtmlString("#000EA8", out Color torchColor); // Azul
-                _light2D.color = torchColor;
-                break;
-        }
+        case "Alert":
+            ColorUtility.TryParseHtmlString("#FFC400", out Color alertColor); // Amarillo
+            _light2D.color = alertColor;
+            break;
+        case "Danger":
+            ColorUtility.TryParseHtmlString("#A91A00", out Color dangerColor); // Rojo
+            _light2D.color = dangerColor;
+            break;
+        case "Patrol":
+            ColorUtility.TryParseHtmlString("#FF00E3", out Color patrolColor); // Morado
+            _light2D.color = patrolColor;
+            break;
+        case "Torch":
+            ColorUtility.TryParseHtmlString("#000EA8", out Color torchColor); // Azul
+            _light2D.color = torchColor;
+            break;
     }
+}
+
 
 
     #endregion

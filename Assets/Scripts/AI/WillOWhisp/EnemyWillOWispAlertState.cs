@@ -12,12 +12,11 @@ namespace AI
                 {
                     if (agent.ObstacleDetection())
                     {
-                        agent.ChangeNavMeshAgentSpeed(3.5f);
-                        agent.ChangeState(new EnemyWillOWispPatrolState()); 
+                        agent.ChangeNavMeshAgentSpeed(0f);
                     }
                     else
                     {
-                        agent.ChangeNavMeshAgentSpeed(3.5f);
+                        agent.ChangeNavMeshAgentSpeed(2.5f);
                         agent.ChangeState(new EnemyWillOWispFollowState());
                     }
 
@@ -40,17 +39,13 @@ namespace AI
                     {
                         agent.CanListen = false;
                         agent.ResetListenTimer();
-                        agent.ChangeNavMeshAgentSpeed(3.5f);
-                        agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
+                        agent.ChangeNavMeshAgentSpeed(2f);
+                        //Vuelvo a patrullar tras esperar 
                     }
-                   
                 }
-            } 
-            else if (!agent.SeePlayer() && !agent.ListenPlayer()) //Si no veo ni escucho al jugador
-            {
-                agent.ChangeNavMeshAgentSpeed(3.5f);
-                agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo a patrullar tras esperar 
-            } 
+            }
+            else
+                agent.ChangeState(new EnemyWillOWispPatrolState()); 
         }
     }
 }
