@@ -163,6 +163,7 @@ namespace Player
 
         public void SetFall()
         {
+            _shadowVisuals.gameObject.SetActive( false );
             PlayPlayer(FALL);
         }
 
