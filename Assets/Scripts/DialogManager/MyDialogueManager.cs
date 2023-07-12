@@ -28,7 +28,7 @@ using UnityEngine.UI;
         private string currentScene;
         private bool isSubmitBtn;
         private bool canStart;
-        private bool canCheckVisibility;
+        //private bool canCheckVisibility;
         private const string TEXT_STORY = "Text_";
         private const string TEXT = "Text";
         private const string MAX_STEPS = "GetMaxStep";
@@ -103,7 +103,7 @@ using UnityEngine.UI;
 
                 characterText.text = characterName;
 
-                canCheckVisibility = true;
+                //canCheckVisibility = true;
 
                 dialogAnimator.ShowDialogBox();
                 
@@ -124,7 +124,7 @@ using UnityEngine.UI;
 
             characterText.text = character;
 
-            canCheckVisibility = true;
+            //canCheckVisibility = true;
             
             dialogAnimator.ShowDialogBox();
 

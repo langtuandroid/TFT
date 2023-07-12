@@ -36,8 +36,6 @@ public class EnemySlime : MonoBehaviour
     #endregion
     
     #region REFERENCES
-    private ContactFilter2D _contactFilter = new ContactFilter2D();
-    
     private LayerMask _layer = 3;
     
     private GameObject _player;

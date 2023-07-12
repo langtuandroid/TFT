@@ -2182,7 +2182,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9997173
+    width: 0.9989419
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -2212,7 +2212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.519999, y: 79.625, z: -10}
+  m_LocalPosition: {x: 17.519983, y: 79.625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9378,7 +9378,7 @@ MonoBehaviour:
   _zoneExitSO: {fileID: 11400000, guid: 13685e29064b42e448b14b358c59a571, type: 2}
   _zoneSaveSO: {fileID: 11400000, guid: 28bafb8d95704404fbc8f12530692459, type: 2}
   _startRefInfoSO: {fileID: 11400000, guid: c6fe09104c8c96242aea472a58274ea1, type: 2}
-  _playerPrefab: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+  _playerPrefab: {fileID: 1297231799380099131, guid: 6a3411aa363d74046aa0b4cde2aae60f, type: 3}
   _camera: {fileID: 1408432121}
   _activableObjectList: []
   _cameraConfinerColliderArray:
