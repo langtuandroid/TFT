@@ -45,7 +45,11 @@ namespace AI
                 }
             }
             else
+            {
+                agent.ChangeNavMeshAgentSpeed(2.5f);
                 agent.ChangeState(new EnemyWillOWispPatrolState()); 
+            }
+               
         }
     }
 }

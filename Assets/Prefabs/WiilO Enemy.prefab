@@ -58,7 +58,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!70 &5897029927344924446
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -72,8 +72,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Offset: {x: 0, y: -0.04122567}
+  m_Size: {x: 1.0084457, y: 1.1183805}
   m_Direction: 0
 --- !u!195 &5897029927344924433
 NavMeshAgent:
@@ -123,7 +123,7 @@ MonoBehaviour:
   _resetSeconds: 2
   _resetEarSenseSeconds: 2
   _secondsListening: 2
-  _secondsSeeing: 0.05
+  _secondsSeeing: 1
 --- !u!212 &205474512
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -268,6 +268,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 5897029927344924432}
     m_Modifications:
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
+      propertyPath: m_Color.a
+      value: 0.19607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_Color.b
       value: 0.65882355
       objectReference: {fileID: 0}
@@ -281,6 +285,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_Intensity
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
+      propertyPath: m_BlendStyleIndex
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
@@ -301,19 +309,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_ShadowIntensityEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_LightVolumeIntensityEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 567122691958752024, guid: e4c09d98f83fd4fa98e55b8c9b27f619, type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.size

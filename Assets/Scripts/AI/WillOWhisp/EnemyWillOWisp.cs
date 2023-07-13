@@ -434,7 +434,8 @@ namespace AI
 
     public void Reset()
     {
-        _canStart = false; 
+        _canStart = false;
+        transform.position = GetNextWayPoint().position;
         StartCoroutine(nameof(WaitUntilReset), _playerTransform);
     }
 
@@ -468,18 +469,22 @@ public void ChangeStatusColor(string state)
     {
         case "Alert":
             ColorUtility.TryParseHtmlString("#FFC400", out Color alertColor); // Amarillo
+            //alertColor.a = 50f / 255f;
             _light2D.color = alertColor;
             break;
         case "Danger":
             ColorUtility.TryParseHtmlString("#A91A00", out Color dangerColor); // Rojo
+            //dangerColor.a = 50f / 255f;
             _light2D.color = dangerColor;
             break;
         case "Patrol":
             ColorUtility.TryParseHtmlString("#FF00E3", out Color patrolColor); // Morado
+            //patrolColor.a =  50f / 255f;
             _light2D.color = patrolColor;
             break;
         case "Torch":
             ColorUtility.TryParseHtmlString("#000EA8", out Color torchColor); // Azul
+            //torchColor.a = 50f / 255f;
             _light2D.color = torchColor;
             break;
     }
