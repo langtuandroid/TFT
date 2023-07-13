@@ -66,6 +66,7 @@ public class PickUpItem
     public void PickItUp( Vector2 lookDirection )
     {
         HasItem = true;
+        _animatorBrain.HasItem(true);
         _pickable?.ShowCanPickUpItem( false );
         _pickable?.PickItUp( lookDirection, _pickUpPoint );
         _animatorBrain.PickUpItem();
@@ -74,6 +75,7 @@ public class PickUpItem
     public void ThrowIt(Vector2 lookDirection)
     {
         HasItem = false;
+        _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
         _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         StopPickItUp();
