@@ -2182,8 +2182,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9989419
-    height: 1
+    width: 1
+    height: 0.99989545
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -2212,7 +2212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.519983, y: 79.625, z: -10}
+  m_LocalPosition: {x: 17.519999, y: 79.625, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6296,7 +6296,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -44.999992
+      value: -44.999985
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
