@@ -34,6 +34,7 @@ namespace Player
         private const string DEATH = "DeathTree";
         private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
+        private const string THROW = "ThrowItemTree";
         private const string MAGIC_ATTACK = "MagicAtkTree";
 
         [Header("Parameters")]
@@ -170,7 +171,7 @@ namespace Player
 
         public void SetThrow()
         {
-            PlayPlayer( IDLE ); // aq� debe ir la animaci�n de lanzar
+            PlayPlayer( THROW ); // aq� debe ir la animaci�n de lanzar
         }
 
         public void IsWalking(bool isWalking)

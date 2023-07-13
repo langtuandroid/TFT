@@ -272,7 +272,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &77559085
 Transform:
   m_ObjectHideFlags: 0
@@ -41228,8 +41228,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9988221
-    height: 0.99999994
+    width: 1
+    height: 0.9994186
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42457,7 +42457,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1317269865
 Transform:
   m_ObjectHideFlags: 0
@@ -42849,7 +42849,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000027
+      value: -45.00003
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
@@ -43229,7 +43229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1871618496
 Transform:
   m_ObjectHideFlags: 0
