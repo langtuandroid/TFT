@@ -34,12 +34,14 @@ namespace Player
         private const string DEATH = "DeathTree";
         private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
+        private const string THROW = "ThrowItemTree";
         private const string MAGIC_ATTACK = "MagicAtkTree";
 
         [Header("Parameters")]
         private const string X_DIR = "x";
         private const string Y_DIR = "y";
         private const string IS_WALKING = "IsWalking";
+        private const string HAS_ITEM = "HasItem";
 
         private LifeEvents _lifeEvents;
         private MagicEvents _magicEvents;
@@ -169,7 +171,7 @@ namespace Player
 
         public void SetThrow()
         {
-            PlayPlayer( IDLE ); // aqí debe ir la animación de lanzar
+            PlayPlayer( THROW ); // aqï¿½ debe ir la animaciï¿½n de lanzar
         }
 
         public void IsWalking(bool isWalking)
@@ -177,6 +179,11 @@ namespace Player
             _playerAnimator.SetBool(IS_WALKING, isWalking);
         }
 
+        public void HasItem(bool hasItem)
+        {
+            _playerAnimator.SetBool(HAS_ITEM, hasItem);
+        }
+        
         public void SetMagicAttack()
         {
             PlayPlayer(MAGIC_ATTACK);
