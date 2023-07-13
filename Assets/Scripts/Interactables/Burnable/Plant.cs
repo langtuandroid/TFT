@@ -77,7 +77,7 @@ public class Plant : MonoBehaviour, IBurnable, IInteractable
             return;
         }
 
-        for (int i = _lifes; i > Mathf.Max(_lifes - damage, 0); i--)
+        for (int i = _lifes; i >= Mathf.Max(_lifes - damage, 0); i--)
         {
             // Desactivamos la planta actual
             _levels[i].SetActive(false);
