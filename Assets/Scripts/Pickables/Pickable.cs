@@ -22,6 +22,7 @@ public class Pickable : MonoBehaviour, IPickable
             _canPickItUp = false;
             _collider.enabled = false;
             transform.parent = pickUpPoint;
+            transform.localPosition = Vector3.zero;
         }
     }
 
