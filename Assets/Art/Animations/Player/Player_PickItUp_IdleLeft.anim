@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_PickItUp_IdleRight
+  m_Name: Player_PickItUp_IdleLeft
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -48,7 +48,7 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -429472490, guid: d5b111673a4ea4102bd1c756d14d7e80, type: 3}
+      value: {fileID: -966646532, guid: d5b111673a4ea4102bd1c756d14d7e80, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -75,7 +75,7 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -429472490, guid: d5b111673a4ea4102bd1c756d14d7e80, type: 3}
+    - {fileID: -966646532, guid: d5b111673a4ea4102bd1c756d14d7e80, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
