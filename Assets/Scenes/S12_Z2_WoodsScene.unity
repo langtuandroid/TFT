@@ -41196,7 +41196,7 @@ Camera:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.9997038
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42742,7 +42742,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000034
+      value: -45.000042
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y

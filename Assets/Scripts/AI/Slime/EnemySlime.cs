@@ -49,6 +49,8 @@ public class EnemySlime : MonoBehaviour
     private bool _canSeePlayer;
     
     private NavMeshAgent _navMeshAgent;
+
+    private SpriteRenderer _spriteRenderer;
     
     private float _nextWanderTime;
 
@@ -76,6 +78,11 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
+    }
+
+    private void Awake()
+    {
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Start()
@@ -203,13 +210,16 @@ public class EnemySlime : MonoBehaviour
     
     public void UpdatePatrolMovement(Vector3 waypoint)
     {
+         _spriteRenderer.transform.localScale = _navMeshAgent.velocity.x > 0f ? new Vector2(1f, 1f) : new Vector2(-1f, 1f);
+        
         _navMeshAgent.destination = waypoint;
     }
     
     public void Follow()
     {
         if(_canFollow)
-            _navMeshAgent.destination = _player.transform.position;
+            //_navMeshAgent.destination = _player.transform.position;
+            UpdatePatrolMovement(_player.transform.position);
     }
 
     private IEnumerator AlertExclamation()

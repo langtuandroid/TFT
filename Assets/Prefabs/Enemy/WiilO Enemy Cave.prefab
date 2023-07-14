@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &8951738399674458890
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.27
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924432, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924435, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_Name
+      value: WiilO Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _torchList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _playerInitialPosition
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _torchList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _torchList.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _torchList.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _torchList.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[3]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _wayPointsList.Array.data[6]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924446, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924447, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029928794091077, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8959827620793883894, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: m_Intensity
+      value: 0.15
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+--- !u!1 &3309164809765752141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5897029928794091079, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+  m_PrefabInstance: {fileID: 8951738399674458890}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1156072404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3309164809765752141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_LightType: 2
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.5
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.8
+  m_LightVolumeIntensity: 0.8
+  m_LightVolumeIntensityEnabled: 1
+  m_ApplyToSortingLayers: 2dbf05ceed242a4a55fc7a98a9fa056cb7aacb30d9d9cb7400000000
+  m_LightCookieSprite: {fileID: 21300000, guid: d79caa46b2c804e6bb8ec0d882e540c3, type: 3}
+  m_DeprecatedPointLightCookieSprite: {fileID: 0}
+  m_LightOrder: 1
+  m_AlphaBlendOnOverlap: 0
+  m_OverlapOperation: 1
+  m_NormalMapDistance: 3
+  m_NormalMapQuality: 2
+  m_UseNormalMap: 0
+  m_ShadowIntensityEnabled: 0
+  m_ShadowIntensity: 0.75
+  m_ShadowVolumeIntensityEnabled: 0
+  m_ShadowVolumeIntensity: 0.75
+  m_Vertices:
+  - position: {x: -0.5, y: 0.5, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 1}
+  - position: {x: 0.5, y: 0.5, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 1, y: 1}
+  - position: {x: -0.5, y: -0.5, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 0, y: 0}
+  - position: {x: 0.5, y: -0.5, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 1}
+    uv: {x: 1, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  - position: {x: 0, y: 0, z: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
+    uv: {x: 0, y: 0}
+  m_Triangles: 000001000200020001000300
+  m_LocalBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 0.5, z: 0}
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0
+  m_PointLightOuterRadius: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
