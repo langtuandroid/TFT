@@ -2579,8 +2579,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.99999994
-    height: 0.99930865
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -6084,7 +6084,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsRealMusicPlaying: 0
+  IsRealMusicPlaying: 1
 --- !u!4 &1468804489
 Transform:
   m_ObjectHideFlags: 0
