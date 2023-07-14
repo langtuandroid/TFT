@@ -11,6 +11,7 @@ TagManager:
   - PickUp
   - PatrolCollider
   - MagicPower
+  - PhisicalAttack
   layers:
   - Default
   - TransparentFX
