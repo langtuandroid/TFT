@@ -259,11 +259,20 @@ namespace Player
 
         private void DoPhysicalAction()
         {
+            if (_isPhysicActionInput)
+            {
+                _isPhysicAttacking = true;
+                _animatorBrain.SetPhysicalAttack();
+            }
+            
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
+            
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
             }
+        
             _isPhysicActionInput = false;
         }
 
