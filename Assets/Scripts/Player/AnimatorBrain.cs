@@ -35,6 +35,7 @@ namespace Player
         private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
         private const string THROW = "ThrowItemTree";
+        private const string PHYSICAL_ATTACK = "PhysicalAtkTree";
         private const string MAGIC_ATTACK = "MagicAtkTree";
 
         [Header("Parameters")]
@@ -189,9 +190,20 @@ namespace Player
             PlayPlayer(MAGIC_ATTACK);
         }
 
+        public void SetPhysicalAttack()
+        {
+            PlayPlayer(PHYSICAL_ATTACK);
+        }
+
+        
         public void PickUpItem()
         {
             PlayPlayer(PICKUP);
+        }
+
+        public bool HasCurrentAnimationEnded()
+        {
+            return _playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
         }
 
         public Vector2 LookDirection(Vector2 direction)
