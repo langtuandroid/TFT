@@ -28,13 +28,16 @@ public class FallFloorTilemap : MonoBehaviour
 
                 if ( _pitCollider.OverlapPoint( playerPos ) )
                 {
+                    float yOffset = 0.5f + 1f / 16 * 4;
+                    Vector2 centerPosition = new Vector2( transform.position.x , transform.position.y - yOffset );
+                    _playerRb.position = centerPosition;
                     _playerController.Fall();
                 }
                 else
                 {
-                    Vector2 direction = _centerOfHole.position;
+                    Vector2 direction = transform.position;
                     direction -= playerPos;
-                    //_playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                    _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
                 }
             }
         }
