@@ -2,8 +2,19 @@
 using UnityEngine;
 using FMODUnity;
 
-[CreateAssetMenu(fileName = "SfxRefSO", menuName = "Audio/Sfx Ref SO")]
-public class SfxRefSO : ScriptableObject
+namespace Audio
 {
-    public EventReference[] Sounds;
+    [CreateAssetMenu( fileName = "SfxRefSO" , menuName = "Audio/Sfx Ref SO" )]
+    public class SfxRefSO : ScriptableObject
+    {
+        [System.Serializable]
+        public class Sfx
+        {
+            public string SoundName;
+            public int Id;
+            public EventReference Sound;
+        }
+
+        public Sfx[] SfxRef;
+    }
 }

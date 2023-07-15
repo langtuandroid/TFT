@@ -1,44 +1,62 @@
-using System.Collections;
+using Attack;
 using System.Collections.Generic;
 using UnityEngine;
-using Utils;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-
         #region Private variables
-        // INPUTS
+        // SERVICES
         private GameInputs _gameInputs;
+        private InventoryEvents _inventoryEvents;
 
         // SCRIPTS DEL JUGADOR
-        // Script de movimiento del personaje
+        private PlayerStatus _playerStatus;
         private PlayerMovement _movement;
-        // Script de interacción del personaje
         private Interaction _interaction;
+        private FallController _fallController;
+        // Script de elevar objetos no pesados del personaje
+        private PickUpItem _pickable;
         // Script de salto del personaje
         private Jump _jump;
+        //private PlayerMagicAttack _magicAttack;
 
+        // Script de acción secundaria
+        private SecondaryAction _secondaryAction;
+        private AnimatorBrain _animatorBrain;
 
-        // COMPONENTES
-        // Animator del player
-        private Animator _anim;
+        // DATA
+        [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
 
-        // VARIABLES
-        // Jump state
-        private bool _isJumping;
+        // Inputs
+        // Jump input
+        private bool _isJumpInput;
 
-        // Movement state
+        // Movement input
         private Vector2 _direction;
-
-        // Interact state
-        private bool _isInteracting;
         private Vector2 _lookDirection;
 
-        // Axis (for animator)
-        private float _lastX;
-        private float _lastY;
+        // Interact input
+        private bool _isPhysicActionInput;
+
+        // Attack input
+        private bool _isPhysicAttacking;
+        private bool _isWeakMagicInput;
+        private bool _isMediumMagicInput;
+        private bool _isStrongMagicInput;
+
+        // Secondary action input
+        private bool _isSecondaryInput;
+
+        // Lists
+        // MagicAttack (primary skill) list
+        private List<MagicAttack> _magicAttacks;
+        private int _magicIndex => _playerStatus.PrimarySkillIndex;
+
+        // Secondary action (or skill) list
+        private List<SecondaryAction> _secondaryActions;
+        private int _secondaryIndex => _playerStatus.SecondarySkillIndex;
 
         #endregion
 
@@ -47,234 +65,440 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
-            _movement = GetComponent<PlayerMovement>();
-            _interaction = GetComponent<Interaction>();
-            _jump = GetComponent<Jump>();
+            _animatorBrain = GetComponentInChildren<AnimatorBrain>();
+            Collider2D collider = GetComponent<Collider2D>();
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            Transform characterVisualTrans = transform.Find( _physicalDataSO.visualObjName );
+            Transform pickUpPointTrans = characterVisualTrans.transform.Find( _physicalDataSO.pickUpPointObjName );
 
-            _anim = GetComponentInChildren<Animator>();
+            _movement = new PlayerMovement(rb , _physicalDataSO);
+            _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
+            _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
+            _pickable = new PickUpItem();
+            _fallController = new FallController( rb , collider , _animatorBrain , _physicalDataSO );
+            //_magicAttack = GetComponent<PlayerMagicAttack>();
+            _secondaryAction = GetComponent<LightAttack>();
+            _playerStatus = GetComponent<PlayerStatus>();
 
             // Inicializamos variables
-            // Jump state
-            _isJumping = false;
-            // Interact state
-            _isInteracting = false;
+            _magicAttacks = new List<MagicAttack>();
+            AddMagicAttacks();
 
-            // Axis
-            _lastX = 0f;
-            _lastY = 0f;
-
+            _secondaryActions = new List<SecondaryAction>();
+            _pickable.Init(transform, pickUpPointTrans , collider.offset, 
+                _physicalDataSO.interactableLayerMask , _animatorBrain);
         }
 
+#if UNITY_EDITOR
+        private bool _isInitialized;
         private void Start()
         {
+            if (!_isInitialized)
+                Init(Vector2.down, 1 << 16);
+        }
+#endif
+
+        public void Init(Vector2 startLookDirection, LayerMask initialGroundLayerMask)
+        {
+#if UNITY_EDITOR
+            _isInitialized = true;
+#endif
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
+            _animatorBrain.Init(startLookDirection, _jump);
+            _fallController.Init( transform.position , audioSpeaker );
+            _magicAttacks[_magicIndex].Select();
+
             _gameInputs = ServiceLocator.GetService<GameInputs>();
-            _gameInputs.OnSouthButtonStarted += GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled += GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnEastButtonPerformed += GameInputs_OnEastButtonPerformed;
+            _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnPhysicActionButtonStarted += GameInputs_OnPhysicActionButtonStarted;
+            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
+
+
+            _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            _inventoryEvents.OnPrimarySkillChange += OnChangeMagic;
+
+            ServiceLocator.GetService<LifeEvents>().OnFallDown += _fallController.StartRecovering;
         }
 
         private void OnDestroy()
         {
-            _gameInputs.OnSouthButtonStarted -= GameInputs_OnSouthButtonStarted;
-            _gameInputs.OnSouthButtonCanceled -= GameInputs_OnSouthButtonCanceled;
-            _gameInputs.OnEastButtonPerformed -= GameInputs_OnEastButtonPerformed;
+            _gameInputs.OnJumpButtonStarted -= GameInputs_OnJumpButtonStarted;
+            _gameInputs.OnJumpButtonCanceled -= GameInputs_OnJumpButtonCanceled;
+            _gameInputs.OnPhysicActionButtonStarted -= GameInputs_OnPhysicActionButtonStarted;
+            _gameInputs.OnMediumAttackButtonStarted -= GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled -= GameInputs_OnMediumAttackButtonCanceled;
+            _gameInputs.OnWeakAttackButtonStarted -= GameInputs_OnWeakAttackButtonStarted;
+            _gameInputs.OnWeakAttackButtonCanceled -= GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
+            _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
+
+            _inventoryEvents.OnPrimarySkillChange -= OnChangeMagic;
+            ServiceLocator.GetService<LifeEvents>().OnFallDown -= _fallController.StartRecovering;
         }
 
         private void Update()
         {
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud,
+            // si está aturdido
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+            {
+                //if (_magicAttacks[_magicIndex].IsUsingStrongAttack)
+                //    _animatorBrain.IsWalking(false);
+
+                if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
+                    GameInputs_OnMediumAttackButtonCanceled();
+
+                return;
+            }
+
+            if (_playerStatus.IsStunned &&
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
+                GameInputs_OnMediumAttackButtonCanceled();
+
+
             // Controlamos las acciones
             GetActionsInformation();
 
-            // Realizamos acciones
-            DoUpdateActions();
+            // Realizamos salto
+            DoJump();
+
+            // Realizamos las interacciones físicas
+            DoPhysicalAction();
+
+            // Atacamos con magia
+            DoMagicAttack();
+
+            // Realizamos la acción secundaria
+            // (hechizos menores / uso de consumibles)
+            DoSecondaryAction();
 
             // Cambiamos la animación según corresponda
-            SetAnimations();
+            SetWalkingAnim();
         }
 
         private void FixedUpdate()
         {
-            DoFixedUpdateActions();
+            // TODO: GameOver
+            // Si el jugador ha perdido toda su salud,
+            // si está aturdido
+            // o si está usando el poder máximo, volvemos
+            if (_playerStatus.IsDeath ||
+                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+                return;
+
+            // Nos movemos
+            DoMove();
         }
 
         #endregion
 
-        #region Private methods
-
-        #region Actions
+        private void AddMagicAttacks()
+        {
+            _magicAttacks.Add(GetComponent<FireAttack>());
+            _magicAttacks.Add(GetComponent<PlantAttack>());
+            _magicAttacks.Add(GetComponent<WaterAttack>());
+        }
 
         private void GetActionsInformation()
         {
             // Obtenemos la dirección
-            GetDirection();
-
-            // Vemos si interactuamos
-            GetInteraction();
-        }
-
-        private void DoUpdateActions()
-        {
-            // Realizamos salto
-            DoJump();
-            // Realizamos interacción
-            DoInteraction();
-        }
-
-        private void DoFixedUpdateActions()
-        {
-            // Movemos a nuestro player
-            DoMove();
-        }
-
-        #region Movement
-
-        private void GetDirection()
-        {
-            // Obtenemos el vector de dirección
             _direction = _gameInputs.GetDirectionNormalized();
+
+
+            if (_jump.IsPerformingJump ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack ||
+                _fallController.HasFalled
+                )
+                return;
+
+            _lookDirection = _animatorBrain.LookDirection(_direction);
         }
 
         private void DoMove()
         {
-            _movement.Move(_direction);
+            if ( _fallController.IsNotOnScreen )
+            {
+                _fallController.Move();
+                return;
+            }
+            else 
+            if ( _fallController.IsFalling )
+                return;
+
+
+            if ( _jump.IsOnAir )
+                _movement.MoveOnAir(_direction);
+            else
+            if (_jump.IsCooldown)
+                _movement.Stop();
+            else
+            if (!_jump.IsPerformingJump)
+                _movement.Move(_direction);
+            else
+                _movement.Stop();
         }
 
-        #endregion
-
         #region Jump
-        private void GameInputs_OnSouthButtonCanceled() => _isJumping = false;
-        private void GameInputs_OnSouthButtonStarted()
+        private void GameInputs_OnJumpButtonCanceled() => _isJumpInput = false;
+        private void GameInputs_OnJumpButtonStarted()
         {
-            if (_jump.CanJump)
-                _isJumping = true;
+            if (_playerStatus.IsJumpUnlocked)
+                if (CanJump())
+                    _isJumpInput = true;
         }
 
         private void DoJump()
         {
-            if (_isJumping)
-                _jump.JumpAction();
-            else
-                _jump.Fall();
+            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting 
+                || _fallController.IsNotOnScreen )
+            {
+                return;
+            }
+
+            _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
+            if (!_jump.IsPerformingJump)
+                _isJumpInput = false;
         }
 
         #endregion
 
-        #region Interact
+        #region Physical Actions
 
-        private void GameInputs_OnEastButtonPerformed() => _isInteracting = true;
+        private void GameInputs_OnPhysicActionButtonStarted() => _isPhysicActionInput = true;
 
-        private void GetInteraction()
+        private void DoPhysicalAction()
         {
-            if (_direction.magnitude > 0.05f)
-                _lookDirection = _direction;
+            if (_isPhysicActionInput)
+            {
+                _isPhysicAttacking = true;
+                _animatorBrain.SetPhysicalAttack();
+            }
+            
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
+            
+            if (!_jump.IsPerformingJump || !IsAttacking())
+            {
+                DoInteraction();
+                DoPickUpItem();
+            }
+        
+            _isPhysicActionInput = false;
         }
 
         private void DoInteraction()
         {
-            if (_isJumping)
+            if (_pickable.HasItem)
                 return;
 
-            if (_isInteracting)
+            _interaction.Interact(_isPhysicActionInput, _lookDirection);
+        }
+
+        private void DoPickUpItem()
+        {
+            if (_interaction.IsInteracting)
+                return;
+
+            if (!_pickable.HasItem)
             {
-                _interaction.Interact(_lookDirection);
-                _isInteracting = false;
+                if (_pickable.CanPickItUp(_lookDirection))
+                {
+                    if (_isPhysicActionInput)
+                    {
+                        _pickable.PickItUp(_lookDirection);
+                    }
+                }
+            }
+            else
+            {
+                if (_isPhysicActionInput)
+                {
+                    if(_pickable != null)
+                        _pickable.ThrowIt(_lookDirection);
+                }
             }
         }
 
-
         #endregion
 
-        #endregion
+        #region Secondary Action
 
-        #region Animations
-
-        private void SetAnimations()
+        private void GameInputs_OnSecondaryButtonPerformed()
         {
-            // Controlamos los saltos
-            _anim.SetBool(Constants.ANIM_PLAYER_JUMP, _isJumping);
+            if (!_jump.IsPerformingJump
+                && !IsAttacking())
+                _isSecondaryInput = true;
+        }
+
+        private void DoSecondaryAction()
+        {
+            if (!_isSecondaryInput)
+                return;
+
+            // Activamos el efecto de la acción secundaria
+            Debug.Log(_lookDirection);
+            _secondaryAction.SetDirection(_lookDirection);
+            _secondaryAction.Effect();
+            _isSecondaryInput = false;
+        }
+
+        #endregion
+
+        #region States Control
+
+        private bool CanJump()
+        {
+            return !_jump.IsPerformingJump && !IsAttacking();
+        }
+
+        private bool IsAttacking()
+        {
+            return _isPhysicAttacking ||
+                _magicAttacks[_magicIndex].IsUsingWeakAttack ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack ||
+                _magicAttacks[_magicIndex].IsUsingStrongAttack
+                ;
+        }
+
+
+        #region Magic attack
+
+        private void GameInputs_OnWeakAttackButtonStarted()
+        {
+            if (_playerStatus.CanUseMagicAttacks()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isWeakMagicInput = true;
+        }
+        private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
+        private void GameInputs_OnMediumAttackButtonStarted()
+        {
+            if (_playerStatus.CanUseMagicAttacks()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isMediumMagicInput = true;
+        }
+
+        private void GameInputs_OnMediumAttackButtonCanceled()
+        {
+            _isMediumMagicInput = false;
+
+            // Si está usando el poder medio
+            if (_magicAttacks[_magicIndex].IsUsingMediumAttack)
+                // Lo detenemos
+                _magicAttacks[_magicIndex].StopMediumAttack();
+
+        }
+
+        private void GameInputs_OnStrongAttackButtonPerformed()
+        {
+            if (_playerStatus.CanUseMagicAttacks()
+                && _playerStatus.CanUseMaxPower()
+                //&& _magicAttack.CanUseMaxAttack()
+                && !_jump.IsPerformingJump
+                && !IsAttacking()
+                )
+                _isStrongMagicInput = true;
+        }
+
+        /// <summary>
+        /// Gestiona los ataques mágicos
+        /// </summary>
+        private void DoMagicAttack()
+        {
+            if (_playerStatus.IsWeakMagicUnlocked)
+                DoWeakMagicAttack();
+            if (_playerStatus.IsMediumMagicUnlocked)
+                DoMediumMagicAttack();
+            if (_playerStatus.IsStrongMagicUnlocked)
+                DoStrongMagicAttack();
+        }
+
+        /// <summary>
+        /// Gestiona los ataques débiles
+        /// </summary>
+        private void DoWeakMagicAttack()
+        {
+            if (!_isWeakMagicInput)
+                return;
+
+            // Reseteamos variables
+            _isWeakMagicInput = false;
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
+            // Y activamos la magia débil
+            _magicAttacks[_magicIndex].WeakAttack(_lookDirection);
+        }
+
+        /// <summary>
+        /// Gestiona los ataques medios
+        /// </summary>
+        private void DoMediumMagicAttack()
+        {
+            if (!_isMediumMagicInput ||
+                _magicAttacks[_magicIndex].IsUsingMediumAttack)
+                return;
+
+            // Activamos las variables de magia media e invocamos el nuevo ataque
+            _magicAttacks[_magicIndex].MediumAttack(_lookDirection);
+
+        }
+
+        /// <summary>
+        /// Gestiona los ataques fuertes
+        /// </summary>
+        private void DoStrongMagicAttack()
+        {
+            if (!_isStrongMagicInput)
+                return;
+
+            // Activamos la magia fuerte
+            _isStrongMagicInput = false;
+            // Reseteamos el contador
+            _playerStatus.RestartMagicTimer();
+            _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
+        }
+
+        #endregion
+
+        #endregion
+
+        // TODO: Selecci�n de tipo de acci�n
+        private void OnChangeMagic(int idx)
+        {
+            _playerStatus.PrimarySkillIndex = idx;
+            _magicAttacks[idx].Select();
+        }
+
+        private void SetWalkingAnim()
+        {
             // Si está saltando
-            if (_isJumping)
-                // Volvemos
+            if (_jump.IsPerformingJump || 
+                _magicAttacks[_magicIndex].IsUsingStrongAttack)
+            {
                 return;
-
-            // Controlamos el movimiento
-            ControlWalking2();
-        }
-
-        private void ControlWalking()
-        {
-            bool isWalking = _direction.magnitude > 0f;
-            _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
-
-            if (isWalking)
-            {
-                float x = _direction.x;
-                float y = _direction.y;
-
-
-                _lastX = (Mathf.Abs(_lastY) > 0f &&
-                    Mathf.Abs(y) > 0f &&
-                    _lastX == 0f && Mathf.Abs(x) > 0f) ?
-                    _lastX : x;
-
-                _lastY = (Mathf.Abs(_lastX) > 0f &&
-                    Mathf.Abs(x) > 0f &&
-                    _lastY == 0f && Mathf.Abs(y) > 0f) ?
-                    _lastY : y;
-
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lastX);
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lastY);
             }
+
+            _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
 
-        private void ControlWalking2()
+        public bool IsGrounded => !_jump.IsOnAir;
+        public void Fall()
         {
-            bool isWalking = _direction.magnitude > 0f;
-            _anim.SetBool(Constants.ANIM_PLAYER_WALKING, isWalking);
-
-            if (isWalking)
-            {
-                float x = _direction.x;
-                float y = _direction.y;
-
-                if (Mathf.Abs(x) > Mathf.Abs(y))
-                {
-                    _lastX = x > 0f ? 1f : -1f;
-                    _lastY = 0f;
-                }
-                else if (Mathf.Abs(y) > Mathf.Abs(x))
-                {
-                    _lastX = 0f;
-                    _lastY = y > 0f ? 1f : -1f;
-                }
-                else
-                {
-                    if (x == 0f && y == 0f)
-                    {
-                        _lastX = x;
-                        _lastY = y;
-                    }
-                    else if (Mathf.Abs(_lastX) > Mathf.Abs(_lastY))
-                    {
-                        _lastX = x > 0f ? 1f : -1f;
-                        _lastY = 0f;
-                    }
-                    else
-                    {
-                        _lastX = 0f;
-                        _lastY = y > 0f ? 1f : -1f;
-                    }
-                }
-
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRX, _lastX);
-                _anim.SetFloat(Constants.ANIM_PLAYER_DIRY, _lastY);
-            }
+            _jump.FallInHole();
+            _movement.Stop();
+            _fallController.SetFalling();
         }
-
-        #endregion
-
-
-
-        #endregion
     }
 }

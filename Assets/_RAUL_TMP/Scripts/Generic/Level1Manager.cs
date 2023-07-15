@@ -72,7 +72,7 @@ public class Level1Manager : MonoBehaviour
 
         yield return new WaitForSeconds(_secondsToChangeCam);
 
-        PlayerMovement.Instance.ChangeWorldPosition(_destinationTransform);
+        //PlayerMovement.Instance.ChangeWorldPosition(_destinationTransform);
 
         VCam1.enabled = false;
     }

@@ -1,17 +1,19 @@
 using UnityEngine.SceneManagement;
 
-namespace SceneLoadSystem
+public class SceneLoader
 {
-    public static class SceneLoader
+    public string SceneToLoad => _targetScene;
+
+    private string _targetScene;
+
+    public void Load( string targetSceneName )
     {
-        public static string SceneToLoad => _targetScene;
+        _targetScene = targetSceneName;
+        SceneManager.LoadScene( SceneName.S01_LoadingScene.ToString() );
+    }
 
-        private static string _targetScene;
-
-        public static void Load(string targetSceneName)
-        {
-            _targetScene = targetSceneName;
-            SceneManager.LoadScene( SceneName.S01_LOADING );
-        }
+    public void InstaLoad( string targetSceneName )
+    {
+        SceneManager.LoadScene( targetSceneName );
     }
 }

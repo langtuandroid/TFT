@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
+  m_Name: Woods Zone0 StartRefInfoSO
+  m_EditorClassIdentifier: 
+  startRefInfoArray:
+  - exitZoneDescription: South Enter - From City
+    startPointRefID: 0
+    startPosition: {x: -1.5, y: -5}
+    _playerStartLookDirection: 0
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+    confinerColliderIndex: 0
+  - exitZoneDescription: North Enter - From Altar
+    startPointRefID: 1
+    startPosition: {x: 19.5, y: 81}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
+    confinerColliderIndex: 1

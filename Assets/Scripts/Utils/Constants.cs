@@ -4,8 +4,7 @@ namespace Utils
     {
         #region Tags
         #region Fire Attacks
-        public const string TAG_FIRE_BALL = "FireBall";
-        public const string TAG_FLAMES = "Flames";
+        public const string TAG_MAGIC_POWER = "MagicPower";
 
         #endregion
 
@@ -28,7 +27,14 @@ namespace Utils
         #endregion
         #endregion
 
-        #region Animations
+        #region Layers
+
+        public const string LAYER_PLAYER = "Player";
+        public const string LAYER_INTERACTABLE = "Interactable";
+
+        #endregion
+
+        #region Animations variables
 
         #region Player
         public const string ANIM_PLAYER_JUMP = "Jump";
@@ -42,6 +48,31 @@ namespace Utils
         public const string ANIM_CHEST_OPENED = "Opened";
 
         #endregion
+
+        #endregion
+
+        #region Offset
+
+        public const float PLAYER_OFFSET = 0.8125f;
+
+        #endregion
+
+        #region Attack variables
+
+
+        #region Magic maxpower panel names
+
+        public const string PANEL_FIRE = "FirePower";
+        public const string PANEL_LEAF = "LeafPower";
+        public const string PANEL_WATER = "WaterPower";
+
+        #endregion
+
+        #endregion
+
+        #region Health variables
+
+        public const int MAX_QUANTITY_OF_HEARTS = 32;
 
         #endregion
 

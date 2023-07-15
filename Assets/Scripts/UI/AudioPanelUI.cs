@@ -10,9 +10,14 @@ namespace UI
         [SerializeField] private Slider _musicVolumeSlider;
         [SerializeField] private Slider _sfxVolumeSlider;
 
+        private IAudioSpeaker _audioSpeaker;
+        private OptionsSave  _optionsSave;
+
         private void Start()
         {
-            InitSliders();
+            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _optionsSave  = ServiceLocator.GetService<OptionsSave>();
+            InitAudioSettings();
             SetSliderEvents();
         }
 
@@ -22,22 +27,26 @@ namespace UI
             _sfxVolumeSlider.onValueChanged.AddListener( delegate { ChangeSfxVolume(); } );
         }
 
-        private void InitSliders()
+        private void InitAudioSettings()
         {
-            _musicVolumeSlider.value = AudioManager.Instance.MusicVolume() * _musicVolumeSlider.maxValue;
-            _sfxVolumeSlider.value = AudioManager.Instance.SfxVolume() * _sfxVolumeSlider.maxValue;
+            _musicVolumeSlider.value = _audioSpeaker.MusicVolume() * _musicVolumeSlider.maxValue;
+            _sfxVolumeSlider.value   = _audioSpeaker.SfxVolume()   * _sfxVolumeSlider.maxValue;
+            _optionsSave.musicVolume = _audioSpeaker.MusicVolume();
+            _optionsSave.sfxVolume   = _audioSpeaker.SfxVolume();
         }
 
         private void ChangeMusicVolume()
         {
             float volume = _musicVolumeSlider.value / _musicVolumeSlider.maxValue;
-            AudioManager.Instance.SetMusicVolume( volume );
+            _audioSpeaker.SetMusicVolume( volume );
+            _optionsSave.musicVolume = volume;
         }        
         
         private void ChangeSfxVolume()
         {
             float volume = _sfxVolumeSlider.value / _sfxVolumeSlider.maxValue;
-            AudioManager.Instance.SetSfxVolume( volume );
+            _audioSpeaker.SetSfxVolume( volume );
+            _optionsSave.sfxVolume = volume;
         }
     }
 }

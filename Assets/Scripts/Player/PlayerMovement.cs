@@ -2,110 +2,42 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement
     {
-        public static PlayerMovement Instance;
-
-        #region SerializeFields
-
-        [Header("Move Settings")]
-        [SerializeField] private float _speed; // Velocidad de movimiento del personaje
-
-        //[Header("Attack")]
-        //private PlayerAttackExtra _attack;
-
-        #endregion
-
-        #region Const Variables
-
-        public enum AnimationLayers
-        {
-            // Animaciones de caminar
-            WalkDown,
-            WalkHorizontal,
-            WalkUp,
-            // Animaciones de salto
-            JumpDown,
-            JumpHorizontal,
-            JumpUp,
-            // Animaciones de ataque
-            // Animación nula
-            Null
-        }
-        #endregion
-
-        #region Public Variables
-
-        public AnimationLayers Layer => _layer; // Da la capa de animación en la que estamos
-        public bool HorizontalFlip => _spriteRend.flipX; // Devuelve si está volteado el sprite o no
-        #endregion
-
-        #region Private Variables
-        // SERVICIOS
-        private GameInputs _gameInputs;
-
-        // COMPONENTES DEL GAMEOBJECT
+        private float _speed; // Velocidad de movimiento del personaje
+        private float _accelerationOnAir; // Aceleración presente en el personaje en el aire
+        private float _currentSpeedOnAir; // Velocidad de movimiento del personaje en el aire
         private Rigidbody2D _rb; // RigidBody del personaje
-        private SpriteRenderer _spriteRend; // SpriteRenderer del personaje
-        private Collider2D _collider;
-        private Interaction _interaction;
 
-        // ANIMATOR
-        private AnimationLayers _layer; // Layer en ese momento
-
-
-        #endregion
-
-        #region Unity Methods
-
-        private void Awake()
+        public PlayerMovement( Rigidbody2D rigidbody2d , PlayerPhysicalDataSO physicalData )
         {
-            //Hacemos Singleton a la clase
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-                Destroy(gameObject);
-
-            // Inicializamos variables
-            _rb = GetComponent<Rigidbody2D>();
-            _spriteRend = GetComponentInChildren<SpriteRenderer>();
-            _collider = GetComponent<Collider2D>();
-            _interaction = GetComponent<Interaction>();
-            //_attack = GetComponent<PlayerAttackExtra>();
-
-            // Establecemos como layer inicial el primero (Walkdown)
-            _layer = AnimationLayers.WalkDown;
-            // Y el layer para el salto a null
-            //_jumpLayer = AnimationLayers.Null;
+            _rb = rigidbody2d;
+            _speed = physicalData.moveSpeed;
+            _accelerationOnAir = physicalData.accelerationOnAir;
         }
-
-        #endregion
-
-
-        #region Public Methods
 
         /// <summary>
         /// Mueve el GameObject del personaje
         /// </summary>
         public void Move(Vector2 direction)
         {
-            // Y movemos el RigidBody
             _rb.MovePosition(_rb.position + Time.deltaTime * _speed * direction);
+
+            _currentSpeedOnAir = direction.magnitude > 0 ? _speed : 0;
+            _rb.velocity = Vector2.zero;
         }
 
-        /// <summary>
-        /// Método que cambia la ubicación del personaje
-        /// </summary>        
-        public void ChangeWorldPosition(Transform _destinyTransform)
+        public void MoveOnAir( Vector2 direction )
         {
-            transform.position =
-                new Vector3(_destinyTransform.position.x, _destinyTransform.position.y, _destinyTransform.position.z);
+            _currentSpeedOnAir += Time.deltaTime * _accelerationOnAir;
+            Vector2 airVelocity = _currentSpeedOnAir * direction;
+            _rb.velocity = Vector2.ClampMagnitude( airVelocity , _speed );
         }
 
-        #endregion
-
+        public void Stop()
+        {
+            _currentSpeedOnAir = 0;
+            _rb.velocity = Vector2.zero;
+        }
     }
 }

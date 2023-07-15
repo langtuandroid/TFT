@@ -7,3 +7,4 @@ Lang Code	EN	PL	ES	DE	FR	JP
 ^text_new_lines_and_params	Parameter1: {0}\nParameter2: {1}\nParameter3: {2}	Parametr1: {0}\nParametr2: {1}\nParametr3: {2}	Parámetro1: {0}\nParámetro2: {1}\nParámetro3: {2}	Parameter1: {0}\nParameter2: {1}\nParameter3: {2}	Paramètre1: {0}\nParamètre2: {1}\nParamètre3: {2}	パラメーター {0}\n パラメーター {1}\n パラメーター {2}
 ^demo	This is a demo.	--	Esto es una demo	--	--	--
 ^text_init	Look for the torch and fire them with Fire Ball.	--	Busca las antorchas y enciéndelas con Bola de Fuego.	--	--	--
+^inventario_vara	[EN] La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.	--	La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.	--	--	--

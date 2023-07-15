@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9082e7d3b8a2a4d4b912d690bb9a2655, type: 3}
+  m_Name: 00_PlayerSfxRefSO
+  m_EditorClassIdentifier: 
+  SfxRef:
+  - SoundName: Physic Attack Execution
+    Id: 0
+    Sound:
+      Guid:
+        Data1: 65194241
+        Data2: 1260443222
+        Data3: 1114857652
+        Data4: -403713491
+      Path: event:/Sfx/Magic/Fire_Weak
+  - SoundName: Physic Attack Hit
+    Id: 1
+    Sound:
+      Guid:
+        Data1: -1014883429
+        Data2: 1261173637
+        Data3: 1987998902
+        Data4: 1639661670
+      Path: event:/Sfx/Magic/Fire_Weak_Hit
+  - SoundName: Jump
+    Id: 2
+    Sound:
+      Guid:
+        Data1: -308835466
+        Data2: 1192407389
+        Data3: 1602640287
+        Data4: -454761511
+      Path: event:/Sfx/Player/Jump
+  - SoundName: Landing
+    Id: 3
+    Sound:
+      Guid:
+        Data1: 69745454
+        Data2: 1341407982
+        Data3: -2004598605
+        Data4: -1717238658
+      Path: event:/Sfx/Player/Jump_Land
+  - SoundName: 'Pick Up '
+    Id: 4
+    Sound:
+      Guid:
+        Data1: -308835466
+        Data2: 1192407389
+        Data3: 1602640287
+        Data4: -454761511
+      Path: event:/Sfx/Player/Jump
+  - SoundName: Throw
+    Id: 5
+    Sound:
+      Guid:
+        Data1: 1087421646
+        Data2: 1227109464
+        Data3: 1188981898
+        Data4: 1516262500
+      Path: event:/Sfx/Player/Throw

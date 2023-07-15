@@ -19,7 +19,7 @@ public static class ServiceLocator
     public static T GetService<T>()
     {
         Type type = typeof( T );
-        Assert.IsTrue( _serviceContainer.ContainsKey( type ) );
+        Assert.IsTrue( _serviceContainer.ContainsKey( type ) , $"{type}" );
         return ( T )_serviceContainer[type];
     }
 }

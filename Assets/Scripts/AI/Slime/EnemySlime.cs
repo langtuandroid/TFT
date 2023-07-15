@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils;
@@ -19,41 +22,37 @@ public class EnemySlime : MonoBehaviour
     private float _speed;
 
     [SerializeField]
-    [Tooltip("Distancia a la que para si encuentra una pared.")]
-    private float _wallAware = 0.5f;
-    
-    [SerializeField]
     [Tooltip("Tiempo en segundos para cambiar su dirección.")]
     private float _secondsToChangeDirection;
 
     [SerializeField]
     [Tooltip("Radio del sentido del oído.")]
     private float _earRadious;
+
+    [SerializeField] 
+    [Tooltip("Icono exclamación")]
+    private GameObject _exclamation;
     
     #endregion
     
     #region REFERENCES
-    private ContactFilter2D _contactFilter = new ContactFilter2D();
+    private LayerMask _layer = 3;
     
-    private LayerMask _layer = 0;
-
     private GameObject _player;
 
-    private float _timer;
-    
-    private bool _canPatrol;
+    private Collider2D boundsCollider;
 
-    private bool _canFollow;
+    private float _timer;
 
     private bool _canCheckDistance;
 
     private bool _canSeePlayer;
     
     private NavMeshAgent _navMeshAgent;
+
+    private SpriteRenderer _spriteRenderer;
     
     private float _nextWanderTime;
-
-    private Collider2D boundsCollider;
 
     private FsmEnemySlime _actualState;
     public FsmEnemySlime ActualState
@@ -62,40 +61,68 @@ public class EnemySlime : MonoBehaviour
         set => _actualState = value;
     }
 
+    private bool _isOnProcedural;
+    
+    private bool _followState;
+    
+    private bool _canFollow;
+
+    private bool _slimeLoaded;
+
+    private LifeEvents _lifeEvents;
+
     #endregion
     
     #region UNITY METHODS
+
+    private void OnDestroy()
+    {
+        _lifeEvents.OnDeathValue -= OnStopFollow;
+    }
+
     private void Awake()
     {
-        PrepareComponent();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
-    
+
     void Start()
     {
-        Init();
+        _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+        _lifeEvents.OnDeathValue += OnStopFollow;
+        
+        if ( !_isOnProcedural )
+        {
+            boundsCollider = GetComponentInParent<Collider2D>();
+            PrepareComponent();
+            Init();
+        }
     }
     
     void Update()
     {
-        _actualState.Execute(this);
+        if (!_slimeLoaded) return;
+
+        if ( _isOnProcedural )
+        {
+            
+            Vector3 direction = _player.transform.position - transform.position;
+            transform.position += Time.deltaTime * _speed * direction.normalized;
+        }
+        else
+            _actualState.Execute(this);
     }
     
     private void PrepareComponent()
     {
-        //Player
-        if (_player == null)
-            _player = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PLAYER);
-
-        //NavMesh
         _navMeshAgent = GetComponent<NavMeshAgent>();
-        
-        //Collider donde patrulla el slime
-        boundsCollider = FindGameObject.WithCaseInsensitiveTag(Constants.TAG_PATROL_COLLIDER).GetComponent<Collider2D>();
+        _slimeLoaded = true;
     }
 
     private void Init()
-    { 
+    {
         _navMeshAgent.speed = _speed;
+
+        _nextWanderTime = _secondsToChangeDirection;
 
         _actualState =  new EnemySlimePatrolState();
         
@@ -114,43 +141,32 @@ public class EnemySlime : MonoBehaviour
     public bool CanSeePlayer()
     {
         _canSeePlayer = false;
-        
-        Collider2D[] results = new Collider2D[5];
 
-        int objectsDetected = Physics2D.OverlapCircle(transform.position, _earRadious, _contactFilter, results);
+        //var hitColliders = Physics2D.OverlapCircle(center, radius, 1 << LayerMask.NameToLayer("Enemies")); 
+        Collider2D results = Physics2D.OverlapCircle(transform.position, _earRadious, LayerMask.GetMask(Constants.TAG_PLAYER));
 
-        if (objectsDetected > 0)
+        if (results != null)
         {
-            foreach (var item in results)
+            if (results.CompareTag(Constants.TAG_PLAYER))
             {
-                if (item != null)
+                if (results.GetComponent<PlayerStatus>().HasTemporalInvencibility)
+                    _canSeePlayer = false;
+                else
                 {
-                    if (item.CompareTag(Constants.TAG_PLAYER))
-                    {
-                        _canSeePlayer = true;
-                        break;
-                    }
+                    _canSeePlayer = true;
+                    _player = results.gameObject;
                 }
-
             }
         }
 
+        if (_canSeePlayer && !_followState)
+        {
+            _followState = true;
+            StartCoroutine(nameof(AlertExclamation));
+        }
+        
         return _canSeePlayer;
     }
-
-    public bool ObstacleAware()
-    {
-        bool result = false;
-        
-        Vector3 direction = transform.TransformDirection(_player.transform.position - transform.position);
-
-        if (Physics2D.Raycast(transform.position, direction, _wallAware, _layer))
-            result = true;
-        
-        return result;
- 
-    }
-    
     #endregion
     
     #region MOVEMENT
@@ -159,18 +175,21 @@ public class EnemySlime : MonoBehaviour
     {
         if (TimeToChangeDirection())
         {
+            _followState = false;
+            _canFollow = false;
             UpdatePatrolMovement(GetRandomPosition());
         }
     }
 
-    public void ChangeDirectionAndPatrol()
+    private void OnStopFollow()
     {
-        UpdatePatrolMovement(GetRandomPosition());
+        _slimeLoaded = false;
     }
     
     private Vector3 GetRandomPosition()
     {
-        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        //Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x;
+        Vector2 randomPoint = Random.insideUnitCircle * boundsCollider.bounds.extents.x * 5;
         Vector3 targetPosition = new Vector3(boundsCollider.bounds.center.x + randomPoint.x, boundsCollider.bounds.center.y + randomPoint.y, 0);
 
         return targetPosition;
@@ -191,32 +210,42 @@ public class EnemySlime : MonoBehaviour
     
     public void UpdatePatrolMovement(Vector3 waypoint)
     {
+         _spriteRenderer.transform.localScale = _navMeshAgent.velocity.x > 0f ? new Vector2(1f, 1f) : new Vector2(-1f, 1f);
+        
         _navMeshAgent.destination = waypoint;
     }
     
     public void Follow()
     {
-        _navMeshAgent.destination = _player.transform.position;
+        if(_canFollow)
+            //_navMeshAgent.destination = _player.transform.position;
+            UpdatePatrolMovement(_player.transform.position);
     }
 
+    private IEnumerator AlertExclamation()
+    {
+        _exclamation.SetActive(true);
+        
+        yield return new WaitForSeconds(1f);
+        
+        _exclamation.SetActive(false);
+
+        _canFollow = true;
+    }
+
+    public void SetAsProceduralEnemy( Transform playerTransform )
+    {
+        _isOnProcedural = true;
+        _player = playerTransform.gameObject;
+        GetComponent<NavMeshAgent>().enabled = false;
+    }
+
+
     #endregion
-    
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _earRadious);
-
-        if (_player != null)
-        {
-            Gizmos.color = Color.blue;
-            Vector3 direction = transform.TransformDirection(_player.transform.position - transform.position);
-            Gizmos.DrawRay(transform.position, direction);
-        
-            Gizmos.color = Color.green;
-            Vector3 direction2 = transform.TransformDirection(_player.transform.position - transform.position);
-            Gizmos.DrawRay(transform.position, direction2 * 1.5f);
-        }
-   
-
     }
 }

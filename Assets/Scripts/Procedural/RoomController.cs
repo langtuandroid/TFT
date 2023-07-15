@@ -1,13 +1,17 @@
+using Player;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Procedural
 {
     public class RoomController : MonoBehaviour
     {
         public event Action OnEnterRoom;
+        public event Action OnRoomFinished;
 
+        private static Transform _playerTransform;
 
         [SerializeField] private GameObject _playerPrefab;
 
@@ -18,7 +22,7 @@ namespace Procedural
         [SerializeField] private DoorController _westDoorController;
 
         [Header("Enemies")]
-        [SerializeField] private GameObject _bossPrefab;
+        [SerializeField] private GameObject _bossRoomTransporterPrefab;
         [SerializeField] private GameObject _miniBossPrefab;
         [SerializeField] private List<GameObject> _enemyPrefabList;
 
@@ -28,52 +32,49 @@ namespace Procedural
 
         private DoorController[] _doorControllerArray;
 
-        private int _enemiesLeftInRoom;
-        private bool _isBossRoom;
+        private int  _enemiesLeftInRoom;
         private bool _isMiniBossRoom;
-
+        private static bool _playerHasKey;
 
         private void OnTriggerEnter2D( Collider2D collision )
         {
-            if ( collision.gameObject.tag == "Player" )
-            {
-                Debug.Log( "enter room" );
-                OnEnterRoom?.Invoke();
-            }
+            OnEnterRoom?.Invoke();
         }
-
-        private void OnTriggerExit2D( Collider2D collision )
-        {
-            if ( collision.gameObject.tag == "Player" )
-            {
-                Debug.Log( "room cleared" );
-                RoomHasBeenClear();
-            }
-        }
-
 
 
         public void SetRoom( RoomCell roomData )
         {
+            if ( _playerHasKey ) _playerHasKey = false;
+
             if ( roomData.IsStartRoom )
             {
-                Instantiate( _playerPrefab , transform.position , Quaternion.identity );
-                DestroyImmediate( gameObject );
+                Vector3 startPos = new( transform.position.x , transform.position.y - 0.5f , transform.position.z );
+                GameObject playerObj = Instantiate( _playerPrefab , startPos , Quaternion.identity );
+                playerObj.GetComponent<PlayerController>().Init( Vector2.down , 0 );
+
+                _playerTransform = playerObj.transform;
+                Camera.main.transform.position = new Vector3( transform.position.x , transform.position.y , -10 );
+                SetRoomDoors( 0 , 0 );
+
+                OnRoomFinished = null;
+            }
+            else 
+            if ( roomData.IsBossRoom )
+            {
+                Instantiate( _bossRoomTransporterPrefab , transform.position , Quaternion.identity );
+                SetRoomDoors( 0 , 0 );
+
+                OnRoomFinished = null;
             }
             else
             {
-                //OnEnterRoom += CreateRoomEnemies;
+                OnEnterRoom += CreateRoomEnemies;
 
-                _isBossRoom = roomData.IsBossRoom;
                 _isMiniBossRoom = roomData.IsMiniBossRoom;
 
                 SetRoomDoors( roomData.OpenSidesIntMask , roomData.BossDoorMask );
             }
-
-            //CreateRoomEnemies();
         }
-
-
 
 
         private void SetRoomDoors( int openSidesMask , int bossDoorMask )
@@ -82,7 +83,6 @@ namespace Procedural
                                            _eastDoorController ,   // 0010
                                            _southDoorController ,  // 0100
                                            _westDoorController };  // 1000
-
 
             for ( int i = 0; i < _doorControllerArray.Length; i++ )
             {
@@ -94,44 +94,42 @@ namespace Procedural
                     _doorControllerArray[i].SetDoor( isBossDoor , this );
                 }
                 else
-                    DestroyImmediate( _doorControllerArray[i].gameObject );
+                    Destroy( _doorControllerArray[i].gameObject );
             }
         }
-
-
 
 
         private void CreateRoomEnemies()
         {
             GameObject enemyInstantiated;
 
-            if ( _isBossRoom )
-            {
-                enemyInstantiated = Instantiate( _bossPrefab , transform.position , Quaternion.identity );
-                //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
-            }
-            else 
             if ( _isMiniBossRoom )
             {
                 enemyInstantiated = Instantiate( _miniBossPrefab , transform.position , Quaternion.identity );
-                //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
+                enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
+                enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
             }
             else
             {
-                int numOfEnemies = 5;
-
+                int numOfEnemies = Random.Range( 1 , 2 );
                 for ( int i = 0; i < numOfEnemies; i++ )
                 {
-                    int randIndex = UnityEngine.Random.Range( 0 , _enemyPrefabList.Count );
-                    enemyInstantiated = _enemyPrefabList[randIndex];
+                    Debug.Log( "create enemy" );
+                    int randIndex = Random.Range( 0 , _enemyPrefabList.Count - 1 );
 
-                    //enemyInstantiated.GetComponent<EnemyController>().OnDeath += EnemiesInRoomCount;
+                    float x = Random.Range( -5 , 5 );
+                    float y = Random.Range( -2 , 2 );
+                    Vector3 position = transform.position + new Vector3( x, y );
+
+                    enemyInstantiated = Instantiate( _enemyPrefabList[randIndex] , position , Quaternion.identity );
+                    Debug.Log( "instantiated enemy" );
+                    enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
+                    enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
 
                     _enemiesLeftInRoom++;
                 }
             }
         }
-
 
 
         private void EnemiesInRoomCount()
@@ -146,26 +144,15 @@ namespace Procedural
 
         private void RoomHasBeenClear()
         {
-            if ( _isBossRoom )
-            {
-                Debug.Log( "Level Completed" );
-                // Level Complete Event
-            }
-            else
             if ( _isMiniBossRoom )
             {
-                Debug.Log( "Key Obtained" );
-                //Instantiate( _treasureKeyPrefab , transform.position , Quaternion.identity );
+                Instantiate( _treasureKeyPrefab , transform.position , Quaternion.identity );
             }
 
+            OnRoomFinished?.Invoke();
+
             OnEnterRoom = null;
-            Destroy( gameObject );
-        }
-
-
-        private void OnDestroy()
-        {
-            RoomHasBeenClear();
+            OnRoomFinished = null;
         }
     }
 }

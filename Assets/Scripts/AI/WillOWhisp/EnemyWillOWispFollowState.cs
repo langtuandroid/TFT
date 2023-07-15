@@ -6,26 +6,28 @@ namespace AI
     {
         public override void Execute(EnemyWillOWisp agent)
         {
-            //Si veo o escucho al jugador mientras le persigo
-            if (agent.SeePlayer() || agent.ListenPlayer())
+            if (agent.SeePlayer()) // Persigo al jugador
             {
-                if (!agent.SeePlayer())
-                {
-                    agent.ChangeState(new EnemyWillOWispPatrolState()); //Vuelvo al estado de patrulla
-                } 
-                else if (!agent.CheckPlayerDistance()) //Continuo siguiendole si estoy dentro del rango y no le he alcanzado
-                    agent.FollowPlayer();
-                else //Si le alcanzo le transporto
-                {
-                    agent.IsTorchAction = false;
-                    agent.ChangeState(new EnemyWillOWispActionState());  
-                }
-            } else if(!agent.SeePlayer() && !agent.ListenPlayer())  //Si dejo de verle y escucharle
+                    if (agent.ObstacleDetection()) // Si hay algo entre fuego fatuo y player
+                    {
+                        agent.ChangeState(new EnemyWillOWispAlertState());
+                    }
+                    else
+                    {
+                        agent.ChangeStatusColor("Danger");
+                        
+                        if (agent.CheckPlayerDistance()) // Si le alcanzo le saco fuera
+                            agent.Reset();
+                        else // Si no le persigo
+                            agent.FollowPlayer();
+                    }
+              
+            }
+            else if(!agent.SeePlayer())
             {
-                agent.ResetTimer();
-                agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
+                    agent.ResetListenTimer();
+                    agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
             }
         }
-    
     }  
 }
