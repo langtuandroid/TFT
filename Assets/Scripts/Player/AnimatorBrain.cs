@@ -144,14 +144,7 @@ namespace Player
             {
                 yLandPosition = yLandPos
             });
-        }
-
-        public void RecoverFromFall()
-        {
-            _spriteRender.enabled = true;
-            _shadowVisuals.gameObject.SetActive( true );
-            PlayPlayer(IDLE); 
-        }
+        }        
 
         private void Jump_OnJumpFinished()
         {
@@ -177,6 +170,14 @@ namespace Player
         {
             _shadowVisuals.gameObject.SetActive( false );
             PlayPlayer(FALL);
+        }
+
+        public void RecoverFromFall( Vector2 lookDir )
+        {
+            LookDirection( lookDir );
+            _spriteRender.enabled = true;
+            _shadowVisuals.gameObject.SetActive( true );
+            PlayPlayer( IDLE );
         }
 
         public void SetThrow()

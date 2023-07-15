@@ -15,6 +15,7 @@ namespace Player
         private PlayerStatus _playerStatus;
         private PlayerMovement _movement;
         private Interaction _interaction;
+        private FallController _fallController;
         // Script de elevar objetos no pesados del personaje
         private PickUpItem _pickable;
         // Script de salto del personaje
@@ -64,6 +65,7 @@ namespace Player
         private void Awake()
         {
             // Obtenemos componentes
+            _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             Collider2D collider = GetComponent<Collider2D>();
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             Transform characterVisualTrans = transform.Find( _physicalDataSO.visualObjName );
@@ -73,9 +75,9 @@ namespace Player
             _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
             _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
             _pickable = new PickUpItem();
+            _fallController = new FallController( rb , collider , _animatorBrain );
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
-            _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _playerStatus = GetComponent<PlayerStatus>();
 
             // Inicializamos variables
@@ -104,6 +106,7 @@ namespace Player
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
+            _fallController.Init( transform.position , startLookDirection , initialGroundLayerMask );
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -121,6 +124,7 @@ namespace Player
             _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
             _inventoryEvents.OnPrimarySkillChange += OnChangeMagic;
 
+            ServiceLocator.GetService<LifeEvents>().OnFallDown += _fallController.StartRecovering;
         }
 
         private void OnDestroy()
@@ -136,6 +140,7 @@ namespace Player
             _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
 
             _inventoryEvents.OnPrimarySkillChange -= OnChangeMagic;
+            ServiceLocator.GetService<LifeEvents>().OnFallDown -= _fallController.StartRecovering;
         }
 
         private void Update()
@@ -212,7 +217,7 @@ namespace Player
 
             if (_jump.IsPerformingJump ||
                 _magicAttacks[_magicIndex].IsUsingMediumAttack ||
-                _playerStatus.HasFalled
+                _fallController.HasFalled
                 )
                 return;
 
@@ -221,7 +226,15 @@ namespace Player
 
         private void DoMove()
         {
-            if ( _playerStatus.HasFalled ) return;
+            if ( _fallController.IsNotOnScreen )
+            {
+                _fallController.Move();
+                return;
+            }
+            else 
+            if ( _fallController.IsFalling )
+                return;
+
 
             if ( _jump.IsOnAir )
                 _movement.MoveOnAir(_direction);
@@ -480,22 +493,7 @@ namespace Player
         public bool IsGrounded => !_jump.IsPerformingJump;
         public void Fall()
         {
-            _animatorBrain.SetFall();
-            _playerStatus.HasFalled = true;
-            GetComponent<Collider2D>().enabled = false;
-        }
-
-        public void MoveExternally( Vector2 direction )
-        {
-            _movement.Move( direction );
-        }
-
-        public void FallRecovery( Vector2 lookDirection, LayerMask floorLayer )
-        {
-            _animatorBrain.RecoverFromFall();
-            _lookDirection = _animatorBrain.LookDirection( lookDirection );
-            _playerStatus.HasFalled = false;
-            GetComponent<Collider2D>().enabled = true;
+            _fallController.SetFalling();
         }
     }
 }

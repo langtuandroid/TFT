@@ -38,13 +38,5 @@ namespace Player
         {
             _rb.velocity = Vector2.zero;
         }
-
-        public void RecoveryMove( Vector2 direction )
-        {
-            _rb.MovePosition( _rb.position * 5f * direction );
-
-            //_currentSpeedOnAir = 0;
-            //_rb.velocity = Vector2.zero;
-        }
     }
 }

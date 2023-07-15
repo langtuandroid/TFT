@@ -25,14 +25,12 @@ public class ZoneController : MonoBehaviour
 
         ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
-        ServiceLocator.GetService<LifeEvents>().OnFallDown       += MovePlayerToEnter;
     }
 
     private void OnDestroy()
     {
         ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted -= ZoneComplete;
-        ServiceLocator.GetService<LifeEvents>().OnFallDown       -= MovePlayerToEnter;
     }
 
     private void LoadZoneInteractableData()
@@ -98,27 +96,5 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
             _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
-    }
-
-
-    private void MovePlayerToEnter() { StartCoroutine( MovePlayer() ); }
-
-    private IEnumerator MovePlayer()
-    {
-        int startRefIndex = GetStartRefInfoIndex( _zoneExitSO.nextStartPointRefID );
-        StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
-
-        Vector3 position           = startRefInfo.startPosition;
-        Vector2 startLookDirection = startRefInfo.PlayerStartLookDirection();
-        LayerMask initialLayer     = startRefInfo.initialLayerMask;
-
-        while ( _playerController.transform.position != position )
-        {
-            Vector2 direction = position - _playerController.transform.position;
-            _playerController.MoveExternally( direction.normalized );
-            yield return null;
-        }
-
-        _playerController.FallRecovery( startLookDirection, initialLayer );
     }
 }
