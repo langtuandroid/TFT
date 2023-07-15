@@ -298,28 +298,56 @@ public class Inventory : MonoBehaviour
             _primaryMagicButtons[0].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(0));
         else
             // TODO: Añadir sonido de error, ya que no se puede asignar
+            // O quizá una pantalla con un mensaje diciendo que no está disponible
             _primaryMagicButtons[0].onClick.AddListener(() => Debug.Log("No se puede asignar poder de fuego"));
 
         if (ps.isPlantWeakUnlocked)
             _primaryMagicButtons[4].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(1));
         else
             // TODO: Añadir sonido de error, ya que no se puede asignar
+            // O quizá una pantalla con un mensaje diciendo que no está disponible
             _primaryMagicButtons[4].onClick.AddListener(() => Debug.Log("No se puede asignar poder de planta"));
 
         if (ps.isWaterWeakUnlocked)
             _primaryMagicButtons[8].onClick.AddListener(() => _inventoryEvent.ChangePrimarySkill(2));
         else
             // TODO: Añadir sonido de error, ya que no se puede asignar
+            // O quizá una pantalla con un mensaje diciendo que no está disponible
             _primaryMagicButtons[8].onClick.AddListener(() => Debug.Log("No se puede asignar poder de agua"));
 
 
         // SECONDARY SKILL ASSIGNMENT
         // TODO (para últimas 2 partes): Añadir cambio de secondarySkillIndex
-        foreach (Button button in _secondaryMagicButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
 
-        foreach (Button button in _berryButtons)
-            button.onClick.AddListener(() => Debug.Log(button.gameObject.name));
+        if (ps.isLightUnlocked)
+            _secondaryMagicButtons[0].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(0));
+        else
+            _secondaryMagicButtons[0].onClick.AddListener(() => Debug.Log("No se puede asignar bola de luz"));
+
+        if (ps.isAirUnlocked)
+            _secondaryMagicButtons[1].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(1));
+        else
+            _secondaryMagicButtons[1].onClick.AddListener(() => Debug.Log("No se puede asignar magia de aire"));
+
+        if (ps.isHeavyMovementUnlocked)
+            _secondaryMagicButtons[2].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(2));
+        else
+            _secondaryMagicButtons[2].onClick.AddListener(() => Debug.Log("No se puede asignar magia de mover objetos pesados"));
+
+        if (ps.lifeBerryUnlocked)
+            _berryButtons[0].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(3));
+        else
+            _berryButtons[0].onClick.AddListener(() => Debug.Log("No se puede asignar baya curativa"));
+
+        if (ps.magicBerryUnlocked)
+            _berryButtons[1].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(4));
+        else
+            _berryButtons[1].onClick.AddListener(() => Debug.Log("No se puede asignar baya mágica"));
+
+        if (ps.bombBerryUnlocked)
+            _berryButtons[2].onClick.AddListener(() => _inventoryEvent.ChangeSecondarySkill(5));
+        else
+            _berryButtons[2].onClick.AddListener(() => Debug.Log("No se puede asignar baya bomba"));
     }
 
     private void RemoveListeners()

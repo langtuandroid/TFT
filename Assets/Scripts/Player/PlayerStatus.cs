@@ -161,6 +161,30 @@ namespace Player
             }
         }
 
+        public bool CanUseSecondarySkill
+        {
+            get
+            {
+                switch (SecondarySkillIndex)
+                {
+                    case 0:
+                        return _playerStatusSaveSO.playerStatusSave.isLightUnlocked;
+                    case 1:
+                        return _playerStatusSaveSO.playerStatusSave.isAirUnlocked;
+                    case 2:
+                        return _playerStatusSaveSO.playerStatusSave.isHeavyMovementUnlocked;
+                    case 3:
+                        return _playerStatusSaveSO.playerStatusSave.lifeBerryUnlocked && _playerStatusSaveSO.playerStatusSave.lifeBerryQuantity > 0;
+                    case 4:
+                        return _playerStatusSaveSO.playerStatusSave.magicBerryUnlocked && _playerStatusSaveSO.playerStatusSave.magicBerryQuantity > 0;
+                    case 5:
+                        return _playerStatusSaveSO.playerStatusSave.bombBerryUnlocked && _playerStatusSaveSO.playerStatusSave.bombBerryQuantity > 0;
+                    default:
+                        return false;
+                }
+            }
+        }
+
         #endregion
 
         #region Private variables
