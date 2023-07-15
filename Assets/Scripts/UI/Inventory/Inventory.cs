@@ -67,6 +67,10 @@ public class Inventory : MonoBehaviour
     // QUITAR EN UN FUTURO CUANDO SE DEFINA EL PERFORMED EN GAMEINPUTS
     private InputAction _navigateAction;
 
+    // VARIABLES
+    private int _primarySkillSelected;
+    private int _secondarySkillSelected;
+
     #endregion
 
     #region Unity methods
@@ -77,12 +81,20 @@ public class Inventory : MonoBehaviour
         I18N.instance.setLanguage(LanguageCode.EN);
         Debug.Log("Idioma: " + I18N.Instance.gameLang);
 
+        _primarySkillSelected = -1;
+        _secondarySkillSelected = -1;
+
     }
 
     private void Start()
     {
-        // EVENTOS
+        // EVENTS
+        // Inventory
         _inventoryEvent = ServiceLocator.GetService<InventoryEvents>();
+        _inventoryEvent.OnPrimarySkillChange += OnChangePrimarySkill;
+        _inventoryEvent.OnSecondarySkillChange += OnChangeSecondarySkill;
+
+        // GameInputs
         _gameInputs = ServiceLocator.GetService<GameInputs>();
         _gameInputs.OnCancelPerformed += GameInputs_OnCancel;
         _gameInputs.OnNextMenuPerformed += GameInputs_OnNextMenu;
@@ -135,6 +147,12 @@ public class Inventory : MonoBehaviour
             _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
         }
 
+        if (_inventoryEvent != null)
+        {
+            _inventoryEvent.OnPrimarySkillChange -= OnChangePrimarySkill;
+            _inventoryEvent.OnSecondarySkillChange -= OnChangeSecondarySkill;
+        }
+
     }
 
     #endregion
@@ -146,12 +164,16 @@ public class Inventory : MonoBehaviour
         // Mostramos los iconos
         ShowIcons();
 
+        // Activamos selección actual
+        _currentSelected = _nonEquipableButtons[0];
+        _currentSelected.Select();
+
         // Añadimos los listeners
         AddListeners();
 
-        // Y activamos selección actual
-        _currentSelected = _nonEquipableButtons[0];
-        _currentSelected.Select();
+        // Y mostramos los botones del color que correspondan
+        OnChangePrimarySkill(_playerStatusSO.playerStatusSave.primarySkillIndex);
+        OnChangeSecondarySkill(_playerStatusSO.playerStatusSave.secondarySkillIndex);
 
         // Y finalmente, cambiamos el texto
         ChangeText();
@@ -365,6 +387,36 @@ public class Inventory : MonoBehaviour
             button.onClick.RemoveAllListeners();
     }
 
+    private void OnChangePrimarySkill(int skill)
+    {
+        if (skill == _primarySkillSelected)
+            return;
+
+        if (_primarySkillSelected >= 0)
+            _primaryMagicButtons[_primarySkillSelected * 4].GetComponent<Image>().color = Color.white;
+
+        _primaryMagicButtons[skill * 4].GetComponent<Image>().color = Color.yellow;
+        _primarySkillSelected = skill;
+    }
+
+    private void OnChangeSecondarySkill(int skill)
+    {
+        if (skill == _secondarySkillSelected)
+            return;
+
+        if (_secondarySkillSelected > 2)
+            _berryButtons[_secondarySkillSelected - 3].GetComponent<Image>().color = Color.white;
+        else if (_secondarySkillSelected >= 0)
+            _secondaryMagicButtons[_secondarySkillSelected].GetComponent<Image>().color = Color.white;
+
+        if (skill > 2)
+            _berryButtons[skill - 3].GetComponent<Image>().color = Color.yellow;
+        else
+            _secondaryMagicButtons[skill].GetComponent<Image>().color = Color.yellow;
+
+        _secondarySkillSelected = skill;
+    }
+
     #endregion
 
     #region Description
@@ -434,9 +486,9 @@ public class Inventory : MonoBehaviour
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         int n = _primaryMagicButtons.IndexOf(_currentSelected);
 
-        string tit = "^inventory_tit_" + 
+        string tit = "^inventory_tit_" +
             (n + _nonEquipableButtons.Count);
-        string desc = "^inventory_desc_" + 
+        string desc = "^inventory_desc_" +
             (n + _nonEquipableButtons.Count);
 
 
@@ -526,9 +578,9 @@ public class Inventory : MonoBehaviour
 
         int n = _secondaryMagicButtons.IndexOf(_currentSelected);
 
-        string tit = "^inventory_tit_" + 
+        string tit = "^inventory_tit_" +
             (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count);
-        string desc = "^inventory_desc_" + 
+        string desc = "^inventory_desc_" +
             (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count);
 
         switch (n)
@@ -557,9 +609,9 @@ public class Inventory : MonoBehaviour
 
         int n = _berryButtons.IndexOf(_currentSelected);
 
-        string tit = "^inventory_tit_" + 
+        string tit = "^inventory_tit_" +
             (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count);
-        string desc = "^inventory_desc_" + 
+        string desc = "^inventory_desc_" +
             (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count);
 
         switch (n)
