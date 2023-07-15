@@ -27,19 +27,22 @@ public class FallPit : MonoBehaviour
         { 
             if ( _isBroken )
             {
-                Vector2 playerPos = _playerRb.position + _playerColOffest;
-                
-                if ( _pitCollider.OverlapPoint( playerPos ) )
+                if( _playerController.IsGrounded )
                 {
-                    float yOffset = 0.5f + 1f / 16 * 4;
-                    Vector2 centerPosition = new Vector2( transform.position.x , transform.position.y - yOffset );
-                    _playerRb.position = centerPosition;
-                    _playerController.Fall();
-                }
-                else if( _playerController.IsGrounded )
-                {
-                    Vector2 direction = new Vector2( transform.position.x , transform.position.y ) - playerPos;
-                    _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                    Vector2 playerPos = _playerRb.position + _playerColOffest;                    
+
+                    if ( _pitCollider.OverlapPoint( playerPos ) )
+                    {
+                        float yOffset = 0.5f + 1f / 16 * 4;
+                        Vector2 centerPosition = new Vector2( transform.position.x , transform.position.y - yOffset );
+                        _playerRb.position = centerPosition;
+                        _playerController.Fall();
+                    }
+                    else
+                    {
+                        Vector2 direction = new Vector2( transform.position.x , transform.position.y ) - playerPos;
+                        _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                    }
                 }
             }
             else

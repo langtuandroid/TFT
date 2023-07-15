@@ -28,6 +28,7 @@ namespace Player
         private Animator _playerAnimator;
         private SpriteRenderer _spriteRender;
         private Vector2 _lookDirection;
+        private Vector2 _initialLookDirection;
 
         [Header("States")]
         private const string IDLE = "IdleTree";
@@ -68,6 +69,7 @@ namespace Player
             jump.OnJumpDownStarted += Jump_OnJumpDownStarted;
 
             LookDirection(startLookDirection);
+            _initialLookDirection = startLookDirection;
 
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnDeathValue += Death_OnDeath;
@@ -172,9 +174,9 @@ namespace Player
             PlayPlayer(FALL);
         }
 
-        public void RecoverFromFall( Vector2 lookDir )
+        public void RecoverFromFall()
         {
-            LookDirection( lookDir );
+            LookDirection( _initialLookDirection );
             _spriteRender.enabled = true;
             _shadowVisuals.gameObject.SetActive( true );
             PlayPlayer( IDLE );
@@ -216,6 +218,7 @@ namespace Player
             return _playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
         }
 
+        // Se llama desde el animator
         public void PlayerFalledDown()
         {
             ServiceLocator.GetService<LifeEvents>().FallDown();

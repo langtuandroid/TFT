@@ -6,35 +6,36 @@ public class FallController
     private Rigidbody2D _rb;
     private Collider2D _collider;
     private AnimatorBrain _animatorBrain;
-    private Jump _jump;
-
-    private Vector2 _direction;
-    private float _speed = 5f;
-    private float _detectRadius = 0.05f;
+    private IAudioSpeaker _audioSpeaker;
 
     private Vector2 _resetPos;
-    private Vector2 _resetLookDir;
+    private Vector2 _direction;
+    private float _speed;
+    private float _detectionRadius;
 
     public bool IsFalling { get; private set; }
     public bool IsNotOnScreen { get; private set; }
     public bool HasFalled => IsFalling || IsNotOnScreen;
 
-    public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain , Jump jump )
+    public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain , 
+        PlayerPhysicalDataSO playerPhysicalDataSO )
     {
         _rb = rb;
         _collider = collider;
         _animatorBrain = animatorBrain;
-        _jump = jump;
+        _speed = playerPhysicalDataSO.startPointRecoverSpeed;
+        _detectionRadius = playerPhysicalDataSO.detectionRadius;
     }
 
-    public void Init( Vector2 startPos , Vector2 startLookDirection )
+    public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker )
     {
         _resetPos = startPos;
-        _resetLookDir = startLookDirection;
+        _audioSpeaker = audioSpeaker;
     }
 
     public void SetFalling()
     {
+        //_audioSpeaker.PlaySound();
         IsFalling = true;
         _animatorBrain.SetFall();
         _collider.enabled = false;
@@ -51,7 +52,11 @@ public class FallController
     {
         if ( HasReachDestination() )
         {
-            Recovered();
+            // Has recovered
+            IsNotOnScreen     = false;
+            IsFalling         = false;
+            _collider.enabled = true;
+            _animatorBrain.RecoverFromFall();
         }
         else
         {
@@ -64,14 +69,6 @@ public class FallController
     {
         return ( _resetPos.x - _rb.position.x ) * ( _resetPos.x - _rb.position.x ) +
                ( _resetPos.y - _rb.position.y ) * ( _resetPos.y - _rb.position.y ) <
-               _detectRadius * _detectRadius;
-    }    
-
-    private void Recovered()
-    {
-        IsNotOnScreen     = false;
-        IsFalling         = false;
-        _collider.enabled = true;
-        _animatorBrain.RecoverFromFall( _resetLookDir );
+               _detectionRadius * _detectionRadius;
     }
 }

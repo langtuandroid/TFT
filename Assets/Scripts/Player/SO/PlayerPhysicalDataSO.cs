@@ -16,4 +16,9 @@ public class PlayerPhysicalDataSO : ScriptableObject
 
     [field: Header("Pick Up Item:")]
     [field: SerializeField] public string pickUpPointObjName;
+
+    [field: Header("Fall:")]
+    [field: SerializeField][Min(1)] public float startPointRecoverSpeed;
+    [field: SerializeField][Min(0)] public float detectionRadius;
+
 }

@@ -75,7 +75,7 @@ namespace Player
             _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
             _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
             _pickable = new PickUpItem();
-            _fallController = new FallController( rb , collider , _animatorBrain , _jump );
+            _fallController = new FallController( rb , collider , _animatorBrain , _physicalDataSO );
             //_magicAttack = GetComponent<PlayerMagicAttack>();
             _secondaryAction = GetComponent<LightAttack>();
             _playerStatus = GetComponent<PlayerStatus>();
@@ -106,7 +106,7 @@ namespace Player
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init( transform.position , startLookDirection );
+            _fallController.Init( transform.position , audioSpeaker );
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -259,8 +259,11 @@ namespace Player
 
         private void DoJump()
         {
-            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting)
+            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting 
+                || _fallController.IsNotOnScreen )
+            {
                 return;
+            }
 
             _jump.JumpAction(_isJumpInput, _lookDirection, _direction);
             if (!_jump.IsPerformingJump)
@@ -490,7 +493,7 @@ namespace Player
             _animatorBrain.IsWalking(_direction.magnitude > 0);
         }
 
-        public bool IsGrounded => !_jump.IsPerformingJump;
+        public bool IsGrounded => !_jump.IsOnAir;
         public void Fall()
         {
             _jump.FallInHole();
