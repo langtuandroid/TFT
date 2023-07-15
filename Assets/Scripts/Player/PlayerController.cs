@@ -104,10 +104,11 @@ namespace Player
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
+            GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, audioSpeaker);
+            _fallController.Init(transform.position, audioSpeaker, gameStatus );
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -238,7 +239,7 @@ namespace Player
                 return;
             }
             else
-            if (_fallController.IsFalling)
+            if (_fallController.HasFalled)
                 return;
 
 

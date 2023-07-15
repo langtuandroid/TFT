@@ -22,17 +22,20 @@ public class FallFloorTilemap : MonoBehaviour
     {
         if ( _isPlayerOnPit )
         {
-            Vector2 playerPos = _playerRb.position + _playerColOffest;
-            Vector2 direction = _centerOfHole.position;
-            direction -= playerPos;
+            if ( _playerController.IsGrounded )
+            {
+                Vector2 playerPos = _playerRb.position + _playerColOffest;
 
-            if ( _pitCollider.OverlapPoint( playerPos ) )
-            {
-                _playerController.Fall();
-            }
-            else if ( _playerController.IsGrounded )
-            {
-                _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                if ( _pitCollider.OverlapPoint( playerPos ) )
+                {
+                    _playerController.Fall();
+                }
+                else
+                {
+                    Vector2 direction = _centerOfHole.position;
+                    direction -= playerPos;
+                    //_playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                }
             }
         }
     }
