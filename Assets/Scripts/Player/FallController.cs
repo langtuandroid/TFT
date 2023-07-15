@@ -6,6 +6,7 @@ public class FallController
     private Rigidbody2D _rb;
     private Collider2D _collider;
     private AnimatorBrain _animatorBrain;
+    private Jump _jump;
 
     private Vector2 _direction;
     private float _speed = 5f;
@@ -13,24 +14,23 @@ public class FallController
 
     private Vector2 _resetPos;
     private Vector2 _resetLookDir;
-    private LayerMask _resetLayerMask;
 
     public bool IsFalling { get; private set; }
     public bool IsNotOnScreen { get; private set; }
     public bool HasFalled => IsFalling || IsNotOnScreen;
 
-    public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain )
+    public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain , Jump jump )
     {
         _rb = rb;
         _collider = collider;
         _animatorBrain = animatorBrain;
+        _jump = jump;
     }
 
-    public void Init( Vector2 startPos , Vector2 startLookDirection , LayerMask initialGroundLayerMask )
+    public void Init( Vector2 startPos , Vector2 startLookDirection )
     {
         _resetPos = startPos;
         _resetLookDir = startLookDirection;
-        _resetLayerMask = initialGroundLayerMask;
     }
 
     public void SetFalling()

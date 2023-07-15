@@ -36,6 +36,7 @@ namespace Player
 
         public void Stop()
         {
+            _currentSpeedOnAir = 0;
             _rb.velocity = Vector2.zero;
         }
     }
