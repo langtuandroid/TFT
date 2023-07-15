@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class FallFloorTilemap : MonoBehaviour
 {
-    [SerializeField] private Transform _centerOfHole;
-
     private Collider2D _pitCollider;
     private float _gravityForce = 2.5f;
     private bool _isPlayerOnPit;
@@ -22,17 +20,23 @@ public class FallFloorTilemap : MonoBehaviour
     {
         if ( _isPlayerOnPit )
         {
-            Vector2 playerPos = _playerRb.position + _playerColOffest;
-            Vector2 direction = _centerOfHole.position;
-            direction -= playerPos;
+            if ( _playerController.IsGrounded )
+            {
+                Vector2 playerPos = _playerRb.position + _playerColOffest;
 
-            if ( _pitCollider.OverlapPoint( playerPos ) )
-            {
-                _playerController.Fall();
-            }
-            else if ( _playerController.IsGrounded )
-            {
-                _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                if ( _pitCollider.OverlapPoint( playerPos ) )
+                {
+                    float yOffset = 0.5f + 1f / 16 * 4;
+                    Vector2 centerPosition = new Vector2( transform.position.x , transform.position.y - yOffset );
+                    _playerRb.position = centerPosition;
+                    _playerController.Fall();
+                }
+                else
+                {
+                    Vector2 direction = transform.position;
+                    direction -= playerPos;
+                    _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                }
             }
         }
     }

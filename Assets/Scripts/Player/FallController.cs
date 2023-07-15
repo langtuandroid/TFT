@@ -7,15 +7,15 @@ public class FallController
     private Collider2D _collider;
     private AnimatorBrain _animatorBrain;
     private IAudioSpeaker _audioSpeaker;
+    private GameStatus _gameStatus;
 
     private Vector2 _resetPos;
     private Vector2 _direction;
     private float _speed;
     private float _detectionRadius;
 
-    public bool IsFalling { get; private set; }
+    public bool HasFalled { get; private set; }
     public bool IsNotOnScreen { get; private set; }
-    public bool HasFalled => IsFalling || IsNotOnScreen;
 
     public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain , 
         PlayerPhysicalDataSO playerPhysicalDataSO )
@@ -27,18 +27,20 @@ public class FallController
         _detectionRadius = playerPhysicalDataSO.detectionRadius;
     }
 
-    public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker )
+    public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker , GameStatus gameStatus )
     {
         _resetPos = startPos;
         _audioSpeaker = audioSpeaker;
+        _gameStatus = gameStatus;
     }
 
     public void SetFalling()
     {
-        //_audioSpeaker.PlaySound();
-        IsFalling = true;
+        //_audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_FALL );
+        HasFalled = true;
         _animatorBrain.SetFall();
         _collider.enabled = false;
+        //_gameStatus.AskChangeToInactiveState();
     }
 
     public void StartRecovering()
@@ -54,14 +56,14 @@ public class FallController
         {
             // Has recovered
             IsNotOnScreen     = false;
-            IsFalling         = false;
+            HasFalled         = false;
             _collider.enabled = true;
             _animatorBrain.RecoverFromFall();
+            //_gameStatus.AskChangeToGamePlayState();
         }
         else
         {
             _rb.MovePosition( _rb.position + Time.deltaTime * _speed * _direction );
-            _rb.velocity = Vector2.zero;
         }
     }
 

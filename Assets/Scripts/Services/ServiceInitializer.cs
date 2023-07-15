@@ -26,6 +26,7 @@ namespace Services
                 AddService(audio);
                 AddService(new SceneLoader());
                 // Events
+                AddService( new GameStatus() );
                 AddService(new MagicEvents());
                 AddService(new InventoryEvents());
                 AddService(new LevelEvents());
