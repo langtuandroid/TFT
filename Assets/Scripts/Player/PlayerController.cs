@@ -20,7 +20,6 @@ namespace Player
         private PickUpItem _pickable;
         // Script de salto del personaje
         private Jump _jump;
-        //private PlayerMagicAttack _magicAttack;
 
         // Script de acción secundaria
         private SecondaryAction _secondaryAction;
@@ -68,25 +67,27 @@ namespace Player
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             Collider2D collider = GetComponent<Collider2D>();
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            Transform characterVisualTrans = transform.Find( _physicalDataSO.visualObjName );
-            Transform pickUpPointTrans = characterVisualTrans.transform.Find( _physicalDataSO.pickUpPointObjName );
+            Transform characterVisualTrans = transform.Find(_physicalDataSO.visualObjName);
+            Transform pickUpPointTrans = characterVisualTrans.transform.Find(_physicalDataSO.pickUpPointObjName);
 
-            _movement = new PlayerMovement(rb , _physicalDataSO);
-            _jump = new Jump( collider.offset, transform, characterVisualTrans , _physicalDataSO );
-            _interaction = new Interaction( transform , collider.offset , _physicalDataSO );
+            _movement = new PlayerMovement(rb, _physicalDataSO);
+            _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
+            _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
             _pickable = new PickUpItem();
-            _fallController = new FallController( rb , collider , _animatorBrain , _physicalDataSO );
-            //_magicAttack = GetComponent<PlayerMagicAttack>();
+            _fallController = new FallController(rb, collider, _animatorBrain, _physicalDataSO);
+
             _secondaryAction = GetComponent<LightAttack>();
             _playerStatus = GetComponent<PlayerStatus>();
 
             // Inicializamos variables
-            _magicAttacks = new List<MagicAttack>();
+            // Magic Attacks
             AddMagicAttacks();
+            // SecondaryActions
+            AddSecondaryACtions();
 
-            _secondaryActions = new List<SecondaryAction>();
-            _pickable.Init(transform, pickUpPointTrans , collider.offset, 
-                _physicalDataSO.interactableLayerMask , _animatorBrain);
+            // Pickable
+            _pickable.Init(transform, pickUpPointTrans, collider.offset,
+                _physicalDataSO.interactableLayerMask, _animatorBrain);
         }
 
 #if UNITY_EDITOR
@@ -106,7 +107,7 @@ namespace Player
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init( transform.position , audioSpeaker );
+            _fallController.Init(transform.position, audioSpeaker);
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -120,9 +121,9 @@ namespace Player
             _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
 
-
             _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
-            _inventoryEvents.OnPrimarySkillChange += OnChangeMagic;
+            _inventoryEvents.OnPrimarySkillChange += OnChangePrimarySkill;
+            _inventoryEvents.OnSecondarySkillChange += OnChangeSecondarySkill;
 
             ServiceLocator.GetService<LifeEvents>().OnFallDown += _fallController.StartRecovering;
         }
@@ -139,7 +140,9 @@ namespace Player
             _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
             _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
 
-            _inventoryEvents.OnPrimarySkillChange -= OnChangeMagic;
+            _inventoryEvents.OnPrimarySkillChange -= OnChangePrimarySkill;
+            _inventoryEvents.OnSecondarySkillChange -= OnChangeSecondarySkill;
+
             ServiceLocator.GetService<LifeEvents>().OnFallDown -= _fallController.StartRecovering;
         }
 
@@ -152,9 +155,6 @@ namespace Player
             if (_playerStatus.IsDeath ||
                 _magicAttacks[_magicIndex]._isUsingStrongAttack)
             {
-                //if (_magicAttacks[_magicIndex].IsUsingStrongAttack)
-                //    _animatorBrain.IsWalking(false);
-
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
                     GameInputs_OnMediumAttackButtonCanceled();
 
@@ -204,9 +204,15 @@ namespace Player
 
         private void AddMagicAttacks()
         {
+            _magicAttacks = new List<MagicAttack>();
             _magicAttacks.Add(GetComponent<FireAttack>());
             _magicAttacks.Add(GetComponent<PlantAttack>());
             _magicAttacks.Add(GetComponent<WaterAttack>());
+        }
+
+        private void AddSecondaryACtions()
+        {
+            _secondaryActions = new List<SecondaryAction>();
         }
 
         private void GetActionsInformation()
@@ -226,17 +232,17 @@ namespace Player
 
         private void DoMove()
         {
-            if ( _fallController.IsNotOnScreen )
+            if (_fallController.IsNotOnScreen)
             {
                 _fallController.Move();
                 return;
             }
-            else 
-            if ( _fallController.IsFalling )
+            else
+            if (_fallController.IsFalling)
                 return;
 
 
-            if ( _jump.IsOnAir )
+            if (_jump.IsOnAir)
                 _movement.MoveOnAir(_direction);
             else
             if (_jump.IsCooldown)
@@ -259,8 +265,8 @@ namespace Player
 
         private void DoJump()
         {
-            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting 
-                || _fallController.IsNotOnScreen )
+            if (IsAttacking() || _pickable.HasItem || _interaction.IsInteracting
+                || _fallController.IsNotOnScreen)
             {
                 return;
             }
@@ -283,15 +289,15 @@ namespace Player
                 _isPhysicAttacking = true;
                 _animatorBrain.SetPhysicalAttack();
             }
-            
+
             if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
-            
+
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
             }
-        
+
             _isPhysicActionInput = false;
         }
 
@@ -322,7 +328,7 @@ namespace Player
             {
                 if (_isPhysicActionInput)
                 {
-                    if(_pickable != null)
+                    if (_pickable != null)
                         _pickable.ThrowIt(_lookDirection);
                 }
             }
@@ -341,7 +347,7 @@ namespace Player
 
         private void DoSecondaryAction()
         {
-            if (!_isSecondaryInput)
+            if (!_isSecondaryInput || !_playerStatus.CanUseSecondarySkill)
                 return;
 
             // Activamos el efecto de la acción secundaria
@@ -465,8 +471,6 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
-            // Reseteamos el contador
-            _playerStatus.RestartMagicTimer();
             _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
@@ -475,16 +479,24 @@ namespace Player
         #endregion
 
         // TODO: Selecci�n de tipo de acci�n
-        private void OnChangeMagic(int idx)
+        private void OnChangePrimarySkill(int idx)
         {
             _playerStatus.PrimarySkillIndex = idx;
             _magicAttacks[idx].Select();
         }
 
+        private void OnChangeSecondarySkill(int idx)
+        {
+            _playerStatus.SecondarySkillIndex = idx;
+            // TODO: Que haga bien el select (ahora mismo está en blanco)
+            //_secondaryActions[idx].Select();
+
+        }
+
         private void SetWalkingAnim()
         {
             // Si está saltando
-            if (_jump.IsPerformingJump || 
+            if (_jump.IsPerformingJump ||
                 _magicAttacks[_magicIndex].IsUsingStrongAttack)
             {
                 return;

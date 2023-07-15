@@ -4,7 +4,10 @@ public abstract class SecondaryAction : MonoBehaviour
 {
     protected Vector2 direction;
 
-
+    public virtual void Select()
+    {
+        // TODO: Activar evento para cambiar la UI
+    }
 
     /// <summary>
     /// Define el comportamiento de la acción secundaria
