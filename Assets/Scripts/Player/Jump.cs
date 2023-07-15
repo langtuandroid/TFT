@@ -26,6 +26,7 @@ namespace Player
         private LayerMask _boundsMask;
 
         private LayerMask _jumpableMask;
+        private int _initialFloorBitPos;
         private int _currentFloorBitPosition;
 
         private float _jumpSpeed      = 3f;
@@ -64,10 +65,17 @@ namespace Player
         public void Init( AnimatorBrain animatorBrain , IAudioSpeaker audioSpeaker , LayerMask initialGroundLayerMask )
         {
             _audioSpeaker = audioSpeaker;
-            _currentFloorBitPosition = initialGroundLayerMask.value;
+            _initialFloorBitPos = initialGroundLayerMask.value;
+            _currentFloorBitPosition = _initialFloorBitPos;
 
             animatorBrain.OnJumpableHasLanded += AnimatorBrain_OnJumpableHasLanded;
             animatorBrain.OnJumpDownHasLanded += Jump_OnJumpDownHasLanded;
+        }
+
+        public void FallInHole()
+        {
+            _jumpState = JumpState.Grounded;
+            _currentFloorBitPosition = _initialFloorBitPos;
         }
 
         public void JumpAction( bool jumpInput , Vector2 lookDirection , Vector2 moveDirection )

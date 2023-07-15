@@ -22,3 +22,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 32832
   pickUpPointObjName: PickUpPoint
+  startPointRecoverSpeed: 5
+  detectionRadius: 0.05

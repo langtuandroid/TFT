@@ -8,6 +8,7 @@ public class LifeEvents
     public event Action OnHeartsValue; // Para actualizar la cantidad de corazones
     public event Action<int> OnCurrentLifeValue; // Cantidad de vida
     public event Action OnDeathValue; // Para activar la animación de muerte
+    public event Action OnFallDown; // Para activar la animación de muerte
 
     #endregion
 
@@ -26,6 +27,11 @@ public class LifeEvents
     public void OnDeath()
     {
         OnDeathValue.Invoke();
+    }
+
+    public void FallDown()
+    {
+        OnFallDown?.Invoke();
     }
 
     #endregion

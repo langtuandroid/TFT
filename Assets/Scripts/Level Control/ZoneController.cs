@@ -1,4 +1,6 @@
 // ************ @autor: Álvaro Repiso Romero *************
+using Player;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +15,8 @@ public class ZoneController : MonoBehaviour
     [SerializeField] private Cinemachine.CinemachineVirtualCamera _camera;
     [SerializeField] private List<ActivableSceneObject> _activableObjectList;
     [SerializeField] private Collider2D[] _cameraConfinerColliderArray;
+
+    private PlayerController _playerController;
 
     private void Start()
     {
@@ -49,7 +53,7 @@ public class ZoneController : MonoBehaviour
         {
             Debug.LogError( $"[CAGADA]: El punto de referencia ID: {_zoneExitSO.nextStartPointRefID} no existe en la zona" );
         }
-        Debug.Log( startRefIndex );
+
         StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
 
         Vector3 position           = startRefInfo.startPosition;
@@ -58,13 +62,14 @@ public class ZoneController : MonoBehaviour
 
         GameObject player = Instantiate( _playerPrefab, position, Quaternion.identity );
 
-        player.GetComponent<Player.PlayerController>().Init( startLookDirection, initialLayer );
+        _playerController = player.GetComponent<PlayerController>();
+        _playerController.Init( startLookDirection, initialLayer );
         _camera.Follow = player.transform;
 
         Cinemachine.CinemachineConfiner2D cinemaConfiner = _camera.GetComponent<Cinemachine.CinemachineConfiner2D>();
         cinemaConfiner.InvalidateCache();
         cinemaConfiner.m_BoundingShape2D = _cameraConfinerColliderArray[startRefInfo.confinerColliderIndex];
-        //_camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
+        _camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
     }
 
     private int GetStartRefInfoIndex( int startPointRefID )
