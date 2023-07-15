@@ -60,10 +60,6 @@ public class Inventory : MonoBehaviour
     private InventoryEvents _inventoryEvent;
     private GameInputs _gameInputs;
 
-    // INFORMATION
-    private List<string> _titles;
-    private List<string> _descriptions;
-
     // ELEMENTS
     private Button _currentSelected;
 
@@ -77,70 +73,9 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
-        // Inicializamos variables
-        _titles = new List<string>();
-        _descriptions = new List<string>();
-        
         //Cambiar idioma desde codigo
         I18N.instance.setLanguage(LanguageCode.EN);
         Debug.Log("Idioma: " + I18N.Instance.gameLang);
-
-        // TEXTOS
-        // OBJETOS NO EQUIPABLES
-        _titles.Add("VARA MÁGICA");
-        //_descriptions.Add("La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.");
-        _descriptions.Add(I18N.instance.getValue("^inventario_vara"));
-        _titles.Add("BOTAS DE SALTO");
-        _descriptions.Add("Unas botas mágicas con las que podrás saltar muy alto.");
-        _titles.Add("ALETAS");
-        _descriptions.Add("Con ellas podrás meterte en el agua y nadar sin miedo a ahogarte.");
-        _titles.Add("DASH");
-        _descriptions.Add("Te permite realizar un ligero teletransporte.");
-
-        // MAGIAS PRIMARIAS
-        // Fuego
-        _titles.Add("MAGIA DE FUEGO");
-        _descriptions.Add("Usa el poder del fuego para quemar a tus enemigos.");
-        _titles.Add("BOLA DE FUEGO");
-        _descriptions.Add("Lanza una bola de fuego en línea recta.");
-        _titles.Add("LANZALLAMAS");
-        _descriptions.Add("Utiliza el poder del lanzallamas para quemar a los enemigos ante ti.");
-        _titles.Add("RÁFAGA DE FUEGO");
-        _descriptions.Add("Invoca una ráfaga de fuego que devasta todo a su alrededor.");
-        // Planta
-        _titles.Add("MAGIA DE PLANTA");
-        _descriptions.Add("Información sobre la magia de planta.");
-        _titles.Add("MAGIA DÉBIL DE PLANTA");
-        _descriptions.Add("Información sobre la magia débil de planta.");
-        _titles.Add("MAGIA MEDIA DE PLANTA");
-        _descriptions.Add("Información sobre la magia media de planta.");
-        _titles.Add("MAGIA FUERTE DE PLANTA");
-        _descriptions.Add("Información sobre la magia fuerte de planta.");
-        // Agua
-        _titles.Add("MAGIA DE AGUA");
-        _descriptions.Add("Información sobre la magia de agua.");
-        _titles.Add("MAGIA DÉBIL DE AGUA");
-        _descriptions.Add("Información sobre la magia débil de agua.");
-        _titles.Add("MAGIA MEDIA DE AGUA");
-        _descriptions.Add("Información sobre la magia media de agua.");
-        _titles.Add("MAGIA FUERTE DE AGUA");
-        _descriptions.Add("Información sobre la magia fuerte de agua.");
-
-        // MAGIAS SECUNDARIAS
-        _titles.Add("BOLA DE LUZ");
-        _descriptions.Add("Lanza una bola de luz que te permite ver a oscuras.");
-        _titles.Add("MAGIA DE AIRE");
-        _descriptions.Add("Te permite lanzar ráfagas de aire para empujar a tus enemigos.");
-        _titles.Add("MAGIA PESOPLUMA");
-        _descriptions.Add("Un hechizo que te permite alzar objetos muy pesados.");
-
-        // OBJETOS CONSUMIBLES (BAYAS)
-        _titles.Add("BAYA CURATIVA");
-        _descriptions.Add("Una baya que te ayudará a restaurar parte de tu salud.");
-        _titles.Add("BAYA MÁGICA");
-        _descriptions.Add("Con esta baya nunca te faltará magia para lanzar tus hechizos.");
-        _titles.Add("BAYA BOMBA");
-        _descriptions.Add("Una baya que explota y produce mucho daño.");
 
     }
 
@@ -218,8 +153,8 @@ public class Inventory : MonoBehaviour
         _currentSelected = _nonEquipableButtons[0];
         _currentSelected.Select();
 
-        if (_playerStatusSO.playerStatusSave.isPhysicAttackUnlocked)
-            SetText(_titles[0], _descriptions[0]);
+        // Y finalmente, cambiamos el texto
+        ChangeText();
     }
 
     #region Icons
@@ -429,30 +364,34 @@ public class Inventory : MonoBehaviour
     {
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
 
+        int n = _nonEquipableButtons.IndexOf(_currentSelected);
+        string tit = "^inventory_tit_" + n;
+        string desc = "^inventory_desc_" + n;
+
         switch (_nonEquipableButtons.IndexOf(_currentSelected))
         {
             // Objetos no equipables
             case 0: // Cetro
                 if (ps.isPhysicAttackUnlocked)
-                    SetText(_titles[0], _descriptions[0]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 1: // Botas
                 if (ps.isJumpUnlocked)
-                    SetText(_titles[1], _descriptions[1]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 2: // Nadar
                 if (ps.isSwimUnlocked)
-                    SetText(_titles[2], _descriptions[2]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 3: // Dash
                 if (ps.isDashUnlocked)
-                    SetText(_titles[3], _descriptions[3]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
@@ -465,90 +404,85 @@ public class Inventory : MonoBehaviour
     private void SetTextToPrimaryMagic()
     {
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
-        switch (_primaryMagicButtons.IndexOf(_currentSelected))
+        int n = _primaryMagicButtons.IndexOf(_currentSelected);
+
+        string tit = "^inventory_tit_" + 
+            (n + _nonEquipableButtons.Count);
+        string desc = "^inventory_desc_" + 
+            (n + _nonEquipableButtons.Count);
+
+
+        switch (n)
         {
             case 0: // Magia de fuego
                 if (ps.isFireWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count],
-                        _descriptions[_nonEquipableButtons.Count]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 1: // Magia de fuego (débil)
                 if (ps.isFireWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 1],
-                        _descriptions[_nonEquipableButtons.Count + 1]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 2: // Magia de fuego (media)
                 if (ps.isFireMediumUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 2],
-                        _descriptions[_nonEquipableButtons.Count + 2]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 3: // Magia de fuego (fuerte)
                 if (ps.isFireStrongUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 3],
-                        _descriptions[_nonEquipableButtons.Count + 3]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 4: // Magia de planta
                 if (ps.isPlantWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 4],
-                        _descriptions[_nonEquipableButtons.Count + 4]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 5: // Magia de planta (débil)
                 if (ps.isPlantWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 5],
-                        _descriptions[_nonEquipableButtons.Count + 5]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 6: // Magia de planta (media)
                 if (ps.isPlantMediumUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 6],
-                        _descriptions[_nonEquipableButtons.Count + 6]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 7: // Magia de planta (fuerte)
                 if (ps.isPlantStrongUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 7],
-                        _descriptions[_nonEquipableButtons.Count + 7]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 8: // Magia de agua
                 if (ps.isWaterWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 8],
-                        _descriptions[_nonEquipableButtons.Count + 8]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 9: // Magia de agua (débil)
                 if (ps.isWaterWeakUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 9],
-                        _descriptions[_nonEquipableButtons.Count + 9]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 10: // Magia de agua (media)
                 if (ps.isWaterMediumUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 10],
-                        _descriptions[_nonEquipableButtons.Count + 10]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
             case 11: // Magia de agua (fuerte)
                 if (ps.isWaterStrongUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + 11],
-                        _descriptions[_nonEquipableButtons.Count + 11]
-                        );
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 else
                     SetText("", "");
                 break;
@@ -561,22 +495,27 @@ public class Inventory : MonoBehaviour
     private void SetTextToSecondaryMagic()
     {
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
-        switch (_secondaryMagicButtons.IndexOf(_currentSelected))
+
+        int n = _secondaryMagicButtons.IndexOf(_currentSelected);
+
+        string tit = "^inventory_tit_" + 
+            (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count);
+        string desc = "^inventory_desc_" + 
+            (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count);
+
+        switch (n)
         {
             case 0: // Luz
                 if (ps.isLightUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             case 1: // Aire
                 if (ps.isAirUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 1],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 1]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             case 2: // Mover objetos pesados
                 if (ps.isHeavyMovementUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 2],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + 2]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             default: // Elemento no definido
                 SetText("", "");
@@ -587,22 +526,27 @@ public class Inventory : MonoBehaviour
     private void SetTextToBerry()
     {
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
-        switch (_berryButtons.IndexOf(_currentSelected))
+
+        int n = _berryButtons.IndexOf(_currentSelected);
+
+        string tit = "^inventory_tit_" + 
+            (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count);
+        string desc = "^inventory_desc_" + 
+            (n + _nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count);
+
+        switch (n)
         {
             case 0: // Baya de vida
                 if (ps.lifeBerryUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             case 1: // Baya de magia
                 if (ps.magicBerryUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 1],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 1]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             case 2: // Baya bomba
                 if (ps.bombBerryUnlocked)
-                    SetText(_titles[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 2],
-                        _descriptions[_nonEquipableButtons.Count + _primaryMagicButtons.Count + _secondaryMagicButtons.Count + 2]);
+                    SetText(I18N.instance.getValue(tit), I18N.instance.getValue(desc));
                 break;
             default: // Elemento no definido
                 SetText("", "");
