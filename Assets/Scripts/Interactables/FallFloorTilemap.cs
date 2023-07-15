@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class FallFloorTilemap : MonoBehaviour
 {
-    [SerializeField] private Transform _centerOfHole;
-
     private Collider2D _pitCollider;
     private float _gravityForce = 2.5f;
     private bool _isPlayerOnPit;
