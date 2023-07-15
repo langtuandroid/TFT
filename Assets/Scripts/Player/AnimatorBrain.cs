@@ -26,6 +26,7 @@ namespace Player
         private Vector3 _shadowVisualInitialPos;
 
         private Animator _playerAnimator;
+        private SpriteRenderer _spriteRender;
         private Vector2 _lookDirection;
 
         [Header("States")]
@@ -56,6 +57,7 @@ namespace Player
         public void Init(Vector2 startLookDirection, Jump jump)
         {
             _playerAnimator = GetComponent<Animator>();
+            _spriteRender = GetComponent<SpriteRenderer>();
 
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
@@ -144,6 +146,13 @@ namespace Player
             });
         }
 
+        public void RecoverFromFall()
+        {
+            _spriteRender.enabled = true;
+            _shadowVisuals.gameObject.SetActive( true );
+            PlayPlayer(IDLE); 
+        }
+
         private void Jump_OnJumpFinished()
         {
             PlayPlayer(IDLE);
@@ -204,6 +213,12 @@ namespace Player
         public bool HasCurrentAnimationEnded()
         {
             return _playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+        }
+
+        public void PlayerFalledDown()
+        {
+            ServiceLocator.GetService<LifeEvents>().FallDown();
+            _spriteRender.enabled = false;
         }
 
         public Vector2 LookDirection(Vector2 direction)

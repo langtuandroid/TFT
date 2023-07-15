@@ -53,6 +53,8 @@ namespace Player
         // Indica si est� aturdido
         public bool IsStunned => _stunnedTimer < _timeStunned;
 
+        public bool HasFalled { get; set; }
+
         // MAGIC ATTACK VARIABLES
         // Duraci�n del poder m�ximo
         public float MaxPowerDuration => _maxPowerDuration;

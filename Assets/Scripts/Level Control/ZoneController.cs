@@ -1,4 +1,6 @@
 // ************ @autor: Álvaro Repiso Romero *************
+using Player;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ public class ZoneController : MonoBehaviour
     [SerializeField] private List<ActivableSceneObject> _activableObjectList;
     [SerializeField] private Collider2D[] _cameraConfinerColliderArray;
 
+    private PlayerController _playerController;
+
     private void Start()
     {
         LoadZoneInteractableData();
@@ -21,12 +25,14 @@ public class ZoneController : MonoBehaviour
 
         ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
+        ServiceLocator.GetService<LifeEvents>().OnFallDown       += MovePlayerToEnter;
     }
 
     private void OnDestroy()
     {
         ServiceLocator.GetService<LevelEvents>().OnChangeZone    -= SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted -= ZoneComplete;
+        ServiceLocator.GetService<LifeEvents>().OnFallDown       -= MovePlayerToEnter;
     }
 
     private void LoadZoneInteractableData()
@@ -49,7 +55,7 @@ public class ZoneController : MonoBehaviour
         {
             Debug.LogError( $"[CAGADA]: El punto de referencia ID: {_zoneExitSO.nextStartPointRefID} no existe en la zona" );
         }
-        Debug.Log( startRefIndex );
+
         StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
 
         Vector3 position           = startRefInfo.startPosition;
@@ -58,13 +64,14 @@ public class ZoneController : MonoBehaviour
 
         GameObject player = Instantiate( _playerPrefab, position, Quaternion.identity );
 
-        player.GetComponent<Player.PlayerController>().Init( startLookDirection, initialLayer );
+        _playerController = player.GetComponent<PlayerController>();
+        _playerController.Init( startLookDirection, initialLayer );
         _camera.Follow = player.transform;
 
         Cinemachine.CinemachineConfiner2D cinemaConfiner = _camera.GetComponent<Cinemachine.CinemachineConfiner2D>();
         cinemaConfiner.InvalidateCache();
         cinemaConfiner.m_BoundingShape2D = _cameraConfinerColliderArray[startRefInfo.confinerColliderIndex];
-        //_camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
+        _camera.GetComponent<Cinemachine.CinemachineConfiner2D>().InvalidateCache();
     }
 
     private int GetStartRefInfoIndex( int startPointRefID )
@@ -91,5 +98,27 @@ public class ZoneController : MonoBehaviour
         _zoneSaveSO.zoneSave.IsActivatedList = new List<bool>();
         for ( int i = 0; i < _activableObjectList.Count; i++ )
             _zoneSaveSO.zoneSave.IsActivatedList.Add( _activableObjectList[i].HasBeenActivated() );
+    }
+
+
+    private void MovePlayerToEnter() { StartCoroutine( MovePlayer() ); }
+
+    private IEnumerator MovePlayer()
+    {
+        int startRefIndex = GetStartRefInfoIndex( _zoneExitSO.nextStartPointRefID );
+        StartRefInfoSO.StartRefInfo startRefInfo = _startRefInfoSO.startRefInfoArray[startRefIndex];
+
+        Vector3 position           = startRefInfo.startPosition;
+        Vector2 startLookDirection = startRefInfo.PlayerStartLookDirection();
+        LayerMask initialLayer     = startRefInfo.initialLayerMask;
+
+        while ( _playerController.transform.position != position )
+        {
+            Vector2 direction = position - _playerController.transform.position;
+            _playerController.MoveExternally( direction.normalized );
+            yield return null;
+        }
+
+        _playerController.FallRecovery( startLookDirection, initialLayer );
     }
 }

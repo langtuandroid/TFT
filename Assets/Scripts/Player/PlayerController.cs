@@ -211,7 +211,8 @@ namespace Player
 
 
             if (_jump.IsPerformingJump ||
-                _magicAttacks[_magicIndex].IsUsingMediumAttack
+                _magicAttacks[_magicIndex].IsUsingMediumAttack ||
+                _playerStatus.HasFalled
                 )
                 return;
 
@@ -220,6 +221,8 @@ namespace Player
 
         private void DoMove()
         {
+            if ( _playerStatus.HasFalled ) return;
+
             if ( _jump.IsOnAir )
                 _movement.MoveOnAir(_direction);
             else
@@ -478,6 +481,21 @@ namespace Player
         public void Fall()
         {
             _animatorBrain.SetFall();
+            _playerStatus.HasFalled = true;
+            GetComponent<Collider2D>().enabled = false;
+        }
+
+        public void MoveExternally( Vector2 direction )
+        {
+            _movement.Move( direction );
+        }
+
+        public void FallRecovery( Vector2 lookDirection, LayerMask floorLayer )
+        {
+            _animatorBrain.RecoverFromFall();
+            _lookDirection = _animatorBrain.LookDirection( lookDirection );
+            _playerStatus.HasFalled = false;
+            GetComponent<Collider2D>().enabled = true;
         }
     }
 }
