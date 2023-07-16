@@ -293,7 +293,7 @@ namespace Player
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting)
+            if (!_interaction.IsInteracting && !_pickable.HasItem)
             {
                 if (_isPhysicActionInput)
                 { 
