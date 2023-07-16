@@ -215,7 +215,7 @@ namespace Player
 
         public bool HasCurrentAnimationEnded()
         {
-            return _playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f;
+            return _playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.75f;
         }
 
         // Se llama desde el animator
