@@ -184,7 +184,7 @@ namespace Player
 
         public void SetThrow()
         {
-            PlayPlayer( THROW ); // aq� debe ir la animaci�n de lanzar
+            PlayPlayer( THROW );
         }
 
         public void IsWalking(bool isWalking)

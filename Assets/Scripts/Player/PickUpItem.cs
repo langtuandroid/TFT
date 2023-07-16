@@ -74,12 +74,11 @@ public class PickUpItem
     
     public void ThrowIt(Vector2 lookDirection)
     {
-        HasItem = false;
         _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
         _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         StopPickItUp();
-        _animatorBrain.SetThrow();
+        _animatorBrain.SetThrow(); 
     }
     
     public void StopPickItUp()
@@ -88,6 +87,7 @@ public class PickUpItem
 
         _pickable?.ShowCanPickUpItem( false );
         _pickable = null;
+        HasItem = false; //Todo ponerlo a false cuando el objeto toque el suelo
     }
 
     public void ShowCanPickUpItem(bool show)
