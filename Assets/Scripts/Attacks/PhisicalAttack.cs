@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Utils;
 
 public class PhisicalAttack : MonoBehaviour
 {
@@ -13,11 +14,10 @@ public class PhisicalAttack : MonoBehaviour
     private void CheckPhisycCollisions()
     {
         Collider2D[] collisions = Physics2D.OverlapCircleAll(
-            transform.position,
-            1f);
+            transform.position, 1f, LayerMask.GetMask(Constants.LAYER_INTERACTABLE));
         
         foreach (Collider2D collision in collisions)
-            collision.GetComponent<IBurnable>()?.Burn(physicalDamage);
+            collision.GetComponent<IPunchanble>()?.Punch(physicalDamage);
 
     }
 }
