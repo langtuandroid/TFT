@@ -20,18 +20,18 @@ public class FallController
     public FallController( Rigidbody2D rb , Collider2D collider , AnimatorBrain animatorBrain , 
         PlayerPhysicalDataSO playerPhysicalDataSO )
     {
-        _rb = rb;
-        _collider = collider;
-        _animatorBrain = animatorBrain;
-        _speed = playerPhysicalDataSO.startPointRecoverSpeed;
+        _rb              = rb;
+        _collider        = collider;
+        _animatorBrain   = animatorBrain;
+        _speed           = playerPhysicalDataSO.startPointRecoverSpeed;
         _detectionRadius = playerPhysicalDataSO.detectionRadius;
     }
 
     public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker , GameStatus gameStatus )
     {
-        _resetPos = startPos;
+        _resetPos     = startPos;
         _audioSpeaker = audioSpeaker;
-        _gameStatus = gameStatus;
+        _gameStatus   = gameStatus;
     }
 
     public void SetFalling()
