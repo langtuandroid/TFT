@@ -18,6 +18,11 @@ namespace Player
         private FallController _fallController;
         // Script de elevar objetos no pesados del personaje
         private PickUpItem _pickable;
+
+        public PickUpItem Pickable
+        {
+            get => _pickable;
+        }
         // Script de salto del personaje
         private Jump _jump;
 

@@ -331,6 +331,8 @@ namespace Player
 
             // Y aplicamos invencibilidad temporal
             tween = GetTemporalInvencibility();
+            
+            Debug.Log("Le he quitado daño");
         }
 
         private Tween tween;
