@@ -40,7 +40,7 @@ public class FallController
         HasFalled = true;
         _animatorBrain.SetFall();
         _collider.enabled = false;
-        //_gameStatus.AskChangeToInactiveState();
+        _gameStatus.AskChangeToInactiveState();
     }
 
     public void StartRecovering()
@@ -59,7 +59,7 @@ public class FallController
             HasFalled         = false;
             _collider.enabled = true;
             _animatorBrain.RecoverFromFall();
-            //_gameStatus.AskChangeToGamePlayState();
+            _gameStatus.AskChangeToGamePlayState();
         }
         else
         {

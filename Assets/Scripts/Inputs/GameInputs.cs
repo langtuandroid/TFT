@@ -34,13 +34,36 @@ public class GameInputs
 
     private OptionsSave _options;
     private MonoTimer _rumbleTimer;
+    private GameStatus _gameStatus;
 
-    public GameInputs(OptionsSave options)
+    public GameInputs(OptionsSave options, GameStatus gameStatus)
     {
         _playerInputActions = new PlayerInputActions();
         _options = options;
-        PlayerGroundMode();
-        MenuModeEnable();
+        _gameStatus = gameStatus;
+        InitPlayerGroundMode();
+        InitMenuUIMode();
+
+        _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
+    }
+
+    private void GameStatus_OnGameStateChanged( GameStatus.GameState gameState )
+    {
+        switch ( gameState )
+        {
+            case GameStatus.GameState.MenuUI:
+                _playerInputActions.UI.Enable();
+                _playerInputActions.PlayerGround.Disable();
+                break;
+            case GameStatus.GameState.GamePlay:
+                _playerInputActions.UI.Disable();
+                _playerInputActions.PlayerGround.Enable();
+                break;
+            case GameStatus.GameState.Inactive:
+                _playerInputActions.UI.Disable();
+                _playerInputActions.PlayerGround.Disable();
+                break;
+        }
     }
 
 
@@ -69,7 +92,7 @@ public class GameInputs
         }
     }
 
-    private void PlayerGroundMode()
+    private void InitPlayerGroundMode()
     {
         _playerInputActions.PlayerGround.Enable();
         _moveAction = _playerInputActions.PlayerGround.Move;
@@ -135,8 +158,6 @@ public class GameInputs
     private void Pause_performed(InputAction.CallbackContext ctx)
     {
         OnPausePerformed?.Invoke();
-        // TODO: if game is paused -> MenuMode()
-        // MenuModeEnable();
     }
 
     private void Cancel_Performed(InputAction.CallbackContext ctx)
@@ -159,7 +180,7 @@ public class GameInputs
         OnPrevMenuPerformed?.Invoke();
     }
 
-    private void MenuModeEnable()
+    private void InitMenuUIMode()
     {
         _playerInputActions.UI.Enable();
         _playerInputActions.UI.Cancel.performed += Cancel_Performed;
@@ -170,7 +191,7 @@ public class GameInputs
         NavigateAction = _playerInputActions.UI.Navigate;
     }
 
-    private void MenuModeDisable()
+    private void MenuUIModeDisable()
     {
         _playerInputActions.UI.Disable();
     }
@@ -178,7 +199,7 @@ public class GameInputs
     public void ActivateUIMode()
     {
         _playerInputActions.UI.Enable();
-        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
+        //_playerInputActions.UI.Cancel.performed += Cancel_Performed;
         _playerInputActions.PlayerGround.Disable();
     }
 

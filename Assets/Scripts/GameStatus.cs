@@ -5,7 +5,7 @@ public class GameStatus
 {
     public GameStatus() 
     {
-        state = GameState.MenuUI;
+        state = GameState.GamePlay;
     }
 
     public enum GameState
