@@ -110,7 +110,7 @@ namespace UI
             {
                 case 0: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;
-                case 1: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
+                case 1: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S15_Altar_WoodsScene.ToString() );
                     break;
                 case 2: ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
                     break;

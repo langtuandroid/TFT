@@ -17,7 +17,7 @@ public class TriggerChangeZone : MonoBehaviour
 
     private void OnTriggerEnter2D( Collider2D collision )
     {
-        //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
+        ServiceLocator.GetService<GameStatus>().AskChangeToInactiveState();
         ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _musicName );
 
         ServiceLocator.GetService<LevelEvents>().ChangeZone(

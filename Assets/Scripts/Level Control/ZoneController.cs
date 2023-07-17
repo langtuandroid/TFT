@@ -25,6 +25,8 @@ public class ZoneController : MonoBehaviour
 
         ServiceLocator.GetService<LevelEvents>().OnChangeZone    += SaveZoneData;
         ServiceLocator.GetService<LevelEvents>().OnZoneCompleted += ZoneComplete;
+
+        ServiceLocator.GetService<GameStatus>().AskChangeToGamePlayState();
     }
 
     private void OnDestroy()
