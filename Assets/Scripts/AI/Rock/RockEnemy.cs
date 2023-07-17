@@ -8,9 +8,9 @@ using Utils;
 public class RockEnemy : MonoBehaviour
 {
     private IPickable _pickable;
-    private PlayerController _playerController;
+    private PickUpItem _pickUp;
     private PlayerStatus _playerStatus;
-
+    
     private void Awake()
     {
         _pickable = GetComponent<IPickable>();
@@ -18,13 +18,13 @@ public class RockEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (_playerController == null || _playerStatus == null) return;
+        if (_pickUp == null || _playerStatus == null) return;
         CheckPlayer();
     }
 
     private void CheckPlayer()
     {
-        if (_playerController.Pickable.HasItem)
+        if (_pickUp.HasItem)
         {
             StartCoroutine(nameof(AlertPhase));
         }
@@ -53,7 +53,7 @@ public class RockEnemy : MonoBehaviour
     {
         if (col.gameObject.CompareTag(Constants.TAG_PLAYER))
         {
-            _playerController = col.gameObject.GetComponent<PlayerController>();
+            _pickUp = col.gameObject.GetComponent<PlayerController>().Pickable;
             _playerStatus = col.gameObject.GetComponent<PlayerStatus>();
         }
     }
