@@ -206,6 +206,7 @@ namespace Attack
             _isUsingStrongAttack = true;
             // Activamos el poder
             _magicEvents.MaxPowerUsed(_playerStatus.MaxPowerDuration);
+            _gameStatus.AskChangeToInactiveState();
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_DEFINITIVE);
         }
 
@@ -270,7 +271,10 @@ namespace Attack
             // Y esperamos un tiempo
             seq.AppendInterval(time);
             // Finalizamos el ataque final
-            seq.OnComplete(() => _magicEvents.MaxPowerFinalized());
+            seq.OnComplete(() => {
+                _magicEvents.MaxPowerFinalized();
+                _gameStatus.AskChangeToGamePlayState();
+            } );
             // Ejecutamos la secuencia
             seq.Play();
         }
