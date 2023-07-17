@@ -66,13 +66,6 @@ public class GameInputs
         }
     }
 
-
-    /// <returns>A direction vector2 normalized from inputs</returns>
-    public Vector2 GetDirectionNormalized()
-    {
-        return _moveAction.ReadValue<Vector2>().normalized;
-    }
-
     public void RumblePad(float lowFrequency, float highFrequency, float durationSeconds)
     {
         if (_options.isVibrationActive)
@@ -90,6 +83,14 @@ public class GameInputs
 
             _rumbleTimer.StartTimer(() => Gamepad.current.SetMotorSpeeds(0, 0), durationSeconds);
         }
+    }
+
+    // ***************************** PlayerGround *****************************
+
+    /// <returns>A direction vector2 normalized from inputs</returns>
+    public Vector2 GetDirectionNormalized()
+    {
+        return _moveAction.ReadValue<Vector2>().normalized;
     }
 
     private void InitPlayerGroundMode()
@@ -160,6 +161,19 @@ public class GameInputs
         OnPausePerformed?.Invoke();
     }
 
+    // ***************************** UI *****************************
+
+    private void InitMenuUIMode()
+    {
+        _playerInputActions.UI.Enable();
+        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
+        _playerInputActions.UI.Submit.performed += Submit_Performed;
+        _playerInputActions.UI.NextMenu.performed += NextMenu_Performed;
+        _playerInputActions.UI.PrevMenu.performed += PrevMenu_Performed;
+
+        NavigateAction = _playerInputActions.UI.Navigate;
+    }
+
     private void Cancel_Performed(InputAction.CallbackContext ctx)
     {
         OnCancelPerformed?.Invoke();
@@ -179,36 +193,4 @@ public class GameInputs
     {
         OnPrevMenuPerformed?.Invoke();
     }
-
-    private void InitMenuUIMode()
-    {
-        _playerInputActions.UI.Enable();
-        _playerInputActions.UI.Cancel.performed += Cancel_Performed;
-        _playerInputActions.UI.Submit.performed += Submit_Performed;
-        _playerInputActions.UI.NextMenu.performed += NextMenu_Performed;
-        _playerInputActions.UI.PrevMenu.performed += PrevMenu_Performed;
-
-        NavigateAction = _playerInputActions.UI.Navigate;
-    }
-
-    private void MenuUIModeDisable()
-    {
-        _playerInputActions.UI.Disable();
-    }
-
-    public void ActivateUIMode()
-    {
-        _playerInputActions.UI.Enable();
-        //_playerInputActions.UI.Cancel.performed += Cancel_Performed;
-        _playerInputActions.PlayerGround.Disable();
-    }
-
-    public void ActivatePlayerGroundMode()
-    {
-        _playerInputActions.UI.Disable();
-        _playerInputActions.UI.Cancel.performed -= Cancel_Performed;
-        _playerInputActions.PlayerGround.Enable();
-    }
-
-
 }
