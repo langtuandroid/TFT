@@ -62,6 +62,7 @@ public class FallPit : MonoBehaviour
             _playerRb = collision.GetComponent<Rigidbody2D>();
             _playerColOffest = _playerRb.GetComponent<Collider2D>().offset;
             _playerController = _playerRb.GetComponent<PlayerController>();
+            Debug.Log( "buu" );
         }
     }
 
