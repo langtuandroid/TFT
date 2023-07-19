@@ -15,6 +15,10 @@ public class TemporalPauseInventory : MonoBehaviour
         gameInputs.OnPausePerformed += OnPausePerformed;
     }
 
+    private void OnDestroy()
+    {
+        gameInputs.OnPausePerformed -= OnPausePerformed;
+    }
 
     private void OnPausePerformed()
     {
