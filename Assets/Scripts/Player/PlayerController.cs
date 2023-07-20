@@ -510,6 +510,7 @@ namespace Player
         {
             _jump.FallInHole();
             _movement.Stop();
+            _playerStatus.TakeDamage( 1 );
             _fallController.SetFalling();
         }
     }
