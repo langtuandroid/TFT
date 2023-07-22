@@ -17,6 +17,7 @@ public class PickUpItem
     private IAudioSpeaker _audioSpeaker;
     private IPickable _pickable;
     public bool HasItem = false;
+    public bool HasThrowItem = false;
     
     public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
     {
@@ -74,6 +75,7 @@ public class PickUpItem
     
     public void ThrowIt(Vector2 lookDirection)
     {
+        HasThrowItem = true;
         _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
         _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
@@ -87,4 +89,6 @@ public class PickUpItem
     {
         _pickable?.ShowCanPickUpItem(show);
     }
+
+    public void ThrowItemFinished() => HasThrowItem = true;
 }

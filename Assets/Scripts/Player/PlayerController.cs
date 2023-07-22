@@ -1,3 +1,4 @@
+using System.Collections;
 using Attack;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Player
         private PlayerMovement _movement;
         private Interaction _interaction;
         private FallController _fallController;
+
+        private PhisicalAttack _phisicalAttack;
         // Script de elevar objetos no pesados del personaje
         private PickUpItem _pickable;
 
@@ -83,6 +86,7 @@ namespace Player
 
             _secondaryAction = GetComponent<LightAttack>();
             _playerStatus = GetComponent<PlayerStatus>();
+            _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
 
             // Inicializamos variables
             // Magic Attacks
@@ -290,24 +294,43 @@ namespace Player
 
         private void DoPhysicalAction()
         {
-            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
-
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo
+            
+            if (_pickable.HasThrowItem) // No ataco mientras lanzo objeto
+            {
+                StartCoroutine(nameof(ResetThrowItem));
+                return;
+            }
+            
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting && !_pickable.HasItem)
+            if (!_interaction.IsInteracting && !_pickable.HasItem  && !_jump.IsPerformingJump)
             {
-                if (_isPhysicActionInput)
-                { 
-                    _isPhysicAttacking = true;
-                    _animatorBrain.SetPhysicalAttack();
-                }   
+                DoPhysicalAttack();
             }
 
             _isPhysicActionInput = false;
+        }
+
+        private IEnumerator ResetThrowItem()
+        {
+            yield return new WaitForSeconds(1f);
+
+            _pickable.HasThrowItem = false;
+
+        }
+
+            private void DoPhysicalAttack()
+        {
+            if (_isPhysicActionInput)
+            { 
+                _isPhysicAttacking = true;
+                _animatorBrain.SetPhysicalAttack();
+            }   
         }
 
         private void DoInteraction()
