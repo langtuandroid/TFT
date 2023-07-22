@@ -7,18 +7,20 @@ using Utils;
 
 public class RockEnemy : MonoBehaviour
 {
-    private IPickable _pickable;
     private PickUpItem _pickUp;
+    
     private PlayerStatus _playerStatus;
+    private Animator _animator;
+    private bool _enemyCoolDown;
     
     private void Awake()
     {
-        _pickable = GetComponent<IPickable>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        if (_pickUp == null || _playerStatus == null) return;
+        if (_pickUp == null || _playerStatus == null || _enemyCoolDown) return;
         CheckPlayer();
     }
 
@@ -36,18 +38,27 @@ public class RockEnemy : MonoBehaviour
 
     private IEnumerator AlertPhase()
     {
+        _enemyCoolDown = true;
+        
+        _animator.SetBool("grumpy", true);
+
+        yield return new WaitForSeconds(2f);
+
+        _pickUp.ThrowIt(Vector2.down);
+        
+        yield return new WaitForSeconds(0.5f);
+        
+        if (_pickUp.HasItem)
+            _playerStatus.TakeDamage(1);
+        
         yield return new WaitForSeconds(1f);
         
-        AddPlayerDamage();
+        _animator.SetBool("grumpy", false);
         
-    }
+        yield return new WaitForSeconds(1f);
 
-    private void AddPlayerDamage()
-    {
-        _playerStatus.TakeDamage(1);
-        _pickable.ThrowIt(Vector2.down);
+        _enemyCoolDown = false;
     }
-
 
     private void OnCollisionEnter2D(Collision2D col)
     {
