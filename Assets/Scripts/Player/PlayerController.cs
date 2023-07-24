@@ -1,3 +1,4 @@
+using System.Collections;
 using Attack;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +17,15 @@ namespace Player
         private PlayerMovement _movement;
         private Interaction _interaction;
         private FallController _fallController;
+
+        private PhisicalAttack _phisicalAttack;
         // Script de elevar objetos no pesados del personaje
         private PickUpItem _pickable;
+
+        public PickUpItem Pickable
+        {
+            get => _pickable;
+        }
         // Script de salto del personaje
         private Jump _jump;
 
@@ -78,6 +86,7 @@ namespace Player
 
             _secondaryAction = GetComponent<LightAttack>();
             _playerStatus = GetComponent<PlayerStatus>();
+            _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
 
             // Inicializamos variables
             // Magic Attacks
@@ -281,24 +290,34 @@ namespace Player
 
         private void DoPhysicalAction()
         {
-            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
-
+            if (!_animatorBrain.HasThrowAnimationEnded()) return;// si no ha terminado la animacion de lanzar no puedo hacer otra accion
+            
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting && !_pickable.HasItem)
+            if (!_interaction.IsInteracting && 
+                !_pickable.HasItem  && 
+                !_jump.IsPerformingJump &&
+                _animatorBrain.HasThrowAnimationEnded())
             {
-                if (_isPhysicActionInput)
-                { 
-                    _isPhysicAttacking = true;
-                    _animatorBrain.SetPhysicalAttack();
-                }   
+                DoPhysicalAttack();
             }
 
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo animacion ataque fisico
+            
             _isPhysicActionInput = false;
+        }
+
+        private void DoPhysicalAttack()
+        {
+            if (_isPhysicActionInput)
+            {
+                _isPhysicAttacking = true;
+                _animatorBrain.SetPhysicalAttack();
+            }   
         }
 
         private void DoInteraction()
