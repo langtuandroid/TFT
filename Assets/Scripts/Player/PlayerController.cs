@@ -162,13 +162,12 @@ namespace Player
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
             // o si está usando el poder máximo, volvemos
-            if (_playerStatus.IsDeath ||
-                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+            if (_playerStatus.IsDeath)
             {
                 if (_magicAttacks[_magicIndex]._isUsingMediumAttack)
                     GameInputs_OnMediumAttackButtonCanceled();
 
-                return;
+                //return;
             }
 
             if (_playerStatus.IsStunned &&
@@ -199,11 +198,8 @@ namespace Player
         private void FixedUpdate()
         {
             // TODO: GameOver
-            // Si el jugador ha perdido toda su salud,
-            // si está aturdido
-            // o si está usando el poder máximo, volvemos
-            if (_playerStatus.IsDeath ||
-                _magicAttacks[_magicIndex]._isUsingStrongAttack)
+            // si está usando el poder máximo, volvemos
+            if (_magicAttacks[_magicIndex]._isUsingStrongAttack)
                 return;
 
             // Nos movemos
@@ -533,6 +529,7 @@ namespace Player
         {
             _jump.FallInHole();
             _movement.Stop();
+            _playerStatus.TakeDamage( 1 );
             _fallController.SetFalling();
         }
     }

@@ -57,11 +57,12 @@ public class FallPit : MonoBehaviour
     private void OnTriggerEnter2D( Collider2D collision )
     {
         _isPlayerOnPit = true;
-        if ( _playerRb.Equals( null ) )
+        if (_playerController == null)
         {
             _playerRb = collision.GetComponent<Rigidbody2D>();
             _playerColOffest = _playerRb.GetComponent<Collider2D>().offset;
             _playerController = _playerRb.GetComponent<PlayerController>();
+            Debug.Log( "buu" );
         }
     }
 

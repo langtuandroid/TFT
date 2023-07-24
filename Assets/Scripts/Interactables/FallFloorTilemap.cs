@@ -7,7 +7,7 @@ public class FallFloorTilemap : MonoBehaviour
     private float _gravityForce = 2.5f;
     private bool _isPlayerOnPit;
 
-    private Rigidbody2D _playerRb;
+    private Rigidbody2D _playerRb = null;
     private PlayerController _playerController;
     private Vector2 _playerColOffest;
 
@@ -44,7 +44,7 @@ public class FallFloorTilemap : MonoBehaviour
     private void OnTriggerEnter2D( Collider2D collision )
     {
         _isPlayerOnPit = true;
-        if ( _playerRb.Equals( null ) )
+        if ( _playerController == null )
         {
             _playerRb = collision.GetComponent<Rigidbody2D>();
             _playerColOffest = _playerRb.GetComponent<Collider2D>().offset;

@@ -125,9 +125,7 @@ namespace UI
                 zoneSaveSO.NewGameReset();
 
             ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( MusicName.Woods_Zone_0 );
-            //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( MusicZoneParameter.Zone_0, true );
             ServiceLocator.GetService<SceneLoader>().Load( SceneName.S10_Z0_WoodsScene.ToString() );
-            //ServiceLocator.GetService<SceneLoader>().Load( "ARR_Scene" );
         }
 
         public void Show( Action OnReturnButtonClicked )

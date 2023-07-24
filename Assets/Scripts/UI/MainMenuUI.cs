@@ -30,6 +30,11 @@ namespace UI
             SetButtonEvents();
         }
 
+        private void Start()
+        {
+            ServiceLocator.GetService<GameStatus>().AskChangeToMenuUIState();
+        }
+
         private void SetButtonEvents()
         {
             _newGameButton.onClick.AddListener( () => {

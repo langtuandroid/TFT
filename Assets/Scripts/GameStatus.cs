@@ -5,7 +5,11 @@ public class GameStatus
 {
     public GameStatus() 
     {
+#if UNITY_EDITOR
+        state = GameState.GamePlay;
+#else
         state = GameState.MenuUI;
+#endif
     }
 
     public enum GameState
@@ -90,10 +94,10 @@ public class GameStatus
 
     private void CannotChangeState( GameState newState )
     {
-        Debug.LogWarning( $"[Advertencia:] Estando en {state}, NO puedes cambiar a {newState}" );
+        Debug.LogWarning( $"[ERROR:] Estando en {state}, NO puedes cambiar a {newState}" );
     }
     private void ConfirmState()
     { 
-        Debug.LogWarning( $"[¿Hay algún duplicado de llamada?] Ya está en {state}" ); 
+        Debug.LogWarning( $"[WARNING: ¿Hay algún duplicado de llamada?] Ya está en {state}" ); 
     }
 }

@@ -397,6 +397,7 @@ namespace Player
 
             _playerSprite.DOFade(1f, 0f).Play();
             _isDeath = true;
+            ServiceLocator.GetService<GameStatus>().AskChangeToInactiveState();
 
             Invoke(nameof(ReturnToMainMenu), 5f);
         }

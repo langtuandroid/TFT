@@ -19,6 +19,7 @@ namespace Attack
 
         // EVENTS
         internal MagicEvents _magicEvents;
+        protected GameStatus _gameStatus;
 
         // STATES
         internal bool _isUsingWeakAttack;
@@ -43,6 +44,7 @@ namespace Attack
         {
             // Eventos
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _gameStatus = ServiceLocator.GetService<GameStatus>();
 
             // Variables
             _isUsingWeakAttack = false;

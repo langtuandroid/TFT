@@ -197,7 +197,7 @@ using UnityEngine.UI;
         //Carga de Texto normal
         public void Text(string text, bool showCharacter = false)
         {
-            ServiceLocator.GetService<GameInputs>().ActivateUIMode();
+            ServiceLocator.GetService<GameStatus>().AskChangeToMenuUIState();
             ServiceLocator.GetService<GameInputs>().OnCancelPerformed += HideDialogBox;
             dialogAnimator.ShowDialogBox();
             canStart = false;
@@ -208,7 +208,7 @@ using UnityEngine.UI;
         public void HideDialogBox()
         {
             ServiceLocator.GetService<GameInputs>().OnCancelPerformed -= HideDialogBox;
-            ServiceLocator.GetService<GameInputs>().ActivatePlayerGroundMode();
+            ServiceLocator.GetService<GameStatus>().AskChangeToGamePlayState();
             dialogAnimator.HideDialogBox();
         }
 

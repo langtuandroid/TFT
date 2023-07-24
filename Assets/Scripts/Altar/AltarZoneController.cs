@@ -11,6 +11,7 @@ public class AltarZoneController : MonoBehaviour
         PlayerInstantation();
 
         ServiceLocator.GetService<LevelEvents>().OnChangeZone += SaveRefPoint;
+        ServiceLocator.GetService<GameStatus>().AskChangeToGamePlayState();
     }
 
     private void OnDestroy()
