@@ -319,7 +319,7 @@ namespace Player
             if (_isPhysicActionInput)
             {
                 _isPhysicAttacking = true;
-                _animatorBrain.SetPhysicalAttack();
+                _phisicalAttack.Attack(_animatorBrain, _isPhysicActionInput);
             }   
         }
 

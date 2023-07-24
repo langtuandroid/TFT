@@ -41282,8 +41282,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9984203
-    height: 0.99999994
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -41546,7 +41546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &628064889
 Transform:
   m_ObjectHideFlags: 0
@@ -42603,10 +42603,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!1 &1298778301
@@ -43028,7 +43024,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000114
+      value: -45.000122
       objectReference: {fileID: 0}
     - target: {fileID: 6256845347727536462, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -43045,6 +43041,10 @@ PrefabInstance:
     - target: {fileID: 6256845348240304110, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 21.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 6256845348240304110, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.66333
       objectReference: {fileID: 0}
     - target: {fileID: 6256845348276514294, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -43085,6 +43085,10 @@ PrefabInstance:
     - target: {fileID: 6256845349406058765, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -13.887512
+      objectReference: {fileID: 0}
+    - target: {fileID: 6256845349426042098, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50.66333
       objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
