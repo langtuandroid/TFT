@@ -44,7 +44,8 @@ public class RockEnemy : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        _pickUp.EnemyRockThrow();
+        if (_pickUp != null)
+            _pickUp.EnemyRockThrow(Vector2.down);
         
         yield return new WaitForSeconds(0.5f);
         
