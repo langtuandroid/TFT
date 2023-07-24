@@ -29,6 +29,7 @@ namespace Player
         private SpriteRenderer _spriteRender;
         private Vector2 _lookDirection;
         private Vector2 _initialLookDirection;
+        private bool _throwAnimationEnded = true;
 
         [Header("States")]
         private const string IDLE = "IdleTree";
@@ -184,8 +185,16 @@ namespace Player
 
         public void SetThrow()
         {
+            _throwAnimationEnded = false;
             PlayPlayer( THROW );
         }
+
+        public void ThrowAnimationEnded()
+        {
+            _throwAnimationEnded = true;
+        }
+
+        public bool HasThrowAnimationEnded() => _throwAnimationEnded;
 
         public void IsWalking(bool isWalking)
         {

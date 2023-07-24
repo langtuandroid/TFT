@@ -294,13 +294,7 @@ namespace Player
 
         private void DoPhysicalAction()
         {
-            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo
-            
-            if (_pickable.HasThrowItem) // No ataco mientras lanzo objeto
-            {
-                StartCoroutine(nameof(ResetThrowItem));
-                return;
-            }
+            if (!_animatorBrain.HasThrowAnimationEnded()) return;// si no ha terminado la animacion de lanzar no puedo hacer otra accion
             
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
@@ -308,26 +302,23 @@ namespace Player
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting && !_pickable.HasItem  && !_jump.IsPerformingJump)
+            if (!_interaction.IsInteracting && 
+                !_pickable.HasItem  && 
+                !_jump.IsPerformingJump &&
+                _animatorBrain.HasThrowAnimationEnded())
             {
                 DoPhysicalAttack();
             }
 
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo animacion ataque fisico
+            
             _isPhysicActionInput = false;
         }
 
-        private IEnumerator ResetThrowItem()
-        {
-            yield return new WaitForSeconds(1f);
-
-            _pickable.HasThrowItem = false;
-
-        }
-
-            private void DoPhysicalAttack()
+        private void DoPhysicalAttack()
         {
             if (_isPhysicActionInput)
-            { 
+            {
                 _isPhysicAttacking = true;
                 _animatorBrain.SetPhysicalAttack();
             }   

@@ -41282,8 +41282,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9984203
-    height: 0.99999994
+    width: 1
+    height: 0.9997038
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -42603,6 +42603,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!1 &1298778301
@@ -43024,7 +43028,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.00013
+      value: -45.000114
       objectReference: {fileID: 0}
     - target: {fileID: 6256845347727536462, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
