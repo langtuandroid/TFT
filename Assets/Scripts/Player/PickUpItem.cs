@@ -88,11 +88,14 @@ public class PickUpItem
         _pickable?.ShowCanPickUpItem(show);
     }
 
-    public void EnemyRockThrow()
+    public void EnemyRockThrow(Vector2 lookDirection)
     {
         _animatorBrain.HasItem(false);
+        _pickable?.ThrowIt(lookDirection);
+        _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         _pickable?.ShowCanPickUpItem( false );
         HasItem = false;
+        _animatorBrain.SetIdle(); 
         _pickable = null;
     }
 }

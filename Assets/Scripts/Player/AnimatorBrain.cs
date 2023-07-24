@@ -188,6 +188,8 @@ namespace Player
             _throwAnimationEnded = false;
             PlayPlayer( THROW );
         }
+        
+        public void SetIdle() => PlayPlayer( IDLE ); 
 
         public void ThrowAnimationEnded()
         {
