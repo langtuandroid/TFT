@@ -14,7 +14,7 @@ public class InfoPost : MonoBehaviour, IInteractable
     {
         if (lookDirection.y > 0)
         {
-            MyDialogueManager.Instance.Text(I18N.instance.getValue("^infopost_S10_Z0_0"));
+            MyDialogueManager.Instance.Text(I18N.instance.getValue(_infoPostMessage));
         }
     }
 
