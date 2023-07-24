@@ -301,6 +301,9 @@ namespace Player
             if (!_interaction.IsInteracting && 
                 !_pickable.HasItem  && 
                 !_jump.IsPerformingJump &&
+                !_magicAttacks[_magicIndex].IsUsingWeakAttack &&
+                !_magicAttacks[_magicIndex].IsUsingMediumAttack &&
+                !_magicAttacks[_magicIndex].IsUsingStrongAttack &&
                 _animatorBrain.HasThrowAnimationEnded())
             {
                 DoPhysicalAttack();

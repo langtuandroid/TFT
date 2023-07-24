@@ -87,4 +87,12 @@ public class PickUpItem
     {
         _pickable?.ShowCanPickUpItem(show);
     }
+
+    public void EnemyRockThrow()
+    {
+        _animatorBrain.HasItem(false);
+        _pickable?.ShowCanPickUpItem( false );
+        HasItem = false;
+        _pickable = null;
+    }
 }
