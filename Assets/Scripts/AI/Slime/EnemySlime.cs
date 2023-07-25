@@ -110,6 +110,8 @@ public class EnemySlime : MonoBehaviour
         }
         else
             _actualState.Execute(this);
+        
+        _spriteRenderer.flipX = _navMeshAgent.velocity.x < 0f;
     }
     
     private void PrepareComponent()
@@ -210,8 +212,6 @@ public class EnemySlime : MonoBehaviour
     
     public void UpdatePatrolMovement(Vector3 waypoint)
     {
-         _spriteRenderer.transform.localScale = _navMeshAgent.velocity.x > 0f ? new Vector2(1f, 1f) : new Vector2(-1f, 1f);
-        
         _navMeshAgent.destination = waypoint;
     }
     

@@ -42848,7 +42848,7 @@ GameObject:
   - component: {fileID: 1164587425}
   - component: {fileID: 1164587424}
   - component: {fileID: 1164587423}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Teletransport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
