@@ -14,6 +14,11 @@ namespace Player
             _material = GetComponent<SpriteRenderer>().material;
         }
 
+        private void Start()
+        {
+            ServiceLocator.GetService<InventoryEvents>().OnPrimarySkillChange += ChangeEmissionColor;
+        }
+
         public void ChangeIntensity( float value )
         {
 
@@ -23,6 +28,13 @@ namespace Player
         {
             //_material.SetColor( "_OutlineColor" , _colorArraySO.ColorArray[colorIndex] );
             _material.SetColor( "_OutlineColor" , _powerColorDataSO.PowerPanelDataList[colorIndex].Color );
+        }
+
+        private void OnDestroy()
+        {
+            InventoryEvents inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            if ( inventoryEvents != null )
+                inventoryEvents.OnPrimarySkillChange -= ChangeEmissionColor;
         }
     }
 }
