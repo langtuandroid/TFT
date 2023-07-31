@@ -1,34 +1,117 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Player;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using Utils;
 
 public class GolemArmIA : MonoBehaviour
 {
-    public float speed = 1.0f;
-    public float maxDistance = 0.2f;
+    public float speed;
+    public float maxDistanceX;
+    public float maxDistanceY;
+    public float armRadious;
+    public bool leftArm;
+    public float armResistence;
+    
+    
     private Vector3 originalPosition;
-    private bool movingRight = true;
+    private bool movingRight;
+    private Rigidbody2D _rb;
+    private GameObject _player;
+    
+    
+    private float originalX;
+    private bool isAttacking = false;
+    public float attackForce;
+    private int armMovementCount;
+
+    private void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+    }
 
     private void Start()
     {
+        originalX = transform.position.x;
+        armMovementCount = 0;
         originalPosition = transform.position;
+        movingRight = leftArm ? true : false;
     }
 
     private void Update()
     {
-        if (movingRight)
+      if(CheckPlayer()) Attack();
+    }
+
+    private bool CheckPlayer()
+    {
+        Collider2D results = Physics2D.OverlapCircle(transform.position, armRadious, LayerMask.GetMask(Constants.TAG_PLAYER));
+
+        if (results != null)
         {
-            transform.Translate(Vector3.right * speed * Time.deltaTime);
-        }
-        else
-        {
-            transform.Translate(Vector3.left * speed * Time.deltaTime);
+            if (results.CompareTag(Constants.TAG_PLAYER))
+            {
+                _player = results.gameObject;
+                return true;
+            }
         }
 
-        float distance = Vector3.Distance(transform.position, originalPosition);
-        if (distance >= maxDistance)
+        return false;
+    }
+
+    private void Attack()
+    {
+        if (!isAttacking)
         {
-            movingRight = !movingRight;
+            StartCoroutine(PerformSweep());
         }
+    }
+    
+    private void AttackPunch() //TODO para cuando recibe daño. Hay que parar todas las corrutinas y hacer reset
+    {
+        Vector2 direction = (_player.transform.position - transform.position).normalized;
+        _rb.AddForce(direction * attackForce, ForceMode2D.Impulse);
+    }
+
+    private IEnumerator PerformSweep()
+    {
+        armMovementCount++;
+
+        isAttacking = true;
+        float targetX = movingRight ? originalX + maxDistanceX : originalX - maxDistanceX;
+
+        while (Mathf.Abs(transform.position.x - targetX) > armResistence)
+        {
+            float direction = movingRight ? 1f : -1f;
+
+            Vector3 newArmPosition = new Vector3(transform.position.x, transform.position.y - maxDistanceY, transform.position.z);
+            _rb.MovePosition(newArmPosition + direction * speed * Time.deltaTime * Vector3.right);
+
+            yield return null;
+        }
+
+        _rb.MovePosition(originalPosition);
+
+        movingRight = !movingRight;
+
+        if (armMovementCount < 2)
+            StartCoroutine(PerformSweep());
+        else
+            ResetSweepAttack();
+    }
+
+
+    private void ResetSweepAttack()
+    {
+        armMovementCount = 0;
+        isAttacking = false;
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, armRadious);
     }
 }
