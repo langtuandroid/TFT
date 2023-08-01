@@ -1,16 +1,15 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
-
-
-public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
+public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
 {
-    // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
+    public Transform ThrowPosition;
     public event Action OnDeath;
-    public event Action OnDamage; 
-    private int _maxPhisicalDamage = 10;
+    private int _maxPhisicalDamage = 3;
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
+    private SpringJoint2D _joint2D;
+    private Rigidbody2D _rb;
     
     private void OnDestroy()
     {
@@ -21,18 +20,20 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _joint2D = GetComponent<SpringJoint2D>();
+        _rb = GetComponent<Rigidbody2D>();
     }
     
     private void PlayDeathAnimation()
     {
-        transform.DOScale(Vector3.zero, 1f)
-            .SetEase(Ease.OutBack)
-            .OnComplete(() => Destroy(gameObject)).Play();
+        _rb.isKinematic = true;
+        _joint2D.enabled = false;
+        transform.SetParent(ThrowPosition);
+        transform.position = new Vector3(0f, 0f, 0f);
     }
 
     private void PlayDamageAnimation(float duration, int cant)
     {
-        OnDamage?.Invoke();
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
             .OnComplete(() => _canReceiveDamage = true).Play();
