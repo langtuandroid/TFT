@@ -33,6 +33,7 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
     private void PlayDamageAnimation(float duration, int cant)
     {
         OnDamage?.Invoke();
+        
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
             .OnComplete(() => _canReceiveDamage = true).Play();

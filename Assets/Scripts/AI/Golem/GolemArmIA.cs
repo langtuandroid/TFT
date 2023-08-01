@@ -101,7 +101,7 @@ public class GolemArmIA : MonoBehaviour
             
         yield return new WaitForSeconds(1f);
         
-        _rb.AddForce(leftArm ? Vector2.right : Vector2.left * attackForce, ForceMode2D.Impulse);
+        _rb.AddForce(leftArm ? Vector2.right * attackForce : Vector2.left * attackForce, ForceMode2D.Impulse);
         
         yield return new WaitForSeconds(1f);
         

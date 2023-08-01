@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 17107561}
   - component: {fileID: 17107560}
   m_Layer: 6
-  m_Name: rocaPlaceholder (3)
+  m_Name: rocaPlaceholder Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 73146975}
   - component: {fileID: 73146974}
   m_Layer: 6
-  m_Name: rocaPlaceholder (1)
+  m_Name: rocaPlaceholder 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -530,9 +530,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!50 &73146973
 Rigidbody2D:
   serializedVersion: 4
@@ -553,7 +553,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!114 &73146974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -762,7 +762,7 @@ GameObject:
   - component: {fileID: 210635024}
   - component: {fileID: 210635023}
   m_Layer: 6
-  m_Name: rocaPlaceholder (2)
+  m_Name: rocaPlaceholder 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -852,9 +852,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!50 &210635022
 Rigidbody2D:
   serializedVersion: 4
@@ -875,7 +875,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!61 &210635023
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3388,8 +3388,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.99917763
+    width: 0.99929816
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -3510,7 +3510,7 @@ GameObject:
   - component: {fileID: 553315758}
   - component: {fileID: 553315759}
   m_Layer: 6
-  m_Name: rocaPlaceholder (1)
+  m_Name: rocaPlaceholder 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3600,9 +3600,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!50 &553315757
 Rigidbody2D:
   serializedVersion: 4
@@ -3623,7 +3623,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!61 &553315758
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3804,7 +3804,7 @@ GameObject:
   - component: {fileID: 655209163}
   - component: {fileID: 655209162}
   m_Layer: 6
-  m_Name: rocaPlaceholder
+  m_Name: rocaPlaceholder Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3894,9 +3894,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!50 &655209160
 Rigidbody2D:
   serializedVersion: 4
@@ -3917,7 +3917,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!114 &655209161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3936,7 +3936,7 @@ MonoBehaviour:
   armRadious: 5
   leftArm: 1
   armResistence: 15
-  attackForce: 1
+  attackForce: 20
 --- !u!114 &655209162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4248,7 +4248,7 @@ GameObject:
   - component: {fileID: 1064234506}
   - component: {fileID: 1064234505}
   m_Layer: 6
-  m_Name: rocaPlaceholder
+  m_Name: rocaPlaceholder Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4688,8 +4688,8 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1526049922}
   - {fileID: 1809866697}
+  - {fileID: 1526049922}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4768,11 +4768,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1301747979}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c095361573df0417b82362a0c3ced207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _leftHandIA: {fileID: 655209161}
+  _rightHandIA: {fileID: 1856720537}
 --- !u!114 &1301747987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5200,7 +5202,7 @@ Transform:
   - {fileID: 553315754}
   - {fileID: 1064234501}
   m_Father: {fileID: 1301747981}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1713576135
 PrefabInstance:
@@ -5513,7 +5515,7 @@ Transform:
   - {fileID: 1819521431}
   - {fileID: 17107556}
   m_Father: {fileID: 1301747981}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1813252654
 GameObject:
@@ -5618,7 +5620,7 @@ GameObject:
   - component: {fileID: 1819521436}
   - component: {fileID: 1819521435}
   m_Layer: 6
-  m_Name: rocaPlaceholder (2)
+  m_Name: rocaPlaceholder 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5656,9 +5658,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!50 &1819521433
 Rigidbody2D:
   serializedVersion: 4
@@ -5679,7 +5681,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!212 &1819521434
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5787,7 +5789,7 @@ GameObject:
   - component: {fileID: 1856720538}
   - component: {fileID: 1856720540}
   m_Layer: 6
-  m_Name: rocaPlaceholder (3)
+  m_Name: rocaPlaceholder Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5880,7 +5882,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 4
 --- !u!114 &1856720537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5899,7 +5901,7 @@ MonoBehaviour:
   armRadious: 5
   leftArm: 0
   armResistence: 15
-  attackForce: 1
+  attackForce: 20
 --- !u!114 &1856720538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5956,9 +5958,9 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 0
-  m_Distance: 0.16
-  m_DampingRatio: 1
-  m_Frequency: 0.5
+  m_Distance: 1
+  m_DampingRatio: 0
+  m_Frequency: 3
 --- !u!1 &1894208111
 GameObject:
   m_ObjectHideFlags: 0
