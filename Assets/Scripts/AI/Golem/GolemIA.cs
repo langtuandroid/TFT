@@ -69,12 +69,12 @@ public class GolemIA : MonoBehaviour
       _anim.Play("walk");
 
       Vector2 direction = (_player.transform.position - transform.position).normalized;
-      Vector2 newPosition = (Vector2)transform.position + direction * speed * Time.deltaTime;
-      
-      _rb.MovePosition(newPosition);
-      
-      StartCoroutine(ShakeCamera(0.1f, 0.1f));
+      Vector2 velocity = direction * speed;
+
+      // Usamos Translate para mover el golem con la velocidad calculada.
+      transform.Translate(velocity * Time.deltaTime);
    }
+
    
    private IEnumerator ShakeCamera(float duration, float magnitude)
    {

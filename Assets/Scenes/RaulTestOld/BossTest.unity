@@ -3166,8 +3166,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.9993816
-    height: 1
+    width: 1
+    height: 0.99917763
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -4287,7 +4287,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 5
 --- !u!114 &1301747986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4304,7 +4304,7 @@ MonoBehaviour:
   _rightHandIA: {fileID: 1856720537}
   mainCamera: {fileID: 519420031}
   PlayerDetectionRadious: 5
-  speed: 10
+  speed: 0.5
 --- !u!114 &1301747987
 MonoBehaviour:
   m_ObjectHideFlags: 0
