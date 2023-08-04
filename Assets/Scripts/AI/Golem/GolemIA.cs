@@ -12,13 +12,16 @@ public class GolemIA : MonoBehaviour
    public Camera mainCamera;
    public float PlayerDetectionRadious;
    public float speed;
-   
+   public float TotalTimeChasingPlayer;
    
    
    private GolemHealth _health;
    private Animator _anim;
    private GameObject _player;
    private Rigidbody2D _rb;
+
+
+   private float _timeChasingPlayer;
 
    private void Awake()
    {
@@ -30,13 +33,19 @@ public class GolemIA : MonoBehaviour
    private void Start()
    {
       _health.OnDamage += DamageAttack;
-       _anim.Play("IdleAwake");
+       _anim.Play("Idle");
    }
 
    private void Update()
    {
-      if(CheckPlayer()) GoToPlayer();
-     // else //ataque de lejos con brazos
+      if (_timeChasingPlayer > TotalTimeChasingPlayer)
+      {
+         
+      }
+      else
+      {
+         if(CheckPlayer()) GoToPlayer();  
+      }
    }
 
    private bool CheckPlayer()
@@ -70,9 +79,10 @@ public class GolemIA : MonoBehaviour
 
       Vector2 direction = (_player.transform.position - transform.position).normalized;
       Vector2 velocity = direction * speed;
-
-      // Usamos Translate para mover el golem con la velocidad calculada.
+      
       transform.Translate(velocity * Time.deltaTime);
+
+      _timeChasingPlayer += Time.deltaTime;
    }
 
    

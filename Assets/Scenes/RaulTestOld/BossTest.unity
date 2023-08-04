@@ -3166,8 +3166,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.99917763
+    width: 0.99699706
+    height: 0.99999994
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -4305,6 +4305,7 @@ MonoBehaviour:
   mainCamera: {fileID: 519420031}
   PlayerDetectionRadious: 5
   speed: 0.5
+  TotalTimeChasingPlayer: 50
 --- !u!114 &1301747987
 MonoBehaviour:
   m_ObjectHideFlags: 0
