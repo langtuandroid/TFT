@@ -10,6 +10,7 @@ namespace AI
             {
                     if (agent.ObstacleDetection()) // Si hay algo entre fuego fatuo y player
                     {
+                        agent.ResetListenTimer();
                         agent.ChangeState(new EnemyWillOWispAlertState());
                     }
                     else
