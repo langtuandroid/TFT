@@ -6,6 +6,7 @@ using UnityEngine.Serialization;
 using Utils;
 using DG.Tweening;
 using UnityEngine.Rendering.Universal;
+using System.Linq;
 
 namespace AI
 {
@@ -228,6 +229,7 @@ namespace AI
             if (torch != null && torch.Activated)
             {
                 GameObject torchPatrol = new GameObject();   
+                
                 torchPatrol.transform.position = new Vector3(_torchOnListTransform[0].position.x,
                     _torchOnListTransform[0].position.y, 0f);
 
@@ -242,8 +244,8 @@ namespace AI
                 _torchOnListTransform.RemoveAt(0);
             }
         }
-    } 
-    
+    }
+
     public void SetTorchOff(Vector3 torchPos)
     {
         Vector3 origin = transform.position;
@@ -389,6 +391,7 @@ namespace AI
                     result = true;
                 }
             }
+            _torchOnListTransform = _torchOnListTransform.OrderBy(t => Vector3.Distance(transform.position, t.position)).ToList();
         }
         return result;
     }

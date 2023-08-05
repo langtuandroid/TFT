@@ -2,11 +2,13 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 
-public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
+
+public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
 {
     // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
     public event Action OnDeath;
-    private int _maxPhisicalDamage = 2;
+    public event Action OnDamage; 
+    private int _maxPhisicalDamage = 10;
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
     
@@ -18,7 +20,7 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
     
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
     
     private void PlayDeathAnimation()
@@ -30,7 +32,7 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     private void PlayDamageAnimation(float duration, int cant)
     {
-        //_canReceiveDamage = false;
+        OnDamage?.Invoke();
         
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
@@ -39,15 +41,24 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     public void Burn(int damage)
     {
-       PlayDeathAnimation();
+        _maxPhisicalDamage -= damage;
+        
+        Debug.Log("le queda de vida: " + _maxPhisicalDamage);
+        
+        if (_maxPhisicalDamage <= 0f)
+            PlayDeathAnimation();
+        else
+            PlayDamageAnimation(2f, 3);
     }
 
     public void Punch(int damage)
     {
-    //    if (!_canReceiveDamage) return;
-      //  _canReceiveDamage = false;
+        if (!_canReceiveDamage) return;
+        _canReceiveDamage = false;
         
         _maxPhisicalDamage -= damage;
+        
+        Debug.Log("le queda de vida: " + _maxPhisicalDamage);
         
         if (_maxPhisicalDamage <= 0f)
             PlayDeathAnimation();

@@ -13,11 +13,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.34
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 11.22
       objectReference: {fileID: 0}
     - target: {fileID: 7995529472585974182, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -51,6 +51,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7995529472585974183, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 470308542, guid: c83a8e546df03428ab9a255999a051fa, type: 3}
     - target: {fileID: 7995529472585974186, guid: 7f1a3d765b9428841bac5b91f63ea6c4, type: 3}
       propertyPath: m_Name
       value: RockEnemy
@@ -74,3 +78,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73668cd3d4e9a4aeba484213f9c31828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &89172776
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893311446713443871}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9129d59eb7acd4f5b9bf346080895852, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
