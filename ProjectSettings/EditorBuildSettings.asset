@@ -38,4 +38,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/S03_Credits.unity
     guid: 9c0122c8985d9497d8c438172348009c
+  - enabled: 1
+    path: Assets/Scenes/RaulTest/4a_WoodsScene_Propuesta.unity
+    guid: fc944663a0fde42d4b69d3bd85901c3f
+  - enabled: 1
+    path: Assets/Scenes/RaulTest/BossTest.unity
+    guid: cebc8644ceb4d43798176febf3f2056a
   m_configObjects: {}

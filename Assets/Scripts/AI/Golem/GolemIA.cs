@@ -12,7 +12,8 @@ public class GolemIA : MonoBehaviour
    public Camera mainCamera;
    public float PlayerDetectionRadious;
    public float speed;
-   public float TotalTimeChasingPlayer;
+   public float TotalSecondsChasingPlayer;
+   private float _totalSecondsChasingPlayerTmp;
    
    
    private GolemHealth _health;
@@ -33,14 +34,15 @@ public class GolemIA : MonoBehaviour
    private void Start()
    {
       _health.OnDamage += DamageAttack;
+      _totalSecondsChasingPlayerTmp = TotalSecondsChasingPlayer;
        _anim.Play("Idle");
    }
 
    private void Update()
    {
-      if (_timeChasingPlayer > TotalTimeChasingPlayer)
+      if (_timeChasingPlayer > TotalSecondsChasingPlayer)
       {
-         
+         ResetChasingTime();
       }
       else
       {
@@ -83,6 +85,11 @@ public class GolemIA : MonoBehaviour
       transform.Translate(velocity * Time.deltaTime);
 
       _timeChasingPlayer += Time.deltaTime;
+   }
+
+   private void ResetChasingTime()
+   {
+      TotalSecondsChasingPlayer = _totalSecondsChasingPlayerTmp;
    }
 
    

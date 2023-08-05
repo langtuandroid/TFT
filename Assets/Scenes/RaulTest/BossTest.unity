@@ -3411,8 +3411,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.99917763
+    width: 0.9993425
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -5482,6 +5482,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _leftHandIA: {fileID: 655209161}
   _rightHandIA: {fileID: 1856720544}
+  mainCamera: {fileID: 0}
+  PlayerDetectionRadious: 5
+  speed: 1
+  TotalSecondsChasingPlayer: 3
 --- !u!114 &1301747987
 MonoBehaviour:
   m_ObjectHideFlags: 0
