@@ -48,9 +48,13 @@ public class RockEnemy : MonoBehaviour
             _pickUp.EnemyRockThrow(Vector2.down);
         
         yield return new WaitForSeconds(0.5f);
-        
+
         if (_pickUp.HasItem)
+        {
+            Debug.Log("Entro");
             _playerStatus.TakeDamage(1);
+        }
+            
         
         yield return new WaitForSeconds(1f);
         

@@ -30,6 +30,8 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     private void PlayDamageAnimation(float duration, int cant)
     {
+        //_canReceiveDamage = false;
+        
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
             .OnComplete(() => _canReceiveDamage = true).Play();
@@ -42,8 +44,8 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     public void Punch(int damage)
     {
-        if (!_canReceiveDamage) return;
-        _canReceiveDamage = false;
+    //    if (!_canReceiveDamage) return;
+      //  _canReceiveDamage = false;
         
         _maxPhisicalDamage -= damage;
         
