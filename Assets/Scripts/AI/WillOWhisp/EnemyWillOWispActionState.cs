@@ -21,7 +21,7 @@ namespace AI
                       {
                           agent.ChangeState(new EnemyWillOWispAlertState());
                       }
-                    }
+                }
             }
         } 
     }
