@@ -39,6 +39,8 @@ namespace Player
         // Inputs
         // Jump input
         private bool _isJumpInput;
+        
+        public bool IsJumpInput { get => _isJumpInput; }
 
         // Movement input
         private Vector2 _direction;
