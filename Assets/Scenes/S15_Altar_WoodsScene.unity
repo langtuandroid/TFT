@@ -4368,7 +4368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 4
-  _nextScene: 7
+  _nextScene: 8
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
   _musicName: 6
@@ -4769,7 +4769,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
   - {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
   - {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
-  _nextScene: 8
+  _nextScene: 11
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
   _musicName: 8
@@ -5523,7 +5523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 3
-  _nextScene: 7
+  _nextScene: 8
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
   _musicName: 5
