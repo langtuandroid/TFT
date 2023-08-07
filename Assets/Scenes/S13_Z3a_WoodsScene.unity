@@ -5263,7 +5263,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &575248963
 MonoBehaviour:
@@ -10136,7 +10136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nextStartPointRefID: 3
-  _nextScene: 7
+  _nextScene: 10
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 6
   _musicName: 7

@@ -23,13 +23,14 @@ namespace Services
                 AddService( gameStatus );
                 AddService(optionsSave);
                 AddService(new GameInputs(optionsSave, gameStatus));
-#if UNITY_EDITOR
-                IAudioSpeaker audio = IsRealMusicPlaying ? AudioManager.Instance : new DummyAudio();
-#else
-                IAudioSpeaker audio = AudioManager.Instance;
-#endif
-                AddService(audio);
                 AddService(new SceneLoader());
+
+//#if UNITY_EDITOR
+//                IAudioSpeaker audio = IsRealMusicPlaying ? AudioManager.Instance : new DummyAudio();
+//#else
+//                IAudioSpeaker audio = AudioManager.Instance;
+//#endif
+//                AddService( audio );
 
                 // Events
                 AddService(new MagicEvents());

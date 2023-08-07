@@ -6,6 +6,11 @@ public class SceneLoader
 
     private string _targetScene;
 
+    public SceneLoader()
+    {
+        SceneManager.LoadScene( "S04_InstanceScene" , LoadSceneMode.Additive );
+    }
+
     public void Load( string targetSceneName )
     {
         _targetScene = targetSceneName;
