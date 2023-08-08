@@ -3,13 +3,18 @@ using UnityEngine;
 using DG.Tweening;
 public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
 {
-    public Transform ThrowPosition;
+    [SerializeField] private Transform ThrowPosition;
+    [SerializeField] private Transform _golemPosition;
+    [SerializeField] private float punchForce;
+    
     public event Action OnDeath;
-    private int _maxPhisicalDamage = 3;
+    private int _maxPhisicalDamage = 1;
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
     private SpringJoint2D _joint2D;
     private Rigidbody2D _rb;
+    private GolemArmIA _golemArmIA;
+    private bool _isArmDefeated = false;
     
     private void OnDestroy()
     {
@@ -22,14 +27,17 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _joint2D = GetComponent<SpringJoint2D>();
         _rb = GetComponent<Rigidbody2D>();
+        _golemArmIA = GetComponent<GolemArmIA>();
     }
     
     private void PlayDeathAnimation()
     {
-        _rb.isKinematic = true;
+        _golemArmIA.enabled = false;
+        _rb.velocity = Vector2.zero;
         _joint2D.enabled = false;
+        transform.position = ThrowPosition.position;
         transform.SetParent(ThrowPosition);
-        transform.position = new Vector3(0f, 0f, 0f);
+        _isArmDefeated = true;
     }
 
     private void PlayDamageAnimation(float duration, int cant)
@@ -37,6 +45,12 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
             .OnComplete(() => _canReceiveDamage = true).Play();
+    }
+    
+    private void PunchDefeatedArm()
+    {
+        Vector2 direction = (_golemPosition.position - transform.position).normalized;
+        _rb.velocity = direction * punchForce; 
     }
 
     public void Burn(int damage)
@@ -53,16 +67,23 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
 
     public void Punch(int damage)
     {
-        if (!_canReceiveDamage) return;
-        _canReceiveDamage = false;
-        
-        _maxPhisicalDamage -= damage;
-        
-        Debug.Log("le queda de vida: " + _maxPhisicalDamage);
-        
-        if (_maxPhisicalDamage <= 0f)
-            PlayDeathAnimation();
+        if (_isArmDefeated)
+        {
+            PunchDefeatedArm(); 
+        }
         else
-            PlayDamageAnimation(2f, 3);
+        {
+            if (!_canReceiveDamage) return;
+            _canReceiveDamage = false;
+        
+            _maxPhisicalDamage -= damage;
+        
+            Debug.Log("le queda de vida: " + _maxPhisicalDamage);
+        
+            if (_maxPhisicalDamage <= 0f)
+                PlayDeathAnimation();
+            else
+                PlayDamageAnimation(2f, 3);
+        }
     }
 }
