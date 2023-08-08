@@ -6,9 +6,10 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 {
     // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
     public event Action OnDeath;
-    private int _maxPhisicalDamage = 2;
+    public int _maxPhisicalDamage = 2;
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
+    private EnemyDamage _enemyDamage;
     
     private void OnDestroy()
     {
@@ -18,11 +19,14 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
     
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _enemyDamage = GetComponent<EnemyDamage>();
     }
     
     private void PlayDeathAnimation()
     {
+        _enemyDamage.enabled = false; //TODO revisar, no esta funcionando
+        
         transform.DOScale(Vector3.zero, 1f)
             .SetEase(Ease.OutBack)
             .OnComplete(() => Destroy(gameObject)).Play();
@@ -30,8 +34,6 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     private void PlayDamageAnimation(float duration, int cant)
     {
-        //_canReceiveDamage = false;
-        
         spriteRenderer.DOColor(Color.clear, duration / (cant * 2f))
             .SetLoops(cant * 2, LoopType.Yoyo)
             .OnComplete(() => _canReceiveDamage = true).Play();
@@ -39,13 +41,21 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     public void Burn(int damage)
     {
-       PlayDeathAnimation();
+        if (!_canReceiveDamage) return;
+        _canReceiveDamage = false;
+        
+        _maxPhisicalDamage -= damage;
+        
+        if (_maxPhisicalDamage <= 0f)
+            PlayDeathAnimation();
+        else
+            PlayDamageAnimation(2f, 3);
     }
 
     public void Punch(int damage)
     {
-    //    if (!_canReceiveDamage) return;
-      //  _canReceiveDamage = false;
+        if (!_canReceiveDamage) return;
+         _canReceiveDamage = false;
         
         _maxPhisicalDamage -= damage;
         
