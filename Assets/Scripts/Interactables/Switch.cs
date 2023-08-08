@@ -52,15 +52,21 @@ public class Switch : MonoBehaviour
         {
             if (_playerController != null)
             {
-                if (_playerController.IsJumpInput)
+                if (_playerController.IsJumpInput && !_colliderExteriorOut)
                 {
                     _colliderExterior.enabled = false;
                     _colliderExteriorOut = true;
+                    Debug.Log("Estoy saltando");
                 }
                 else
                 {
+                    Debug.Log("NO Estoy saltando");
                     if(CheckOnStayPlayer()) ToggleSwitch();
-                    else StartCoroutine(nameof(ResetColliderOut));
+                    else
+                    {
+                        if (_buttonCollision) return; //si no he activado el boton vuelvo a poner las colisiones
+                        StartCoroutine(nameof(ResetColliderOut));
+                    }
                 }
             }
         }
@@ -76,6 +82,8 @@ public class Switch : MonoBehaviour
         yield return new WaitForSeconds(2f);
         
         _colliderExterior.enabled = true;
+
+        _colliderExteriorOut = false;
     }
 
     private void ResetButton()
