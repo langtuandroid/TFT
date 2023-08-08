@@ -210,6 +210,7 @@ namespace Player
 
         #region Unity methods
 
+        
         private void Awake()
         {
             _magicTimer = 0f;
@@ -219,26 +220,52 @@ namespace Player
             _stunnedTimer = _timeStunned;
         }
 
-        private void Start()
+        private void OnDestroy()
         {
-            // EVENTS
             // Life
-            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue -= OnDeathValue;
+            // Magic
+            _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
+            _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
+            _magicEvents.OnUseOfMagicValue -= OnUseOfMagicValue;
+            // Souls
+            _soulEvents.OnGotSoulsValue -= OnGotSouls;
+        }
+
+
+        #endregion
+
+        #region Public methods
+
+        #region Initialization
+
+        public void Init(
+            LifeEvents lifeEvents,
+            MagicEvents magicEvents,
+            SoulEvents soulEvents
+            )
+        {
+            // Life
+            _lifeEvents = lifeEvents;
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
             _lifeEvents.OnDeathValue += OnDeathValue;
-            // Magic
-            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+
+            // Magic attacks
+            _magicEvents = magicEvents;
             _magicEvents.OnMaxPowerUsedValue += OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue += OnMaxPowerFinalizedValue;
             _magicEvents.DefineMaxPowerRechargingTime(_timeToRechargeMaxPower);
             _magicEvents.OnUseOfMagicValue += OnUseOfMagicValue;
+
             // Souls
-            _soulEvents = ServiceLocator.GetService<SoulEvents>();
+            _soulEvents = soulEvents;
             _soulEvents.OnGotSoulsValue += OnGotSouls;
         }
 
-        private void Update()
+        public void UpdateInfo()
         {
             if (IsStunned)
             {
@@ -258,23 +285,7 @@ namespace Player
             RecoverMagic();
         }
 
-        private void OnDestroy()
-        {
-            // Life
-            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
-            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
-            _lifeEvents.OnDeathValue -= OnDeathValue;
-            // Magic
-            _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
-            _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
-            _magicEvents.OnUseOfMagicValue -= OnUseOfMagicValue;
-            // Souls
-            _soulEvents.OnGotSoulsValue -= OnGotSouls;
-        }
-
         #endregion
-
-        #region Public methods
 
         #region Magic attacks
 

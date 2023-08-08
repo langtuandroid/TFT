@@ -2,6 +2,7 @@ using System.Collections;
 using Attack;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.VisualScripting;
 
 namespace Player
 {
@@ -11,6 +12,9 @@ namespace Player
         // SERVICES
         private GameInputs _gameInputs;
         private InventoryEvents _inventoryEvents;
+        private MagicEvents _magicEvents;
+        private LifeEvents _lifeEvents;
+        private SoulEvents _soulEvents;
 
         // SCRIPTS DEL JUGADOR
         private PlayerStatus _playerStatus;
@@ -86,6 +90,7 @@ namespace Player
 
             _secondaryAction = GetComponent<LightAttack>();
             _playerStatus = GetComponent<PlayerStatus>();
+
             _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
 
             // Inicializamos variables
@@ -117,7 +122,7 @@ namespace Player
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, audioSpeaker, gameStatus );
+            _fallController.Init(transform.position, audioSpeaker, gameStatus);
             _magicAttacks[_magicIndex].Select();
 
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -135,7 +140,17 @@ namespace Player
             _inventoryEvents.OnPrimarySkillChange += OnChangePrimarySkill;
             _inventoryEvents.OnSecondarySkillChange += OnChangeSecondarySkill;
 
-            ServiceLocator.GetService<LifeEvents>().OnFallDown += _fallController.StartRecovering;
+            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnFallDown += _fallController.StartRecovering;
+
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _soulEvents = ServiceLocator.GetService<SoulEvents>();
+
+            _playerStatus.Init(
+                lifeEvents: _lifeEvents,
+                magicEvents: _magicEvents,
+                soulEvents: _soulEvents
+                );
         }
 
         private void OnDestroy()
@@ -153,12 +168,15 @@ namespace Player
             _inventoryEvents.OnPrimarySkillChange -= OnChangePrimarySkill;
             _inventoryEvents.OnSecondarySkillChange -= OnChangeSecondarySkill;
 
-            ServiceLocator.GetService<LifeEvents>().OnFallDown -= _fallController.StartRecovering;
+            _lifeEvents.OnFallDown -= _fallController.StartRecovering;
         }
 
         private void Update()
         {
             // TODO: GameOver
+
+            // Actualizamos la información del player
+            _playerStatus.UpdateInfo();
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
             // o si está usando el poder máximo, volvemos
@@ -291,15 +309,15 @@ namespace Player
         private void DoPhysicalAction()
         {
             if (!_animatorBrain.HasThrowAnimationEnded()) return;// si no ha terminado la animacion de lanzar no puedo hacer otra accion
-            
+
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
                 DoInteraction();
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting && 
-                !_pickable.HasItem  && 
+            if (!_interaction.IsInteracting &&
+                !_pickable.HasItem &&
                 !_jump.IsPerformingJump &&
                 !_magicAttacks[_magicIndex].IsUsingWeakAttack &&
                 !_magicAttacks[_magicIndex].IsUsingMediumAttack &&
@@ -310,7 +328,7 @@ namespace Player
             }
 
             if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo animacion ataque fisico
-            
+
             _isPhysicActionInput = false;
         }
 
@@ -320,7 +338,7 @@ namespace Player
             {
                 _isPhysicAttacking = true;
                 _phisicalAttack.Attack(_animatorBrain, _isPhysicActionInput);
-            }   
+            }
         }
 
         private void DoInteraction()
@@ -532,7 +550,7 @@ namespace Player
         {
             _jump.FallInHole();
             _movement.Stop();
-            _playerStatus.TakeDamage( 1 );
+            _playerStatus.TakeDamage(1);
             _fallController.SetFalling();
         }
     }
