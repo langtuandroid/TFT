@@ -1159,9 +1159,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.050632913
+    y: 0.051948052
     width: 1
-    height: 0.898932
+    height: 0.89853895
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1400,6 +1400,10 @@ PrefabInstance:
       propertyPath: _timeOfInvencibility
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1262885403, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5879475305411568785, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
       propertyPath: m_Name
       value: Alex V0.35
@@ -1463,7 +1467,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045416117}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1198af2392a07e64c84257858bb18c0a, type: 3}
   m_Name: 
@@ -1483,7 +1487,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1045416117}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 459c913c2b70cea4488d121d5444afd7, type: 3}
   m_Name: 

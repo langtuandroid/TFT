@@ -193,6 +193,7 @@ namespace Player
         private LifeEvents _lifeEvents; // Eventos de vida
         private MagicEvents _magicEvents; // Eventos de magia
         private SoulEvents _soulEvents; // Eventos de almas
+        private GameStatus _gameStatus; // Estado de juego
 
         // Variables
         // Life
@@ -244,7 +245,8 @@ namespace Player
         public void Init(
             LifeEvents lifeEvents,
             MagicEvents magicEvents,
-            SoulEvents soulEvents
+            SoulEvents soulEvents,
+            GameStatus gameStatus
             )
         {
             // Life
@@ -263,6 +265,9 @@ namespace Player
             // Souls
             _soulEvents = soulEvents;
             _soulEvents.OnGotSoulsValue += OnGotSouls;
+
+            // GameStatus
+            _gameStatus = gameStatus;
         }
 
         public void UpdateInfo()
@@ -408,7 +413,7 @@ namespace Player
 
             _playerSprite.DOFade(1f, 0f).Play();
             _isDeath = true;
-            ServiceLocator.GetService<GameStatus>().AskChangeToInactiveState();
+            _gameStatus.AskChangeToInactiveState();
 
             Invoke(nameof(ReturnToMainMenu), 5f);
         }

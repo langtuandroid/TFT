@@ -23,6 +23,8 @@ namespace Attack
         /// </summary>
         public override void Effect()
         {
+            _isUsingEffect = true;
+
             // Instanciamos bola de luz
             GameObject lightBall = Instantiate(
                 _lightPrefab, // Prefab de la bola
@@ -40,6 +42,7 @@ namespace Attack
             );
 
             SetBallDirection(directionFixed.normalized);
+            _isUsingEffect = false;
         }
 
         #endregion
