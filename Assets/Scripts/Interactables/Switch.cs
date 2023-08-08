@@ -20,7 +20,6 @@ public class Switch : MonoBehaviour
     
     #region Private Variable
     private bool _buttonCollision = false;
-    private bool _colliderExteriorOut = false;
     private bool _isActivated = false;
     #endregion
     
@@ -52,52 +51,32 @@ public class Switch : MonoBehaviour
         {
             if (_playerController != null)
             {
-                if (_playerController.IsJumpInput && !_colliderExteriorOut)
+                if (_playerController.IsJumpInput)
                 {
                     _colliderExterior.enabled = false;
-                    _colliderExteriorOut = true;
-                    Debug.Log("Estoy saltando");
                 }
                 else
                 {
-                    Debug.Log("NO Estoy saltando");
-                    if(CheckOnStayPlayer()) ToggleSwitch();
-                    else
-                    {
-                        if (_buttonCollision) return; //si no he activado el boton vuelvo a poner las colisiones
-                        StartCoroutine(nameof(ResetColliderOut));
-                    }
+                    CheckOnStayPlayer();
                 }
             }
         }
         else
         {
-            //Activar para vovler a pulsar el boton
+            //Activar para volver a pulsar el boton
             //ResetButton();
         }
-    }
-
-    private IEnumerator ResetColliderOut()
-    {
-        yield return new WaitForSeconds(2f);
-        
-        _colliderExterior.enabled = true;
-
-        _colliderExteriorOut = false;
     }
 
     private void ResetButton()
     {
         _colliderExterior.enabled = true; //Activo el colider exterior
         _buttonCollision = false; //Reseteo la variable de activar boton para que solo entre 1 vez en el metodo     
-        _colliderExteriorOut = false; //Reseteo variable que controla que ya se haya quitado el colider exterior
         _isActivated = false; // Desactivo el boton
     }
 
     private void ToggleSwitch()
     {
-        if (!_colliderExteriorOut) return; //si no he quitado el collider exterior no puedo activar el boton
-        
         if (!_buttonCollision)
         {
             _buttonCollision = true;
@@ -131,7 +110,7 @@ public class Switch : MonoBehaviour
         return false;
     }
     
-    private bool CheckOnStayPlayer()
+    private void CheckOnStayPlayer()
     {
         Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAwareInterior, 
             LayerMask.GetMask(Constants.LAYER_INTERACTABLE, Constants.LAYER_PLAYER));
@@ -140,11 +119,12 @@ public class Switch : MonoBehaviour
         {
             if (objectDetected.CompareTag(Constants.TAG_PLAYER))
             {
-                return true;
+                ToggleSwitch();
+                return;
             }
         }
-
-        return false;
+      
+        _colliderExterior.enabled = true;
     }
     
     private void OnDrawGizmos()
