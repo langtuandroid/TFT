@@ -13,11 +13,19 @@ MonoBehaviour:
   m_Name: Woods Zone3B StartRefInfoSO
   m_EditorClassIdentifier: 
   startRefInfoArray:
-  - exitZoneDescription: 
-    startPointRefID: 0
-    startPosition: {x: 0, y: 0}
+  - exitZoneDescription: South - From Zone 3
+    startPointRefID: 1
+    startPosition: {x: -1.5, y: -4.5}
     _playerStartLookDirection: 0
     initialLayerMask:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 65536
+    confinerColliderIndex: 0
+  - exitZoneDescription: South - From Zone 3
+    startPointRefID: 2
+    startPosition: {x: -15.5, y: 16.5}
+    _playerStartLookDirection: 0
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 65536
     confinerColliderIndex: 0
