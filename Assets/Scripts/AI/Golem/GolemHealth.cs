@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Assertions.Must;
+using Utils;
 
 
 public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
@@ -11,6 +13,7 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
     private float _damage = 2;
+    private float _handDetectionRadious = 1f;
 
     public float Damage 
     {
@@ -27,7 +30,12 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
-    
+
+    private void Update()
+    {
+        CheckArmCollision();
+    }
+
     private void PlayDeathAnimation()
     {
         transform.DOScale(Vector3.zero, 1f)
@@ -44,14 +52,23 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
             .OnComplete(() => _canReceiveDamage = true).Play();
     }
     
-    private void OnTriggerEnter2D(Collider2D col)
+    private void CheckArmCollision()
     {
-        if (col.CompareTag("GolemArm"))
-        {
-            _damage--;
+        Collider2D results = Physics2D.OverlapCircle(transform.position, _handDetectionRadious);
 
-            if (_damage > 0) PlayDamageAnimation(2f, 3);
-            else PlayDeathAnimation();
+        if (results != null)
+        {
+            if (results.CompareTag("GolemArm") && _canReceiveDamage)
+            {
+                results.GetComponent<GolemRockHealth>().GolemCollision();
+                
+                _canReceiveDamage = false;
+            
+                _damage--;
+
+                if (_damage > 0) PlayDamageAnimation(2f, 3);
+                else PlayDeathAnimation();
+            }
         }
     }
 
@@ -80,5 +97,11 @@ public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
             PlayDeathAnimation();
         else
             PlayDamageAnimation(2f, 3);*/
+    }
+    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _handDetectionRadious);
     }
 }

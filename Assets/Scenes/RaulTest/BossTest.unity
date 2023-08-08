@@ -593,6 +593,92 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!1001 &145517004
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.69820017
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.31057
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.31057
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -52.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 30.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.25314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661189, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097840481378661194, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+      propertyPath: m_Name
+      value: PUERTA
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+--- !u!1 &145517005 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9097840481378661194, guid: a795b687a056840cd9f3a0058107488c, type: 3}
+  m_PrefabInstance: {fileID: 145517004}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &145517006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145517005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523a39c5969a04bd08dabe7841cd6546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &164772560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,6 +1243,78 @@ SpringJoint2D:
   m_Distance: 4.119931
   m_DampingRatio: 0
   m_Frequency: 1
+--- !u!1 &432813842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 432813844}
+  - component: {fileID: 432813843}
+  - component: {fileID: 432813845}
+  m_Layer: 0
+  m_Name: Exit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &432813843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432813842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d161b1f64e0124f90b648626ecaa06e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: 4_WoodsScene_Propuesta
+--- !u!4 &432813844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432813842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -52.25, y: 31.22, z: -0.38294604}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &432813845
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432813842}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.026088715, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 5.226509, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &436179085
 GameObject:
   m_ObjectHideFlags: 0
@@ -4245,16 +4403,44 @@ PrefabInstance:
       value: TorchInterior (2)
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 145517006}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: IncreaseLightIntensity
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: IncreaseCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: DoorExit, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
@@ -5012,16 +5198,44 @@ PrefabInstance:
       value: TorchInterior (1)
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 145517006}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: IncreaseLightIntensity
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: IncreaseCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: DoorExit, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
@@ -5395,16 +5609,44 @@ PrefabInstance:
       value: TorchInterior
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 145517006}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: IncreaseLightIntensity
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: IncreaseCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: DoorExit, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
@@ -5730,16 +5972,44 @@ PrefabInstance:
       value: TorchInterior (3)
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 619394803}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 145517006}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: IncreaseLightIntensity
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: IncreaseCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: LightCave, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: DoorExit, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
+      propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}

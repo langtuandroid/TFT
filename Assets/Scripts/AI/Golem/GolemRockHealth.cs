@@ -15,6 +15,7 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
     private Rigidbody2D _rb;
     private GolemArmIA _golemArmIA;
     private bool _isArmDefeated = false;
+    private Collider2D _collider2D;
     
     private void OnDestroy()
     {
@@ -28,6 +29,7 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
         _joint2D = GetComponent<SpringJoint2D>();
         _rb = GetComponent<Rigidbody2D>();
         _golemArmIA = GetComponent<GolemArmIA>();
+        _collider2D = GetComponent<Collider2D>();
     }
     
     private void PlayDeathAnimation()
@@ -49,6 +51,7 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
     
     private void PunchDefeatedArm()
     {
+        _collider2D.isTrigger = true;
         Vector2 direction = (_golemPosition.position - transform.position).normalized;
         _rb.velocity = direction * punchForce; 
     }
@@ -77,13 +80,18 @@ public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
             _canReceiveDamage = false;
         
             _maxPhisicalDamage -= damage;
-        
-            Debug.Log("le queda de vida: " + _maxPhisicalDamage);
-        
+
             if (_maxPhisicalDamage <= 0f)
                 PlayDeathAnimation();
             else
                 PlayDamageAnimation(2f, 3);
         }
+    }
+
+    public void GolemCollision()
+    {
+        transform.DOScale(Vector3.zero, 1f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() => Destroy(gameObject)).Play();
     }
 }
