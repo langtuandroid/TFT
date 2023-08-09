@@ -45,8 +45,6 @@ namespace Attack
 
         #region Private Variables
 
-        private IAudioSpeaker _audioSpeaker;
-
         // Status del jugador
         private PlayerStatus _playerStatus;
 
@@ -77,7 +75,7 @@ namespace Attack
             _flamesToDestroy = new List<GameObject>();
             _flameTimer = 0f;
 
-            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _playerStatus = GetComponent<PlayerStatus>();
 
             _magicEvents.OnMaxPowerUsedValue += RotateOrbs;
