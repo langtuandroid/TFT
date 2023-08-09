@@ -12,6 +12,8 @@ public class DynamicPlatform : MonoBehaviour
     public float PlayerDetectionRadious;
 
     private bool _canMove = false;
+   // public bool CanMove = { set => _canMove.va}
+    
     private Transform _target;
     private Transform _playerOnPlatform;
     private PlayerController _playerController;

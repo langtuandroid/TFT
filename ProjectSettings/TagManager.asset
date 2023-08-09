@@ -12,6 +12,7 @@ TagManager:
   - PatrolCollider
   - MagicPower
   - PhisicalAttack
+  - GolemArm
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - NavMesh
   - Triggable By Player
   - Player Projectile
-  - 
+  - BlockFall
   - 
   - 
   - 
