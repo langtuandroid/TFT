@@ -47,7 +47,7 @@ namespace Player
         // Inputs
         // Jump input
         private bool _isJumpInput;
-        
+
         public bool IsJumpInput { get => _isJumpInput; }
 
         // Movement input
@@ -101,7 +101,7 @@ namespace Player
 
             // Inicializamos variables
             // Magic Attacks
-            AddMagicAttacks();
+            //AddMagicAttacks();
             // SecondaryActions
             AddSecondaryACtions();
 
@@ -176,17 +176,10 @@ namespace Player
                 gameStatus: _gameStatus
                 );
 
-            foreach (MagicAttack magicAttack in _magicAttacks)
-            {
-                magicAttack.Init(
-                    magicEvents: _magicEvents, 
-                    gameStatus: _gameStatus,
-                    audioSpeaker: _audioSpeaker
-                    );
+            Debug.Log(_magicAttacks.Count);
 
-                magicAttack.enabled = true;
-            }
-            _magicAttacks[_magicIndex].Select();
+            AddMagicAttacks();
+
         }
 
         private void OnDestroy()
@@ -266,8 +259,28 @@ namespace Player
         {
             _magicAttacks = new List<MagicAttack>();
             _magicAttacks.Add(GetComponent<FireAttack>());
-            _magicAttacks.Add(GetComponent<PlantAttack>());
-            _magicAttacks.Add(GetComponent<WaterAttack>());
+
+            PlantAttack plant = GetComponent<PlantAttack>();
+            if (plant != null)
+                _magicAttacks.Add(plant);
+
+            WaterAttack water = GetComponent<WaterAttack>();
+            if (water != null)
+                _magicAttacks.Add(GetComponent<WaterAttack>());
+
+            Debug.Log(_magicAttacks.Count);
+
+            foreach (MagicAttack magicAttack in _magicAttacks)
+            {
+                magicAttack.Init(
+                    magicEvents: _magicEvents,
+                    gameStatus: _gameStatus,
+                    audioSpeaker: _audioSpeaker
+                    );
+
+                magicAttack.enabled = true;
+            }
+            _magicAttacks[_magicIndex].Select();
         }
 
         private void AddSecondaryACtions()
