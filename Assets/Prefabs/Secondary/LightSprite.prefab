@@ -16,8 +16,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_LightOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
       propertyPath: m_FalloffIntensity
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
+      propertyPath: m_OverlapOperation
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 801361546764652552, guid: 1a931cc26f5219746bfbf9e37682c4c9, type: 3}
       propertyPath: m_PointLightInnerRadius

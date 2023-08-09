@@ -28,7 +28,7 @@ MonoBehaviour:
     isDashUnlocked: 0
     isFireWeakUnlocked: 1
     isFireMediumUnlocked: 1
-    isFireStrongUnlocked: 1
+    isFireStrongUnlocked: 0
     isPlantWeakUnlocked: 0
     isPlantMediumUnlocked: 0
     isPlantStrongUnlocked: 0
