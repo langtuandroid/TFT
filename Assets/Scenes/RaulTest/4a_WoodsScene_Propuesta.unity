@@ -176,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012331, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: m_Name
-      value: TorchInterior (4)
+      value: TorchInterior Puerta
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.size
@@ -11554,7 +11554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012331, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: m_Name
-      value: TorchInterior (10)
+      value: TorchInterior Suelo
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012331, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: m_IsActive
@@ -47842,6 +47842,7 @@ MonoBehaviour:
   _pointA: {fileID: 822115192}
   _pointB: {fileID: 894539014}
   _speed: 2
+  PlayerDetectionRadious: 2
 --- !u!1001 &864023882
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47895,7 +47896,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012331, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: m_Name
-      value: TorchInterior (1)
+      value: TorchInterior Plataforma
       objectReference: {fileID: 0}
     - target: {fileID: 9043349040124012332, guid: 8d43fb15e2f1942158a9745a046bd4cb, type: 3}
       propertyPath: OnFireActivation.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -66361,7 +66362,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -44.99996
+      value: -44.99997
       objectReference: {fileID: 0}
     - target: {fileID: 6256845347727536462, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
