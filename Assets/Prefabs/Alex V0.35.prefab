@@ -390,8 +390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _physicalDataSO: {fileID: 11400000, guid: e61427823f55fec4287fcce88b930f15, type: 2}
-  _statusSaveSO: {fileID: 0}
-  _statusSettingDataSO: {fileID: 0}
+  _statusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
+  _statusSettingDataSO: {fileID: 11400000, guid: e7faf5625db6abc4686d93480c18313b, type: 2}
 --- !u!114 &1262885401
 MonoBehaviour:
   m_ObjectHideFlags: 0
