@@ -27,6 +27,8 @@ public class GolemArmIA : MonoBehaviour
     private bool isPuchAttacking = false;
     public float attackForce;
     private int armMovementCount;
+    private bool canAttack = true;
+    private float attackCooldown = 5f;
 
     private void Awake()
     {
@@ -43,7 +45,10 @@ public class GolemArmIA : MonoBehaviour
 
     private void Update()
     {
-      if(CheckPlayer()) Attack();
+        if (CheckPlayer() && canAttack)
+        {
+            AttackPunch();
+        }
     }
 
     private bool CheckPlayer()
@@ -72,27 +77,23 @@ public class GolemArmIA : MonoBehaviour
     
     public void AttackPunch()
     {
-        StartCoroutine(PerformPuchAttack());
+        if (_player == null || !canAttack) return;
+
+        StartCoroutine(nameof(PerformPunchAttack));
     }
 
-    private IEnumerator PerformPuchAttack()
+    private IEnumerator PerformPunchAttack()
     {
-        if (_player == null) yield return null;
-
-        isPuchAttacking = true;
-        
-        yield return new WaitForSeconds(1f);
+        canAttack = false;
         
         Vector2 direction = (_player.transform.position - transform.position).normalized;
-        
         _rb.AddForce(direction * attackForce, ForceMode2D.Impulse);
-        
+
         yield return new WaitForSeconds(1f);
         
-        isPuchAttacking = false;
-        
-        ResetSweepAttack();
-        
+        yield return new WaitForSeconds(attackCooldown);
+
+        canAttack = true;
     }
 
     private IEnumerator PerformSweep()

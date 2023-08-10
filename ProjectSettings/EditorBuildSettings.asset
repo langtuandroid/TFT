@@ -44,4 +44,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RaulTest/BossTest.unity
     guid: cebc8644ceb4d43798176febf3f2056a
+  - enabled: 1
+    path: Assets/Scenes/RaulTest/4_WoodsScene_Propuesta.unity
+    guid: b67a0e2cde2f043afb48c8ae5a057f4d
   m_configObjects: {}
