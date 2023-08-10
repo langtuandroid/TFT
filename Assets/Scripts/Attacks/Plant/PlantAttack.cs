@@ -44,9 +44,6 @@ namespace Attack
 
         private IAudioSpeaker _audioSpeaker;
 
-        // Status del jugador
-        private PlayerStatus _playerStatus;
-
         // Objeto del lanzallamas
         private GameObject _flame;
         // Lista de lanzallamas para destruirr
@@ -75,7 +72,7 @@ namespace Attack
             _flameTimer = 0f;
 
             _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _playerStatus = GetComponent<PlayerStatus>();
+
 
             _magicEvents.OnMaxPowerUsedValue += RotateOrbs;
             _magicEvents.OnMaxPowerFinalizedValue += MaxPowerFinalized;

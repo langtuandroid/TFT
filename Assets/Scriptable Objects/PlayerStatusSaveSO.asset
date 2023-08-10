@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatusSave:
     saveSlot: 1
-    currentHealth: 20
-    maxHealth: 20
+    currentHealth: 3
+    maxHealth: 6
     currentMagic: 300
     maxMagic: 300
     currentSouls: 1
