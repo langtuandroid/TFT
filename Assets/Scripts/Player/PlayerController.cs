@@ -276,6 +276,7 @@ namespace Player
             foreach (MagicAttack magicAttack in _magicAttacks)
             {
                 magicAttack.Init(
+                    playerStatus: _playerStatus,
                     magicEvents: _magicEvents,
                     gameStatus: _gameStatus,
                     audioSpeaker: _audioSpeaker
