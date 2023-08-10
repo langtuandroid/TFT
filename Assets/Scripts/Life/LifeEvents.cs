@@ -9,6 +9,8 @@ public class LifeEvents
     public event Action<int> OnCurrentLifeValue; // Cantidad de vida
     public event Action OnDeathValue; // Para activar la animación de muerte
     public event Action OnFallDown; // Para activar la animación de muerte
+    public event Action<float> OnStartTemporalInvencibility; // Para activar invencibilidad temporal
+    public event Action OnStopTemporalInvencibility; // Para desactivar invencibilidad temporal
 
     #endregion
 
@@ -32,6 +34,16 @@ public class LifeEvents
     public void FallDown()
     {
         OnFallDown?.Invoke();
+    }
+
+    public void StartTemporalInvencibility(float time)
+    {
+        OnStartTemporalInvencibility?.Invoke(time);
+    }
+
+    public void StopTemporalInvencibility()
+    {
+        OnStopTemporalInvencibility?.Invoke();
     }
 
     #endregion

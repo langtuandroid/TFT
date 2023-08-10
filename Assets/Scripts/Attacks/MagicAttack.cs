@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using Player;
 
 namespace Attack
 {
@@ -21,6 +22,7 @@ namespace Attack
         internal MagicEvents _magicEvents;
         protected GameStatus _gameStatus;
         internal IAudioSpeaker _audioSpeaker;
+        internal PlayerStatus _playerStatus;
 
         // STATES
         internal bool _isUsingWeakAttack;
@@ -65,8 +67,9 @@ namespace Attack
         /// </summary>
         /// <param name="magicEvents"></param>
         /// <param name="gameStatus"></param>
-        public virtual void Init(MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker)
+        public virtual void Init(PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker)
         {
+            _playerStatus = playerStatus;
             _magicEvents = magicEvents;
             _gameStatus = gameStatus;
             _audioSpeaker = audioSpeaker;

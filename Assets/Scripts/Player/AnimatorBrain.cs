@@ -50,9 +50,12 @@ namespace Player
         private LifeEvents _lifeEvents;
         private MagicEvents _magicEvents;
 
+        private Tween _tween;
+
         private void OnDestroy()
         {
             _lifeEvents.OnDeathValue -= Death_OnDeath;
+            _lifeEvents.OnStartTemporalInvencibility -= StartTemporalInvencibility;
             _magicEvents.OnMaxPowerUsedValue -= MaxPower_OnUsed;
         }
 
@@ -74,6 +77,7 @@ namespace Player
 
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnDeathValue += Death_OnDeath;
+            _lifeEvents.OnStartTemporalInvencibility += StartTemporalInvencibility;
 
             _magicEvents = ServiceLocator.GetService<MagicEvents>();
             _magicEvents.OnMaxPowerUsedValue += MaxPower_OnUsed;
@@ -147,7 +151,7 @@ namespace Player
             {
                 yLandPosition = yLandPos
             });
-        }        
+        }
 
         private void Jump_OnJumpFinished()
         {
@@ -164,32 +168,58 @@ namespace Player
             IsWalking(false);
         }
 
+        private void ReturnToMainMenu()
+        {
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic(MusicName.Main_Menu);
+            ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString());
+        }
+
         private void Death_OnDeath()
         {
+            if (_tween != null)
+                _tween.Kill();
+
+            _spriteRender.DOFade(1f, 0f).Play();
+
             PlayPlayer(DEATH);
+            Invoke(nameof(ReturnToMainMenu), 5f);
+        }
+
+        private void StartTemporalInvencibility(float time)
+        {
+            Sequence seq = DOTween.Sequence();
+            seq.Append(_spriteRender.DOFade(60 / 255f, 0f));
+            seq.Append(_spriteRender.DOFade(1f, time))
+                .SetEase(Ease.InOutFlash, 14, -1)
+                ;
+
+            seq.OnComplete(() => _lifeEvents.StopTemporalInvencibility());
+            seq.Play();
+
+            _tween = seq;
         }
 
         public void SetFall()
         {
-            _shadowVisuals.gameObject.SetActive( false );
+            _shadowVisuals.gameObject.SetActive(false);
             PlayPlayer(FALL);
         }
 
         public void RecoverFromFall()
         {
-            LookDirection( _initialLookDirection );
+            LookDirection(_initialLookDirection);
             _spriteRender.enabled = true;
-            _shadowVisuals.gameObject.SetActive( true );
-            PlayPlayer( IDLE );
+            _shadowVisuals.gameObject.SetActive(true);
+            PlayPlayer(IDLE);
         }
 
         public void SetThrow()
         {
             _throwAnimationEnded = false;
-            PlayPlayer( THROW );
+            PlayPlayer(THROW);
         }
-        
-        public void SetIdle() => PlayPlayer( IDLE ); 
+
+        public void SetIdle() => PlayPlayer(IDLE);
 
         public void ThrowAnimationEnded()
         {
@@ -207,7 +237,7 @@ namespace Player
         {
             _playerAnimator.SetBool(HAS_ITEM, hasItem);
         }
-        
+
         public void SetMagicAttack()
         {
             PlayPlayer(MAGIC_ATTACK);
@@ -218,7 +248,6 @@ namespace Player
             PlayPlayer(PHYSICAL_ATTACK);
         }
 
-        
         public void PickUpItem()
         {
             PlayPlayer(PICKUP);

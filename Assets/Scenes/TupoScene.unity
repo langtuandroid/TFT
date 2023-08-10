@@ -1159,9 +1159,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.051948052
+    y: 0.049568966
     width: 1
-    height: 0.89853895
+    height: 0.8995151
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1452,8 +1452,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6393048233429952891, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+      propertyPath: _statusSaveSO
+      value: 
+      objectReference: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
+    - target: {fileID: 6393048233429952891, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+      propertyPath: _statusSettingDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: e7faf5625db6abc4686d93480c18313b, type: 2}
     m_RemovedComponents:
     - {fileID: 8089369154503021126, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
+    - {fileID: -2436258849758510410, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 85cbc1d0c42f7ca469bfcc7a68ca7809, type: 3}
 --- !u!1 &1045416117 stripped
 GameObject:
