@@ -1,0 +1,57 @@
+Lang Code	EN	PL	ES	DE	FR	JP
+^text_play	Play now!	Zagraj teraz!	Jugar ahora!	Jetzt spielen!	Joue maintenant!	プレイ
+^text_quit	Quit	Wyjdź	Salida	Ausgang	Quitter	退出する
+^text_settings	Settings	Ustawienia	Configuración	Einstellungen	Réglages	設定
+^text_with_two_params	Parameter1: {0} Parameter2: {1}	Parametr1: {0} Parametr2: {1}	Parámetro1: {0} Parámetro2: {1}	Parameter1: {0} Parameter2: {1}	Paramètre1: {0} Paramètre2: {1}	パラメーター {0} パラメーター {1}
+^text_with_new_lines	Settings\nSettings	Ustawienia\nUstawienia	Configuración\nConfiguración	Einstellungen\nEinstellungen	Réglages\nRéglages	設定\n設定
+^text_new_lines_and_params	Parameter1: {0}\nParameter2: {1}\nParameter3: {2}	Parametr1: {0}\nParametr2: {1}\nParametr3: {2}	Parámetro1: {0}\nParámetro2: {1}\nParámetro3: {2}	Parameter1: {0}\nParameter2: {1}\nParameter3: {2}	Paramètre1: {0}\nParamètre2: {1}\nParamètre3: {2}	パラメーター {0}\n パラメーター {1}\n パラメーター {2}
+^demo	This is a demo.	--	Esto es una demo	--	--	--
+^text_init	Look for the torch and fire them with Fire Ball.	--	Busca las antorchas y enciéndelas con Bola de Fuego.	--	--	--
+^inventory_tit_0	[EN] VARA MÁGICA	--	VARA MÁGICA	--	--	--
+^inventory_desc_0	[EN] La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.	--	La vara que te regaló papá. Se puede usar para golpear o invocar poderes mágicos.	--	--	--
+^inventory_tit_1	[EN] BOTAS DE SALTO	--	BOTAS DE SALTO	--	--	--
+^inventory_desc_1	[EN] Unas botas mágicas con las que podrás saltar muy alto.	--	Unas botas mágicas con las que podrás saltar muy alto.	--	--	--
+^inventory_tit_2	[EN] ALETAS	--	ALETAS	--	--	--
+^inventory_desc_2	[EN] Con ellas podrás meterte en el agua y nadar sin miedo a ahogarte.	--	Con ellas podrás meterte en el agua y nadar sin miedo a ahogarte.	--	--	--
+^inventory_tit_3	[EN] DASH	--	DASH	--	--	--
+^inventory_desc_3	[EN] Te permite realizar un ligero teletransporte.	--	Te permite realizar un ligero teletransporte.	--	--	--
+^inventory_tit_4	[EN] MAGIA DE FUEGO	--	MAGIA DE FUEGO	--	--	--
+^inventory_desc_4	[EN] Usa el poder del fuego para quemar a tus enemigos.	--	Usa el poder del fuego para quemar a tus enemigos.	--	--	--
+^inventory_tit_5	[EN] BOLA DE FUEGO	--	BOLA DE FUEGO	--	--	--
+^inventory_desc_5	[EN] Lanza una bola de fuego en línea recta.	--	Lanza una bola de fuego en línea recta.	--	--	--
+^inventory_tit_6	[EN] LANZALLAMAS	--	LANZALLAMAS	--	--	--
+^inventory_desc_6	[EN] Utiliza el poder del lanzallamas para quemar a los enemigos ante ti.	--	Utiliza el poder del lanzallamas para quemar a los enemigos ante ti.	--	--	--
+^inventory_tit_7	[EN] RÁFAGA DE FUEGO	--	RÁFAGA DE FUEGO	--	--	--
+^inventory_desc_7	[EN] Invoca una ráfaga de fuego que devasta todo a su alrededor.	--	Invoca una ráfaga de fuego que devasta todo a su alrededor.	--	--	--
+^inventory_tit_8	[EN] MAGIA DE PLANTA	--	MAGIA DE PLANTA	--	--	--
+^inventory_desc_8	[EN] Información sobre la magia de planta.	--	Información sobre la magia de planta.	--	--	--
+^inventory_tit_9	[EN] MAGIA DÉBIL DE PLANTA	--	MAGIA DÉBIL DE PLANTA	--	--	--
+^inventory_desc_9	[EN] Información sobre la magia débil de planta.	--	Información sobre la magia débil de planta.	--	--	--
+^inventory_tit_10	[EN] MAGIA MEDIA DE PLANTA	--	MAGIA MEDIA DE PLANTA	--	--	--
+^inventory_desc_10	[EN] Información sobre la magia media de planta.	--	Información sobre la magia media de planta.	--	--	--
+^inventory_tit_11	[EN] MAGIA FUERTE DE PLANTA	--	MAGIA FUERTE DE PLANTA	--	--	--
+^inventory_desc_11	[EN] Información sobre la magia fuerte de planta.	--	Información sobre la magia fuerte de planta.	--	--	--
+^inventory_tit_12	[EN] MAGIA DE AGUA	--	MAGIA DE AGUA	--	--	--
+^inventory_desc_12	[EN] Información sobre la magia de agua.	--	Información sobre la magia de agua.	--	--	--
+^inventory_tit_13	[EN] MAGIA DÉBIL DE AGUA	--	MAGIA DÉBIL DE AGUA	--	--	--
+^inventory_desc_13	[EN] Información sobre la magia débil de agua.	--	Información sobre la magia débil de agua.	--	--	--
+^inventory_tit_14	[EN] MAGIA MEDIA DE AGUA	--	MAGIA MEDIA DE AGUA	--	--	--
+^inventory_desc_14	[EN] Información sobre la magia media de agua.	--	Información sobre la magia media de agua.	--	--	--
+^inventory_tit_15	[EN] MAGIA FUERTE DE PLANTA	--	MAGIA FUERTE DE AGUA	--	--	--
+^inventory_desc_15	[EN] Información sobre la magia fuerte de agua.	--	Información sobre la magia fuerte de agua.	--	--	--
+^inventory_tit_16	[EN] BOLA DE LUZ	--	BOLA DE LUZ	--	--	--
+^inventory_desc_16	[EN] Lanza una bola de luz que te permite ver a oscuras.	--	Lanza una bola de luz que te permite ver a oscuras.	--	--	--
+^inventory_tit_17	[EN] MAGIA DE AIRE	--	MAGIA DE AIRE	--	--	--
+^inventory_desc_17	[EN] Te permite lanzar ráfagas de aire para empujar a tus enemigos.	--	Te permite lanzar ráfagas de aire para empujar a tus enemigos.	--	--	--
+^inventory_tit_18	[EN] MAGIA PESOPLUMA	--	MAGIA PESOPLUMA	--	--	--
+^inventory_desc_18	[EN] Un hechizo que te permite alzar objetos muy pesados.	--	Un hechizo que te permite alzar objetos muy pesados.	--	--	--
+^inventory_tit_19	[EN] BAYA CURATIVA	--	BAYA CURATIVA	--	--	--
+^inventory_desc_19	[EN] Un hechizo que te permite alzar objetos muy pesados.	--	Un hechizo que te permite alzar objetos muy pesados.	--	--	--
+^inventory_tit_20	[EN] BAYA MÁGICA	--	BAYA MÁGICA	--	--	--
+^inventory_desc_20	[EN] Con esta baya nunca te faltará magia para lanzar tus hechizos.	--	Con esta baya nunca te faltará magia para lanzar tus hechizos.	--	--	--
+^inventory_tit_21	[EN] BAYA BOMBA	--	BAYA BOMBA	--	--	--
+^inventory_desc_21	[EN] Una baya que explota y produce mucho daño.	--	Una baya que explota y produce mucho daño.	--	--	--
+^infopost_S10_Z0_0	Info Post: Don't burn the woods.	--	[ES]Info Post: Don't burn the woods.	--	--	--
+^infopost_S14_Z0_4	Info Post: En la pared se puede ver la imagen de un sol, una luna y una estrella.	--	Info Post: On the wall, you can see an image of a sun, a moon, and a star.	--	--	--
+^infopost_S14_Z0_4-1	Info Post: Peligro, no continuar.	--	[EN]Info Post: Peligro, no continuar.	--	--	--
+	

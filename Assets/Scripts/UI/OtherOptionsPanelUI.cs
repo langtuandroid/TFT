@@ -1,3 +1,4 @@
+using Honeti;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -31,6 +32,7 @@ namespace UI
             _lenguageDropdown.onValueChanged.AddListener( ( int lenguageIndex ) =>
             {
                 _optionsSave.lenguageDropdownValue = lenguageIndex;
+                I18N.instance.setLanguage(lenguageIndex == 0 ? LanguageCode.EN : LanguageCode.ES);
             } );
 
             _vibrationToggle.onValueChanged.AddListener( ( bool isOn ) =>

@@ -1,45 +1,15 @@
 using UnityEngine;
-using DG.Tweening;
-using UnityEditor;
-using System;
-using Attack;
 
 namespace Player
 {
-    public class PlayerStatus : MonoBehaviour
+    public class PlayerStatus
     {
 
         #region SerializeField
 
         [Header("Data")]
-        [SerializeField] private PlayerStatusSaveSO _playerStatusSaveSO;
-
-        [Header("Magic Attack settings")]
-        [SerializeField]
-        [Tooltip("Tiempo entre ataques m�gicos")]
-        private float _timeBetweenMagicAttacks = .2f;
-        [SerializeField]
-        [Tooltip("Tiempo que tarda en recuperar magia")]
-        private float _timeOfRecovering = .8f;
-        [SerializeField]
-        [Tooltip("Tiempo de recarga del poder m�ximo")]
-        private float _timeToRechargeMaxPower = 10f;
-        [SerializeField]
-        [Tooltip("Duraci�n del poder m�ximo en pantalla")]
-        private float _maxPowerDuration = 5f;
-
-        [Header("Life & Health settings")]
-        [SerializeField]
-        [Tooltip("Sprite del personaje")]
-        private SpriteRenderer _playerSprite;
-        [SerializeField]
-        [Tooltip("Tiempo que dura la invencibilidad tras recibir da�o")]
-        private float _timeOfInvencibility = 2.5f;
-
-        [Header("Stunning")]
-        [SerializeField]
-        [Tooltip("Tiempo que pasa el jugador aturdido")]
-        private float _timeStunned = 5f;
+        private PlayerStatusSaveSO _playerStatusSaveSO;
+        private PlayerStatusSettingDataSO _playerStatusSettingDataSO;
 
         #endregion
 
@@ -51,11 +21,11 @@ namespace Player
         // Indica si el player tiene invencibilidad temporal
         public bool HasTemporalInvencibility => _hasTemporalInvencibility;
         // Indica si est� aturdido
-        public bool IsStunned => _stunnedTimer < _timeStunned;
+        public bool IsStunned => _stunnedTimer < _playerStatusSettingDataSO.TimeStunned;
 
         // MAGIC ATTACK VARIABLES
         // Duraci�n del poder m�ximo
-        public float MaxPowerDuration => _maxPowerDuration;
+        public float MaxPowerDuration => _playerStatusSettingDataSO.MaxPowerDuration;
 
         // GENERAL VARIABLES
         public int CurrentHealth
@@ -189,10 +159,13 @@ namespace Player
 
         #region Private variables
 
+        // Data
+
         // Events
         private LifeEvents _lifeEvents; // Eventos de vida
         private MagicEvents _magicEvents; // Eventos de magia
         private SoulEvents _soulEvents; // Eventos de almas
+        private GameStatus _gameStatus; // Estado de juego
 
         // Variables
         // Life
@@ -204,41 +177,77 @@ namespace Player
         private bool _isUsingMaxPower; // Indica si se est� usando el poder m�ximo
         private float _magicRecoverTimer; // Temporizador para recuperar magia
         // Stunning
-        private float _stunnedTimer; // Tiempo aturdido
+        private float _stunnedTimer;
 
         #endregion
 
-        #region Unity methods
+        #region Constructor
 
-        private void Awake()
+        public PlayerStatus(PlayerStatusSaveSO playerStatusSaveSO, PlayerStatusSettingDataSO playerStatusSettingDataSO)
         {
+            // Data
+            _playerStatusSaveSO = playerStatusSaveSO;
+            _playerStatusSettingDataSO = playerStatusSettingDataSO;
+            // Magic attacks
             _magicTimer = 0f;
             _magicRecoverTimer = 0f;
-            _maxPowerTimer = _timeToRechargeMaxPower;
+            _maxPowerTimer = _playerStatusSettingDataSO.TimeToRechargeMaxPower;
             _isUsingMaxPower = false;
-            _stunnedTimer = _timeStunned;
+            _stunnedTimer = _playerStatusSettingDataSO.TimeStunned;
         }
 
-        private void Start()
+        #endregion
+
+        #region Public methods
+
+        #region Initialization
+
+        public void Init(
+            LifeEvents lifeEvents,
+            MagicEvents magicEvents,
+            SoulEvents soulEvents,
+            GameStatus gameStatus
+            )
         {
-            // EVENTS
             // Life
-            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents = lifeEvents;
             _lifeEvents.OnHeartsValue += OnIncrementMaxHealthValue;
             _lifeEvents.OnCurrentLifeValue += OnCurrentHealthValue;
             _lifeEvents.OnDeathValue += OnDeathValue;
-            // Magic
-            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+            _lifeEvents.OnStopTemporalInvencibility += OnStopInvencibilityValue;
+
+
+            // Magic attacks
+            _magicEvents = magicEvents;
             _magicEvents.OnMaxPowerUsedValue += OnMaxPowerUsedValue;
             _magicEvents.OnMaxPowerFinalizedValue += OnMaxPowerFinalizedValue;
-            _magicEvents.DefineMaxPowerRechargingTime(_timeToRechargeMaxPower);
+            _magicEvents.DefineMaxPowerRechargingTime(_playerStatusSettingDataSO.TimeToRechargeMaxPower);
             _magicEvents.OnUseOfMagicValue += OnUseOfMagicValue;
+
             // Souls
-            _soulEvents = ServiceLocator.GetService<SoulEvents>();
+            _soulEvents = soulEvents;
             _soulEvents.OnGotSoulsValue += OnGotSouls;
+
+            // GameStatus
+            _gameStatus = gameStatus;
         }
 
-        private void Update()
+        public void DestroyElements()
+        {
+            // Life
+            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
+            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
+            _lifeEvents.OnDeathValue -= OnDeathValue;
+            _lifeEvents.OnStopTemporalInvencibility -= OnStopInvencibilityValue;
+            // Magic
+            _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
+            _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
+            _magicEvents.OnUseOfMagicValue -= OnUseOfMagicValue;
+            // Souls
+            _soulEvents.OnGotSoulsValue -= OnGotSouls;
+        }
+
+        public void UpdateInfo()
         {
             if (IsStunned)
             {
@@ -249,32 +258,16 @@ namespace Player
             if (_isDeath || _isUsingMaxPower)
                 return;
 
-            if (_magicTimer < _timeBetweenMagicAttacks)
+            if (_magicTimer < _playerStatusSettingDataSO.TimeBetweenMagicAttacks)
                 _magicTimer += Time.deltaTime;
-            if (_maxPowerTimer < _timeToRechargeMaxPower)
+            if (_maxPowerTimer < _playerStatusSettingDataSO.TimeToRechargeMaxPower)
                 _maxPowerTimer += Time.deltaTime;
 
             // Recuperamos poder m�gico
             RecoverMagic();
         }
 
-        private void OnDestroy()
-        {
-            // Life
-            _lifeEvents.OnHeartsValue -= OnIncrementMaxHealthValue;
-            _lifeEvents.OnCurrentLifeValue -= OnCurrentHealthValue;
-            _lifeEvents.OnDeathValue -= OnDeathValue;
-            // Magic
-            _magicEvents.OnMaxPowerUsedValue -= OnMaxPowerUsedValue;
-            _magicEvents.OnMaxPowerFinalizedValue -= OnMaxPowerFinalizedValue;
-            _magicEvents.OnUseOfMagicValue -= OnUseOfMagicValue;
-            // Souls
-            _soulEvents.OnGotSoulsValue -= OnGotSouls;
-        }
-
         #endregion
-
-        #region Public methods
 
         #region Magic attacks
 
@@ -284,7 +277,7 @@ namespace Player
         /// <returns></returns>
         public bool CanUseMagicAttacks()
         {
-            return _magicTimer >= _timeBetweenMagicAttacks;
+            return _magicTimer >= _playerStatusSettingDataSO.TimeBetweenMagicAttacks;
         }
 
         /// <summary>
@@ -293,7 +286,7 @@ namespace Player
         /// <returns></returns>
         public bool CanUseMaxPower()
         {
-            return _maxPowerTimer >= _timeToRechargeMaxPower;
+            return _maxPowerTimer >= _playerStatusSettingDataSO.TimeToRechargeMaxPower;
         }
 
         /// <summary>
@@ -330,32 +323,27 @@ namespace Player
                 );
 
             // Y aplicamos invencibilidad temporal
-            tween = GetTemporalInvencibility();
+            StartTemporalInvencibility();
+
+            Debug.Log("Le he quitado daño");
         }
 
-        private Tween tween;
-        private Tween GetTemporalInvencibility()
+        private void StartTemporalInvencibility()
         {
-            // Activamos la invencibilidad temporal
             _hasTemporalInvencibility = true;
-            Sequence seq = DOTween.Sequence();
+            _lifeEvents.StartTemporalInvencibility(_playerStatusSettingDataSO.TimeOfInvencibility);
+        }
 
-            seq.Append(_playerSprite.DOFade(60 / 255f, 0f));
-            seq.Append(_playerSprite.DOFade(1f, _timeOfInvencibility))
-                .SetEase(Ease.InOutFlash, 14, -1)
-                ;
-
-            seq.OnComplete(() => _hasTemporalInvencibility = false);
-            seq.Play();
-
-            return seq;
+        private void OnStopInvencibilityValue()
+        {
+            _hasTemporalInvencibility = false;
         }
 
         /// <summary>
         /// Cura salud al jugador
         /// </summary>
         /// <param name="life"></param>
-        private void HealLife(int life)
+        public void HealLife(int life)
         {
             _lifeEvents.ChangeCurrentLifeQuantity(
                 Mathf.Min(
@@ -390,20 +378,8 @@ namespace Player
         /// </summary>
         private void OnDeathValue()
         {
-            if (tween != null)
-                tween.Kill();
-
-            _playerSprite.DOFade(1f, 0f).Play();
             _isDeath = true;
-            ServiceLocator.GetService<GameStatus>().AskChangeToInactiveState();
-
-            Invoke(nameof(ReturnToMainMenu), 5f);
-        }
-
-        private void ReturnToMainMenu()
-        {
-            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic(MusicName.Main_Menu);
-            ServiceLocator.GetService<SceneLoader>().Load(SceneName.S00_MainMenuScene.ToString());
+            _gameStatus.AskChangeToInactiveState();
         }
 
         #endregion
@@ -447,7 +423,7 @@ namespace Player
         private void RecoverMagic()
         {
 
-            if (_magicRecoverTimer < _timeOfRecovering)
+            if (_magicRecoverTimer < _playerStatusSettingDataSO.TimeOfRecovering)
             {
                 _magicRecoverTimer += Time.deltaTime;
                 return;
@@ -464,38 +440,6 @@ namespace Player
         private void OnGotSouls(int value)
         {
             CurrentSouls = Mathf.Min(MaxSouls, CurrentSouls + value);
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Tests
-
-        #region Health
-
-        [ContextMenu("IncrementMaxHealthValue")]
-        private void IncrementMaxHealthValue()
-        {
-            _lifeEvents.AddHeart();
-        }
-
-        [ContextMenu("Prueba de take damage")]
-        private void TakeDamage()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 1;
-            Debug.Log($"Voy a hacer {value} de da�o");
-            TakeDamage(value);
-        }
-
-        [ContextMenu("Prueba de heal life")]
-        private void HealLife()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 10;
-            Debug.Log($"Me curo {value} de salud");
-            HealLife(value);
         }
 
         #endregion

@@ -1,6 +1,7 @@
 // ************ @autor: �lvaro Repiso Romero *************
 
 using System;
+using Honeti;
 using UnityEngine;
 
 public class InfoPost : MonoBehaviour, IInteractable
@@ -13,7 +14,7 @@ public class InfoPost : MonoBehaviour, IInteractable
     {
         if (lookDirection.y > 0)
         {
-            MyDialogueManager.Instance.Text(_infoPostMessage);
+            MyDialogueManager.Instance.Text(I18N.instance.getValue(_infoPostMessage));
         }
     }
 

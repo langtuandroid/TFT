@@ -17,7 +17,7 @@ public class PickUpItem
     private IAudioSpeaker _audioSpeaker;
     private IPickable _pickable;
     public bool HasItem = false;
-    
+
     public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
     {
         _transform = playerTransform;
@@ -77,21 +77,25 @@ public class PickUpItem
         _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
         _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
-        StopPickItUp();
+        _pickable?.ShowCanPickUpItem( false );
+        HasItem = false;
         _animatorBrain.SetThrow(); 
+        _pickable = null;
     }
     
-    public void StopPickItUp()
-    {
-        if ( _pickable == null ) return;
-
-        _pickable?.ShowCanPickUpItem( false );
-        _pickable = null;
-        HasItem = false; //Todo ponerlo a false cuando el objeto toque el suelo
-    }
-
     public void ShowCanPickUpItem(bool show)
     {
         _pickable?.ShowCanPickUpItem(show);
+    }
+
+    public void EnemyRockThrow(Vector2 lookDirection)
+    {
+        _animatorBrain.HasItem(false);
+        _pickable?.ThrowIt(lookDirection);
+        _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
+        _pickable?.ShowCanPickUpItem( false );
+        HasItem = false;
+        _animatorBrain.SetIdle(); 
+        _pickable = null;
     }
 }

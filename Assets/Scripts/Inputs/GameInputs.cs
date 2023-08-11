@@ -14,7 +14,8 @@ public class GameInputs
     public event Action OnWeakAttackButtonStarted;
     public event Action OnWeakAttackButtonCanceled;
     public event Action OnStrongAttackPerformed;
-    public event Action OnSecondaryPerformed;
+    public event Action OnSecondaryStarted;
+    public event Action OnSecondaryCanceled;
 
     // UI
     public event Action OnPausePerformed;
@@ -98,22 +99,36 @@ public class GameInputs
         _playerInputActions.PlayerGround.Enable();
         _moveAction = _playerInputActions.PlayerGround.Move;
 
-        _playerInputActions.PlayerGround.Jump.started += Jump_started;
-        _playerInputActions.PlayerGround.Jump.canceled += Jump_canceled;
-        _playerInputActions.PlayerGround.PhysicAction.started += PhysicAction_started;
-        _playerInputActions.PlayerGround.MediumAttack.started += MediumAttack_started;
-        _playerInputActions.PlayerGround.MediumAttack.canceled += MediumAttack_canceled;
-        _playerInputActions.PlayerGround.WeakAttack.started += WeakAttack_started;
-        _playerInputActions.PlayerGround.WeakAttack.canceled += WeakAttack_canceled;
+        // PAUSE
         _playerInputActions.PlayerGround.Pause.performed += Pause_performed;
 
+        // JUMP
+        _playerInputActions.PlayerGround.Jump.started += Jump_started;
+        _playerInputActions.PlayerGround.Jump.canceled += Jump_canceled;
+
+        // PHYSIC ATTACK
+        _playerInputActions.PlayerGround.PhysicAction.started += PhysicAction_started;
+
+        // MAGIC ATTACK (PRIMARY ACTION)
+        _playerInputActions.PlayerGround.WeakAttack.started += WeakAttack_started;
+        _playerInputActions.PlayerGround.WeakAttack.canceled += WeakAttack_canceled;
+        _playerInputActions.PlayerGround.MediumAttack.started += MediumAttack_started;
+        _playerInputActions.PlayerGround.MediumAttack.canceled += MediumAttack_canceled;
         _playerInputActions.PlayerGround.StrongAttack.performed += StrongAttack_performed;
-        _playerInputActions.PlayerGround.Secondary.performed += Secondary_performed;
+
+        // SECONDARY ACTION
+        _playerInputActions.PlayerGround.Secondary.started += Secondary_started;
+        _playerInputActions.PlayerGround.Secondary.canceled += Secondary_canceled;
     }
 
-    private void Secondary_performed(InputAction.CallbackContext ctx)
+    private void Secondary_started(InputAction.CallbackContext ctx)
     {
-        OnSecondaryPerformed?.Invoke();
+        OnSecondaryStarted?.Invoke();
+    }
+
+    private void Secondary_canceled(InputAction.CallbackContext ctx)
+    {
+        OnSecondaryCanceled?.Invoke();
     }
 
     private void StrongAttack_performed(InputAction.CallbackContext ctx)

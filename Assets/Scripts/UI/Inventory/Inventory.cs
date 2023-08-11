@@ -77,10 +77,6 @@ public class Inventory : MonoBehaviour
 
     private void Awake() //TODO quitar solo es de prueba
     {
-        //Cambiar idioma desde codigo
-        I18N.instance.setLanguage(LanguageCode.EN);
-        Debug.Log("Idioma: " + I18N.Instance.gameLang);
-
         _primarySkillSelected = -1;
         _secondarySkillSelected = -1;
 

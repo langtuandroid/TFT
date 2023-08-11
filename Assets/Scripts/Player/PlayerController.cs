@@ -1,6 +1,8 @@
+using System.Collections;
 using Attack;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.VisualScripting;
 
 namespace Player
 {
@@ -9,15 +11,29 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
-        private InventoryEvents _inventoryEvents;
+        private GameStatus _gameStatus;
+        private IAudioSpeaker _audioSpeaker;
 
-        // SCRIPTS DEL JUGADOR
+        // EVENTS
+        private InventoryEvents _inventoryEvents;
+        private MagicEvents _magicEvents;
+        private LifeEvents _lifeEvents;
+        private SoulEvents _soulEvents;
+
+        // PLAYER'S SCRIPTS
         private PlayerStatus _playerStatus;
         private PlayerMovement _movement;
         private Interaction _interaction;
         private FallController _fallController;
+
+        private PhisicalAttack _phisicalAttack;
         // Script de elevar objetos no pesados del personaje
         private PickUpItem _pickable;
+
+        public PickUpItem Pickable
+        {
+            get => _pickable;
+        }
         // Script de salto del personaje
         private Jump _jump;
 
@@ -27,10 +43,16 @@ namespace Player
 
         // DATA
         [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
+        [SerializeField]
+        private PlayerStatusSaveSO _statusSaveSO;
+        [SerializeField]
+        private PlayerStatusSettingDataSO _statusSettingDataSO;
 
         // Inputs
         // Jump input
         private bool _isJumpInput;
+
+        public bool IsJumpInput { get => _isJumpInput; }
 
         // Movement input
         private Vector2 _direction;
@@ -50,6 +72,8 @@ namespace Player
 
         // Lists
         // MagicAttack (primary skill) list
+        [SerializeField]
+        private List<MagicAttackSettingsSO> _magicSettingsSO;
         private List<MagicAttack> _magicAttacks;
         private int _magicIndex => _playerStatus.PrimarySkillIndex;
 
@@ -63,27 +87,29 @@ namespace Player
 
         private void Awake()
         {
-            // Obtenemos componentes
+            // COMPONENTS
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
+            _secondaryAction = GetComponent<LightAttack>();
+            _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
+
             Collider2D collider = GetComponent<Collider2D>();
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
             Transform characterVisualTrans = transform.Find(_physicalDataSO.visualObjName);
             Transform pickUpPointTrans = characterVisualTrans.transform.Find(_physicalDataSO.pickUpPointObjName);
 
+            // SCRIPTS
+            _playerStatus = new PlayerStatus(_statusSaveSO, _statusSettingDataSO);
             _movement = new PlayerMovement(rb, _physicalDataSO);
             _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
             _pickable = new PickUpItem();
             _fallController = new FallController(rb, collider, _animatorBrain, _physicalDataSO);
 
-            _secondaryAction = GetComponent<LightAttack>();
-            _playerStatus = GetComponent<PlayerStatus>();
-
             // Inicializamos variables
             // Magic Attacks
-            AddMagicAttacks();
+            //AddMagicAttacks();
             // SecondaryActions
-            AddSecondaryACtions();
+            AddSecondaryActions();
 
             // Pickable
             _pickable.Init(transform, pickUpPointTrans, collider.offset,
@@ -104,29 +130,59 @@ namespace Player
 #if UNITY_EDITOR
             _isInitialized = true;
 #endif
-            GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
-            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
+            // SERVICE -> GAMESTATUS
+            _gameStatus = ServiceLocator.GetService<GameStatus>();
+
+            // SERVICE -> AUDIOSPEAKER
+            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
             _fallController.Init(transform.position, audioSpeaker, gameStatus , _playerStatus );
-            _magicAttacks[_magicIndex].Select();
 
+            // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
+
+            // GAMEINPUTS -> JUMP
             _gameInputs.OnJumpButtonStarted += GameInputs_OnJumpButtonStarted;
             _gameInputs.OnJumpButtonCanceled += GameInputs_OnJumpButtonCanceled;
+
+            // GAMEINPUTS -> PHYSIC ATTACK
             _gameInputs.OnPhysicActionButtonStarted += GameInputs_OnPhysicActionButtonStarted;
-            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
-            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
+
+            // GAMEINPUTS -> MAGIC ATTACKS (PRIMARY ACTION)
             _gameInputs.OnWeakAttackButtonStarted += GameInputs_OnWeakAttackButtonStarted;
             _gameInputs.OnWeakAttackButtonCanceled += GameInputs_OnWeakAttackButtonCanceled;
+            _gameInputs.OnMediumAttackButtonStarted += GameInputs_OnMediumAttackButtonStarted;
+            _gameInputs.OnMediumAttackButtonCanceled += GameInputs_OnMediumAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed += GameInputs_OnStrongAttackButtonPerformed;
-            _gameInputs.OnSecondaryPerformed += GameInputs_OnSecondaryButtonPerformed;
 
+            // GAMEINPUTS -> SECONDARY ACTION
+            _gameInputs.OnSecondaryStarted += GameInputs_OnSecondaryButtonStarted;
+            _gameInputs.OnSecondaryCanceled += GameInputs_OnSecondaryButtonCanceled;
+
+            // EVENT -> INVENTORY
             _inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
             _inventoryEvents.OnPrimarySkillChange += OnChangePrimarySkill;
             _inventoryEvents.OnSecondarySkillChange += OnChangeSecondarySkill;
 
-            ServiceLocator.GetService<LifeEvents>().OnFallDown += _fallController.StartRecovering;
+            // EVENT -> LIFE
+            _lifeEvents = ServiceLocator.GetService<LifeEvents>();
+            _lifeEvents.OnFallDown += _fallController.StartRecovering;
+
+            // EVENT -> MAGIC
+            _magicEvents = ServiceLocator.GetService<MagicEvents>();
+
+            // EVENT -> SOULS
+            _soulEvents = ServiceLocator.GetService<SoulEvents>();
+
+            _playerStatus.Init(
+                lifeEvents: _lifeEvents,
+                magicEvents: _magicEvents,
+                soulEvents: _soulEvents,
+                gameStatus: _gameStatus
+                );
+
+            AddMagicAttacks();
         }
 
         private void OnDestroy()
@@ -139,17 +195,28 @@ namespace Player
             _gameInputs.OnWeakAttackButtonStarted -= GameInputs_OnWeakAttackButtonStarted;
             _gameInputs.OnWeakAttackButtonCanceled -= GameInputs_OnWeakAttackButtonCanceled;
             _gameInputs.OnStrongAttackPerformed -= GameInputs_OnStrongAttackButtonPerformed;
-            _gameInputs.OnSecondaryPerformed -= GameInputs_OnSecondaryButtonPerformed;
+            _gameInputs.OnSecondaryStarted -= GameInputs_OnSecondaryButtonStarted;
 
             _inventoryEvents.OnPrimarySkillChange -= OnChangePrimarySkill;
             _inventoryEvents.OnSecondarySkillChange -= OnChangeSecondarySkill;
 
-            ServiceLocator.GetService<LifeEvents>().OnFallDown -= _fallController.StartRecovering;
+            _lifeEvents.OnFallDown -= _fallController.StartRecovering;
+
+            _playerStatus.DestroyElements();
+
+            DestroyMagics();
         }
 
         private void Update()
         {
             // TODO: GameOver
+
+            // Actualizamos la información del player
+            _playerStatus.UpdateInfo();
+
+            // Actualizamos magia
+            _magicAttacks[_magicIndex].Run();
+
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
             // o si está usando el poder máximo, volvemos
@@ -199,15 +266,34 @@ namespace Player
 
         #endregion
 
+        private void DestroyMagics()
+        {
+            foreach (MagicAttack magic in _magicAttacks)
+                magic.Destroy();
+        }
+
         private void AddMagicAttacks()
         {
             _magicAttacks = new List<MagicAttack>();
-            _magicAttacks.Add(GetComponent<FireAttack>());
-            _magicAttacks.Add(GetComponent<PlantAttack>());
-            _magicAttacks.Add(GetComponent<WaterAttack>());
+            _magicAttacks.Add(new FireAttack());
+            _magicAttacks.Add(new PlantAttack());
+            _magicAttacks.Add(new WaterAttack());
+
+            for (int i = 0; i < _magicSettingsSO.Count; i++)
+            {
+                _magicAttacks[i].Init(
+                    magicSettings: _magicSettingsSO[i],
+                    playerStatus: _playerStatus,
+                    magicEvents: _magicEvents,
+                    gameStatus: _gameStatus,
+                    audioSpeaker: _audioSpeaker,
+                    transform: transform
+                    );
+            }
+            _magicAttacks[_magicIndex].Select();
         }
 
-        private void AddSecondaryACtions()
+        private void AddSecondaryActions()
         {
             _secondaryActions = new List<SecondaryAction>();
         }
@@ -281,7 +367,7 @@ namespace Player
 
         private void DoPhysicalAction()
         {
-            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false;
+            if (!_animatorBrain.HasThrowAnimationEnded()) return;// si no ha terminado la animacion de lanzar no puedo hacer otra accion
 
             if (!_jump.IsPerformingJump || !IsAttacking())
             {
@@ -289,16 +375,29 @@ namespace Player
                 DoPickUpItem();
             }
 
-            if (!_interaction.IsInteracting && !_pickable.HasItem)
+            if (!_interaction.IsInteracting &&
+                !_pickable.HasItem &&
+                !_jump.IsPerformingJump &&
+                !_magicAttacks[_magicIndex].IsUsingWeakAttack &&
+                !_magicAttacks[_magicIndex].IsUsingMediumAttack &&
+                !_magicAttacks[_magicIndex].IsUsingStrongAttack &&
+                _animatorBrain.HasThrowAnimationEnded())
             {
-                if (_isPhysicActionInput)
-                { 
-                    _isPhysicAttacking = true;
-                    _animatorBrain.SetPhysicalAttack();
-                }   
+                DoPhysicalAttack();
             }
 
+            if (_isPhysicAttacking && _animatorBrain.HasCurrentAnimationEnded()) _isPhysicAttacking = false; // Reseteo animacion ataque fisico
+
             _isPhysicActionInput = false;
+        }
+
+        private void DoPhysicalAttack()
+        {
+            if (_isPhysicActionInput)
+            {
+                _isPhysicAttacking = true;
+                _phisicalAttack.Attack(_animatorBrain, _isPhysicActionInput);
+            }
         }
 
         private void DoInteraction()
@@ -338,11 +437,18 @@ namespace Player
 
         #region Secondary Action
 
-        private void GameInputs_OnSecondaryButtonPerformed()
+        private void GameInputs_OnSecondaryButtonStarted()
         {
             if (!_jump.IsPerformingJump
                 && !IsAttacking())
                 _isSecondaryInput = true;
+        }
+
+        private void GameInputs_OnSecondaryButtonCanceled()
+        {
+            _isSecondaryInput = false;
+            if (_secondaryAction.IsUsingEffect)
+                _secondaryAction.StopEffect();
         }
 
         private void DoSecondaryAction()
@@ -351,10 +457,10 @@ namespace Player
                 return;
 
             // Activamos el efecto de la acción secundaria
-            Debug.Log(_lookDirection);
+            //Debug.Log(_lookDirection);
+            _isSecondaryInput = false;
             _secondaryAction.SetDirection(_lookDirection);
             _secondaryAction.Effect();
-            _isSecondaryInput = false;
         }
 
         #endregion
@@ -386,7 +492,15 @@ namespace Player
                 )
                 _isWeakMagicInput = true;
         }
-        private void GameInputs_OnWeakAttackButtonCanceled() => _isWeakMagicInput = false;
+        private void GameInputs_OnWeakAttackButtonCanceled()
+        {
+            _isWeakMagicInput = false;
+
+            // Si está usando el poder débil
+            if (_magicAttacks[_magicIndex].IsUsingWeakAttack)
+                // Lo detenemos
+                _magicAttacks[_magicIndex].StopWeakAttack();
+        }
         private void GameInputs_OnMediumAttackButtonStarted()
         {
             if (_playerStatus.CanUseMagicAttacks()
@@ -404,7 +518,6 @@ namespace Player
             if (_magicAttacks[_magicIndex].IsUsingMediumAttack)
                 // Lo detenemos
                 _magicAttacks[_magicIndex].StopMediumAttack();
-
         }
 
         private void GameInputs_OnStrongAttackButtonPerformed()
@@ -457,6 +570,7 @@ namespace Player
                 return;
 
             // Activamos las variables de magia media e invocamos el nuevo ataque
+            _isMediumMagicInput = false;
             _magicAttacks[_magicIndex].MediumAttack(_lookDirection);
 
         }
@@ -471,6 +585,7 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
+
             _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
@@ -512,5 +627,35 @@ namespace Player
             _movement.Stop();
             _fallController.SetFalling();
         }
+
+        #region Tests
+
+        [ContextMenu("IncrementMaxHealthValue")]
+        private void IncrementMaxHealthValue()
+        {
+            _lifeEvents.AddHeart();
+        }
+
+        [ContextMenu("Prueba de take damage")]
+        private void TakeDamage()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 1;
+            Debug.Log($"Voy a hacer {value} de da�o");
+            _playerStatus.TakeDamage(value);
+        }
+
+        [ContextMenu("Prueba de heal life")]
+        private void HealLife()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Me curo {value} de salud");
+            _playerStatus.HealLife(value);
+        }
+
+
+        #endregion
+
     }
 }

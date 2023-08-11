@@ -11,6 +11,13 @@ public class Pickable : MonoBehaviour, IPickable
     private Collider2D _collider;
     private bool _canPickItUp = true;
     private bool _canThrowIt = false;
+    private bool _hasItem = false;
+
+    public bool HasItem
+    {
+        get { return _hasItem; }
+    }
+
 
     private void Start()
     {

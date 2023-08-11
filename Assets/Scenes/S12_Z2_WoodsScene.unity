@@ -21838,7 +21838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 181351362}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trigger Change Scene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41669,7 +41669,7 @@ GameObject:
   - component: {fileID: 975037489}
   - component: {fileID: 975037492}
   - component: {fileID: 975037491}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Teletransport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42847,6 +42847,10 @@ PrefabInstance:
     - target: {fileID: 8864211369235329876, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_Name
       value: Visuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 8864211369235329876, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8864211370289252384, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
