@@ -9,7 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8916dbe1473af9749978ddf00f9e33ce, type: 3}
-  m_Name: _Zone Exit SideSO
+  m_Script: {fileID: 11500000, guid: 14d9fa6b4cf43ba469f16e015c5edf3d, type: 3}
+  m_Name: MagicColorArraySO
   m_EditorClassIdentifier: 
-  nextStartPointRefID: 2
+  <ColorArray>k__BackingField:
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 0, g: 0, b: 0, a: 0}

@@ -236,6 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15da201d3c1904540a4e4c0bb7324a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorArraySO: {fileID: 11400000, guid: 0ce362f2a9cb8724282a909009ef8b9a, type: 2}
+  _powerColorDataSO: {fileID: 11400000, guid: b39c7730875e42c41bc21059bd1e4da8, type: 2}
 --- !u!114 &989974163550415152
 MonoBehaviour:
   m_ObjectHideFlags: 0
