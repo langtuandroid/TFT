@@ -171,9 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0edda831d6ef5de49bd12f7825a16259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dungeonGridSize: 8
-  _numOfRoomsPerPath: 10
-  _numOfPaths: 3
+  _dungeonDataSO: {fileID: 11400000, guid: b9b8aa3a248ff7648bb797d7c68b9632, type: 2}
 --- !u!4 &326343959
 Transform:
   m_ObjectHideFlags: 0
