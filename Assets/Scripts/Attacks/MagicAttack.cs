@@ -4,19 +4,14 @@ using Player;
 
 namespace Attack
 {
-    public abstract class MagicAttack : MonoBehaviour
+    public abstract class MagicAttack
     {
 
-        #region SerializeFields
-
-        [Header("Attack costs")]
-        [SerializeField]
-        [Tooltip("Coste de los ataques (de menor a mayor poder)")]
-        internal int[] _costs = new int[3];
-
-        #endregion
-
         #region Internal variables
+
+        // DATA
+        internal MagicAttackSettingsSO _magicSettingsSO;
+        internal Transform _transform;
 
         // EVENTS
         internal MagicEvents _magicEvents;
@@ -41,18 +36,16 @@ namespace Attack
         #endregion
 
 
-        #region Unity methods
+        #region Class constructor
 
-        private void Awake()
+        public MagicAttack()
         {
             // Eventos
             //_magicEvents = ServiceLocator.GetService<MagicEvents>();
             //_gameStatus = ServiceLocator.GetService<GameStatus>();
 
-            // Variables
-            _isUsingWeakAttack = false;
-            _isUsingMediumAttack = false;
-            _isUsingStrongAttack = false;
+            // Variables de estado
+            Initialize();
         }
 
         #endregion
@@ -61,19 +54,41 @@ namespace Attack
         #region Abstract class methods
 
         /// <summary>
+        /// Inicializa las variables de estado para cada tipo de ataque
+        /// </summary>
+        internal void Initialize()
+        {
+            _isUsingWeakAttack = false;
+            _isUsingMediumAttack = false;
+            _isUsingStrongAttack = false;
+        }
+
+        /// <summary>
         /// Inicializa los eventos (para no tener que estar en cada clase
         /// consultando al ServiceLocator, solo se hace una vez desde el
         /// PlayerController)
         /// </summary>
         /// <param name="magicEvents"></param>
         /// <param name="gameStatus"></param>
-        public virtual void Init(PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker)
+        public virtual void Init(MagicAttackSettingsSO magicSettings, PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker, Transform transform)
         {
+            _transform = transform;
+            _magicSettingsSO = magicSettings;
             _playerStatus = playerStatus;
             _magicEvents = magicEvents;
             _gameStatus = gameStatus;
             _audioSpeaker = audioSpeaker;
         }
+
+        /// <summary>
+        /// Para comprobaciones como si fuera Update
+        /// </summary>
+        public abstract void Run();      
+
+        /// <summary>
+        /// Para destruir el elemento
+        /// </summary>
+        public abstract void Destroy();
 
         /// <summary>
         /// Selecciona el tipo de ataque

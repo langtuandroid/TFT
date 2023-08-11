@@ -72,6 +72,8 @@ namespace Player
 
         // Lists
         // MagicAttack (primary skill) list
+        [SerializeField]
+        private List<MagicAttackSettingsSO> _magicSettingsSO;
         private List<MagicAttack> _magicAttacks;
         private int _magicIndex => _playerStatus.PrimarySkillIndex;
 
@@ -107,7 +109,7 @@ namespace Player
             // Magic Attacks
             //AddMagicAttacks();
             // SecondaryActions
-            AddSecondaryACtions();
+            AddSecondaryActions();
 
             // Pickable
             _pickable.Init(transform, pickUpPointTrans, collider.offset,
@@ -201,6 +203,8 @@ namespace Player
             _lifeEvents.OnFallDown -= _fallController.StartRecovering;
 
             _playerStatus.DestroyElements();
+
+            DestroyMagics();
         }
 
         private void Update()
@@ -209,6 +213,10 @@ namespace Player
 
             // Actualizamos la información del player
             _playerStatus.UpdateInfo();
+
+            // Actualizamos magia
+            _magicAttacks[_magicIndex].Run();
+
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
             // o si está usando el poder máximo, volvemos
@@ -258,36 +266,34 @@ namespace Player
 
         #endregion
 
+        private void DestroyMagics()
+        {
+            foreach (MagicAttack magic in _magicAttacks)
+                magic.Destroy();
+        }
+
         private void AddMagicAttacks()
         {
             _magicAttacks = new List<MagicAttack>();
-            _magicAttacks.Add(GetComponent<FireAttack>());
+            _magicAttacks.Add(new FireAttack());
+            _magicAttacks.Add(new PlantAttack());
+            _magicAttacks.Add(new WaterAttack());
 
-            PlantAttack plant = GetComponent<PlantAttack>();
-            if (plant != null)
-                _magicAttacks.Add(plant);
-
-            WaterAttack water = GetComponent<WaterAttack>();
-            if (water != null)
-                _magicAttacks.Add(GetComponent<WaterAttack>());
-
-            Debug.Log(_magicAttacks.Count);
-
-            foreach (MagicAttack magicAttack in _magicAttacks)
+            for (int i = 0; i < _magicSettingsSO.Count; i++)
             {
-                magicAttack.Init(
+                _magicAttacks[i].Init(
+                    magicSettings: _magicSettingsSO[i],
                     playerStatus: _playerStatus,
                     magicEvents: _magicEvents,
                     gameStatus: _gameStatus,
-                    audioSpeaker: _audioSpeaker
+                    audioSpeaker: _audioSpeaker,
+                    transform: transform
                     );
-
-                magicAttack.enabled = true;
             }
             _magicAttacks[_magicIndex].Select();
         }
 
-        private void AddSecondaryACtions()
+        private void AddSecondaryActions()
         {
             _secondaryActions = new List<SecondaryAction>();
         }
@@ -579,6 +585,7 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
+
             _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
