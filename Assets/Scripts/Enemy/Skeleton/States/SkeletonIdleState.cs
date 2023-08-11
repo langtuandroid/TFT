@@ -6,18 +6,20 @@ public class SkeletonIdleState : SkeletonBaseState
         : base( currentContext , states ) 
     { }
 
-    public override void EnterState()
-    {
-
-    }
-
-    public override void ExitState()
+    public override void EnterState() 
     {
 
     }
 
     public override void UpdateState()
     {
+        if ( ctx.HasDetectPlayer() )
+        {
+            SwitchState( states.Pursuit() );
+            return;
+        }
 
+
+        ctx.Movement();
     }
 }
