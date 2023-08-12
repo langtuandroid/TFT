@@ -77,6 +77,10 @@ public class EnemySlime : MonoBehaviour
 
     private int numberOfSouls = 3;
 
+    private SlimeHealth _slimeHealth;
+
+    private bool _isAlive = true;
+
     #endregion
     
     #region UNITY METHODS
@@ -84,17 +88,12 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
-        for (int i = 0; i < numberOfSouls; i++)
-        {
-            Vector2 randomOffset = Random.insideUnitCircle * 0.5f; 
-            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
-            Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
-        }
     }
 
     private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _slimeHealth = GetComponent<SlimeHealth>();
     }
 
     void Start()
@@ -124,6 +123,25 @@ public class EnemySlime : MonoBehaviour
             _actualState.Execute(this);
         
         _spriteRenderer.flipX = _navMeshAgent.velocity.x < 0f;
+
+        CheckIfAlive();
+    }
+
+    private void CheckIfAlive()
+    {
+        if (!_isAlive) return;
+
+        if (_slimeHealth._maxPhisicalDamage == 0)
+        {
+            _isAlive = false;
+            
+            for (int i = 0; i < numberOfSouls; i++)
+            {
+                Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
+                Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+                Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
+            }
+        }
     }
     
     private void PrepareComponent()

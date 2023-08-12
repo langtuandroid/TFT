@@ -6395,11 +6395,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3411aa363d74046aa0b4cde2aae60f, type: 3}
---- !u!4 &352871591 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1297231799380099129, guid: 6a3411aa363d74046aa0b4cde2aae60f, type: 3}
-  m_PrefabInstance: {fileID: 352871590}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &424204213
 GameObject:
   m_ObjectHideFlags: 0
@@ -39493,10 +39488,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0
+    x: 0.0019762847
     y: 0
-    width: 0.99978673
-    height: 0.99999994
+    width: 0.99780416
+    height: 0.99824256
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -41771,7 +41766,7 @@ MonoBehaviour:
   m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
-  m_Follow: {fileID: 352871591}
+  m_Follow: {fileID: 1529378400}
   m_Lens:
     FieldOfView: 34
     OrthographicSize: 5.625
@@ -42422,6 +42417,11 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!4 &1529378400 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1297231799380099129, guid: 6a3411aa363d74046aa0b4cde2aae60f, type: 3}
+  m_PrefabInstance: {fileID: 352871590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1610371594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42488,7 +42488,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000122
+      value: -45.000137
       objectReference: {fileID: 0}
     - target: {fileID: 6256845347548691390, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -43585,7 +43585,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -16, y: -16.000015}
+  m_AnchoredPosition: {x: -16, y: -16.00003}
   m_SizeDelta: {x: 359.99997, y: 202.49997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1938495870

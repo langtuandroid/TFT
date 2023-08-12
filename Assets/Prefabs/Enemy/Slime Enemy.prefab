@@ -193,6 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518447b2eedea407e9e579ef64d76272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxPhisicalDamage: 2
 --- !u!114 &2532853629331184862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +210,7 @@ MonoBehaviour:
   _secondsToChangeDirection: 3
   _earRadious: 3
   _exclamation: {fileID: 1316879947}
+  _soulPrefab: {fileID: 5880737471883512554, guid: 4d8c53f33b7384f4d9bb32d4cb82dfdb, type: 3}
 --- !u!114 &1299815226874975221
 MonoBehaviour:
   m_ObjectHideFlags: 0
