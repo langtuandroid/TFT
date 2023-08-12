@@ -137,7 +137,7 @@ namespace Player
             _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, audioSpeaker, gameStatus , _playerStatus );
+            _fallController.Init(transform.position, _audioSpeaker, _gameStatus , _playerStatus );
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
