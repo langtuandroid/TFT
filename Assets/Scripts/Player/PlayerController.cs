@@ -10,9 +10,7 @@ namespace Player
     {
         #region Private variables
         // SERVICES
-        private GameInputs _gameInputs;
-        private GameStatus _gameStatus;
-        private IAudioSpeaker _audioSpeaker;
+        private GameInputs _gameInputs;        
 
         // EVENTS
         private InventoryEvents _inventoryEvents;
@@ -131,11 +129,11 @@ namespace Player
             _isInitialized = true;
 #endif
             // SERVICE -> GAMESTATUS
-            _gameStatus = ServiceLocator.GetService<GameStatus>();
+            GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
 
             // SERVICE -> AUDIOSPEAKER
-            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
             _fallController.Init(transform.position, audioSpeaker, gameStatus , _playerStatus );
 
@@ -179,10 +177,10 @@ namespace Player
                 lifeEvents: _lifeEvents,
                 magicEvents: _magicEvents,
                 soulEvents: _soulEvents,
-                gameStatus: _gameStatus
+                gameStatus: gameStatus
                 );
 
-            AddMagicAttacks();
+            AddMagicAttacks( audioSpeaker , gameStatus );
         }
 
         private void OnDestroy()
@@ -272,7 +270,7 @@ namespace Player
                 magic.Destroy();
         }
 
-        private void AddMagicAttacks()
+        private void AddMagicAttacks( IAudioSpeaker audioSpeaker , GameStatus gameStatus )
         {
             _magicAttacks = new List<MagicAttack>();
             _magicAttacks.Add(new FireAttack());
@@ -285,8 +283,8 @@ namespace Player
                     magicSettings: _magicSettingsSO[i],
                     playerStatus: _playerStatus,
                     magicEvents: _magicEvents,
-                    gameStatus: _gameStatus,
-                    audioSpeaker: _audioSpeaker,
+                    gameStatus: gameStatus,
+                    audioSpeaker: audioSpeaker,
                     transform: transform
                     );
             }

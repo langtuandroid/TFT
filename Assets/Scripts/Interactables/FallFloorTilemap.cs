@@ -10,6 +10,7 @@ public class FallFloorTilemap : MonoBehaviour
     private Rigidbody2D _playerRb = null;
     private PlayerController _playerController;
     private Vector2 _playerColOffest;
+    private Collider2D _playerCol;
 
     private void Awake()
     {
