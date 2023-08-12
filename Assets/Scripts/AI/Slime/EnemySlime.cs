@@ -88,6 +88,7 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
+        _slimeHealth.OnDeath -= CheckIfAlive;
     }
 
     private void Awake()
@@ -100,6 +101,7 @@ public class EnemySlime : MonoBehaviour
     {
         _lifeEvents = ServiceLocator.GetService<LifeEvents>();
         _lifeEvents.OnDeathValue += OnStopFollow;
+        _slimeHealth.OnDeath += CheckIfAlive;
         
         if ( !_isOnProcedural )
         {
@@ -123,24 +125,15 @@ public class EnemySlime : MonoBehaviour
             _actualState.Execute(this);
         
         _spriteRenderer.flipX = _navMeshAgent.velocity.x < 0f;
-
-        CheckIfAlive();
     }
 
     private void CheckIfAlive()
     {
-        if (!_isAlive) return;
-
-        if (_slimeHealth._maxPhisicalDamage == 0)
+        for (int i = 0; i < numberOfSouls; i++)
         {
-            _isAlive = false;
-            
-            for (int i = 0; i < numberOfSouls; i++)
-            {
-                Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
-                Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
-                Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
-            }
+            Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
+            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+            Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
         }
     }
     

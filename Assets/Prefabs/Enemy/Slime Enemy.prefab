@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxPhisicalDamage: 2
+  _maxDamage: 1
 --- !u!114 &2532853629331184862
 MonoBehaviour:
   m_ObjectHideFlags: 0

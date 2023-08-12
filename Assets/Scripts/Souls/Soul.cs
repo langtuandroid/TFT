@@ -77,8 +77,6 @@ public class Soul : MonoBehaviour
 
         // Nos movemos al jugador
         MoveToPlayer(_playerPosition - transform.position);
-        
-        DOTMoveToPlayer();
     }
 
     #endregion
@@ -109,21 +107,6 @@ public class Soul : MonoBehaviour
             Time.deltaTime * _speed / direction.magnitude * dir);
     }
 
-    private void DOTMoveToPlayer()
-    {
-        float curveHeight = 2.0f;
-        float animationDuration = 1.0f; 
-        
-        Vector3 startPos = transform.position;
-        Vector3 endPos = _playerPosition;
-        Vector3 controlPoint = (startPos + endPos) / 2.0f;
-        controlPoint.y += curveHeight;
-
-        Tween bezierTween = transform.DOPath(new Vector3[] { startPos, controlPoint, endPos }, animationDuration,
-                PathType.CubicBezier)
-            .SetEase(Ease.OutQuad);
-    }
-    
     #endregion
 
 }
