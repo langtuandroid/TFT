@@ -12,4 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2f9197b0d75a74ea0ecf72fcee1ca7, type: 3}
   m_Name: Woods Zone3 StartRefInfoSO
   m_EditorClassIdentifier: 
-  startRefInfoArray: []
+  startRefInfoArray:
+  - exitZoneDescription: West Cave - From 3a
+    startPointRefID: 0
+    startPosition: {x: -3, y: 5.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 262144
+    confinerColliderIndex: 0
+  - exitZoneDescription: Center Cave - From 3b
+    startPointRefID: 1
+    startPosition: {x: 24, y: 32.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 131072
+    confinerColliderIndex: 1
+  - exitZoneDescription: North Cave - From 3b
+    startPointRefID: 2
+    startPosition: {x: 3, y: 25.5}
+    _playerStartLookDirection: 2
+    initialLayerMask:
+      serializedVersion: 2
+      m_Bits: 131072
+    confinerColliderIndex: 2

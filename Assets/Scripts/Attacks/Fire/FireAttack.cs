@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
@@ -9,101 +8,68 @@ namespace Attack
 {
     public class FireAttack : MagicAttack
     {
-        #region SerializeFields
-
-        [Header("Weak Attack")]
-        [SerializeField]
-        [Tooltip("Prefab de la bola de fuego")]
-        private GameObject _fireballPrefab;
-
-        [Header("Medium Attack")]
-        [SerializeField]
-        [Tooltip("Prefab del lanzallamas hacia arriba")]
-        private GameObject _flamesUp;
-        [SerializeField]
-        [Tooltip("Prefab del lanzallamas hacia abajo")]
-        private GameObject _flamesDown;
-        [SerializeField]
-        [Tooltip("Prefab del lanzallamas hacia la izda")]
-        private GameObject _flamesLeft;
-        [SerializeField]
-        [Tooltip("Prefab del lanzallamas hacia la derecha")]
-        private GameObject _flamesRight;
-        [SerializeField]
-        [Tooltip("Tiempo que debe pasar para que el lanzallamas consuma")]
-        private float _timeBetweenConsuming = .4f;
-
-        [Header("Strong Attack")]
-        [SerializeField]
-        [Tooltip("Lista de orbes que giran alrededor del personaje al usar el poder máximo de fuego")]
-        private List<GameObject> _fireOrbs;
-        [SerializeField]
-        [Tooltip("Cantidad de daño que produce el poder máximo")]
-        private int _strongAttackDamage = 10;
-
-        #endregion
-
         #region Private Variables
 
-        // Status del jugador
-        private PlayerStatus _playerStatus;
+        // DATA
+        private FireAttackSettingsSO _fireSettingsSO => (FireAttackSettingsSO)_magicSettingsSO;
 
-        // Objeto del lanzallamas
-        private GameObject _flame;
-        // Lista de lanzallamas para destruirr
-        private List<GameObject> _flamesToDestroy;
-
-        // Temporizador del lanzallamas
+        // VARIABLES
+        // Medium Attack
         private float _flameTimer;
 
+        // Strong Attack
+        private List<GameObject> _fireOrbs;
         #endregion
 
         #region Unity Methods
 
-        private void OnDestroy()
+        public FireAttack()
         {
-            _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
-            _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
-
-            foreach (GameObject f in _flamesToDestroy)
-                Destroy(f);
+            // Inicializamos las variables de estado
+            base.Initialize();
+            _flameTimer = 0f;
+            _fireOrbs = new List<GameObject>();
         }
 
-        private void Start()
+        public override void Init(MagicAttackSettingsSO magicSettings, PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker, Transform transform)
         {
-            // Inicializamos componentes
-            _flamesToDestroy = new List<GameObject>();
-            _flameTimer = 0f;
-
-            //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _playerStatus = GetComponent<PlayerStatus>();
+            base.Init(magicSettings, playerStatus, magicEvents, gameStatus, audioSpeaker, transform);
 
             _magicEvents.OnMaxPowerUsedValue += RotateOrbs;
             _magicEvents.OnMaxPowerFinalizedValue += MaxPowerFinalized;
+
+            GameObject strongPrefab = MonoBehaviour.Instantiate(
+                _fireSettingsSO.StrongPrefab,
+                _transform
+                );
+
+            foreach (Transform t in strongPrefab.transform)
+                _fireOrbs.Add(t.gameObject);
+
+            strongPrefab.transform.localPosition = new Vector3(0f, .8125f, 0f);
+
         }
 
-        private void Update()
+        public override void Destroy()
         {
-            if (
-                _flame != null &&
-                !_flamesToDestroy.Contains(_flame)
-                )
+            _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
+            _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
+        }
+
+
+
+        public override void Run()
+        {
+
+            if (_isUsingMediumAttack)
             {
                 _flameTimer += Time.deltaTime;
-                if (_flameTimer >= _timeBetweenConsuming)
+                if (_flameTimer >= _fireSettingsSO.TimeBetweenConsuming)
                 {
-                    _magicEvents.UseOfMagicValue(_costs[1]);
+                    _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
                     _flameTimer = 0f;
                 }
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-#if UNITY_EDITOR
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, 8);
-#endif
         }
 
         #endregion
@@ -115,26 +81,27 @@ namespace Attack
         /// </summary>
         public override void WeakAttack(Vector2 direction)
         {
+            Debug.Log("Entro en ataque débil");
             // Activamos el uso de la magia débil
             _isUsingWeakAttack = true;
 
             // Instanciamos bola de fuego
-            GameObject fireball = Instantiate(
-                _fireballPrefab, // Prefab de la bola
-                transform.position, // Posición del player
+            GameObject fireball = MonoBehaviour.Instantiate(
+                _fireSettingsSO.WeakPrefab, // Prefab de la bola
+                _transform.position, // Posición del player
                 Quaternion.identity // Quaternion identity
                 );
 
             fireball.transform.position = new Vector2(
-                transform.position.x,
-                transform.position.y + Constants.PLAYER_OFFSET
+                _transform.position.x,
+                _transform.position.y + Constants.PLAYER_OFFSET
                 );
 
             fireball.GetComponent<Fireball>().SetDirection(direction);
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_BALL);
 
             // Consumimos magia
-            _magicEvents.UseOfMagicValue(_costs[0]);
+            _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[0]);
             // Desactivamos el uso de la magia débil
             _isUsingWeakAttack = false;
             // Reseteamos el temporizador de uso de poder
@@ -146,33 +113,35 @@ namespace Attack
         /// </summary>
         public override void MediumAttack(Vector2 direction)
         {
+            Debug.Log("Entro en ataque medio");
+
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
 
-            // Creamos el prefab
-            GameObject prefab = null;
+            //// Creamos el prefab
+            //GameObject prefab = null;
 
-            if (direction.Equals(Vector2.up))
-                prefab = _flamesUp;
-            else if (direction.Equals(Vector2.down))
-                prefab = _flamesDown;
-            else if (direction.Equals(Vector2.left))
-                prefab = _flamesLeft;
-            else if (direction.Equals(Vector2.right))
-                prefab = _flamesRight;
+            //if (direction.Equals(Vector2.up))
+            //    prefab = _flamesUp;
+            //else if (direction.Equals(Vector2.down))
+            //    prefab = _flamesDown;
+            //else if (direction.Equals(Vector2.left))
+            //    prefab = _flamesLeft;
+            //else if (direction.Equals(Vector2.right))
+            //    prefab = _flamesRight;
 
-            _flame = Instantiate(
-                prefab, // Prefab de la llama
-                transform
-                );
+            //_flame = Instantiate(
+            //    prefab, // Prefab de la llama
+            //    transform
+            //    );
 
-            _flame.transform.position = new Vector2(
-                _flame.transform.position.x,
-                _flame.transform.position.y + Constants.PLAYER_OFFSET
-                );
+            //_flame.transform.position = new Vector2(
+            //    _flame.transform.position.x,
+            //    _flame.transform.position.y + Constants.PLAYER_OFFSET
+            //    );
 
-            //_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
-            _flame.GetComponent<ParticleSystem>().Play();
+            ////_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
+            //_flame.GetComponent<ParticleSystem>().Play();
         }
 
         /// <summary>
@@ -180,13 +149,13 @@ namespace Attack
         /// </summary>
         public override void StopMediumAttack()
         {
-            // Lo quitamos
-            _flame.transform.parent = null;
-            // Y lo paramos
-            _flame.GetComponent<ParticleSystem>().Stop();
+            //// Lo quitamos
+            //_flame.transform.parent = null;
+            //// Y lo paramos
+            //_flame.GetComponent<ParticleSystem>().Stop();
 
-            _flamesToDestroy.Add(_flame);
-            Invoke(nameof(DisableAndDestroy), 4f);
+            //_flamesToDestroy.Add(_flame);
+            //Invoke(nameof(DisableAndDestroy), 4f);
 
             // Desactivamos el uso de magia media
             _isUsingMediumAttack = false;
@@ -214,15 +183,15 @@ namespace Attack
 
         #region Medium Attack
 
-        /// <summary>
-        /// Desactiva y destruye el objeto de lanzallamas
-        /// </summary>
-        private void DisableAndDestroy()
-        {
-            GameObject obj = _flamesToDestroy[0];
-            _flamesToDestroy.Remove(obj);
-            Destroy(obj);
-        }
+        ///// <summary>
+        ///// Desactiva y destruye el objeto de lanzallamas
+        ///// </summary>
+        //private void DisableAndDestroy()
+        //{
+        //    GameObject obj = _flamesToDestroy[0];
+        //    _flamesToDestroy.Remove(obj);
+        //    Destroy(obj);
+        //}
 
         #endregion
 
@@ -244,7 +213,7 @@ namespace Attack
             // Desactivamos el uso de magia fuerte
             _isUsingStrongAttack = false;
             // Consumimos magia
-            _magicEvents.UseOfMagicValue(_costs[2]);
+            _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[2]);
             // Y reseteamos el contador de tiempo
             _playerStatus.RestartMagicTimer();
         }
@@ -269,10 +238,11 @@ namespace Attack
             // Y esperamos un tiempo
             seq.AppendInterval(time);
             // Finalizamos el ataque final
-            seq.OnComplete(() => {
+            seq.OnComplete(() =>
+            {
                 _magicEvents.MaxPowerFinalized();
                 _gameStatus.AskChangeToGamePlayState();
-            } );
+            });
             // Ejecutamos la secuencia
             seq.Play();
         }
@@ -354,14 +324,14 @@ namespace Attack
         {
             // Lista de colisiones
             Collider2D[] collisions = Physics2D.OverlapCircleAll(
-                transform.position, // Origen
+                _transform.position, // Origen
                 _fireOrbs.Count, // Radio
                 LayerMask.GetMask(Constants.LAYER_INTERACTABLE) // Capa a la que afecta
                 );
 
             // Para cada colisión, activamos el quemado
             foreach (Collider2D collision in collisions)
-                collision.GetComponent<IBurnable>()?.Burn(_strongAttackDamage);
+                collision.GetComponent<IBurnable>()?.Burn(_fireSettingsSO.StrongAttackDamage);
 
         }
 

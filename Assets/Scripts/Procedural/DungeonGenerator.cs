@@ -6,10 +6,7 @@ namespace Procedural
 {
     public class DungeonGenerator : MonoBehaviour
     {
-        [Header("Dungeon Size")]
-        [SerializeField][Range(3, 15)] private int _dungeonGridSize = 8;
-        [SerializeField][Range(3, 15)] private int _numOfRoomsPerPath = 10;
-        [SerializeField][Range(2, 15)] private int _numOfPaths = 3;
+        [SerializeField] private DungeonDataSO _dungeonDataSO;
 
         private Dictionary<Vector2Int, RoomCell> _dungeonLayOutDict;
         private List<Vector2Int> _deadEndPosList;
@@ -44,7 +41,7 @@ namespace Procedural
 
         public void DungeonPathsGenerator()
         {
-            Vector2Int startPos = new Vector2Int( _dungeonGridSize / 2 , _dungeonGridSize / 2);
+            Vector2Int startPos = new Vector2Int( _dungeonDataSO.DungeonGridSize / 2 , _dungeonDataSO.DungeonGridSize / 2);
 
             _dungeonLayOutDict.Add( startPos , new RoomCell() );
             _dungeonLayOutDict[startPos].SetAsStartRoom();
@@ -53,7 +50,7 @@ namespace Procedural
             int pathsFinished = 0;
 
 
-            while ( pathsFinished < _numOfPaths )
+            while ( pathsFinished < _dungeonDataSO.NumOfPaths )
             {
                 Vector2Int currentPos = startPos;
                 int roomsCreated = 1;
@@ -63,7 +60,7 @@ namespace Procedural
                 // then choose a start direction here
                 int randDir = Random.Range( 0 , _dirList.Length );
 
-                while ( roomsCreated < _numOfRoomsPerPath )
+                while ( roomsCreated < _dungeonDataSO.NumOfRoomsPerPath )
                 {
                     // open exit on current room
                     if ( HasPossibleDirectionsToGo( currentPos , out int excludedDirectionsBitMask ) )// && roomsCreated < _numOfRoomsPerPath )
@@ -76,7 +73,7 @@ namespace Procedural
 
                         // allow get out of bounds and end path
                         if ( IsOutOfLimits( currentPos + _dirList[randDir] ) )
-                            roomsCreated = _numOfRoomsPerPath;
+                            roomsCreated = _dungeonDataSO.NumOfRoomsPerPath;
                     }
 
 
@@ -242,8 +239,8 @@ namespace Procedural
         /// <returns> True if out of limits </returns>
         private bool IsOutOfLimits( Vector2Int checkPos )
         {
-            return checkPos.x < 0 || checkPos.x >= _dungeonGridSize ||
-                   checkPos.y < 0 || checkPos.y >= _dungeonGridSize;
+            return checkPos.x < 0 || checkPos.x >= _dungeonDataSO.DungeonGridSize ||
+                   checkPos.y < 0 || checkPos.y >= _dungeonDataSO.DungeonGridSize;
         }
 
 

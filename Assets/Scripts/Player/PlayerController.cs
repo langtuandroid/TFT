@@ -43,11 +43,15 @@ namespace Player
 
         // DATA
         [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
+        [SerializeField]
+        private PlayerStatusSaveSO _statusSaveSO;
+        [SerializeField]
+        private PlayerStatusSettingDataSO _statusSettingDataSO;
 
         // Inputs
         // Jump input
         private bool _isJumpInput;
-        
+
         public bool IsJumpInput { get => _isJumpInput; }
 
         // Movement input
@@ -68,6 +72,8 @@ namespace Player
 
         // Lists
         // MagicAttack (primary skill) list
+        [SerializeField]
+        private List<MagicAttackSettingsSO> _magicSettingsSO;
         private List<MagicAttack> _magicAttacks;
         private int _magicIndex => _playerStatus.PrimarySkillIndex;
 
@@ -84,7 +90,6 @@ namespace Player
             // COMPONENTS
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _secondaryAction = GetComponent<LightAttack>();
-            _playerStatus = GetComponent<PlayerStatus>();
             _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
 
             Collider2D collider = GetComponent<Collider2D>();
@@ -93,6 +98,7 @@ namespace Player
             Transform pickUpPointTrans = characterVisualTrans.transform.Find(_physicalDataSO.pickUpPointObjName);
 
             // SCRIPTS
+            _playerStatus = new PlayerStatus(_statusSaveSO, _statusSettingDataSO);
             _movement = new PlayerMovement(rb, _physicalDataSO);
             _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
@@ -101,9 +107,9 @@ namespace Player
 
             // Inicializamos variables
             // Magic Attacks
-            AddMagicAttacks();
+            //AddMagicAttacks();
             // SecondaryActions
-            AddSecondaryACtions();
+            AddSecondaryActions();
 
             // Pickable
             _pickable.Init(transform, pickUpPointTrans, collider.offset,
@@ -131,7 +137,7 @@ namespace Player
             _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, _audioSpeaker, _gameStatus);
+            _fallController.Init(transform.position, audioSpeaker, gameStatus , _playerStatus );
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -176,17 +182,7 @@ namespace Player
                 gameStatus: _gameStatus
                 );
 
-            foreach (MagicAttack magicAttack in _magicAttacks)
-            {
-                magicAttack.Init(
-                    magicEvents: _magicEvents, 
-                    gameStatus: _gameStatus,
-                    audioSpeaker: _audioSpeaker
-                    );
-
-                magicAttack.enabled = true;
-            }
-            _magicAttacks[_magicIndex].Select();
+            AddMagicAttacks();
         }
 
         private void OnDestroy()
@@ -205,6 +201,10 @@ namespace Player
             _inventoryEvents.OnSecondarySkillChange -= OnChangeSecondarySkill;
 
             _lifeEvents.OnFallDown -= _fallController.StartRecovering;
+
+            _playerStatus.DestroyElements();
+
+            DestroyMagics();
         }
 
         private void Update()
@@ -213,6 +213,10 @@ namespace Player
 
             // Actualizamos la información del player
             _playerStatus.UpdateInfo();
+
+            // Actualizamos magia
+            _magicAttacks[_magicIndex].Run();
+
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
             // o si está usando el poder máximo, volvemos
@@ -262,15 +266,34 @@ namespace Player
 
         #endregion
 
+        private void DestroyMagics()
+        {
+            foreach (MagicAttack magic in _magicAttacks)
+                magic.Destroy();
+        }
+
         private void AddMagicAttacks()
         {
             _magicAttacks = new List<MagicAttack>();
-            _magicAttacks.Add(GetComponent<FireAttack>());
-            _magicAttacks.Add(GetComponent<PlantAttack>());
-            _magicAttacks.Add(GetComponent<WaterAttack>());
+            _magicAttacks.Add(new FireAttack());
+            _magicAttacks.Add(new PlantAttack());
+            _magicAttacks.Add(new WaterAttack());
+
+            for (int i = 0; i < _magicSettingsSO.Count; i++)
+            {
+                _magicAttacks[i].Init(
+                    magicSettings: _magicSettingsSO[i],
+                    playerStatus: _playerStatus,
+                    magicEvents: _magicEvents,
+                    gameStatus: _gameStatus,
+                    audioSpeaker: _audioSpeaker,
+                    transform: transform
+                    );
+            }
+            _magicAttacks[_magicIndex].Select();
         }
 
-        private void AddSecondaryACtions()
+        private void AddSecondaryActions()
         {
             _secondaryActions = new List<SecondaryAction>();
         }
@@ -562,6 +585,7 @@ namespace Player
 
             // Activamos la magia fuerte
             _isStrongMagicInput = false;
+
             _magicAttacks[_magicIndex].StrongAttack(_lookDirection);
         }
 
@@ -601,8 +625,37 @@ namespace Player
         {
             _jump.FallInHole();
             _movement.Stop();
-            _playerStatus.TakeDamage(1);
             _fallController.SetFalling();
         }
+
+        #region Tests
+
+        [ContextMenu("IncrementMaxHealthValue")]
+        private void IncrementMaxHealthValue()
+        {
+            _lifeEvents.AddHeart();
+        }
+
+        [ContextMenu("Prueba de take damage")]
+        private void TakeDamage()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 1;
+            Debug.Log($"Voy a hacer {value} de da�o");
+            _playerStatus.TakeDamage(value);
+        }
+
+        [ContextMenu("Prueba de heal life")]
+        private void HealLife()
+        {
+            //int value = Random.Range(1, 5);
+            int value = 10;
+            Debug.Log($"Me curo {value} de salud");
+            _playerStatus.HealLife(value);
+        }
+
+
+        #endregion
+
     }
 }
