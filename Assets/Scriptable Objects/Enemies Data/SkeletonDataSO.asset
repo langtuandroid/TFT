@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372e3e246a21c304387b0cf0f975e920, type: 3}
   m_Name: SkeletonDataSO
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 2
+  <Speed>k__BackingField: 4
   <DetectionRadius>k__BackingField: 5
+  <Damage>k__BackingField: 1
   <PlayerMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 8
   <ObstaclesMask>k__BackingField:
     serializedVersion: 2
     m_Bits: 966720
-  <BonePrefab>k__BackingField: {fileID: 0}
+  <BonePrefab>k__BackingField: {fileID: 1473645290797137431, guid: 7be44f46df6718b4c91d50de8c445e2c, type: 3}

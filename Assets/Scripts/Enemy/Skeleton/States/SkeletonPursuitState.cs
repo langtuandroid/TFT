@@ -1,27 +1,22 @@
-using UnityEngine;
 
 public class SkeletonPursuitState : SkeletonBaseState
 {
     public SkeletonPursuitState( SkeletonController currentContext , SkeletonStateFactory states )
-        : base( currentContext , states )
-    { }
+        : base( currentContext , states ) { }
 
-    private float _secondsToAttack;
-    private float _attackTimer;
-
-    public override void EnterState()
-    {
-        _secondsToAttack = 2;
-        _attackTimer = 0;
-    }
+    public override void EnterState() { }
 
     public override void UpdateState()
     {
-        _attackTimer += Time.deltaTime;
-        if ( _attackTimer > _secondsToAttack )
+        if ( ctx.IsReadyToAttack() )
         {
             SwitchState( states.Attack() );
             return;
+        }
+
+        if ( ctx.CanChangeAction() )
+        {
+            ctx.ResetAction();
         }
 
         ctx.Movement();

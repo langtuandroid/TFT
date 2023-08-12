@@ -10,6 +10,7 @@ public class FallFloorTilemap : MonoBehaviour
     private Rigidbody2D _playerRb = null;
     private PlayerController _playerController;
     private Vector2 _playerColOffest;
+    private Collider2D _playerCol;
 
     private void Awake()
     {
@@ -23,11 +24,6 @@ public class FallFloorTilemap : MonoBehaviour
             if ( _playerController.IsGrounded )
             {
                 Vector2 playerPos = _playerRb.position + _playerColOffest;
-
-                //if ( _pitCollider.OverlapCollider() )
-                //{
-
-                //}
 
                 if ( _pitCollider.OverlapPoint( playerPos ) )
                 {

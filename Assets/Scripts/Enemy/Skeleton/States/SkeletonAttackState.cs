@@ -1,10 +1,8 @@
-using UnityEngine;
 
 public class SkeletonAttackState : SkeletonBaseState
 {
     public SkeletonAttackState( SkeletonController currentContext , SkeletonStateFactory states )
-        : base( currentContext , states )
-    { }
+        : base( currentContext , states ) { }
 
     public override void EnterState()
     {
