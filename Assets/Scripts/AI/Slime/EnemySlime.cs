@@ -33,6 +33,10 @@ public class EnemySlime : MonoBehaviour
     [Tooltip("Icono exclamación")]
     private GameObject _exclamation;
     
+    [SerializeField]
+    [Tooltip("Prefab Alma")]
+    private GameObject _soulPrefab;
+    
     #endregion
     
     #region REFERENCES
@@ -71,6 +75,8 @@ public class EnemySlime : MonoBehaviour
 
     private LifeEvents _lifeEvents;
 
+    private int numberOfSouls = 3;
+
     #endregion
     
     #region UNITY METHODS
@@ -78,6 +84,12 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
+        for (int i = 0; i < numberOfSouls; i++)
+        {
+            Vector2 randomOffset = Random.insideUnitCircle * 0.5f; 
+            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+            Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
+        }
     }
 
     private void Awake()
@@ -92,7 +104,7 @@ public class EnemySlime : MonoBehaviour
         
         if ( !_isOnProcedural )
         {
-            boundsCollider = GetComponentInParent<Collider2D>();
+            boundsCollider = GetComponentInParent<Collider2D>(); // si queremos que el slime este dentro de un area hay que añadir un collider al padre
             PrepareComponent();
             Init();
         }
