@@ -6,9 +6,15 @@ public class SkeletonIdleState : SkeletonBaseState
         : base( currentContext , states ) 
     { }
 
+    private float _actionSeconds;
+    private float _maxActionSeconds;
+    private bool _isMoving;
+
     public override void EnterState() 
     {
-
+        _maxActionSeconds = Random.Range( 1 , 3f );
+        _actionSeconds = 0;
+        _isMoving = true;
     }
 
     public override void UpdateState()
@@ -19,7 +25,17 @@ public class SkeletonIdleState : SkeletonBaseState
             return;
         }
 
+        _actionSeconds += Time.deltaTime;
+        if ( _actionSeconds > _maxActionSeconds )
+        {
+            _isMoving = !_isMoving; 
+            _maxActionSeconds = Random.Range( 1 , 2f );
+            _actionSeconds = 0;
+        }
 
-        ctx.Movement();
+        if ( _isMoving )
+        {
+            ctx.Movement();
+        }
     }
 }

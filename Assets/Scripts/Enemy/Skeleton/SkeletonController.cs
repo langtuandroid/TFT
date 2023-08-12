@@ -19,6 +19,7 @@ public class SkeletonController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         var skeletonStateFactory = new SkeletonStateFactory( this );
         CurrentState = skeletonStateFactory.Idle();
+        _moveDir = Vector2.left;
     }
 
     private void Start()  { CurrentState.EnterState(); }

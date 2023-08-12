@@ -24,6 +24,11 @@ public class FallFloorTilemap : MonoBehaviour
             {
                 Vector2 playerPos = _playerRb.position + _playerColOffest;
 
+                //if ( _pitCollider.OverlapCollider() )
+                //{
+
+                //}
+
                 if ( _pitCollider.OverlapPoint( playerPos ) )
                 {
                     float yOffset = 0.5f + 1f / 16 * 4;
