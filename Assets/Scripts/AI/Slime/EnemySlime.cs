@@ -117,7 +117,6 @@ public class EnemySlime : MonoBehaviour
 
         if ( _isOnProcedural )
         {
-            
             Vector3 direction = _player.transform.position - transform.position;
             transform.position += Time.deltaTime * _speed * direction.normalized;
         }

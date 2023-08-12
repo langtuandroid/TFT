@@ -34,8 +34,6 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
         _animator.Play("Slime_Death");
         
         float deathAnimationDuration = _animator.GetCurrentAnimatorStateInfo(0).length;
-        
-        Debug.Log("Animacion: " + deathAnimationDuration);
         StartCoroutine(WaitAndInvokeDOTDead(deathAnimationDuration));
     }
 
