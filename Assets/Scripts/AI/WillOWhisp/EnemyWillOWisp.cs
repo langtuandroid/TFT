@@ -85,14 +85,7 @@ namespace AI
     private NavMeshAgent _navMeshAgent;
     
     private bool _canListen;
-
-    public bool CanListen
-    {
-        get => _canListen;
-
-        set => _canListen = value;
-    }
-
+    
     private bool _canSee;
     
     public bool CanSee
