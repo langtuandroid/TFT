@@ -73,6 +73,14 @@ public class Spawner : MonoBehaviour
         spawningEnabled = false;
     }
 
+    public void SpawnEnemiesWhenDead(int cant)
+    {
+        for (int i = 0; i < cant; i++)
+        {
+            GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

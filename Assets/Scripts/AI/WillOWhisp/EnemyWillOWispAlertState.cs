@@ -12,8 +12,6 @@ namespace AI
                     {
                         agent.ChangeStatusColor("Alert");
                         
-                        Debug.Log("Segundos restantes para volver a patrulla: " + agent.SecondsListening);
-                    
                         if (agent.SecondsListening > 0) //Espero para patrullar 
                         {
                             agent.ChangeNavMeshAgentSpeed(0f);

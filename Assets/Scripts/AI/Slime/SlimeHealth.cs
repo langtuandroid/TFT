@@ -9,11 +9,14 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
     public event Action OnDeath;
     [SerializeField ]private int _maxPhisicalDamage = 2;// Daño con la vara
     [SerializeField] private int _maxDamage = 1;//Daño con magia
+    [SerializeField] private bool _slimeMaster;
+    [SerializeField] private int _cantSlime = 0;
     
     private bool _canReceiveDamage = true;
     private SpriteRenderer spriteRenderer;
     private Animator _animator;
     private Collider2D _collider2D;
+    private Spawner _spawner;
     
     private void OnDestroy()
     {
@@ -46,6 +49,24 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
 
     private void DOTDead()
     {
+        if (_slimeMaster)
+        {
+            SlimeMasterDeath();
+        }
+        else
+        {
+            transform.DOScale(Vector3.zero, 1f)
+                .SetEase(Ease.OutBack)
+                .OnComplete(() => Destroy(gameObject)).Play();   
+        }
+    }
+
+    private void SlimeMasterDeath()
+    {
+        _spawner = GetComponent<Spawner>();
+        
+        _spawner.SpawnEnemiesWhenDead(_cantSlime);
+        
         transform.DOScale(Vector3.zero, 1f)
             .SetEase(Ease.OutBack)
             .OnComplete(() => Destroy(gameObject)).Play();
