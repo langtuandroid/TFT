@@ -33,6 +33,7 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
         {
             Instance = this;
             DontDestroyOnLoad( gameObject );
+            ServiceLocator.AddService<IAudioSpeaker>( this );
             Init();
         }
         else
@@ -51,14 +52,15 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
         _gameMusicDict = _gameMusicSO.GameMusicDictionary();
 
-        //StartMusic();
+        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[MusicName.Main_Menu] );
+        _musicEventInstance.start();
+        _musicEventInstance.setPaused( true );
+        _musicEventInstance.release();
     }
 
     public void StartMusic()
     {
-        _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[MusicName.Main_Menu] );
-        _musicEventInstance.start();
-        _musicEventInstance.release();
+        _musicEventInstance.setPaused( false );
     }
 
 

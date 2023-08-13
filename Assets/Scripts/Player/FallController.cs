@@ -4,10 +4,12 @@ using Player;
 public class FallController
 {
     private Rigidbody2D _rb;
-    private Collider2D _collider;
+    private Collider2D  _collider;
+
     private AnimatorBrain _animatorBrain;
     private IAudioSpeaker _audioSpeaker;
-    private GameStatus _gameStatus;
+    private GameStatus    _gameStatus;
+    private PlayerStatus  _playerStatus;
 
     private Vector2 _resetPos;
     private Vector2 _direction;
@@ -27,11 +29,12 @@ public class FallController
         _detectionRadius = playerPhysicalDataSO.detectionRadius;
     }
 
-    public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker , GameStatus gameStatus )
+    public void Init( Vector2 startPos , IAudioSpeaker audioSpeaker , GameStatus gameStatus , PlayerStatus playerStatus )
     {
         _resetPos     = startPos;
         _audioSpeaker = audioSpeaker;
         _gameStatus   = gameStatus;
+        _playerStatus = playerStatus;
     }
 
     public void SetFalling()
@@ -60,6 +63,7 @@ public class FallController
             _collider.enabled = true;
             _animatorBrain.RecoverFromFall();
             _gameStatus.AskChangeToGamePlayState();
+            _playerStatus.TakeDamage( 1 );
         }
         else
         {

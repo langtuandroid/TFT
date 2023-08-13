@@ -236,6 +236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15da201d3c1904540a4e4c0bb7324a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _colorArraySO: {fileID: 11400000, guid: 0ce362f2a9cb8724282a909009ef8b9a, type: 2}
+  _powerColorDataSO: {fileID: 11400000, guid: b39c7730875e42c41bc21059bd1e4da8, type: 2}
 --- !u!114 &989974163550415152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +265,7 @@ GameObject:
   - component: {fileID: 934885534806572623}
   - component: {fileID: 5797619827965401374}
   - component: {fileID: 6393048233429952891}
+  - component: {fileID: -8445913559464523252}
   - component: {fileID: 1262885401}
   m_Layer: 3
   m_Name: Alex V0.35
@@ -350,9 +353,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _physicalDataSO: {fileID: 11400000, guid: e61427823f55fec4287fcce88b930f15, type: 2}
   _statusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
-  _statusSettingDataSO: {fileID: 11400000, guid: e7faf5625db6abc4686d93480c18313b, type: 2}
   _magicSettingsSO:
   - {fileID: 11400000, guid: c976d583186f3134e8b68bce3d8d1107, type: 2}
+--- !u!114 &-8445913559464523252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879475305411568785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3fc6857474b66c4aa99b0a144338304, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBetweenMagicAttacks: 0.2
+  _timeOfRecovering: 0.8
+  _timeToRechargeMaxPower: 30
+  _maxPowerDuration: 10
+  _timeOfInvencibility: 1.5
+  _timeStunned: 5
 --- !u!114 &1262885401
 MonoBehaviour:
   m_ObjectHideFlags: 0
