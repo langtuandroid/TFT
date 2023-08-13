@@ -5,7 +5,7 @@ public class BoneProjectile : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private Transform   _target;
-    private float _speed = 6;
+    [SerializeField]private float _speed = 6;
     private int   _damage;
     private float _timer;
 
@@ -17,7 +17,9 @@ public class BoneProjectile : MonoBehaviour
     private void Update()
     {
         Vector2 direction = _target.position - transform.position;
-        _rb.MovePosition( _rb.position + Time.deltaTime * _speed * direction.normalized );
+        //_rb.MovePosition( _rb.position + Time.deltaTime * _speed * direction.normalized );
+        _rb.AddForce( _speed * direction.normalized , ForceMode2D.Force );
+        //_rb.velocity = Mathf.Clamp()
 
         _timer = Time.deltaTime;
         if ( _timer < 0 )
