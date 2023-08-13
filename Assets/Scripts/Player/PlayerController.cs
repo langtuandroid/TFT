@@ -10,7 +10,7 @@ namespace Player
     {
         #region Private variables
         // SERVICES
-        private GameInputs _gameInputs;        
+        private GameInputs _gameInputs;
 
         // EVENTS
         private InventoryEvents _inventoryEvents;
@@ -43,8 +43,6 @@ namespace Player
         [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
         [SerializeField]
         private PlayerStatusSaveSO _statusSaveSO;
-        [SerializeField]
-        private PlayerStatusSettingDataSO _statusSettingDataSO;
 
         // Inputs
         // Jump input
@@ -89,6 +87,7 @@ namespace Player
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _secondaryAction = GetComponent<LightAttack>();
             _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
+            _playerStatus = GetComponent<PlayerStatus>();
 
             Collider2D collider = GetComponent<Collider2D>();
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -96,7 +95,6 @@ namespace Player
             Transform pickUpPointTrans = characterVisualTrans.transform.Find(_physicalDataSO.pickUpPointObjName);
 
             // SCRIPTS
-            _playerStatus = new PlayerStatus(_statusSaveSO, _statusSettingDataSO);
             _movement = new PlayerMovement(rb, _physicalDataSO);
             _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
@@ -135,7 +133,7 @@ namespace Player
             IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
             _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, audioSpeaker, gameStatus , _playerStatus );
+            _fallController.Init(transform.position, audioSpeaker, gameStatus, _playerStatus);
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -174,13 +172,14 @@ namespace Player
             _soulEvents = ServiceLocator.GetService<SoulEvents>();
 
             _playerStatus.Init(
+                playerStatusSaveSO: _statusSaveSO,
                 lifeEvents: _lifeEvents,
                 magicEvents: _magicEvents,
                 soulEvents: _soulEvents,
                 gameStatus: gameStatus
                 );
 
-            AddMagicAttacks( audioSpeaker , gameStatus );
+            AddMagicAttacks(audioSpeaker, gameStatus);
         }
 
         private void OnDestroy()
@@ -199,8 +198,6 @@ namespace Player
             _inventoryEvents.OnSecondarySkillChange -= OnChangeSecondarySkill;
 
             _lifeEvents.OnFallDown -= _fallController.StartRecovering;
-
-            _playerStatus.DestroyElements();
 
             DestroyMagics();
         }
@@ -270,7 +267,7 @@ namespace Player
                 magic.Destroy();
         }
 
-        private void AddMagicAttacks( IAudioSpeaker audioSpeaker , GameStatus gameStatus )
+        private void AddMagicAttacks(IAudioSpeaker audioSpeaker, GameStatus gameStatus)
         {
             _magicAttacks = new List<MagicAttack>();
             _magicAttacks.Add(new FireAttack());
@@ -625,35 +622,6 @@ namespace Player
             _movement.Stop();
             _fallController.SetFalling();
         }
-
-        #region Tests
-
-        [ContextMenu("IncrementMaxHealthValue")]
-        private void IncrementMaxHealthValue()
-        {
-            _lifeEvents.AddHeart();
-        }
-
-        [ContextMenu("Prueba de take damage")]
-        private void TakeDamage()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 1;
-            Debug.Log($"Voy a hacer {value} de da�o");
-            _playerStatus.TakeDamage(value);
-        }
-
-        [ContextMenu("Prueba de heal life")]
-        private void HealLife()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 10;
-            Debug.Log($"Me curo {value} de salud");
-            _playerStatus.HealLife(value);
-        }
-
-
-        #endregion
 
     }
 }
