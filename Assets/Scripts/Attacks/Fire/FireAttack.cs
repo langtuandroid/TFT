@@ -21,7 +21,7 @@ namespace Attack
         private List<GameObject> _fireOrbs;
         #endregion
 
-        #region Unity Methods
+        #region Constructor
 
         public FireAttack()
         {
@@ -30,6 +30,10 @@ namespace Attack
             _flameTimer = 0f;
             _fireOrbs = new List<GameObject>();
         }
+
+        #endregion
+
+        #region Abstract class methods
 
         public override void Init(MagicAttackSettingsSO magicSettings, PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker, Transform transform)
         {
@@ -43,6 +47,7 @@ namespace Attack
                 _transform
                 );
 
+            // Inicializamos el prefab de ataque fuerte
             foreach (Transform t in strongPrefab.transform)
                 _fireOrbs.Add(t.gameObject);
 
@@ -52,15 +57,14 @@ namespace Attack
 
         public override void Destroy()
         {
+            // Desuscribimos al destruir
             _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
             _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
         }
 
-
-
         public override void Run()
         {
-
+            // Chequeamos el uso de ataque medio
             if (_isUsingMediumAttack)
             {
                 _flameTimer += Time.deltaTime;
@@ -72,9 +76,6 @@ namespace Attack
             }
         }
 
-        #endregion
-
-        #region Abstract class methods
 
         /// <summary>
         /// Lanza una bola de fuego
