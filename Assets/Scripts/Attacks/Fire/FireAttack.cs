@@ -62,7 +62,7 @@ namespace Attack
             _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
         }
 
-        public override void Run()
+        public override void Run(Vector2 direction)
         {
             // Chequeamos el uso de ataque medio
             if (_isUsingMediumAttack)
@@ -70,8 +70,7 @@ namespace Attack
                 _flameTimer += Time.deltaTime;
                 if (_flameTimer >= _fireSettingsSO.TimeBetweenConsuming)
                 {
-                    _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
-                    _flameTimer = 0f;
+                    MediumAttack(direction);
                 }
             }
         }
@@ -86,10 +85,12 @@ namespace Attack
             // Activamos el uso de la magia débil
             _isUsingWeakAttack = true;
 
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
+
             // Instanciamos bola de fuego
             GameObject fireball = MonoBehaviour.Instantiate(
                 _fireSettingsSO.WeakPrefab, // Prefab de la bola
-                _transform.position, // Posición del player
+                position, // Posición del player (desplazada un poco arriba)
                 Quaternion.identity // Quaternion identity
                 );
 
@@ -118,6 +119,19 @@ namespace Attack
 
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
+
+            GameObject flame = MonoBehaviour.Instantiate(
+                _fireSettingsSO._mediumPrefab, // Prefab
+                position + direction, // Posición del player (un poco desplazada hacia arriba)
+                Quaternion.identity // Quaternion identity
+                );
+
+            flame.GetComponent<Flame>().Init(direction);
+            // Consumimos la magia y reiniciamos el contador de tiempo
+            _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
+            _flameTimer = 0f;
+
 
             //// Creamos el prefab
             //GameObject prefab = null;
@@ -141,7 +155,7 @@ namespace Attack
             //    _flame.transform.position.y + Constants.PLAYER_OFFSET
             //    );
 
-            ////_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
+            //_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
             //_flame.GetComponent<ParticleSystem>().Play();
         }
 

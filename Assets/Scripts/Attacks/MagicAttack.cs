@@ -83,7 +83,7 @@ namespace Attack
         /// <summary>
         /// Para comprobaciones como si fuera Update
         /// </summary>
-        public abstract void Run();      
+        public abstract void Run(Vector2 direction);      
 
         /// <summary>
         /// Para destruir el elemento
