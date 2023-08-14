@@ -210,7 +210,7 @@ namespace Player
             _playerStatus.UpdateInfo();
 
             // Actualizamos magia
-            _magicAttacks[_magicIndex].Run();
+            _magicAttacks[_magicIndex].Run(_lookDirection);
 
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
@@ -300,6 +300,7 @@ namespace Player
 
 
             if (_jump.IsPerformingJump ||
+                _magicAttacks[_magicIndex].IsUsingWeakAttack ||
                 _magicAttacks[_magicIndex].IsUsingMediumAttack ||
                 _fallController.HasFalled
                 )
