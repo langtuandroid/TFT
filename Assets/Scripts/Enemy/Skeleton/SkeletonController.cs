@@ -10,19 +10,19 @@ public class SkeletonController : MonoBehaviour
 
     private float _maxActionSeconds;
     private float _actionSeconds;
-    private float _attackIntervalSeconds = 2;
     private float _attackCounterSeconds;
     private Vector2 _moveDir;
     private Vector2[] _directionArray = { Vector2.up, Vector2.down, Vector2.left, Vector2.right, Vector2.zero };
 
     private Transform _playerTrans;
+    private ObjectPool _bonePool;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _bonePool = GetComponentInChildren<ObjectPool>();
         var skeletonStateFactory = new SkeletonStateFactory( this );
         CurrentState = skeletonStateFactory.Idle();
-        _moveDir = Vector2.left;
     }
 
     private void Start()  { CurrentState.EnterState(); }
@@ -114,14 +114,15 @@ public class SkeletonController : MonoBehaviour
 
     public bool IsReadyToAttack()
     {
-        _attackCounterSeconds += Time.deltaTime;
-        return _attackCounterSeconds > _attackIntervalSeconds;
+        _attackCounterSeconds -= Time.deltaTime;
+        return _attackCounterSeconds < 0;
     }
 
     public void Attack()
     {
-        _attackCounterSeconds = 0;
-        var bone = Instantiate( SkeletonDataSO.BonePrefab , transform.position , Quaternion.identity );
+        _attackCounterSeconds = SkeletonDataSO.AttackIntervalSeconds;
+        var bone = _bonePool.GetPooledObject();
+        bone.transform.position = transform.position;
         bone.GetComponent<BoneProjectile>().Launch( _playerTrans , SkeletonDataSO.Damage );
     }
 }
