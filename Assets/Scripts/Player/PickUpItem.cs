@@ -25,7 +25,7 @@ public class PickUpItem
         _colliderOffset = colliderOffset;
         _interactableLayer = interactableLayerMask;
         _animatorBrain = animatorBrain;
-        _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
     }
 
     public bool CanPickItUp( Vector2 lookDirection )

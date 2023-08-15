@@ -16,9 +16,9 @@ MonoBehaviour:
     saveSlot: 1
     currentHealth: 3
     maxHealth: 6
-    currentMagic: 298
+    currentMagic: 300
     maxMagic: 300
-    currentSouls: 6
+    currentSouls: 25
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0

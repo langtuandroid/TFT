@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FireAttackSettingsSO
   m_EditorClassIdentifier: 
   Costs: 02000000010000000f000000
-  _mediumPrefab: {fileID: 0}
+  _mediumPrefab: {fileID: 5623252827904983655, guid: 3020e3edab72b994589907493d67f3aa, type: 3}
   WeakPrefab: {fileID: 8129722892565354002, guid: f634a6758e7d8fd4c8f163b434fffe31, type: 3}
-  TimeBetweenConsuming: 0.4
+  TimeBetweenConsuming: 0.15
   StrongPrefab: {fileID: 6909914607424357460, guid: 89d2c310e01ba2a498391e5d0199c432, type: 3}
   StrongAttackDamage: 10

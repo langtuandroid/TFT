@@ -21,7 +21,7 @@ namespace Attack
         private List<GameObject> _fireOrbs;
         #endregion
 
-        #region Unity Methods
+        #region Constructor
 
         public FireAttack()
         {
@@ -30,6 +30,10 @@ namespace Attack
             _flameTimer = 0f;
             _fireOrbs = new List<GameObject>();
         }
+
+        #endregion
+
+        #region Abstract class methods
 
         public override void Init(MagicAttackSettingsSO magicSettings, PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker, Transform transform)
         {
@@ -43,6 +47,7 @@ namespace Attack
                 _transform
                 );
 
+            // Inicializamos el prefab de ataque fuerte
             foreach (Transform t in strongPrefab.transform)
                 _fireOrbs.Add(t.gameObject);
 
@@ -52,29 +57,24 @@ namespace Attack
 
         public override void Destroy()
         {
+            // Desuscribimos al destruir
             _magicEvents.OnMaxPowerUsedValue -= RotateOrbs;
             _magicEvents.OnMaxPowerFinalizedValue -= MaxPowerFinalized;
         }
 
-
-
-        public override void Run()
+        public override void Run(Vector2 direction)
         {
-
+            // Chequeamos el uso de ataque medio
             if (_isUsingMediumAttack)
             {
                 _flameTimer += Time.deltaTime;
                 if (_flameTimer >= _fireSettingsSO.TimeBetweenConsuming)
                 {
-                    _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
-                    _flameTimer = 0f;
+                    MediumAttack(direction);
                 }
             }
         }
 
-        #endregion
-
-        #region Abstract class methods
 
         /// <summary>
         /// Lanza una bola de fuego
@@ -85,10 +85,12 @@ namespace Attack
             // Activamos el uso de la magia débil
             _isUsingWeakAttack = true;
 
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
+
             // Instanciamos bola de fuego
             GameObject fireball = MonoBehaviour.Instantiate(
                 _fireSettingsSO.WeakPrefab, // Prefab de la bola
-                _transform.position, // Posición del player
+                position, // Posición del player (desplazada un poco arriba)
                 Quaternion.identity // Quaternion identity
                 );
 
@@ -113,35 +115,20 @@ namespace Attack
         /// </summary>
         public override void MediumAttack(Vector2 direction)
         {
-            Debug.Log("Entro en ataque medio");
-
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
 
-            //// Creamos el prefab
-            //GameObject prefab = null;
+            GameObject flame = MonoBehaviour.Instantiate(
+                _fireSettingsSO._mediumPrefab, // Prefab
+                position + direction, // Posición del player (un poco desplazada hacia arriba)
+                Quaternion.identity // Quaternion identity
+                );
 
-            //if (direction.Equals(Vector2.up))
-            //    prefab = _flamesUp;
-            //else if (direction.Equals(Vector2.down))
-            //    prefab = _flamesDown;
-            //else if (direction.Equals(Vector2.left))
-            //    prefab = _flamesLeft;
-            //else if (direction.Equals(Vector2.right))
-            //    prefab = _flamesRight;
-
-            //_flame = Instantiate(
-            //    prefab, // Prefab de la llama
-            //    transform
-            //    );
-
-            //_flame.transform.position = new Vector2(
-            //    _flame.transform.position.x,
-            //    _flame.transform.position.y + Constants.PLAYER_OFFSET
-            //    );
-
-            ////_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
-            //_flame.GetComponent<ParticleSystem>().Play();
+            flame.GetComponent<Flame>().Init(direction);
+            // Consumimos la magia y reiniciamos el contador de tiempo
+            _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
+            _flameTimer = 0f;
         }
 
         /// <summary>
@@ -149,14 +136,6 @@ namespace Attack
         /// </summary>
         public override void StopMediumAttack()
         {
-            //// Lo quitamos
-            //_flame.transform.parent = null;
-            //// Y lo paramos
-            //_flame.GetComponent<ParticleSystem>().Stop();
-
-            //_flamesToDestroy.Add(_flame);
-            //Invoke(nameof(DisableAndDestroy), 4f);
-
             // Desactivamos el uso de magia media
             _isUsingMediumAttack = false;
 
@@ -180,20 +159,6 @@ namespace Attack
         #endregion
 
         #region Private Methods
-
-        #region Medium Attack
-
-        ///// <summary>
-        ///// Desactiva y destruye el objeto de lanzallamas
-        ///// </summary>
-        //private void DisableAndDestroy()
-        //{
-        //    GameObject obj = _flamesToDestroy[0];
-        //    _flamesToDestroy.Remove(obj);
-        //    Destroy(obj);
-        //}
-
-        #endregion
 
         #region Strong Attack
 

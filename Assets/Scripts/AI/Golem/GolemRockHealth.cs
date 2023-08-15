@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
-public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchanble
+public class GolemRockHealth : MonoBehaviour, IBurnable, IPunchable
 {
     [SerializeField] private Transform ThrowPosition;
     [SerializeField] private Transform _golemPosition;

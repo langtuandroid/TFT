@@ -17,7 +17,7 @@ namespace Attack
         {
         }
 
-        public override void Run()
+        public override void Run(Vector2 direction)
         {
         }
 
