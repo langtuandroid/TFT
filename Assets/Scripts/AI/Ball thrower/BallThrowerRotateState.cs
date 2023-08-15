@@ -21,12 +21,16 @@ public class BallThrowerRotateState : FSMBallThrower
 
     private void RotateAgent(Vector2 direction)
     {
-        int n = Random.Range(0, 3);
+        //int n = Random.Range(0, 3);
 
-        bool addOne = false;
-        for (int i = 0; i <= n || addOne; i++)
-            addOne = _directions[i] == direction;
+        //bool addOne = false;
+        //for (int i = 0; i <= n || addOne; i++)
+        //    addOne = _directions[i] == direction;
 
-        _agent.ChangeDirection(_directions[addOne ? n : n + 1]);
+        //_agent.ChangeDirection(_directions[addOne ? n : n + 1]);
+
+        int n = Random.Range(0, 4);
+
+        _agent.ChangeDirection(_directions[n]);
     }
 }

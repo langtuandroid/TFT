@@ -71,6 +71,9 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
 
     #region Private variables
 
+    // SERVICES
+    private GameStatus _gameStatus;
+
     // COMPONENTS
     private Rigidbody2D _rb;
     private SpriteRenderer _spriteRend;
@@ -85,7 +88,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
 
     #region Unity Methods
 
-    private void Awake()
+    private void Start()
     {
         // Inicializamos
         Init();
@@ -93,6 +96,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
 
     private void Update()
     {
+        // TODO: Preguntar el estado
         if (_die)
             return;
         // Ejecutamos el estado
@@ -139,6 +143,9 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
 
     private void Init()
     {
+        // SERVICES
+        _gameStatus = ServiceLocator.GetService<GameStatus>();
+
         // COMPONENTS
         _rb = GetComponent<Rigidbody2D>();
         _spriteRend = GetComponent<SpriteRenderer>();
