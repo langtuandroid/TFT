@@ -19,7 +19,7 @@ namespace AI
                       }
                       else //Si no hay antorchas encendidas y no le veo ni le escucho
                       {
-                          agent.ChangeState(new EnemyWillOWispAlertState());
+                          agent.ChangeState(new EnemyWillOWispPatrolState());
                       }
                 }
             }

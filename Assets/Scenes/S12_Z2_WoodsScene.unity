@@ -22005,6 +22005,10 @@ PrefabInstance:
       value: WiilO Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
+      propertyPath: _sightRadio
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897029927344924444, guid: 86c89f8091d1c465a9045e1d77bf6708, type: 3}
       propertyPath: _playerInitialPosition
       value: 
       objectReference: {fileID: 1156964718}
@@ -41195,7 +41199,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
+    width: 0.99974805
     height: 1
   near clip plane: 0.3
   far clip plane: 1000

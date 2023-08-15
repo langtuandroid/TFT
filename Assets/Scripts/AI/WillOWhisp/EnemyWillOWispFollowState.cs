@@ -10,7 +10,6 @@ namespace AI
             {
                     if (agent.ObstacleDetection()) // Si hay algo entre fuego fatuo y player
                     {
-                        agent.ResetListenTimer();
                         agent.ChangeState(new EnemyWillOWispAlertState());
                     }
                     else
@@ -24,10 +23,9 @@ namespace AI
                     }
               
             }
-            else if(!agent.SeePlayer())
+            else
             {
-                    agent.ResetListenTimer();
-                    agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
+                agent.ChangeState(new EnemyWillOWispAlertState()); //Vuelvo al estado de alerta
             }
         }
     }  

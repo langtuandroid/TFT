@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utils;
+using DG.Tweening;
 
 public class Soul : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class Soul : MonoBehaviour
     [Tooltip("Distancia para empezar a detectar al jugador")]
     private float _distanceToDetect = 4f;
     [SerializeField]
-    [Tooltip("Velocidad de aproximación hacia el jugador")]
+    [Tooltip("Velocidad de aproximaciï¿½n hacia el jugador")]
     private float _speed = 40f;
 
     [SerializeField]
@@ -33,7 +34,7 @@ public class Soul : MonoBehaviour
     private Rigidbody2D _rb; // RigidBody2D del GameObject
 
     // VARIABLES
-    private Vector3 _playerPosition; // Dirección hacia la que se va a dirigir
+    private Vector3 _playerPosition; // Direcciï¿½n hacia la que se va a dirigir
 
     #endregion
 
@@ -99,9 +100,9 @@ public class Soul : MonoBehaviour
 
     private void MoveToPlayer(Vector2 direction)
     {
-        // Cogemos el vector dirección como magnitud
+        // Cogemos el vector direcciï¿½n como magnitud
         Vector2 dir = direction.normalized;
-        // Y lo movemos (a mayor distancia, más lentitud de acercamiento)
+        // Y lo movemos (a mayor distancia, mï¿½s lentitud de acercamiento)
         _rb.MovePosition(_rb.position +
             Time.deltaTime * _speed / direction.magnitude * dir);
     }
