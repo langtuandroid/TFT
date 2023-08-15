@@ -33,6 +33,10 @@ public class EnemySlime : MonoBehaviour
     [Tooltip("Icono exclamación")]
     private GameObject _exclamation;
     
+    [SerializeField]
+    [Tooltip("Prefab Alma")]
+    private GameObject _soulPrefab;
+    
     #endregion
     
     #region REFERENCES
@@ -71,6 +75,12 @@ public class EnemySlime : MonoBehaviour
 
     private LifeEvents _lifeEvents;
 
+    private int numberOfSouls = 3;
+
+    private SlimeHealth _slimeHealth;
+
+    private bool _isAlive = true;
+
     #endregion
     
     #region UNITY METHODS
@@ -78,21 +88,24 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
+        _slimeHealth.OnDeath -= CheckIfAlive;
     }
 
     private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _slimeHealth = GetComponent<SlimeHealth>();
     }
 
     void Start()
     {
         _lifeEvents = ServiceLocator.GetService<LifeEvents>();
         _lifeEvents.OnDeathValue += OnStopFollow;
+        _slimeHealth.OnDeath += CheckIfAlive;
         
         if ( !_isOnProcedural )
         {
-            boundsCollider = GetComponentInParent<Collider2D>();
+            boundsCollider = GetComponentInParent<Collider2D>(); // si queremos que el slime este dentro de un area hay que añadir un collider al padre
             PrepareComponent();
             Init();
         }
@@ -104,7 +117,6 @@ public class EnemySlime : MonoBehaviour
 
         if ( _isOnProcedural )
         {
-            
             Vector3 direction = _player.transform.position - transform.position;
             transform.position += Time.deltaTime * _speed * direction.normalized;
         }
@@ -112,6 +124,16 @@ public class EnemySlime : MonoBehaviour
             _actualState.Execute(this);
         
         _spriteRenderer.flipX = _navMeshAgent.velocity.x < 0f;
+    }
+
+    private void CheckIfAlive()
+    {
+        for (int i = 0; i < numberOfSouls; i++)
+        {
+            Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
+            Vector3 spawnPosition = transform.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+            Instantiate(_soulPrefab, spawnPosition, Quaternion.identity);
+        }
     }
     
     private void PrepareComponent()

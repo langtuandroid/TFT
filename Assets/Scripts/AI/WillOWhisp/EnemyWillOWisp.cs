@@ -85,14 +85,7 @@ namespace AI
     private NavMeshAgent _navMeshAgent;
     
     private bool _canListen;
-
-    public bool CanListen
-    {
-        get => _canListen;
-
-        set => _canListen = value;
-    }
-
+    
     private bool _canSee;
     
     public bool CanSee
@@ -386,9 +379,13 @@ namespace AI
             {
                 if (_torchList[i].GetComponent<Torch>().Activated)
                 {
-                    //Guardo las posiciones de las antorchas encendidas
-                    _torchOnListTransform.Add(_torchList[i].transform);
-                    result = true;
+                    if (IsAllTorchOn()) Destroy(gameObject);
+                    else
+                    {
+                        //Guardo las posiciones de las antorchas encendidas
+                        _torchOnListTransform.Add(_torchList[i].transform);
+                        result = true;   
+                    }
                 }
             }
             _torchOnListTransform = _torchOnListTransform.OrderBy(t => Vector3.Distance(transform.position, t.position)).ToList();
@@ -449,6 +446,25 @@ namespace AI
         player.transform.position = PlayerInitialPosition.position;
 
         Init();
+    }
+
+    //Compruebo si todas las antorchas estan encendidas para matar a willo
+    private bool IsAllTorchOn()
+    {
+        int torchActivatedCounter = 0;
+        
+        if (_torchList != null)
+        {
+            for (int i = 0; i < _torchList.Count; i++)
+            {
+                if (_torchList[i].GetComponent<Torch>().Activated)
+                {
+                    torchActivatedCounter++;
+                }
+            }
+            
+        }
+        return _torchList.Count == torchActivatedCounter ? true : false;
     }
 
     private void OnDrawGizmos()

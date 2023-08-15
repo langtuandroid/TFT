@@ -6,19 +6,19 @@ namespace AI
 {
     public override void Execute(EnemyWillOWisp agent)
     {
-        //Escucho al jugador
-        if (agent.ListenPlayer()) 
+        //Veo al jugador
+        if (agent.SeePlayer()) 
         {
             agent.ChangeState(new EnemyWillOWispAlertState());
 
         }
         //Si detecto alguna antorcha encendida y no veo al jugador
-        else if (!agent.ListenPlayer() && agent.CheckTorchOn())
+        else if (!agent.SeePlayer() && agent.CheckTorchOn())
         {
             agent.ChangeState(new EnemyWillOWispActionState());
         }
         //***Movimiento de patrulla***
-        else if (!agent.ListenPlayer() && !agent.CheckTorchOn())
+        else if (!agent.SeePlayer() && !agent.CheckTorchOn())
         {
             agent.ChangeStatusColor("Patrol");
             

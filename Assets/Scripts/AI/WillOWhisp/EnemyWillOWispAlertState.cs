@@ -5,28 +5,33 @@ namespace AI
     public class EnemyWillOWispAlertState : FsmEnemyWillOWisp
     {
         public override void Execute(EnemyWillOWisp agent)
-        { 
-            if (agent.ListenPlayer()) // Si escucho al jugador
-            {
-                if (agent.SeePlayer())
+        {
+            if (agent.SeePlayer())// Veo al jugador
                 {
-                    if (agent.ObstacleDetection())
+                    if (agent.ObstacleDetection()) // Si persiguiendole me encuentro un obstaculo me paro y vuelvo a patrullar
                     {
-                        agent.ChangeNavMeshAgentSpeed(0f);
+                        agent.ChangeStatusColor("Alert");
+                        
+                        if (agent.SecondsListening > 0) //Espero para patrullar 
+                        {
+                            agent.ChangeNavMeshAgentSpeed(0f);
+                            agent.SecondsListening -= Time.deltaTime;
+                        }
+                        else
+                        {
+                            agent.ResetListenTimer();
+                            agent.ChangeNavMeshAgentSpeed(2.5f);
+                            agent.ChangeState(new EnemyWillOWispPatrolState()); 
+                        }
                     }
-                    else
+                    else // Le persigo
                     {
                         agent.ChangeNavMeshAgentSpeed(2.5f);
                         agent.ChangeState(new EnemyWillOWispFollowState());
                     }
 
                 }
-                else if (agent.CheckTorchOn()) //Voy a por las antorchas si hay alguna encendida
-                {
-                    agent.ChangeNavMeshAgentSpeed(3.5f);
-                    agent.ChangeState(new EnemyWillOWispActionState());
-                }
-                else // Espero y entonces voy a patrulla
+                else
                 {
                     agent.ChangeStatusColor("Alert");
                     
@@ -37,19 +42,11 @@ namespace AI
                     }
                     else
                     {
-                        agent.CanListen = false;
                         agent.ResetListenTimer();
-                        agent.ChangeNavMeshAgentSpeed(2f);
-                        //Vuelvo a patrullar tras esperar 
+                        agent.ChangeNavMeshAgentSpeed(2.5f);
+                        agent.ChangeState(new EnemyWillOWispPatrolState()); 
                     }
                 }
             }
-            else
-            {
-                agent.ChangeNavMeshAgentSpeed(2.5f);
-                agent.ChangeState(new EnemyWillOWispPatrolState()); 
-            }
-               
-        }
     }
 }
