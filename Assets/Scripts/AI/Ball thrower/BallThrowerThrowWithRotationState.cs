@@ -45,11 +45,15 @@ public class BallThrowerThrowWithRotationState : FSMBallThrower
 
         fireball.GetComponent<Fireball>().SetDirection(direction);
 
-        // And set the direction
-        int n = Array.IndexOf(_directions, direction);
-        _agent.ChangeDirection(_directions[(n + 1) % _directions.Length]);
-
         // Finally, we increment the number of times it has thrown a ball
         _throwings++;
+
+        // And set the direction
+        if (_throwings < 4)
+        {
+            int n = Array.IndexOf(_directions, direction);
+            _agent.ChangeDirection(_directions[(n + 1) % _directions.Length]);
+        }
+
     }
 }
