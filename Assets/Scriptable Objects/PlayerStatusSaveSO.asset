@@ -18,7 +18,7 @@ MonoBehaviour:
     maxHealth: 6
     currentMagic: 300
     maxMagic: 300
-    currentSouls: 13
+    currentSouls: 25
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0

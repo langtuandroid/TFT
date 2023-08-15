@@ -115,8 +115,6 @@ namespace Attack
         /// </summary>
         public override void MediumAttack(Vector2 direction)
         {
-            Debug.Log("Entro en ataque medio");
-
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
             Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
@@ -131,32 +129,6 @@ namespace Attack
             // Consumimos la magia y reiniciamos el contador de tiempo
             _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[1]);
             _flameTimer = 0f;
-
-
-            //// Creamos el prefab
-            //GameObject prefab = null;
-
-            //if (direction.Equals(Vector2.up))
-            //    prefab = _flamesUp;
-            //else if (direction.Equals(Vector2.down))
-            //    prefab = _flamesDown;
-            //else if (direction.Equals(Vector2.left))
-            //    prefab = _flamesLeft;
-            //else if (direction.Equals(Vector2.right))
-            //    prefab = _flamesRight;
-
-            //_flame = Instantiate(
-            //    prefab, // Prefab de la llama
-            //    transform
-            //    );
-
-            //_flame.transform.position = new Vector2(
-            //    _flame.transform.position.x,
-            //    _flame.transform.position.y + Constants.PLAYER_OFFSET
-            //    );
-
-            //_audioSpeaker.PlaySound( AudioID.G_FIRE , AudioID.S_FLAMETHROWER );
-            //_flame.GetComponent<ParticleSystem>().Play();
         }
 
         /// <summary>
@@ -164,14 +136,6 @@ namespace Attack
         /// </summary>
         public override void StopMediumAttack()
         {
-            //// Lo quitamos
-            //_flame.transform.parent = null;
-            //// Y lo paramos
-            //_flame.GetComponent<ParticleSystem>().Stop();
-
-            //_flamesToDestroy.Add(_flame);
-            //Invoke(nameof(DisableAndDestroy), 4f);
-
             // Desactivamos el uso de magia media
             _isUsingMediumAttack = false;
 
@@ -195,20 +159,6 @@ namespace Attack
         #endregion
 
         #region Private Methods
-
-        #region Medium Attack
-
-        ///// <summary>
-        ///// Desactiva y destruye el objeto de lanzallamas
-        ///// </summary>
-        //private void DisableAndDestroy()
-        //{
-        //    GameObject obj = _flamesToDestroy[0];
-        //    _flamesToDestroy.Remove(obj);
-        //    Destroy(obj);
-        //}
-
-        #endregion
 
         #region Strong Attack
 
