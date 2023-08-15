@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using DG.Tweening;
 
-public class SlimeHealth : MonoBehaviour, IBurnable, IPunchanble
+public class SlimeHealth : MonoBehaviour, IBurnable, IPunchable
 {
     // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
     public event Action OnDeath;

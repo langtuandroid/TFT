@@ -5,7 +5,7 @@ using UnityEngine.Assertions.Must;
 using Utils;
 
 
-public class GolemHealth : MonoBehaviour, IBurnable, IPunchanble
+public class GolemHealth : MonoBehaviour, IBurnable, IPunchable
 {
     public event Action OnDeath;
     public event Action OnDamage; 
