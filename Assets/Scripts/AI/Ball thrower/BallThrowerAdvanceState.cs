@@ -38,8 +38,8 @@ public class BallThrowerAdvanceState : FSMBallThrower
             Physics2D.Raycast(
                 pos, // Start position
                 _agent.transform.TransformDirection(direction), // Direction
-                .1f // Distance
-                       //~LayerMask.GetMask("Interactable") // Layer to ignore
+                .1f, // Distance
+                ~LayerMask.GetMask("PLayer") // Layer to ignore
                 )
             )
         {
