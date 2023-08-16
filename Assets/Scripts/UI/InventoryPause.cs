@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TemporalPause2 : MonoBehaviour
+public class InventoryPause : MonoBehaviour
 {
     [SerializeField]
     private List<Button> _buttons;
     // 0 -> Continuar
     // 1 -> Salir
-
 
     private Button _currentSelected;
 
@@ -26,7 +25,6 @@ public class TemporalPause2 : MonoBehaviour
 
     private void Update()
     {
-
         if (EventSystem.current.currentSelectedGameObject == null)
             _currentSelected.Select();
     }

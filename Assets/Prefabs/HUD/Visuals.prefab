@@ -823,7 +823,6 @@ GameObject:
   - component: {fileID: 8864211369235329872}
   - component: {fileID: 8864211369235329873}
   - component: {fileID: 8864211369235329874}
-  - component: {fileID: 1351339014}
   - component: {fileID: 1869832734}
   - component: {fileID: 2122995242}
   m_Layer: 5
@@ -922,19 +921,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerStatusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _magicTextInfo: {fileID: 9139969454683652669}
---- !u!114 &1351339014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8864211369235329876}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89fce595ce6c6344c86f886d09904aee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pausePanel: {fileID: 1004829768}
 --- !u!114 &1869832734
 MonoBehaviour:
   m_ObjectHideFlags: 0
