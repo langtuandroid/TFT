@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class BoneProjectile : MonoBehaviour
 {
-    [SerializeField] private float _speed = 6;
+    [SerializeField] private float _speed = 4;
 
     private Rigidbody2D _rb;
     private int   _damage;
     private float _deathTimer;
-    private Vector2 _initialDirection;
+    private float _gravityFactor = 0.01f;
     private Vector2 _direction;
     private Transform _target;
 
@@ -28,10 +28,14 @@ public class BoneProjectile : MonoBehaviour
         var distance = Vector2.Distance( transform.position, _target.position );
         if ( distance < 3 )
         {
-            Debug.Log( distance );
             Vector2 centripetideDir = _target.position - transform.position;
+            var res = Vector3.Cross( _direction , centripetideDir );
+            var normalToDirection = Vector2.Perpendicular( _direction );
 
-            _direction = 5 * _initialDirection + centripetideDir;
+            _direction += res.z > 0 ?
+                normalToDirection * _gravityFactor : // turn left
+                -normalToDirection * _gravityFactor; // turn right
+
             _direction.Normalize();
         }
 
@@ -40,9 +44,8 @@ public class BoneProjectile : MonoBehaviour
 
     public void Launch( Transform target , int damage )
     {
-        _initialDirection = target.position - transform.position;
-        _initialDirection.Normalize();
-        _direction = _initialDirection;
+        _direction = target.position - transform.position;
+        _direction.Normalize();
         _target = target;
         _damage = damage;
         _deathTimer = 4;
