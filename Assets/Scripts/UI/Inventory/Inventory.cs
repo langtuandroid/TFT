@@ -59,6 +59,7 @@ public class Inventory : MonoBehaviour
     // SERVICES
     private InventoryEvents _inventoryEvent;
     private GameInputs _gameInputs;
+    private GameStatus _gameStatus;
 
     // ELEMENTS
     private Button _currentSelected;
@@ -98,6 +99,10 @@ public class Inventory : MonoBehaviour
 
         _navigateAction = _gameInputs.NavigateAction;
         _navigateAction.performed += GameInputs_OnNavigate;
+
+        // GameStatus
+        _gameStatus = ServiceLocator.GetService<GameStatus>();
+
 
 
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
@@ -653,6 +658,7 @@ public class Inventory : MonoBehaviour
     {
         // TODO: Reproducir sonido
         gameObject.SetActive(false);
+        _gameStatus.AskChangeToGamePlayState();
     }
 
     private void GameInputs_OnNextMenu()

@@ -78,7 +78,7 @@ public class Flame : MonoBehaviour
     private void MoveAndGrow()
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.y);
-        Tween t = transform.DOMove(pos + (_direction * _velocity * _lifeTime), _lifeTime);
+        Tween t = transform.DOMove(pos + (_direction * _velocity * _lifeTime * .8125f), _lifeTime);
         Tween t2 = transform.DOScale(2, _lifeTime);
         t.Play();
         t2.Play().OnComplete(() => Destroy(gameObject));

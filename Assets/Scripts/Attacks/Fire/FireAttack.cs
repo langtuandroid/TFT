@@ -35,6 +35,8 @@ namespace Attack
 
         #region Abstract class methods
 
+        #region Initialization & Update data
+
         public override void Init(MagicAttackSettingsSO magicSettings, PlayerStatus playerStatus, MagicEvents magicEvents, GameStatus gameStatus, IAudioSpeaker audioSpeaker, Transform transform)
         {
             base.Init(magicSettings, playerStatus, magicEvents, gameStatus, audioSpeaker, transform);
@@ -75,6 +77,10 @@ namespace Attack
             }
         }
 
+        #endregion
+
+
+        #region Attacks
 
         /// <summary>
         /// Lanza una bola de fuego
@@ -138,6 +144,7 @@ namespace Attack
         {
             // Desactivamos el uso de magia media
             _isUsingMediumAttack = false;
+            _flameTimer = 0f;
 
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
@@ -155,6 +162,8 @@ namespace Attack
             _gameStatus.AskChangeToInactiveState();
             _audioSpeaker.PlaySound(AudioID.G_FIRE, AudioID.S_FIRE_DEFINITIVE);
         }
+
+        #endregion
 
         #endregion
 
