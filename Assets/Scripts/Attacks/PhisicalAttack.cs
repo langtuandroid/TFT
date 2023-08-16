@@ -35,6 +35,6 @@ public class PhisicalAttack : MonoBehaviour
             transform.position, 1f, LayerMask.GetMask(Constants.LAYER_INTERACTABLE));
         
         foreach (Collider2D collision in collisions)
-            collision.GetComponent<IPunchanble>()?.Punch(physicalDamage);
+            collision.GetComponent<IPunchable>()?.Punch(physicalDamage);
     }
 }

@@ -11,8 +11,6 @@ namespace Player
         #region Private variables
         // SERVICES
         private GameInputs _gameInputs;
-        private GameStatus _gameStatus;
-        private IAudioSpeaker _audioSpeaker;
 
         // EVENTS
         private InventoryEvents _inventoryEvents;
@@ -45,8 +43,6 @@ namespace Player
         [SerializeField] private PlayerPhysicalDataSO _physicalDataSO;
         [SerializeField]
         private PlayerStatusSaveSO _statusSaveSO;
-        [SerializeField]
-        private PlayerStatusSettingDataSO _statusSettingDataSO;
 
         // Inputs
         // Jump input
@@ -91,6 +87,7 @@ namespace Player
             _animatorBrain = GetComponentInChildren<AnimatorBrain>();
             _secondaryAction = GetComponent<LightAttack>();
             _phisicalAttack = GetComponentInChildren<PhisicalAttack>();
+            _playerStatus = GetComponent<PlayerStatus>();
 
             Collider2D collider = GetComponent<Collider2D>();
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
@@ -98,7 +95,6 @@ namespace Player
             Transform pickUpPointTrans = characterVisualTrans.transform.Find(_physicalDataSO.pickUpPointObjName);
 
             // SCRIPTS
-            _playerStatus = new PlayerStatus(_statusSaveSO, _statusSettingDataSO);
             _movement = new PlayerMovement(rb, _physicalDataSO);
             _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
@@ -131,13 +127,13 @@ namespace Player
             _isInitialized = true;
 #endif
             // SERVICE -> GAMESTATUS
-            _gameStatus = ServiceLocator.GetService<GameStatus>();
+            GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
 
             // SERVICE -> AUDIOSPEAKER
-            _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, _audioSpeaker, _gameStatus , _playerStatus );
+            _fallController.Init(transform.position, audioSpeaker, gameStatus, _playerStatus);
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -176,13 +172,14 @@ namespace Player
             _soulEvents = ServiceLocator.GetService<SoulEvents>();
 
             _playerStatus.Init(
+                playerStatusSaveSO: _statusSaveSO,
                 lifeEvents: _lifeEvents,
                 magicEvents: _magicEvents,
                 soulEvents: _soulEvents,
-                gameStatus: _gameStatus
+                gameStatus: gameStatus
                 );
 
-            AddMagicAttacks();
+            AddMagicAttacks(audioSpeaker, gameStatus);
         }
 
         private void OnDestroy()
@@ -202,8 +199,6 @@ namespace Player
 
             _lifeEvents.OnFallDown -= _fallController.StartRecovering;
 
-            _playerStatus.DestroyElements();
-
             DestroyMagics();
         }
 
@@ -215,7 +210,7 @@ namespace Player
             _playerStatus.UpdateInfo();
 
             // Actualizamos magia
-            _magicAttacks[_magicIndex].Run();
+            _magicAttacks[_magicIndex].Run(_lookDirection);
 
             // Si el jugador ha perdido toda su salud,
             // si está aturdido
@@ -272,7 +267,7 @@ namespace Player
                 magic.Destroy();
         }
 
-        private void AddMagicAttacks()
+        private void AddMagicAttacks(IAudioSpeaker audioSpeaker, GameStatus gameStatus)
         {
             _magicAttacks = new List<MagicAttack>();
             _magicAttacks.Add(new FireAttack());
@@ -285,8 +280,8 @@ namespace Player
                     magicSettings: _magicSettingsSO[i],
                     playerStatus: _playerStatus,
                     magicEvents: _magicEvents,
-                    gameStatus: _gameStatus,
-                    audioSpeaker: _audioSpeaker,
+                    gameStatus: gameStatus,
+                    audioSpeaker: audioSpeaker,
                     transform: transform
                     );
             }
@@ -305,6 +300,7 @@ namespace Player
 
 
             if (_jump.IsPerformingJump ||
+                _magicAttacks[_magicIndex].IsUsingWeakAttack ||
                 _magicAttacks[_magicIndex].IsUsingMediumAttack ||
                 _fallController.HasFalled
                 )
@@ -627,35 +623,6 @@ namespace Player
             _movement.Stop();
             _fallController.SetFalling();
         }
-
-        #region Tests
-
-        [ContextMenu("IncrementMaxHealthValue")]
-        private void IncrementMaxHealthValue()
-        {
-            _lifeEvents.AddHeart();
-        }
-
-        [ContextMenu("Prueba de take damage")]
-        private void TakeDamage()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 1;
-            Debug.Log($"Voy a hacer {value} de da�o");
-            _playerStatus.TakeDamage(value);
-        }
-
-        [ContextMenu("Prueba de heal life")]
-        private void HealLife()
-        {
-            //int value = Random.Range(1, 5);
-            int value = 10;
-            Debug.Log($"Me curo {value} de salud");
-            _playerStatus.HealLife(value);
-        }
-
-
-        #endregion
 
     }
 }
