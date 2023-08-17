@@ -6228,6 +6228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!4 &167516294 stripped
@@ -6289,6 +6293,10 @@ PrefabInstance:
     - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_Name
       value: Slime Enemy (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
@@ -39494,8 +39502,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.99942666
+    width: 0.9991968
+    height: 0.99964285
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -39655,6 +39663,10 @@ PrefabInstance:
     - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_Name
       value: Slime Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
@@ -40490,6 +40502,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!4 &900560209 stripped
@@ -40701,51 +40717,15 @@ Tilemap:
   m_Enabled: 1
   m_Tiles: {}
   m_AnimatedTiles: {}
-  m_TileAssetArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  m_TileSpriteArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  m_TileMatrixArray:
-  - m_RefCount: 0
-    m_Data:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-  m_TileColorArray:
-  - m_RefCount: 0
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
+  m_TileAssetArray: []
+  m_TileSpriteArray: []
+  m_TileMatrixArray: []
+  m_TileColorArray: []
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -80, y: 20, z: 0}
-  m_Size: {x: 36, y: 24, z: 1}
+  m_Origin: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0, y: 0, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -41066,7 +41046,7 @@ PrefabInstance:
     - target: {fileID: 2414445487527078199, guid: c7c723b0ac35b4846801ac5f89656513, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: fa85a63c6e98a4c1b81647167802189d, type: 2}
+      objectReference: {fileID: 23800000, guid: ec720aed2061948f3995bbf3e5a6e10b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7c723b0ac35b4846801ac5f89656513, type: 3}
 --- !u!1 &1233474739
@@ -41352,6 +41332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!4 &1288758636 stripped
@@ -41414,6 +41398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!4 &1297041489 stripped
@@ -41475,6 +41463,10 @@ PrefabInstance:
     - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_Name
       value: Slime Enemy (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
@@ -41970,6 +41962,10 @@ PrefabInstance:
     - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_Name
       value: Slime Enemy (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
@@ -42492,7 +42488,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716424746, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -45.000137
+      value: -45.00013
       objectReference: {fileID: 0}
     - target: {fileID: 6256845347548691390, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -42762,11 +42758,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6274960950981788595, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -28.3
+      value: -22.77
       objectReference: {fileID: 0}
     - target: {fileID: 6274960950981788595, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.4
+      value: -14.08
       objectReference: {fileID: 0}
     - target: {fileID: 6274960950981788595, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_LocalPosition.z
@@ -42803,6 +42799,10 @@ PrefabInstance:
     - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_Name
       value: Slime Master
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6274960952077037804, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
       propertyPath: m_LocalRotation.w
@@ -43223,6 +43223,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime Enemy (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
 --- !u!4 &1828856405 stripped
@@ -43605,7 +43609,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15.999985, y: -16.000076}
+  m_AnchoredPosition: {x: -16, y: -16.000076}
   m_SizeDelta: {x: 359.99997, y: 202.49997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1938495870

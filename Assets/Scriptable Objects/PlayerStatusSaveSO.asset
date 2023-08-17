@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatusSave:
     saveSlot: 1
-    currentHealth: 8
+    currentHealth: 2
     maxHealth: 12
-    currentMagic: 200
+    currentMagic: 198
     maxMagic: 200
-    currentSouls: 48
+    currentSouls: 99
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0
@@ -35,7 +35,7 @@ MonoBehaviour:
     isWaterWeakUnlocked: 0
     isWaterMediumUnlocked: 0
     isWaterStrongUnlocked: 0
-    isLightUnlocked: 0
+    isLightUnlocked: 1
     isAirUnlocked: 0
     isHeavyMovementUnlocked: 0
     lifeBerryUnlocked: 0
