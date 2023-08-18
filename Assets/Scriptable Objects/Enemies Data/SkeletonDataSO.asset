@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372e3e246a21c304387b0cf0f975e920, type: 3}
   m_Name: SkeletonDataSO
   m_EditorClassIdentifier: 
-  <Speed>k__BackingField: 4
+  <Speed>k__BackingField: 2
   <DetectionRadius>k__BackingField: 5
   <AttackIntervalSeconds>k__BackingField: 2
   <Damage>k__BackingField: 1

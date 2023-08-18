@@ -6,30 +6,31 @@ public class ObjectPool : MonoBehaviour
     [SerializeField] private GameObject _objPrefab;
     [SerializeField] private int _poolCount;
 
-    private List<GameObject> _pool = new List<GameObject>();
+    private List<GameObject> _pool;
 
     private void Awake()
     {
+        _pool = new();
         for ( int i = 0; i < _poolCount; i++ )
-        {
-            var go = Instantiate( _objPrefab , transform.position, Quaternion.identity );
-            go.SetActive( false );
-            _pool.Add( _objPrefab );
-        }
+            CreateObject();
+    }
+
+    private void CreateObject()
+    {
+        var go = Instantiate( _objPrefab , transform.position, Quaternion.identity );
+        go.SetActive( false );
+        _pool.Add( go );
     }
 
     public GameObject GetPooledObject()
     {
-        foreach ( var go in _pool )
+        var go = _pool.Find( obj => !obj.activeSelf );
+        if ( go == null )
         {
-            if ( !go.activeSelf )
-            {
-                go.SetActive( true );
-                return go;
-            }
+            CreateObject();
+            go = _pool[^1];
         }
-        var newGo = Instantiate( _objPrefab , transform.position, Quaternion.identity );
-        _pool.Add( newGo );
-        return newGo;
+        go.SetActive( true );
+        return go;
     }
 }
