@@ -617,11 +617,19 @@ namespace Player
         }
 
         public bool IsGrounded => !_jump.IsOnAir;
-        public void Fall()
+        public void Fall( Vector2 centerPosition )
         {
-            _jump.FallInHole();
-            _movement.Stop();
-            _fallController.SetFalling();
+            if ( _fallController.CanFall() )
+            {
+                _jump.FallInHole();
+                _movement.Stop();
+                _fallController.SetFalling( centerPosition );
+            }
+        }
+
+        public void FallGravity( Vector2 direction )
+        {
+            _fallController.AddGravity( direction );
         }
 
     }
