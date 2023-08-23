@@ -1,23 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool
 {
-    [SerializeField] private GameObject _objPrefab;
-    [SerializeField] private int _poolCount;
-
+    private GameObject _objPrefab;
     private List<GameObject> _pool;
 
-    private void Awake()
+    public ObjectPool( GameObject objPrefab , int poolCount )
     {
+        _objPrefab = objPrefab;
         _pool = new();
-        for ( int i = 0; i < _poolCount; i++ )
+        for ( int i = 0; i < poolCount; i++ )
             CreateObject();
     }
 
     private void CreateObject()
     {
-        var go = Instantiate( _objPrefab , transform.position, Quaternion.identity );
+        var go = MonoBehaviour.Instantiate( _objPrefab );
         go.SetActive( false );
         _pool.Add( go );
     }

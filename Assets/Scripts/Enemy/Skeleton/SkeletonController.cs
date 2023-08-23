@@ -7,6 +7,8 @@ public class SkeletonController : MonoBehaviour
     public SkeletonBaseState CurrentState;
 
     private Rigidbody2D _rb;
+    private Animator _anim;
+    private SpriteRenderer _spriteRenderer;
 
     private float _maxActionSeconds;
     private float _actionSeconds;
@@ -20,7 +22,10 @@ public class SkeletonController : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
-        _bonePool = GetComponentInChildren<ObjectPool>();
+        _anim = GetComponentInChildren<Animator>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        //_bonePool = GetComponentInChildren<ObjectPool>();
+        _bonePool = new ObjectPool( SkeletonDataSO.BonePrefab , 3 );
         var skeletonStateFactory = new SkeletonStateFactory( this );
         CurrentState = skeletonStateFactory.Idle();
     }
@@ -57,6 +62,28 @@ public class SkeletonController : MonoBehaviour
             _rb.MovePosition( _rb.position + Time.deltaTime * SkeletonDataSO.Speed * _moveDir );
         else
             _moveDir = _directionArray[Random.Range( 0 , _directionArray.Length )];
+
+        MoveAnimation();
+    }
+
+    public void MoveAnimation()
+    {
+        if ( _moveDir.Equals( Vector2.zero ) )
+        {
+            _anim.Play( "Idle" );
+        }
+        else 
+        if ( _moveDir.Equals( Vector2.left ) )
+        {
+            _anim.Play( "Move" );
+            _spriteRenderer.flipX = true;
+        }
+        else
+        if ( _moveDir.Equals( Vector2.right ) )
+        {
+            _anim.Play( "Move" );
+            _spriteRenderer.flipX = false;
+        }
     }
 
     public void ResetPursuit()
@@ -64,6 +91,8 @@ public class SkeletonController : MonoBehaviour
         _maxActionSeconds = Random.Range( 1 , 3f );
         _actionSeconds = 0;
         _moveDir = NextPursuitDirection();
+
+        MoveAnimation();
     }
 
     public void Pursuit()
