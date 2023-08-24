@@ -5,27 +5,20 @@ using UnityEngine.Events;
 
 public class TriggerChangeZone : MonoBehaviour
 {
-    [SerializeField][Range( 0, 15 )] private int _nextStartPointRefID;
-    [SerializeField] private SceneName _nextScene;
-    [SerializeField] private Color _fadeOutColor;
-    [SerializeField] private MusicZoneParameter _musicParamName;
-    [SerializeField] private MusicName _musicName;
-
-    public UnityEvent OnZoneChanged;
-    
-    private float _fadeOutSeconds = 1f;
+    [SerializeField] private ChangeSceneInfoSO _changeSceneInfoSO;
+    [Space(20)] public UnityEvent OnZoneChanged;
 
     private void OnTriggerEnter2D( Collider2D collision )
     {
         ServiceLocator.GetService<GameStatus>().AskChangeToInactiveState();
-        ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _musicName );
+        ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _changeSceneInfoSO.MusicName );
 
         ServiceLocator.GetService<LevelEvents>().ChangeZone(
             new LevelEvents.ChangeZoneArgs
             {
-                nextStartPointRefId = _nextStartPointRefID,
-                fadeColor           = _fadeOutColor ,
-                fadeDurationSeconds = _fadeOutSeconds
+                nextStartPointRefId = _changeSceneInfoSO.NextStartPointRefID ,
+                fadeColor           = _changeSceneInfoSO.FadeOutColor ,
+                fadeDurationSeconds = _changeSceneInfoSO.FadeOutSeconds
             } );
 
         OnZoneChanged?.Invoke();
@@ -35,8 +28,8 @@ public class TriggerChangeZone : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
+        WaitForSeconds waitTime = new WaitForSeconds( _changeSceneInfoSO.FadeOutSeconds );
         yield return waitTime;
-        ServiceLocator.GetService<SceneLoader>().InstaLoad( _nextScene.ToString() );
+        ServiceLocator.GetService<SceneLoader>().InstaLoad( _changeSceneInfoSO.NextScene.ToString() );
     }
 }

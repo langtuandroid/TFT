@@ -42882,11 +42882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 0
-  _nextScene: 7
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 6
-  _musicName: 0
+  _changeSceneInfoSO: {fileID: 11400000, guid: 7e854ef35487f8d4595ad301984e5b36, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
