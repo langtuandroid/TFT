@@ -252,11 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 2
-  _nextScene: 4
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 4
+  _changeSceneInfoSO: {fileID: 11400000, guid: 0596363876e5c2b47868d4d809fcfd21, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4367,11 +4363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 4
-  _nextScene: 8
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 6
+  _changeSceneInfoSO: {fileID: 11400000, guid: d161f9784eb0ff042879cd4e08d9785d, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4769,6 +4761,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4e1fd9ce2afedac409091a4d5629d532, type: 2}
   - {fileID: 11400000, guid: 42cdea5b199d2814680c29d9326988d3, type: 2}
   - {fileID: 11400000, guid: d961e2b65282d5642a2de2cb8e8a3965, type: 2}
+  _changeSceneInfoSO: {fileID: 11400000, guid: 751bea40ccae2974cb431323e61e26f9, type: 2}
   _nextScene: 11
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
   _musicParamName: 0
@@ -5280,11 +5273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 0
-  _nextScene: 3
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 3
+  _changeSceneInfoSO: {fileID: 11400000, guid: bd77f2181fadd1e418c4f07e88f18e63, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5522,11 +5511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 3
-  _nextScene: 8
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 5
+  _changeSceneInfoSO: {fileID: 11400000, guid: 1ca765653c8c73f4eb1876ee8ca7e3eb, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5699,11 +5684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 1
-  _nextScene: 2
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 1
-  _musicName: 2
+  _changeSceneInfoSO: {fileID: 11400000, guid: cd6ed0803fe570945ab3a8277669eab6, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []

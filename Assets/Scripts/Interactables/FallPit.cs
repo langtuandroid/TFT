@@ -4,7 +4,6 @@ using UnityEngine;
 public class FallPit : MonoBehaviour
 {
     [SerializeField] private GameObject _notBrokenObj;
-    private float _gravityForce = 2.5f;
 
     private Collider2D _pitCollider;
     private Timer _breakTimer;

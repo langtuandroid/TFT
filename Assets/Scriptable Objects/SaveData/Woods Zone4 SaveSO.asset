@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Woods Zone4 SaveSO
   m_EditorClassIdentifier: 
   zoneSave:
-    IsCompleted: 1
+    IsCompleted: 0
     IsActivatedList: 

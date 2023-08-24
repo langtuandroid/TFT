@@ -76,7 +76,7 @@ public class PickUpItem
     {
         _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
-        _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
+        //_audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         _pickable?.ShowCanPickUpItem( false );
         HasItem = false;
         _animatorBrain.SetThrow(); 
