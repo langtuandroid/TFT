@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8916dbe1473af9749978ddf00f9e33ce, type: 3}
-  m_Name: _Zone Exit SideSO
+  m_Script: {fileID: 11500000, guid: ba0c9607d2bafdd41a158fafb664e065, type: 3}
+  m_Name: Teletransport Altar ChangeSceneInfoSO
   m_EditorClassIdentifier: 
-  nextStartPointRefID: 2
+  _nextStartPointRefID: 4
+  _nextScene: S15_Altar_WoodsScene
+  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
+  _musicName: 7
+  _fadeOutSeconds: 1
