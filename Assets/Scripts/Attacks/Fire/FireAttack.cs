@@ -16,6 +16,7 @@ namespace Attack
         // VARIABLES
         // Medium Attack
         private float _flameTimer;
+        private FMODUnity.StudioEventEmitter _studioEventEmitter;
 
         // Strong Attack
         private List<GameObject> _fireOrbs;
@@ -23,12 +24,13 @@ namespace Attack
 
         #region Constructor
 
-        public FireAttack()
+        public FireAttack( FMODUnity.StudioEventEmitter studioEventEmitter )
         {
             // Inicializamos las variables de estado
             base.Initialize();
             _flameTimer = 0f;
             _fireOrbs = new List<GameObject>();
+            _studioEventEmitter = studioEventEmitter;
         }
 
         #endregion
@@ -121,6 +123,9 @@ namespace Attack
         /// </summary>
         public override void MediumAttack(Vector2 direction)
         {
+            if ( !_isUsingMediumAttack )
+                _studioEventEmitter.Play();
+
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
             Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
@@ -129,7 +134,7 @@ namespace Attack
                 _fireSettingsSO._mediumPrefab, // Prefab
                 position + direction, // Posición del player (un poco desplazada hacia arriba)
                 Quaternion.identity // Quaternion identity
-                );
+            );
 
             flame.GetComponent<Flame>().Init(direction);
             // Consumimos la magia y reiniciamos el contador de tiempo
@@ -145,6 +150,8 @@ namespace Attack
             // Desactivamos el uso de magia media
             _isUsingMediumAttack = false;
             _flameTimer = 0f;
+
+            _studioEventEmitter.Stop();
 
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
