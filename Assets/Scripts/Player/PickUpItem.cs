@@ -1,4 +1,3 @@
-using System;
 using Player;
 using UnityEngine;
 
@@ -18,14 +17,17 @@ public class PickUpItem
     private IPickable _pickable;
     public bool HasItem = false;
 
-    public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
+    public PickUpItem( Transform playerTransform , Transform pickUpPoint , Vector2 colliderOffset , LayerMask interactableLayerMask )
     {
         _transform = playerTransform;
         _pickUpPoint = pickUpPoint;
         _colliderOffset = colliderOffset;
-        _interactableLayer = interactableLayerMask;
+    }
+
+    public void Init(AnimatorBrain animatorBrain, IAudioSpeaker audioSpeaker)
+    {
         _animatorBrain = animatorBrain;
-        //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        _audioSpeaker = audioSpeaker;
     }
 
     public bool CanPickItUp( Vector2 lookDirection )
@@ -76,7 +78,7 @@ public class PickUpItem
     {
         _animatorBrain.HasItem(false);
         _pickable?.ThrowIt(lookDirection);
-        //_audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
+        _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_THROW );
         _pickable?.ShowCanPickUpItem( false );
         HasItem = false;
         _animatorBrain.SetThrow(); 
