@@ -83,6 +83,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
     private FSMBallThrower _stateBallThrower;
     private Tween _tween;
     private bool _die;
+    private GameStatus.GameState _gameState;
 
     #endregion
 
@@ -97,7 +98,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
     private void Update()
     {
         // TODO: Preguntar el estado
-        if (_die)
+        if (_gameState != GameStatus.GameState.GamePlay || _die)
             return;
         // Ejecutamos el estado
         _stateBallThrower.Execute(_direction);
@@ -106,6 +107,11 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         collision.gameObject.GetComponent<PlayerStatus>()?.TakeDamage(1);
+    }
+
+    private void OnDestroy()
+    {
+        _gameStatus.OnGameStateChanged += OnGameStateChangedValue;
     }
 
     #endregion
@@ -145,6 +151,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
     {
         // SERVICES
         _gameStatus = ServiceLocator.GetService<GameStatus>();
+        _gameStatus.OnGameStateChanged += OnGameStateChangedValue;
 
         // COMPONENTS
         _rb = GetComponent<Rigidbody2D>();
@@ -168,6 +175,7 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
                 break;
         }
         _stateBallThrower = new BallThrowerAdvanceState(this);
+        _gameState = GameStatus.GameState.GamePlay;
     }
 
     private void GetDamage(int damage)
@@ -225,6 +233,11 @@ public class BallThrower : MonoBehaviour, IBurnable, IPunchable
         seq.Play();
 
         return seq;
+    }
+
+    private void OnGameStateChangedValue(GameStatus.GameState state)
+    {
+        _gameState = state;
     }
 
     #endregion

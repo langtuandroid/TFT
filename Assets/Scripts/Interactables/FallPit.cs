@@ -4,7 +4,6 @@ using UnityEngine;
 public class FallPit : MonoBehaviour
 {
     [SerializeField] private GameObject _notBrokenObj;
-    private float _gravityForce = 2.5f;
 
     private Collider2D _pitCollider;
     private Timer _breakTimer;
@@ -35,13 +34,12 @@ public class FallPit : MonoBehaviour
                     {
                         float yOffset = 0.5f + 1f / 16 * 4;
                         Vector2 centerPosition = new Vector2( transform.position.x , transform.position.y - yOffset );
-                        _playerRb.position = centerPosition;
-                        _playerController.Fall();
+                        _playerController.Fall( centerPosition );
                     }
                     else
                     {
                         Vector2 direction = new Vector2( transform.position.x , transform.position.y ) - playerPos;
-                        _playerRb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+                        _playerController.FallGravity( direction );
                     }
                 }
             }
@@ -62,7 +60,6 @@ public class FallPit : MonoBehaviour
             _playerRb = collision.GetComponent<Rigidbody2D>();
             _playerColOffest = _playerRb.GetComponent<Collider2D>().offset;
             _playerController = _playerRb.GetComponent<PlayerController>();
-            Debug.Log( "buu" );
         }
     }
 

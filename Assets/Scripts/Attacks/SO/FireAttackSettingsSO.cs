@@ -8,6 +8,9 @@ public class FireAttackSettingsSO : MagicAttackSettingsSO
     public GameObject WeakPrefab;
 
     [Header("Medium Attack")]
+    [SerializeField]
+    [Tooltip("Medium attack prefab")]
+    public GameObject _mediumPrefab;
     [Tooltip("Tiempo que debe pasar para que el lanzallamas consuma")]
     public float TimeBetweenConsuming = .4f;
 

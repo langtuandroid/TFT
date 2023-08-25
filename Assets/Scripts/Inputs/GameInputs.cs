@@ -185,6 +185,7 @@ public class GameInputs
         _playerInputActions.UI.Submit.performed += Submit_Performed;
         _playerInputActions.UI.NextMenu.performed += NextMenu_Performed;
         _playerInputActions.UI.PrevMenu.performed += PrevMenu_Performed;
+        _playerInputActions.UI.PauseUI.performed += Pause_performed;
 
         NavigateAction = _playerInputActions.UI.Navigate;
     }

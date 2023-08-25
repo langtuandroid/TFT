@@ -116,6 +116,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PauseUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""24faf36b-6c4d-477a-b793-120a63879c9d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -380,6 +389,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""PrevMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84793f3e-6bae-417d-865b-513efb7afa29"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PauseUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""437fdc66-198b-4a69-874e-0f0ca68f41a0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""PauseUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -926,6 +957,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
         m_UI_NextMenu = m_UI.FindAction("NextMenu", throwIfNotFound: true);
         m_UI_PrevMenu = m_UI.FindAction("PrevMenu", throwIfNotFound: true);
+        m_UI_PauseUI = m_UI.FindAction("PauseUI", throwIfNotFound: true);
         // PlayerGround
         m_PlayerGround = asset.FindActionMap("PlayerGround", throwIfNotFound: true);
         m_PlayerGround_Pause = m_PlayerGround.FindAction("Pause", throwIfNotFound: true);
@@ -1010,6 +1042,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_ScrollWheel;
     private readonly InputAction m_UI_NextMenu;
     private readonly InputAction m_UI_PrevMenu;
+    private readonly InputAction m_UI_PauseUI;
     public struct UIActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1024,6 +1057,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @ScrollWheel => m_Wrapper.m_UI_ScrollWheel;
         public InputAction @NextMenu => m_Wrapper.m_UI_NextMenu;
         public InputAction @PrevMenu => m_Wrapper.m_UI_PrevMenu;
+        public InputAction @PauseUI => m_Wrapper.m_UI_PauseUI;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1063,6 +1097,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PrevMenu.started += instance.OnPrevMenu;
             @PrevMenu.performed += instance.OnPrevMenu;
             @PrevMenu.canceled += instance.OnPrevMenu;
+            @PauseUI.started += instance.OnPauseUI;
+            @PauseUI.performed += instance.OnPauseUI;
+            @PauseUI.canceled += instance.OnPauseUI;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1097,6 +1134,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @PrevMenu.started -= instance.OnPrevMenu;
             @PrevMenu.performed -= instance.OnPrevMenu;
             @PrevMenu.canceled -= instance.OnPrevMenu;
+            @PauseUI.started -= instance.OnPauseUI;
+            @PauseUI.performed -= instance.OnPauseUI;
+            @PauseUI.canceled -= instance.OnPauseUI;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1270,6 +1310,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnScrollWheel(InputAction.CallbackContext context);
         void OnNextMenu(InputAction.CallbackContext context);
         void OnPrevMenu(InputAction.CallbackContext context);
+        void OnPauseUI(InputAction.CallbackContext context);
     }
     public interface IPlayerGroundActions
     {

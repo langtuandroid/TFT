@@ -100,13 +100,8 @@ namespace Player
             _movement = new PlayerMovement(rb, _physicalDataSO);
             _jump = new Jump(collider.offset, transform, characterVisualTrans, _physicalDataSO);
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
-            _pickable = new PickUpItem();
+            _pickable = new PickUpItem( transform , pickUpPointTrans , collider.offset , _physicalDataSO.interactableLayerMask );
             _fallController = new FallController(rb, collider, _animatorBrain, _physicalDataSO);
-            // SERVICE -> AUDIOSPEAKER
-            IAudioSpeaker _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            // Pickable
-            _pickable.Init(transform, pickUpPointTrans, collider.offset,
-                _physicalDataSO.interactableLayerMask, _animatorBrain, _audioSpeaker);
             // Inicializamos variables
             // Magic Attacks
             //AddMagicAttacks();
@@ -132,10 +127,12 @@ namespace Player
             GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
 
             // SERVICE -> AUDIOSPEAKER
-            //IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
+            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+
+            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, _audioSpeaker, gameStatus, _playerStatus);
+            _fallController.Init(transform.position, audioSpeaker, gameStatus, _playerStatus);
+            _pickable.Init( _animatorBrain, audioSpeaker );
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -271,8 +268,10 @@ namespace Player
 
         private void AddMagicAttacks(IAudioSpeaker audioSpeaker, GameStatus gameStatus)
         {
+            FMODUnity.StudioEventEmitter studioEventEmitter = 
+                GetComponentInChildren<FMODUnity.StudioEventEmitter>();
             _magicAttacks = new List<MagicAttack>();
-            _magicAttacks.Add(new FireAttack());
+            _magicAttacks.Add(new FireAttack( studioEventEmitter ) );
             _magicAttacks.Add(new PlantAttack());
             _magicAttacks.Add(new WaterAttack());
 
@@ -619,11 +618,19 @@ namespace Player
         }
 
         public bool IsGrounded => !_jump.IsOnAir;
-        public void Fall()
+        public void Fall( Vector2 centerPosition )
         {
-            _jump.FallInHole();
-            _movement.Stop();
-            _fallController.SetFalling();
+            if ( _fallController.CanFall() )
+            {
+                _jump.FallInHole();
+                _movement.Stop();
+                _fallController.SetFalling( centerPosition );
+            }
+        }
+
+        public void FallGravity( Vector2 direction )
+        {
+            _fallController.AddGravity( direction );
         }
 
     }
