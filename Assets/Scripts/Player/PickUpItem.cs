@@ -18,14 +18,14 @@ public class PickUpItem
     private IPickable _pickable;
     public bool HasItem = false;
 
-    public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
+    public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain, IAudioSpeaker audioSpeaker)
     {
         _transform = playerTransform;
         _pickUpPoint = pickUpPoint;
         _colliderOffset = colliderOffset;
         _interactableLayer = interactableLayerMask;
         _animatorBrain = animatorBrain;
-        //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        _audioSpeaker = audioSpeaker;
     }
 
     public bool CanPickItUp( Vector2 lookDirection )

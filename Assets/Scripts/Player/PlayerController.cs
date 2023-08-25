@@ -77,6 +77,8 @@ namespace Player
         private List<SecondaryAction> _secondaryActions;
         private int _secondaryIndex => _playerStatus.SecondarySkillIndex;
 
+        private IAudioSpeaker _audioSpeaker;
+
         #endregion
 
         #region Unity methods
@@ -100,16 +102,16 @@ namespace Player
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
             _pickable = new PickUpItem();
             _fallController = new FallController(rb, collider, _animatorBrain, _physicalDataSO);
-
+            // SERVICE -> AUDIOSPEAKER
+            IAudioSpeaker _audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            // Pickable
+            _pickable.Init(transform, pickUpPointTrans, collider.offset,
+                _physicalDataSO.interactableLayerMask, _animatorBrain, _audioSpeaker);
             // Inicializamos variables
             // Magic Attacks
             //AddMagicAttacks();
             // SecondaryActions
             AddSecondaryActions();
-
-            // Pickable
-            _pickable.Init(transform, pickUpPointTrans, collider.offset,
-                _physicalDataSO.interactableLayerMask, _animatorBrain);
         }
 
 #if UNITY_EDITOR
@@ -130,10 +132,10 @@ namespace Player
             GameStatus gameStatus = ServiceLocator.GetService<GameStatus>();
 
             // SERVICE -> AUDIOSPEAKER
-            IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
-            _jump.Init(_animatorBrain, audioSpeaker, initialGroundLayerMask);
+            //IAudioSpeaker audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+            _jump.Init(_animatorBrain, _audioSpeaker, initialGroundLayerMask);
             _animatorBrain.Init(startLookDirection, _jump);
-            _fallController.Init(transform.position, audioSpeaker, gameStatus, _playerStatus);
+            _fallController.Init(transform.position, _audioSpeaker, gameStatus, _playerStatus);
 
             // SERVICE -> GAMEINPUTS
             _gameInputs = ServiceLocator.GetService<GameInputs>();
@@ -179,7 +181,7 @@ namespace Player
                 gameStatus: gameStatus
                 );
 
-            AddMagicAttacks(audioSpeaker, gameStatus);
+            AddMagicAttacks(_audioSpeaker, gameStatus);
         }
 
         private void OnDestroy()
