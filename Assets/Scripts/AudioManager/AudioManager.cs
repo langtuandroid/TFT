@@ -73,7 +73,7 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
     private IEnumerator MusicStarter( MusicName musicName )
     {
-        WaitForSeconds wait = new WaitForSeconds( 1.5f );
+        var wait = new WaitForSeconds( 1.5f );
         yield return wait;
         _musicEventInstance = RuntimeManager.CreateInstance( _gameMusicDict[musicName] );
         _musicEventInstance.start();
@@ -90,13 +90,11 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
     private IEnumerator ChangeParam( MusicZoneParameter paramName )
     {
-        float acumulated = 1;
-        string paramNameStr = _currentZoneParameter.ToString();
-        Debug.Log( paramNameStr );
+        var acumulated = 1f;
+        var paramNameStr = _currentZoneParameter.ToString();
 
         if ( !_currentZoneParameter.Equals( MusicZoneParameter.None ) )
         {
-            Debug.Log( "1st in" );
             while ( acumulated > 0 )
             {
                 _musicEventInstance.setParameterByName( paramNameStr , acumulated );
@@ -110,9 +108,7 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
         _currentZoneParameter = paramName;
         if ( !paramName.Equals( MusicZoneParameter.None ) )
         {
-            Debug.Log( "2nd in" );
             paramNameStr = paramName.ToString();
-            Debug.Log( paramNameStr );
             acumulated = 0;
 
             while ( acumulated < 1 )
@@ -129,8 +125,8 @@ public class AudioManager : MonoBehaviour, IAudioSpeaker
 
     public void PlaySound( int groupId, int soundId , Vector3 soundPosition = new() )
     {
-        Debug.Log( "[Play Sound]: " + _sfxGroupSO.list[groupId].SfxRef[soundId].SoundName + 
-            ", IDSend: " + soundId + " = ID: " + _sfxGroupSO.list[groupId].SfxRef[soundId].Id );
+        //Debug.Log( "[Play Sound]: " + _sfxGroupSO.list[groupId].SfxRef[soundId].SoundName + 
+        //    ", IDSend: " + soundId + " = ID: " + _sfxGroupSO.list[groupId].SfxRef[soundId].Id );
         RuntimeManager.PlayOneShot( _sfxGroupSO.list[groupId].SfxRef[soundId].Sound , soundPosition );
     }
 

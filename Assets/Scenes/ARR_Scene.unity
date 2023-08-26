@@ -11279,7 +11279,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsRealMusicPlaying: 0
 --- !u!4 &1894208113
 Transform:
   m_ObjectHideFlags: 0
@@ -14014,6 +14013,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7641441617421796369, guid: a620e5a5715e9ed42b96831befd5604b, type: 3}
+      propertyPath: _skeletonDataSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 68dd5d6abe7d2fa45b9aa148f3f7fdb8, type: 2}
     - target: {fileID: 7641441617421796370, guid: a620e5a5715e9ed42b96831befd5604b, type: 3}
       propertyPath: m_RootOrder
       value: 9
