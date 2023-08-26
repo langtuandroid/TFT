@@ -74,17 +74,12 @@ public class SkeletonController : MonoBehaviour, IBurnable
         {
             _anim.Play( "Idle" );
         }
-        else 
-        if ( _moveDir.Equals( Vector2.left ) )
-        {
-            _anim.Play( "Move" );
-            _spriteRenderer.flipX = true;
-        }
         else
-        if ( _moveDir.Equals( Vector2.right ) )
         {
             _anim.Play( "Move" );
-            _spriteRenderer.flipX = false;
+            if ( _moveDir.Equals( Vector2.left ) )  _spriteRenderer.flipX = true;
+            else
+            if ( _moveDir.Equals( Vector2.right ) ) _spriteRenderer.flipX = false;
         }
     }
 
