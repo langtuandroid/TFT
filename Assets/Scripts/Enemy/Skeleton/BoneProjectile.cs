@@ -7,7 +7,6 @@ public class BoneProjectile : MonoBehaviour
     private Rigidbody2D _rb;
     private int   _damage;
     private float _deathTimer;
-    private float _gravityFactor = 0.01f;
     private Vector2 _direction;
     private Transform _target;
 
@@ -31,10 +30,11 @@ public class BoneProjectile : MonoBehaviour
             Vector2 centripetideDir = _target.position - transform.position;
             var res = Vector3.Cross( _direction , centripetideDir );
             var normalToDirection = Vector2.Perpendicular( _direction );
+            var gravityFactor = 0.01f;
 
             _direction += res.z > 0 ?
-                normalToDirection * _gravityFactor : // turn left
-                -normalToDirection * _gravityFactor; // turn right
+                normalToDirection * gravityFactor : // turn left
+                -normalToDirection * gravityFactor; // turn right
 
             _direction.Normalize();
         }
@@ -53,7 +53,7 @@ public class BoneProjectile : MonoBehaviour
 
     private void OnCollisionEnter2D( Collision2D collision )
     {
-        //collision.gameObject.GetComponent<Player.PlayerStatus>()?.TakeDamage( _damage );
+        collision.gameObject.GetComponent<Player.PlayerStatus>()?.TakeDamage( _damage );
         gameObject.SetActive( false );
     }
 }

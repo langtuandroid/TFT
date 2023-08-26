@@ -55,7 +55,8 @@ public class SkeletonController : MonoBehaviour, IBurnable
 
     public bool CanMove()
     {
-        return Physics2D.Raycast( transform.position , _moveDir , 1 , _skeletonDataSO.ObstaclesMask );
+        var rayDistance = 1;
+        return Physics2D.Raycast( transform.position , _moveDir , rayDistance , _skeletonDataSO.ObstaclesMask );
     }
 
     public void Movement()
