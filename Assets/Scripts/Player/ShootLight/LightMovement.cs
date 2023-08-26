@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,10 +15,19 @@ public class LightMovement : MonoBehaviour
     private float lightTimer = 0.0f;
     private Light2D _light2DVolumen;
 
+    private float inRadious;
+    private float outerRadious;
+    
     private void Awake()
     {
         _light2DVolumen = GetComponentInChildren<Light2D>();
         lightTimer = lightDuration;
+    }
+
+    private void Start()
+    {
+        inRadious = _light2DVolumen.pointLightInnerRadius;
+        outerRadious = _light2DVolumen.pointLightOuterRadius;
     }
 
     private void Update()
@@ -37,10 +47,14 @@ public class LightMovement : MonoBehaviour
         
         lightTimer -= Time.deltaTime;
 
+        
         if (lightTimer >= 0f)
         {
-            _light2DVolumen.pointLightInnerRadius -= 0.008f;
-            _light2DVolumen.pointLightOuterRadius -= 0.008f;
+            _light2DVolumen.pointLightInnerRadius -= inRadious * Time.deltaTime / lightDuration;
+            _light2DVolumen.pointLightOuterRadius -= outerRadious * Time.deltaTime / lightDuration;
+
+            _light2DVolumen.pointLightInnerRadius = Mathf.Max(0, _light2DVolumen.pointLightInnerRadius);
+            _light2DVolumen.pointLightOuterRadius = Mathf.Max(0, _light2DVolumen.pointLightOuterRadius);
         }
         else
         {

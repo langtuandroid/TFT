@@ -14,9 +14,9 @@ public class SkeletonIdleState : SkeletonBaseState
             return;
         }
 
-        if ( ctx.CanChangeAction() )
+        if ( ctx.CanChangeMoveDirection() )
         {
-            ctx.ResetAction();
+            ctx.ResetMove();
         }
 
         ctx.Movement();

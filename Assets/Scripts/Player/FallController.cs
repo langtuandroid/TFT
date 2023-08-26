@@ -37,9 +37,24 @@ public class FallController
         _playerStatus = playerStatus;
     }
 
-    public void SetFalling()
+    public void AddGravity( Vector2 direction )
+    {
+        if ( !Physics2D.CircleCast( _rb.position + _collider.offset , 0.5f , Vector2.zero , 0.01f , 1 << 10 ) )
+        {
+            float _gravityForce = 2.5f;
+            _rb.AddForce( direction.normalized * _gravityForce , ForceMode2D.Force );
+        }
+    }
+
+    public bool CanFall()
+    {
+        return !Physics2D.OverlapPoint( _rb.position + _collider.offset , 1 << 10 );
+    }
+
+    public void SetFalling( Vector2 centerPosition )
     {
         //_audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_FALL );
+        _rb.position = centerPosition;
         HasFalled = true;
         _animatorBrain.SetFall();
         _collider.enabled = false;
