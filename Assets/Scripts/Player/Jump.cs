@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.UI.Image;
 
 namespace Player
 {
@@ -175,7 +176,6 @@ namespace Player
 
             if ( hit )
             {
-                Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.yellow );
                 if ( _jumpDownTimer.HasTickOnce() )
                 {
                     JumpGroundDown( lookDirection );
@@ -210,15 +210,19 @@ namespace Player
             }
             else if ( lookDirection == Vector3.up )
             {
-                posToCheck = _transform.position + Vector3.up * 1.5f;
-                relativePos = Vector3.up * 1.5f;
+                var dist = 1.5f;
+                posToCheck = _transform.position + Vector3.up * dist;
+                relativePos = Vector3.up * dist;
             }
             else
             {
-                posToCheck = _transform.position + lookDirection * 1.5f + Vector3.down;
-                relativePos = lookDirection * 1.5f + Vector3.down;
+                var dist = 1.5f;
+                posToCheck = _transform.position + lookDirection * dist + Vector3.down;
+                relativePos = lookDirection * dist + Vector3.down;
 
-                if ( Physics2D.Raycast( posToCheck , Vector2.up , 1 , _currentFloorBitPosition ) ) 
+                dist = 1;
+                Debug.DrawLine( posToCheck , Vector2.up * dist , Color.yellow );
+                if ( Physics2D.Raycast( posToCheck , Vector2.up , dist , _currentFloorBitPosition ) ) 
                     return;
             }
 

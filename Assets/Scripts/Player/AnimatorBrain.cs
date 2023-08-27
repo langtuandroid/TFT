@@ -21,6 +21,7 @@ namespace Player
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private Transform _shadowVisuals;
+        [SerializeField] private AnimationCurve _jumpCurve;
 
         private Vector3 _playerVisualInitialPos;
         private Vector3 _shadowVisualInitialPos;
@@ -89,23 +90,24 @@ namespace Player
         {
             PlayPlayer(JUMP);
 
-            float jumpPower = 2f;
+            var jumpPower = 2f;
             _playerVisuals.DOLocalJump(jumpDownArgs.landedRelativePosition, jumpPower, 1, 1)
+                .SetEase( _jumpCurve )
                 .OnComplete(HasLandedAfterJumpDown_Callback)
                 .Play();
 
-            if (jumpDownArgs.descendDirection == Vector3.up || jumpDownArgs.descendDirection == Vector3.down)
+            if ( jumpDownArgs.descendDirection == Vector3.up || jumpDownArgs.descendDirection == Vector3.down )
             {
-                _shadowVisuals.DOLocalMove(jumpDownArgs.landedRelativePosition, 0.9f)
+                _shadowVisuals.DOLocalMove( jumpDownArgs.landedRelativePosition , 0.9f )
                     .Play();
             }
             else
             {
-                float moveXPixels = 6f / 16;
-                Sequence lateralJumpSeq = DOTween.Sequence();
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveX(jumpDownArgs.descendDirection.x * moveXPixels, 0.1f));
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveY(jumpDownArgs.landedRelativePosition.y, 0f));
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveX(jumpDownArgs.landedRelativePosition.x, 0.7f));
+                var moveXPixels = 6f / 16;
+                var lateralJumpSeq = DOTween.Sequence();
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.descendDirection.x * moveXPixels , 0.1f ) );
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveY( jumpDownArgs.landedRelativePosition.y , 0f ) );
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.landedRelativePosition.x , 0.7f ) );
                 lateralJumpSeq.Play();
             }
 
@@ -132,7 +134,8 @@ namespace Player
 
             Vector3 endJumpRelativePos = new Vector3(0, 2.5f, 0);
             float jumpPower = 2;
-            _playerVisuals.DOLocalJump(endJumpRelativePos, jumpPower, 1, 1)
+            _playerVisuals.DOLocalJump(endJumpRelativePos, jumpPower, 1, 1 )
+                .SetEase( _jumpCurve )
                 .OnComplete(HasLandedAfterJumpable_Callback)
                 .Play();
             _shadowVisuals.DOLocalMoveY(2.5f, 0.9f)
