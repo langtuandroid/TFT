@@ -8,6 +8,9 @@ public class ExitFromWoods : MonoBehaviour
 {
   private List<string> exitCode = new List<string>();
   public string wrongMessage = "^exitWoods_S14_Z0_4-1";
+  public Switch buttonSun;
+  public Switch buttonMoon;
+  public Switch buttonStar;
   
   public void ActivateExit(string butonType)
   {
@@ -26,6 +29,9 @@ public class ExitFromWoods : MonoBehaviour
           else
           {
               exitCode.Clear();
+              buttonSun.ResetPuzle = true;
+              buttonMoon.ResetPuzle = true;
+              buttonStar.ResetPuzle = true;
               MyDialogueManager.Instance.Text(I18N.instance.getValue(wrongMessage));
           }
       }
