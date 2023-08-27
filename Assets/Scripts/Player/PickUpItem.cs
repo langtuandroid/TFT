@@ -16,7 +16,7 @@ public class PickUpItem
     private IAudioSpeaker _audioSpeaker;
     private IPickable _pickable;
     public bool HasItem = false;
-    
+
     public PickUpItem( Transform playerTransform , Transform pickUpPoint , Vector2 colliderOffset , LayerMask interactableLayerMask )
     {
         _transform = playerTransform;

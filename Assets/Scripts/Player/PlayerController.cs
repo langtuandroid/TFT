@@ -77,8 +77,6 @@ namespace Player
         private List<SecondaryAction> _secondaryActions;
         private int _secondaryIndex => _playerStatus.SecondarySkillIndex;
 
-        private IAudioSpeaker _audioSpeaker;
-
         #endregion
 
         #region Unity methods
@@ -102,6 +100,7 @@ namespace Player
             _interaction = new Interaction(transform, collider.offset, _physicalDataSO);
             _pickable = new PickUpItem( transform , pickUpPointTrans , collider.offset , _physicalDataSO.interactableLayerMask );
             _fallController = new FallController(rb, collider, _animatorBrain, _physicalDataSO);
+
             // Inicializamos variables
             // Magic Attacks
             //AddMagicAttacks();
@@ -178,7 +177,7 @@ namespace Player
                 gameStatus: gameStatus
                 );
 
-            AddMagicAttacks(_audioSpeaker, gameStatus);
+            AddMagicAttacks(audioSpeaker, gameStatus);
         }
 
         private void OnDestroy()

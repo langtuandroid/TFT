@@ -89,8 +89,8 @@ namespace Attack
         /// </summary>
         public override void WeakAttack(Vector2 direction)
         {
-            Debug.Log("Entro en ataque d閎il");
-            // Activamos el uso de la magia d閎il
+            Debug.Log("Entro en ataque d茅bil");
+            // Activamos el uso de la magia d茅bil
             _isUsingWeakAttack = true;
 
             Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
@@ -98,7 +98,7 @@ namespace Attack
             // Instanciamos bola de fuego
             GameObject fireball = MonoBehaviour.Instantiate(
                 _fireSettingsSO.WeakPrefab, // Prefab de la bola
-                position, // Posici髇 del player (desplazada un poco arriba)
+                position, // Posici贸n del player (desplazada un poco arriba)
                 Quaternion.identity // Quaternion identity
                 );
 
@@ -112,7 +112,7 @@ namespace Attack
 
             // Consumimos magia
             _magicEvents.UseOfMagicValue(_magicSettingsSO.Costs[0]);
-            // Desactivamos el uso de la magia d閎il
+            // Desactivamos el uso de la magia d茅bil
             _isUsingWeakAttack = false;
             // Reseteamos el temporizador de uso de poder
             _playerStatus.RestartMagicTimer();
@@ -132,7 +132,7 @@ namespace Attack
 
             GameObject flame = MonoBehaviour.Instantiate(
                 _fireSettingsSO._mediumPrefab, // Prefab
-                position + direction, // Posici髇 del player (un poco desplazada hacia arriba)
+                position + direction, // Posici贸n del player (un poco desplazada hacia arriba)
                 Quaternion.identity // Quaternion identity
             );
 
@@ -158,7 +158,7 @@ namespace Attack
         }
 
         /// <summary>
-        /// Activa una r醘aga de bolas de fuego que afecta a toda la pantalla
+        /// Activa una r谩faga de bolas de fuego que afecta a toda la pantalla
         /// </summary>
         public override void StrongAttack(Vector2 direction)
         {
@@ -188,7 +188,7 @@ namespace Attack
 
         private void MaxPowerFinalized()
         {
-            // Comprobamos las colisiones (para da馻r enemigos)
+            // Comprobamos las colisiones (para da帽ar enemigos)
             CheckMaxPowerCollisions();
 
             // Desactivamos el uso de magia fuerte
@@ -208,13 +208,13 @@ namespace Attack
         #region Strong Attack
 
         /// <summary>
-        /// Invoca la rotaci髇 de los orbes
+        /// Invoca la rotaci贸n de los orbes
         /// </summary>
         /// <param name="time"></param>
         private void RotateOrbs(float time)
         {
             Sequence seq = DOTween.Sequence();
-            // Aplicamos rotaci髇
+            // Aplicamos rotaci贸n
             seq.AppendCallback(() => ApplyRotation(time));
             // Y esperamos un tiempo
             seq.AppendInterval(time);
@@ -229,7 +229,7 @@ namespace Attack
         }
 
         /// <summary>
-        /// Aplica la rotaci髇
+        /// Aplica la rotaci贸n
         /// </summary>
         /// <param name="time"></param>
         private void ApplyRotation(float time)
@@ -253,7 +253,7 @@ namespace Attack
                     {
                         GameObject obj = _fireOrbs[i];
                         int n = i + 1;
-                        // Aplicamos la transformaci髇 de su posici髇 local
+                        // Aplicamos la transformaci贸n de su posici贸n local
                         switch (n % 8)
                         {
                             case 0:
@@ -288,7 +288,7 @@ namespace Attack
                                 break;
                         }
 
-                        // Y multiplicamos seg鷑 su distancia
+                        // Y multiplicamos seg煤n su distancia
                         obj.transform.localPosition *= n;
                     }
 
@@ -310,7 +310,7 @@ namespace Attack
                 LayerMask.GetMask(Constants.LAYER_INTERACTABLE) // Capa a la que afecta
                 );
 
-            // Para cada colisi髇, activamos el quemado
+            // Para cada colisi贸n, activamos el quemado
             foreach (Collider2D collision in collisions)
                 collision.GetComponent<IBurnable>()?.Burn(_fireSettingsSO.StrongAttackDamage);
 
