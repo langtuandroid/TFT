@@ -1,4 +1,4 @@
-// ************ @autor: Álvaro Repiso Romero *************
+// ************ @autor: ï¿½lvaro Repiso Romero *************
 using UnityEngine;
 
 public class Interaction
