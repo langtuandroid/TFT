@@ -1,22 +1,20 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
 {
-    public class OutlineModifier : MonoBehaviour
+    public class OutlineModifier
     {
-        [SerializeField] private ColorArraySO _colorArraySO;
-        [SerializeField] private Scriptable.PowerPanelDataListScriptable _powerColorDataSO;
-
+        private List<Color> _powerColorList;
         private Material _material;
 
-        private void Awake()
+        public OutlineModifier( Material material , Scriptable.PowerPanelDataListScriptable powerPanelData )
         {
-            _material = GetComponent<SpriteRenderer>().material;
-        }
+            _material = material;
 
-        private void Start()
-        {
-            ServiceLocator.GetService<InventoryEvents>().OnPrimarySkillChange += ChangeEmissionColor;
+            _powerColorList = new();
+            foreach ( var powerDataList in powerPanelData.PowerPanelDataList )
+                _powerColorList.Add( powerDataList.Color );
         }
 
         public void ChangeIntensity( float value )
@@ -26,15 +24,7 @@ namespace Player
 
         public void ChangeEmissionColor( int colorIndex )
         {
-            //_material.SetColor( "_OutlineColor" , _colorArraySO.ColorArray[colorIndex] );
-            _material.SetColor( "_OutlineColor" , _powerColorDataSO.PowerPanelDataList[colorIndex].Color );
-        }
-
-        private void OnDestroy()
-        {
-            InventoryEvents inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
-            if ( inventoryEvents != null )
-                inventoryEvents.OnPrimarySkillChange -= ChangeEmissionColor;
+            _material.SetColor( "_OutlineColor" , _powerColorList[colorIndex] );
         }
     }
 }

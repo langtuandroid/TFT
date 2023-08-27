@@ -22,10 +22,12 @@ namespace Player
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private Transform _shadowVisuals;
         [SerializeField] private AnimationCurve _jumpCurve;
+        [SerializeField] private Scriptable.PowerPanelDataListScriptable _powerColorDataSO;
 
         private Vector3 _playerVisualInitialPos;
         private Vector3 _shadowVisualInitialPos;
 
+        private OutlineModifier _outlineModifier;
         private Animator _playerAnimator;
         private SpriteRenderer _spriteRender;
         private Vector2 _lookDirection;
@@ -58,12 +60,18 @@ namespace Player
             _lifeEvents.OnDeathValue -= Death_OnDeath;
             _lifeEvents.OnStartTemporalInvencibility -= StartTemporalInvencibility;
             _magicEvents.OnMaxPowerUsedValue -= MaxPower_OnUsed;
+
+            var inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            if ( inventoryEvents != null )
+                inventoryEvents.OnPrimarySkillChange -= _outlineModifier.ChangeEmissionColor;
         }
 
         public void Init(Vector2 startLookDirection, Jump jump)
         {
             _playerAnimator = GetComponent<Animator>();
             _spriteRender = GetComponent<SpriteRenderer>();
+
+            _outlineModifier = new OutlineModifier( _spriteRender.material , _powerColorDataSO );
 
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
@@ -75,6 +83,9 @@ namespace Player
 
             LookDirection(startLookDirection);
             _initialLookDirection = startLookDirection;
+
+            var inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            inventoryEvents.OnPrimarySkillChange += _outlineModifier.ChangeEmissionColor;
 
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnDeathValue += Death_OnDeath;
