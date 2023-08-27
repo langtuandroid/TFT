@@ -132,7 +132,7 @@ namespace Player
 
             DOTween.KillAll();
 
-            Vector3 landPosition = new Vector3(_playerVisuals.position.x, _playerVisuals.position.y - _playerVisualInitialPos.y); // rectify relative to world
+            var landPosition = new Vector3(_playerVisuals.position.x, _playerVisuals.position.y - _playerVisualInitialPos.y); // rectify relative to world
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 
@@ -147,7 +147,7 @@ namespace Player
         {
             PlayPlayer(JUMP);
 
-            Vector3 endJumpRelativePos = new Vector3(0, 2.5f, 0);
+            var endJumpRelativePos = new Vector3(0, 2.5f, 0);
             float jumpPower = 2;
             _playerVisuals.DOLocalJump(endJumpRelativePos, jumpPower, 1, 1 )
                 .SetEase( _jumpCurve )
