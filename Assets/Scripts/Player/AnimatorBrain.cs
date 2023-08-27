@@ -118,7 +118,9 @@ namespace Player
                 var lateralJumpSeq = DOTween.Sequence();
                 lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.descendDirection.x * moveXPixels , 0.1f ) );
                 lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveY( jumpDownArgs.landedRelativePosition.y , 0f ) );
-                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.landedRelativePosition.x , 0.7f ) );
+                lateralJumpSeq.AppendInterval( 0.1f);
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.landedRelativePosition.x , 0.9f ) )
+                    .SetEase(Ease.InQuad);
                 lateralJumpSeq.Play();
             }
 
@@ -127,6 +129,8 @@ namespace Player
         private void HasLandedAfterJumpDown_Callback()
         {
             PlayPlayer(IDLE);
+
+            DOTween.KillAll();
 
             Vector3 landPosition = new Vector3(_playerVisuals.position.x, _playerVisuals.position.y - _playerVisualInitialPos.y); // rectify relative to world
             _playerVisuals.localPosition = _playerVisualInitialPos;
