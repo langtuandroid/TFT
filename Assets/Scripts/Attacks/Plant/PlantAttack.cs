@@ -82,8 +82,8 @@ namespace Attack
             if (_chargingHeal == 4)
             {
                 // TODO: Cure
-                Debug.Log("Me curo 1 corazón");
-                _chargingHeal = 0;
+                _playerStatus.HealLife(1);
+                _chargingHeal = 1;
             }
 
         }
