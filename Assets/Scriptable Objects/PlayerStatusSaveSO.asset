@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStatusSave:
     saveSlot: 1
-    currentHealth: 2
+    currentHealth: 4
     maxHealth: 12
-    currentMagic: 111
+    currentMagic: 200
     maxMagic: 200
-    currentSouls: 99
+    currentSouls: 6
     maxSouls: 1000
     primarySkillIndex: 0
     secondarySkillIndex: 0
     isPhysicAttackUnlocked: 0
-    isJumpUnlocked: 1
+    isJumpUnlocked: 0
     isSwimUnlocked: 0
     isDashUnlocked: 0
     isFireWeakUnlocked: 1
-    isFireMediumUnlocked: 1
+    isFireMediumUnlocked: 0
     isFireStrongUnlocked: 0
     isPlantWeakUnlocked: 0
     isPlantMediumUnlocked: 0
@@ -35,12 +35,12 @@ MonoBehaviour:
     isWaterWeakUnlocked: 0
     isWaterMediumUnlocked: 0
     isWaterStrongUnlocked: 0
-    isLightUnlocked: 1
+    isLightUnlocked: 0
     isAirUnlocked: 0
     isHeavyMovementUnlocked: 0
     lifeBerryUnlocked: 0
     lifeBerryQuantity: 0
-    magicBerryUnlocked: 0
+    magicBerryUnlocked: 1
     magicBerryQuantity: 0
-    bombBerryUnlocked: 0
+    bombBerryUnlocked: 1
     bombBerryQuantity: 0

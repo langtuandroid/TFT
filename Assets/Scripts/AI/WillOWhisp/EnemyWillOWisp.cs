@@ -20,6 +20,16 @@ namespace AI
             "PlayerInitialPosition: Transform de destino del Player\n cuando te alcanza.\n\n")]
     
     [SerializeField]
+    [Tooltip("Velocidad")]
+    private float _speed;
+    
+    public float Speed
+    {
+        get => _speed;
+        set => _speed = value;
+    }
+    
+    [SerializeField]
     [Tooltip("Lista de waypoints para patrulla.")]
     private List<Transform> _wayPointsList;
     
