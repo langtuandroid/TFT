@@ -40,7 +40,7 @@ MonoBehaviour:
     isHeavyMovementUnlocked: 0
     lifeBerryUnlocked: 0
     lifeBerryQuantity: 0
-    magicBerryUnlocked: 0
+    magicBerryUnlocked: 1
     magicBerryQuantity: 0
-    bombBerryUnlocked: 0
+    bombBerryUnlocked: 1
     bombBerryQuantity: 0
