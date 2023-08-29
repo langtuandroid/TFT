@@ -36,6 +36,7 @@ public class SettingsMenu : MonoBehaviour
 
         // GameStatus
         _gameStatus = ServiceLocator.GetService<GameStatus>();
+        _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
     }
 
     private void OnEnable()
@@ -45,16 +46,19 @@ public class SettingsMenu : MonoBehaviour
             _gameInputs.OnCancelPerformed += GameInputs_OnCancel;
             _gameInputs.OnPrevMenuPerformed += GameInputs_OnPrevMenu;
         }
+
+        if (_gameStatus != null)
+            _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
     }
 
     private void OnDisable()
     {
-        QuitInputsEvents();
+        QuitEvents();
     }
 
     private void OnDestroy()
     {
-        QuitInputsEvents();
+        QuitEvents();
     }
 
     #endregion
@@ -76,12 +80,36 @@ public class SettingsMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void QuitInputsEvents()
+    private void QuitEvents()
     {
         if (_gameInputs != null)
         {
             _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
             _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
+        }
+
+        if (_gameStatus != null)
+            _gameStatus.OnGameStateChanged -= GameStatus_OnGameStateChanged;
+    }
+
+    #endregion
+
+    #region GameStatus
+
+    private void GameStatus_OnGameStateChanged(GameStatus.GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameStatus.GameState.MenuUI:
+                // No hace nada
+                break;
+            case GameStatus.GameState.GamePlay:
+                // Desactiva elemento
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.GameState.Inactive:
+                // No hace nada
+                break;
         }
     }
 
