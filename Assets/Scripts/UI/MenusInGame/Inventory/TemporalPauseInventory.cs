@@ -50,7 +50,6 @@ public class TemporalPauseInventory : MonoBehaviour
                 _isPaused = true;
                 break;
             case GameStatus.GameState.GamePlay:
-                _pause.SetActive(false);
                 _isPaused = false;
                 break;
             case GameStatus.GameState.Inactive:

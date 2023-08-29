@@ -33,6 +33,7 @@ public class MapMenu : MonoBehaviour
 
         // GameStatus
         _gameStatus = ServiceLocator.GetService<GameStatus>();
+        _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
 
     }
 
@@ -43,16 +44,21 @@ public class MapMenu : MonoBehaviour
             _gameInputs.OnCancelPerformed += GameInputs_OnCancel;
             _gameInputs.OnNextMenuPerformed += GameInputs_OnNextMenu;
         }
+
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
+        }
     }
 
     private void OnDisable()
     {
-        QuitInputsEvents();
+        QuitEvents();
     }
 
     private void OnDestroy()
     {
-        QuitInputsEvents();
+        QuitEvents();
     }
 
     #endregion
@@ -64,7 +70,6 @@ public class MapMenu : MonoBehaviour
     private void GameInputs_OnCancel()
     {
         _gameStatus.AskChangeToGamePlayState();
-        gameObject.SetActive(false);
     }
 
     private void GameInputs_OnNextMenu()
@@ -74,18 +79,42 @@ public class MapMenu : MonoBehaviour
         _inventoryMenu.SetActive(true);
     }
 
-    private void QuitInputsEvents()
+    private void QuitEvents()
     {
         if (_gameInputs != null)
         {
             _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
             _gameInputs.OnNextMenuPerformed -= GameInputs_OnNextMenu;
         }
-    }
 
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged -= GameStatus_OnGameStateChanged;
+        }
+    }
 
     #endregion
 
+    #region GameStatus
+
+    private void GameStatus_OnGameStateChanged(GameStatus.GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameStatus.GameState.MenuUI:
+                // No hace nada
+                break;
+            case GameStatus.GameState.GamePlay:
+                // Desactiva elemento
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.GameState.Inactive:
+                // No hace nada
+                break;
+        }
+    }
+
+    #endregion
 
     #endregion
 
