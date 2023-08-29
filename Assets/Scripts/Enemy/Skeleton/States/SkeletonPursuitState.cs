@@ -4,7 +4,10 @@ public class SkeletonPursuitState : SkeletonBaseState
     public SkeletonPursuitState( SkeletonController currentContext , SkeletonStateFactory states )
         : base( currentContext , states ) { }
 
-    public override void EnterState() { }
+    public override void EnterState() 
+    {
+        ctx.ResetPursuit();
+    }
 
     public override void UpdateState()
     {
@@ -14,11 +17,11 @@ public class SkeletonPursuitState : SkeletonBaseState
             return;
         }
 
-        if ( ctx.CanChangeAction() )
+        if ( ctx.CanChangeMoveDirection() )
         {
-            ctx.ResetAction();
+            ctx.ResetPursuit();
         }
 
-        ctx.Movement();
+        ctx.Pursuit();
     }
 }

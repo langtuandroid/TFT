@@ -40,8 +40,6 @@ public class EnemySlime : MonoBehaviour
     #endregion
     
     #region REFERENCES
-    private LayerMask _layer = 3;
-    
     private GameObject _player;
 
     private Collider2D boundsCollider;
@@ -73,6 +71,8 @@ public class EnemySlime : MonoBehaviour
 
     private bool _slimeLoaded;
 
+    public bool SlimeLoaded { get => _slimeLoaded; }
+
     private LifeEvents _lifeEvents;
 
     private int numberOfSouls = 3;
@@ -88,7 +88,7 @@ public class EnemySlime : MonoBehaviour
     private void OnDestroy()
     {
         _lifeEvents.OnDeathValue -= OnStopFollow;
-        _slimeHealth.OnDeath -= CheckIfAlive;
+        _slimeHealth.OnDeath -= SlimeDead;
     }
 
     private void Awake()
@@ -101,7 +101,7 @@ public class EnemySlime : MonoBehaviour
     {
         _lifeEvents = ServiceLocator.GetService<LifeEvents>();
         _lifeEvents.OnDeathValue += OnStopFollow;
-        _slimeHealth.OnDeath += CheckIfAlive;
+        _slimeHealth.OnDeath += SlimeDead;
         
         if ( !_isOnProcedural )
         {
@@ -126,8 +126,16 @@ public class EnemySlime : MonoBehaviour
         _spriteRenderer.flipX = _navMeshAgent.velocity.x < 0f;
     }
 
-    private void CheckIfAlive()
+    private void SlimeDead()
     {
+        _slimeLoaded = false;
+        
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.speed = 0f;
+            _navMeshAgent.isStopped = true;
+        }
+        
         for (int i = 0; i < numberOfSouls; i++)
         {
             Vector2 randomOffset = Random.insideUnitCircle * 0.5f;
@@ -240,7 +248,6 @@ public class EnemySlime : MonoBehaviour
     public void Follow()
     {
         if(_canFollow)
-            //_navMeshAgent.destination = _player.transform.position;
             UpdatePatrolMovement(_player.transform.position);
     }
 

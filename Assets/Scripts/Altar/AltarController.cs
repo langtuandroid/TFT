@@ -8,14 +8,10 @@ public class AltarController : MonoBehaviour, IInteractable
     [SerializeField] private ZoneSaveSO[] _zoneSaveSOArray;
 
     [Header("To Dungeon Scene:")]
-    [SerializeField] private SceneName _nextScene;
-    [SerializeField] private Color _fadeOutColor;
-    [SerializeField] private MusicZoneParameter _musicParamName;
-    [SerializeField] private MusicName _musicName;
+    [SerializeField] private ChangeSceneInfoSO _changeSceneInfoSO;
     [SerializeField] private GameObject _enterIcon;
 
     private bool _isDungeonOpen;
-    private float _fadeOutSeconds = 1f;
 
     private void Start()
     {
@@ -35,15 +31,14 @@ public class AltarController : MonoBehaviour, IInteractable
     {
         if ( _isDungeonOpen )
         {
-            //ServiceLocator.GetService<IAudioSpeaker>().ChangeZoneParamater( _musicParamName , true );
-            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _musicName );
+            ServiceLocator.GetService<IAudioSpeaker>().ChangeMusic( _changeSceneInfoSO.MusicName );
 
             ServiceLocator.GetService<LevelEvents>().ChangeZone(
                 new LevelEvents.ChangeZoneArgs
                 {
                     nextStartPointRefId = 0 ,
-                    fadeColor = _fadeOutColor ,
-                    fadeDurationSeconds = _fadeOutSeconds
+                    fadeColor = _changeSceneInfoSO.FadeOutColor ,
+                    fadeDurationSeconds = _changeSceneInfoSO.FadeOutSeconds
                 } );
 
             StartCoroutine( FadeOut() );
@@ -58,8 +53,8 @@ public class AltarController : MonoBehaviour, IInteractable
 
     private IEnumerator FadeOut()
     {
-        WaitForSeconds waitTime = new WaitForSeconds( _fadeOutSeconds );
+        WaitForSeconds waitTime = new WaitForSeconds( _changeSceneInfoSO.FadeOutSeconds );
         yield return waitTime;
-        ServiceLocator.GetService<SceneLoader>().Load( _nextScene.ToString() );
+        ServiceLocator.GetService<SceneLoader>().Load( _changeSceneInfoSO.NextScene.ToString() );
     }
 }

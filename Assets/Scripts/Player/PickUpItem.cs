@@ -1,4 +1,3 @@
-using System;
 using Player;
 using UnityEngine;
 
@@ -18,14 +17,18 @@ public class PickUpItem
     private IPickable _pickable;
     public bool HasItem = false;
 
-    public void Init(Transform playerTransform , Transform pickUpPoint, Vector2 colliderOffset , LayerMask interactableLayerMask, AnimatorBrain animatorBrain)
+    public PickUpItem( Transform playerTransform , Transform pickUpPoint , Vector2 colliderOffset , LayerMask interactableLayerMask )
     {
         _transform = playerTransform;
         _pickUpPoint = pickUpPoint;
         _colliderOffset = colliderOffset;
         _interactableLayer = interactableLayerMask;
+    }
+
+    public void Init(AnimatorBrain animatorBrain, IAudioSpeaker audioSpeaker)
+    {
         _animatorBrain = animatorBrain;
-        //_audioSpeaker = ServiceLocator.GetService<IAudioSpeaker>();
+        _audioSpeaker = audioSpeaker;
     }
 
     public bool CanPickItUp( Vector2 lookDirection )
@@ -39,7 +42,12 @@ public class PickUpItem
             _colliderOffset.y + _transform.position.y + yRayOffset );
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
-
+        
+        //Debug.DrawLine(origin, origin + lookDirection * _checkDistance, Color.red, 0.5f);
+        //Debug.Log("Raycast origin: " + origin);
+        //Debug.Log("Raycast direction: " + lookDirection);
+        //Debug.Log("Raycast hit: " + hit.collider?.name);
+        
         _pickable = hit.collider?.GetComponent<IPickable>();
         if ( _pickable != null )
         {

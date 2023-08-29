@@ -217,6 +217,9 @@ namespace Player
             {
                 posToCheck = _transform.position + lookDirection * 1.5f + Vector3.down;
                 relativePos = lookDirection * 1.5f + Vector3.down;
+
+                if ( Physics2D.Raycast( posToCheck , Vector2.up , 1 , _currentFloorBitPosition ) ) 
+                    return;
             }
 
             if ( Physics2D.OverlapPoint( posToCheck , _boundsMask ) )

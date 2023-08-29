@@ -34918,8 +34918,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.99999994
-    height: 0.99964887
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -36383,11 +36383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 1
-  _nextScene: 7
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 7
+  _changeSceneInfoSO: {fileID: 11400000, guid: 0f11d52ef46c04c40aa3b3def3f0c7e4, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls:
@@ -37554,11 +37550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextStartPointRefID: 0
-  _nextScene: 0
-  _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
-  _musicParamName: 0
-  _musicName: 1
+  _changeSceneInfoSO: {fileID: 11400000, guid: 593a556f193d23048a1b964fcda5f138, type: 2}
   OnZoneChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -43783,6 +43775,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518447b2eedea407e9e579ef64d76272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxPhisicalDamage: 2
+  _maxDamage: 1
+  _slimeMaster: 0
+  _cantSlime: 0
 --- !u!114 &1182801759514296604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43795,6 +43791,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518447b2eedea407e9e579ef64d76272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxPhisicalDamage: 2
+  _maxDamage: 1
+  _slimeMaster: 0
+  _cantSlime: 0
 --- !u!70 &6274960950923869447
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -43962,6 +43962,7 @@ MonoBehaviour:
   _secondsToChangeDirection: 5
   _earRadious: 3
   _exclamation: {fileID: 1908729527}
+  _soulPrefab: {fileID: 0}
 --- !u!114 &6274960950923869566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44344,6 +44345,7 @@ MonoBehaviour:
   _secondsToChangeDirection: 5
   _earRadious: 3
   _exclamation: {fileID: 1614153665}
+  _soulPrefab: {fileID: 0}
 --- !u!114 &6274960952470271554
 MonoBehaviour:
   m_ObjectHideFlags: 0

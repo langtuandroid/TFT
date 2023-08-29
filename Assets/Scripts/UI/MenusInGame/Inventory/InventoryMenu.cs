@@ -683,6 +683,7 @@ public class InventoryMenu : MonoBehaviour
         // TODO: Reproducir sonido
         _gameStatus.AskChangeToGamePlayState();
         gameObject.SetActive(false);
+        _gameStatus.AskChangeToGamePlayState();
     }
 
     private void GameInputs_OnNextMenu()

@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _changeSceneInfoSO: {fileID: 11400000, guid: 8b3eb82ede3bba94e8fdef2c82402ace, type: 2}
   _nextStartPointRefID: 0
   _nextScene: 8
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
@@ -38914,6 +38915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _changeSceneInfoSO: {fileID: 11400000, guid: fe9cade329563ec408057524a3b10715, type: 2}
   _nextStartPointRefID: 1
   _nextScene: 9
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
@@ -39317,6 +39319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8e0c66541d8d074fb729d515797030c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _changeSceneInfoSO: {fileID: 11400000, guid: afe645be6a108b94485cbbc732868002, type: 2}
   _nextStartPointRefID: 2
   _nextScene: 9
   _fadeOutColor: {r: 0, g: 0, b: 0, a: 0}
