@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using Honeti;
+using static GameStatus;
 
 public class InventoryMenu : MonoBehaviour
 {
@@ -58,10 +59,6 @@ public class InventoryMenu : MonoBehaviour
 
     #endregion
 
-    #region Public variables
-
-    #endregion
-
     #region Private variables
 
     // SERVICES
@@ -110,8 +107,7 @@ public class InventoryMenu : MonoBehaviour
 
         // GameStatus
         _gameStatus = ServiceLocator.GetService<GameStatus>();
-
-
+        _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
 
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         // Damos un evento al click de botón
@@ -140,7 +136,7 @@ public class InventoryMenu : MonoBehaviour
         RemoveListeners();
 
         // Quitamos eventos
-        QuitInputsEvents();
+        QuitEvents();
     }
 
     private void OnDestroy()
@@ -149,7 +145,7 @@ public class InventoryMenu : MonoBehaviour
         RemoveListeners();
 
         // Desactivamos eventos de input
-        QuitInputsEvents();
+        QuitEvents();
 
         // Quitamos los eventos de inventario
         if (_inventoryEvent != null)
@@ -189,6 +185,11 @@ public class InventoryMenu : MonoBehaviour
             _gameInputs.OnNextMenuPerformed += GameInputs_OnNextMenu;
             _gameInputs.OnPrevMenuPerformed += GameInputs_OnPrevMenu;
             _navigateAction.performed += GameInputs_OnNavigate;
+        }
+
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
         }
 
     }
@@ -667,7 +668,7 @@ public class InventoryMenu : MonoBehaviour
         Invoke(nameof(ChangeText), .01f);
     }
 
-    private void QuitInputsEvents()
+    private void QuitEvents()
     {
         if (_gameInputs != null)
         {
@@ -675,6 +676,11 @@ public class InventoryMenu : MonoBehaviour
             _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
             _gameInputs.OnNextMenuPerformed -= GameInputs_OnNextMenu;
             _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
+        }
+
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged -= GameStatus_OnGameStateChanged;
         }
     }
 
@@ -707,10 +713,26 @@ public class InventoryMenu : MonoBehaviour
 
     #endregion
 
+    #region GameStatus
+
+    private void GameStatus_OnGameStateChanged(GameStatus.GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameStatus.GameState.MenuUI:
+                // No hace nada
+                break;
+            case GameStatus.GameState.GamePlay:
+                // Desactiva elemento
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.GameState.Inactive:
+                // No hace nada
+                break;
+        }
+    }
 
     #endregion
-
-    #region Public methods
 
     #endregion
 
