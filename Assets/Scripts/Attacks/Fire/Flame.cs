@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Utils;
+using FMOD.Studio;
 
 public class Flame : MonoBehaviour
 {
@@ -27,39 +28,18 @@ public class Flame : MonoBehaviour
     // VARIABLES
     private Vector2 _direction; // Movement direction
 
-    private List<IBurnable> _burnables; // List of collisions
-
     #endregion
 
     #region Unity methods
 
     private void Start()
     {
-        _burnables = new List<IBurnable>();
         MoveAndGrow();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<IBurnable>(out IBurnable burn))
-            _burnables.Add(burn);
-
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.TryGetComponent<IBurnable>(out IBurnable burn))
-            _burnables.Remove(burn);
-    }
-
-    private void Update()
+    private void FixedUpdate()
     {
         CheckCollisions();
-    }
-
-    private void OnDestroy()
-    {
-        _burnables.Clear();
     }
 
     #endregion
@@ -86,8 +66,19 @@ public class Flame : MonoBehaviour
 
     private void CheckCollisions()
     {
-        foreach (IBurnable burn in _burnables)
-            burn.Burn(_damage);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(
+            transform.position,
+            transform.lossyScale.x * .5f,
+            Vector2.zero,
+            transform.lossyScale.x * .5f,
+            LayerMask.GetMask("Interactable")
+            );
+
+        if (hits.Length > 0)
+            foreach (RaycastHit2D hit in hits)
+                hit.transform.gameObject.GetComponent<IBurnable>()?
+                    .Burn(_damage);
+
 
     }
 
