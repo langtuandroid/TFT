@@ -87,9 +87,17 @@ public class EnemySlime : MonoBehaviour
 
     private void OnDestroy()
     {
-        _lifeEvents.OnDeathValue -= OnStopFollow;
-        _slimeHealth.OnDeath -= SlimeDead;
+        if (_lifeEvents != null)
+        {
+            _lifeEvents.OnDeathValue -= OnStopFollow;
+        }
+
+        if (_slimeHealth != null)
+        {
+            _slimeHealth.OnDeath -= SlimeDead;
+        }
     }
+
 
     private void Awake()
     {
