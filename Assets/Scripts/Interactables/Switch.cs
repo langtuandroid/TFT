@@ -15,7 +15,7 @@ public class Switch : MonoBehaviour
     [SerializeField] private float _sightAwareInterior;
     [Header("Events on Activate Objects")]
     public UnityEvent OnSwitchActivation;
-    
+
     #endregion
     
     #region Private Variable
@@ -29,6 +29,9 @@ public class Switch : MonoBehaviour
     private Collider2D _colliderExterior;
     private Collider2D _colliderInterior;
     #endregion
+
+    public bool CanReset = false;
+    public bool ResetPuzle = false;
     
     #endregion
 
@@ -42,6 +45,11 @@ public class Switch : MonoBehaviour
     private void Update()
     {
         ActivateButton();
+
+        if (ResetPuzle)
+        {
+            CheckPlayerExit();
+        }
     }
     #endregion
     
@@ -68,11 +76,13 @@ public class Switch : MonoBehaviour
         }
     }
 
-    private void ResetButton()
+    public void ResetButton()
     {
+        ResetPuzle = false;
         _colliderExterior.enabled = true; //Activo el colider exterior
         _buttonCollision = false; //Reseteo la variable de activar boton para que solo entre 1 vez en el metodo     
         _isActivated = false; // Desactivo el boton
+        _animator.Play("Button_Off");
     }
 
     private void ToggleSwitch()
@@ -125,6 +135,23 @@ public class Switch : MonoBehaviour
         }
       
         _colliderExterior.enabled = true;
+    }
+
+    private void CheckPlayerExit()
+    {
+        Collider2D objectDetected = Physics2D.OverlapCircle(transform.position, _sightAwareInterior, 
+            LayerMask.GetMask(Constants.LAYER_INTERACTABLE, Constants.LAYER_PLAYER));
+        
+        Debug.Log("Objetos detectados: " + objectDetected.gameObject.name);
+
+        if (objectDetected != null)
+        {
+            if (!objectDetected.CompareTag(Constants.TAG_PLAYER))
+            {
+                ResetButton();
+            }
+        }
+  
     }
     
     private void OnDrawGizmos()

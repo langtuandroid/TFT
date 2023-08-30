@@ -28,8 +28,8 @@ public class TriggerChangeZone : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
-        WaitForSeconds waitTime = new WaitForSeconds( _changeSceneInfoSO.FadeOutSeconds );
+        var waitTime = new WaitForSeconds( _changeSceneInfoSO.FadeOutSeconds );
         yield return waitTime;
-        ServiceLocator.GetService<SceneLoader>().InstaLoad( _changeSceneInfoSO.NextScene.ToString() );
+        ServiceLocator.GetService<SceneLoader>().InstaLoad( _changeSceneInfoSO.NextScene );
     }
 }
