@@ -20,13 +20,13 @@ namespace AI
                         else
                         {
                             agent.ResetListenTimer();
-                            agent.ChangeNavMeshAgentSpeed(2.5f);
+                            agent.ChangeNavMeshAgentSpeed(agent.Speed);
                             agent.ChangeState(new EnemyWillOWispPatrolState()); 
                         }
                     }
                     else // Le persigo
                     {
-                        agent.ChangeNavMeshAgentSpeed(2.5f);
+                        agent.ChangeNavMeshAgentSpeed(agent.Speed);
                         agent.ChangeState(new EnemyWillOWispFollowState());
                     }
 
@@ -43,7 +43,7 @@ namespace AI
                     else
                     {
                         agent.ResetListenTimer();
-                        agent.ChangeNavMeshAgentSpeed(2.5f);
+                        agent.ChangeNavMeshAgentSpeed(agent.Speed);
                         agent.ChangeState(new EnemyWillOWispPatrolState()); 
                     }
                 }

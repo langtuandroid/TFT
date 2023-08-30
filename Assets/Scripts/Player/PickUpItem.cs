@@ -22,6 +22,7 @@ public class PickUpItem
         _transform = playerTransform;
         _pickUpPoint = pickUpPoint;
         _colliderOffset = colliderOffset;
+        _interactableLayer = interactableLayerMask;
     }
 
     public void Init(AnimatorBrain animatorBrain, IAudioSpeaker audioSpeaker)
@@ -41,7 +42,12 @@ public class PickUpItem
             _colliderOffset.y + _transform.position.y + yRayOffset );
 
         RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkDistance , _interactableLayer );
-
+        
+        //Debug.DrawLine(origin, origin + lookDirection * _checkDistance, Color.red, 0.5f);
+        //Debug.Log("Raycast origin: " + origin);
+        //Debug.Log("Raycast direction: " + lookDirection);
+        //Debug.Log("Raycast hit: " + hit.collider?.name);
+        
         _pickable = hit.collider?.GetComponent<IPickable>();
         if ( _pickable != null )
         {

@@ -6,8 +6,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using Honeti;
+using static GameStatus;
 
-public class Inventory : MonoBehaviour
+public class InventoryMenu : MonoBehaviour
 {
     #region SerializeFields
 
@@ -16,6 +17,14 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     [Tooltip("Información del juego")]
     private PlayerStatusSaveSO _playerStatusSO;
+
+    [Header("Other menus")]
+    [SerializeField]
+    [Tooltip("Menú del mapa")]
+    private GameObject _mapMenu;
+    [SerializeField]
+    [Tooltip("Menú de ajustes")]
+    private GameObject _settingsMenu;
 
     [Header("UI elements")]
 
@@ -47,10 +56,6 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     [Tooltip("Input action asset")]
     private InputActionAsset _inputActions;
-
-    #endregion
-
-    #region Public variables
 
     #endregion
 
@@ -102,8 +107,7 @@ public class Inventory : MonoBehaviour
 
         // GameStatus
         _gameStatus = ServiceLocator.GetService<GameStatus>();
-
-
+        _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
 
         PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
         // Damos un evento al click de botón
@@ -124,13 +128,15 @@ public class Inventory : MonoBehaviour
     {
         // Inicializamos
         Init();
-
     }
 
     private void OnDisable()
     {
         // Quitamos listeners
         RemoveListeners();
+
+        // Quitamos eventos
+        QuitEvents();
     }
 
     private void OnDestroy()
@@ -138,22 +144,15 @@ public class Inventory : MonoBehaviour
         // Quitamos listeners
         RemoveListeners();
 
-        // Desactivamos eventos
+        // Desactivamos eventos de input
+        QuitEvents();
 
-        if (_gameInputs != null)
-        {
-            _navigateAction.performed -= GameInputs_OnNavigate;
-            _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
-            _gameInputs.OnNextMenuPerformed -= GameInputs_OnNextMenu;
-            _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
-        }
-
+        // Quitamos los eventos de inventario
         if (_inventoryEvent != null)
         {
             _inventoryEvent.OnPrimarySkillChange -= OnChangePrimarySkill;
             _inventoryEvent.OnSecondarySkillChange -= OnChangeSecondarySkill;
         }
-
     }
 
     #endregion
@@ -178,6 +177,21 @@ public class Inventory : MonoBehaviour
 
         // Y finalmente, cambiamos el texto
         ChangeText();
+
+        // Y añadimos los eventos de inputs
+        if (_gameInputs != null)
+        {
+            _gameInputs.OnCancelPerformed += GameInputs_OnCancel;
+            _gameInputs.OnNextMenuPerformed += GameInputs_OnNextMenu;
+            _gameInputs.OnPrevMenuPerformed += GameInputs_OnPrevMenu;
+            _navigateAction.performed += GameInputs_OnNavigate;
+        }
+
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
+        }
+
     }
 
     #region Icons
@@ -654,9 +668,26 @@ public class Inventory : MonoBehaviour
         Invoke(nameof(ChangeText), .01f);
     }
 
+    private void QuitEvents()
+    {
+        if (_gameInputs != null)
+        {
+            _navigateAction.performed -= GameInputs_OnNavigate;
+            _gameInputs.OnCancelPerformed -= GameInputs_OnCancel;
+            _gameInputs.OnNextMenuPerformed -= GameInputs_OnNextMenu;
+            _gameInputs.OnPrevMenuPerformed -= GameInputs_OnPrevMenu;
+        }
+
+        if (_gameStatus != null)
+        {
+            _gameStatus.OnGameStateChanged -= GameStatus_OnGameStateChanged;
+        }
+    }
+
     private void GameInputs_OnCancel()
     {
         // TODO: Reproducir sonido
+        _gameStatus.AskChangeToGamePlayState();
         gameObject.SetActive(false);
         _gameStatus.AskChangeToGamePlayState();
     }
@@ -665,21 +696,43 @@ public class Inventory : MonoBehaviour
     {
         // TODO: Pasar a siguiente panel (configuración)
         Debug.Log("Abrimos panel sistema");
+        _settingsMenu.SetActive(true);
+        // TODO: Meter animación
+        gameObject.SetActive(false);
     }
 
     private void GameInputs_OnPrevMenu()
     {
         // TODO: Pasar a panel anterior (mapa)
         Debug.Log("Abrimos panel mapa");
+        _mapMenu.SetActive(true);
+        // TODO: Meter animación que haga como que se mueve antes de quitarse
+        gameObject.SetActive(false);
     }
 
 
     #endregion
 
+    #region GameStatus
+
+    private void GameStatus_OnGameStateChanged(GameStatus.GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameStatus.GameState.MenuUI:
+                // No hace nada
+                break;
+            case GameStatus.GameState.GamePlay:
+                // Desactiva elemento
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.GameState.Inactive:
+                // No hace nada
+                break;
+        }
+    }
 
     #endregion
-
-    #region Public methods
 
     #endregion
 

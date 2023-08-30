@@ -11,9 +11,8 @@ public class DynamicPlatform : MonoBehaviour
     [SerializeField] private float _speed;
     public float PlayerDetectionRadious;
 
-    private bool _canMove = false;
-   // public bool CanMove = { set => _canMove.va}
-    
+    public bool CanMove = false;
+
     private Transform _target;
     private Transform _playerOnPlatform;
     private PlayerController _playerController;
@@ -25,7 +24,7 @@ public class DynamicPlatform : MonoBehaviour
 
     private void Update()
     {
-        if (_canMove)
+        if (CanMove)
         {
             Move();
             CheckPlayer();
@@ -80,7 +79,13 @@ public class DynamicPlatform : MonoBehaviour
 
     public void ActivatePlatform()
     {
-        _canMove = true;
+        CanMove = true;
+        _playerOnPlatform = null;
+    }
+
+    public void DeactivatePlatform()
+    {
+        CanMove = false;
         _playerOnPlatform = null;
     }
     

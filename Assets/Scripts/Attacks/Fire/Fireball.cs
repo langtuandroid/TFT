@@ -17,6 +17,8 @@ public class Fireball : MonoBehaviour
     #region Private Variables
     private IAudioSpeaker _audioSpeaker;
     private GameInputs _gameInputs;
+
+    private Animator _anim;
     private Vector3 _direction; // Dirección de movimiento
     private float _timer; // Temporizador
     #endregion
@@ -26,6 +28,7 @@ public class Fireball : MonoBehaviour
 
     private void Awake()
     {
+        _anim = GetComponent<Animator>();
         // Ponemos una dirección de movimiento por defecto
         // (p. ej. hacia arriba)
         _direction = Vector3.up;
@@ -95,6 +98,8 @@ public class Fireball : MonoBehaviour
     {
         // Establecemos la dirección de movimiento con la nueva dirección
         _direction = direction;
+        _anim.SetFloat("x", direction.x);
+        _anim.SetFloat("y", direction.y);
     }
 
     #endregion
