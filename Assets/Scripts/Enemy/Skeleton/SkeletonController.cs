@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class SkeletonController : MonoBehaviour
+public class SkeletonController : MonoBehaviour, IBurnable
 {
-    public SkeletonDataSO SkeletonDataSO;
+    [SerializeField] private SkeletonDataSO _skeletonDataSO;
 
     public SkeletonBaseState CurrentState;
 
@@ -18,16 +18,18 @@ public class SkeletonController : MonoBehaviour
 
     private Transform _playerTrans;
     private ObjectPool _bonePool;
+    private int _currentHealth;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        //_bonePool = GetComponentInChildren<ObjectPool>();
-        _bonePool = new ObjectPool( SkeletonDataSO.BonePrefab , 3 );
+        _bonePool = new ObjectPool( _skeletonDataSO.BonePrefab , 3 );
         var skeletonStateFactory = new SkeletonStateFactory( this );
         CurrentState = skeletonStateFactory.Idle();
+
+        _currentHealth = _skeletonDataSO.Health;
     }
 
     private void Start()  { CurrentState.EnterState(); }
@@ -53,13 +55,14 @@ public class SkeletonController : MonoBehaviour
 
     public bool CanMove()
     {
-        return Physics2D.Raycast( transform.position , _moveDir , 1 , SkeletonDataSO.ObstaclesMask );
+        var rayDistance = 1;
+        return Physics2D.Raycast( transform.position , _moveDir , rayDistance , _skeletonDataSO.ObstaclesMask );
     }
 
     public void Movement()
     {
         if ( CanMove() )
-            _rb.MovePosition( _rb.position + Time.deltaTime * SkeletonDataSO.Speed * _moveDir );
+            _rb.MovePosition( _rb.position + Time.deltaTime * _skeletonDataSO.Speed * _moveDir );
         else
             _moveDir = _directionArray[Random.Range( 0 , _directionArray.Length )];
 
@@ -72,17 +75,12 @@ public class SkeletonController : MonoBehaviour
         {
             _anim.Play( "Idle" );
         }
-        else 
-        if ( _moveDir.Equals( Vector2.left ) )
-        {
-            _anim.Play( "Move" );
-            _spriteRenderer.flipX = true;
-        }
         else
-        if ( _moveDir.Equals( Vector2.right ) )
         {
             _anim.Play( "Move" );
-            _spriteRenderer.flipX = false;
+            if ( _moveDir.Equals( Vector2.left ) )  _spriteRenderer.flipX = true;
+            else
+            if ( _moveDir.Equals( Vector2.right ) ) _spriteRenderer.flipX = false;
         }
     }
 
@@ -98,7 +96,7 @@ public class SkeletonController : MonoBehaviour
     public void Pursuit()
     {
         if ( CanMove() )
-            _rb.MovePosition( _rb.position + Time.deltaTime * SkeletonDataSO.Speed * _moveDir );
+            _rb.MovePosition( _rb.position + Time.deltaTime * _skeletonDataSO.Speed * _moveDir );
         else
             _moveDir = NextPursuitDirection();
     }
@@ -132,7 +130,7 @@ public class SkeletonController : MonoBehaviour
 
     public bool HasDetectPlayer()
     {
-        var playerCol = Physics2D.OverlapCircle( transform.position , SkeletonDataSO.DetectionRadius , SkeletonDataSO.PlayerMask );
+        var playerCol = Physics2D.OverlapCircle( transform.position , _skeletonDataSO.DetectionRadius , _skeletonDataSO.PlayerMask );
         if ( playerCol )
         {
             if ( _playerTrans == null ) _playerTrans = playerCol.transform;
@@ -149,9 +147,21 @@ public class SkeletonController : MonoBehaviour
 
     public void Attack()
     {
-        _attackCounterSeconds = SkeletonDataSO.AttackIntervalSeconds;
+        _attackCounterSeconds = _skeletonDataSO.AttackIntervalSeconds;
         var bone = _bonePool.GetPooledObject();
         bone.transform.position = transform.position;
-        bone.GetComponent<BoneProjectile>().Launch( _playerTrans , SkeletonDataSO.Damage );
+        bone.GetComponent<BoneProjectile>().Launch( _playerTrans , _skeletonDataSO.Damage );
+    }
+
+    private void TakeDamage( int damage )
+    {
+        _currentHealth -= damage;
+        if ( _currentHealth <= 0 )
+            Destroy( gameObject );
+    }
+
+    public void Burn( int damage )
+    {
+        TakeDamage( damage );
     }
 }

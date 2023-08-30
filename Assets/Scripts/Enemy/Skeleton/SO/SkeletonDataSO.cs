@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SkeletonDataSO", menuName = "Enemies/Skeleton Data SO")]
 public class SkeletonDataSO : ScriptableObject
 {
+    [field: SerializeField] public int Health { get; private set; }
     [field: SerializeField] public float Speed { get; private set; }
     [field: SerializeField] public float DetectionRadius { get; private set; }
     [field: SerializeField] public float AttackIntervalSeconds { get; private set; }

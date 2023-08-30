@@ -13,6 +13,7 @@ public class PlayerPhysicalDataSO : ScriptableObject
 
     [field: Header("Jump:")]
     [field: SerializeField] public LayerMask boundsLayerMask;
+    [field: SerializeField] public AnimationCurve jumpCurve;
 
     [field: Header("Pick Up Item:")]
     [field: SerializeField] public string pickUpPointObjName;

@@ -21,10 +21,13 @@ namespace Player
 
         [SerializeField] private Transform _playerVisuals;
         [SerializeField] private Transform _shadowVisuals;
+        [SerializeField] private AnimationCurve _jumpCurve;
+        [SerializeField] private Scriptable.PowerPanelDataListScriptable _powerColorDataSO;
 
         private Vector3 _playerVisualInitialPos;
         private Vector3 _shadowVisualInitialPos;
 
+        private OutlineModifier _outlineModifier;
         private Animator _playerAnimator;
         private SpriteRenderer _spriteRender;
         private Vector2 _lookDirection;
@@ -57,12 +60,18 @@ namespace Player
             _lifeEvents.OnDeathValue -= Death_OnDeath;
             _lifeEvents.OnStartTemporalInvencibility -= StartTemporalInvencibility;
             _magicEvents.OnMaxPowerUsedValue -= MaxPower_OnUsed;
+
+            var inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            if ( inventoryEvents != null )
+                inventoryEvents.OnPrimarySkillChange -= _outlineModifier.ChangeEmissionColor;
         }
 
         public void Init(Vector2 startLookDirection, Jump jump)
         {
             _playerAnimator = GetComponent<Animator>();
             _spriteRender = GetComponent<SpriteRenderer>();
+
+            _outlineModifier = new OutlineModifier( _spriteRender.material , _powerColorDataSO );
 
             _playerVisualInitialPos = _playerVisuals.localPosition;
             _shadowVisualInitialPos = _shadowVisuals.localPosition;
@@ -74,6 +83,9 @@ namespace Player
 
             LookDirection(startLookDirection);
             _initialLookDirection = startLookDirection;
+
+            var inventoryEvents = ServiceLocator.GetService<InventoryEvents>();
+            inventoryEvents.OnPrimarySkillChange += _outlineModifier.ChangeEmissionColor;
 
             _lifeEvents = ServiceLocator.GetService<LifeEvents>();
             _lifeEvents.OnDeathValue += Death_OnDeath;
@@ -89,23 +101,26 @@ namespace Player
         {
             PlayPlayer(JUMP);
 
-            float jumpPower = 2f;
+            var jumpPower = 2f;
             _playerVisuals.DOLocalJump(jumpDownArgs.landedRelativePosition, jumpPower, 1, 1)
+                .SetEase( _jumpCurve )
                 .OnComplete(HasLandedAfterJumpDown_Callback)
                 .Play();
 
-            if (jumpDownArgs.descendDirection == Vector3.up || jumpDownArgs.descendDirection == Vector3.down)
+            if ( jumpDownArgs.descendDirection == Vector3.up || jumpDownArgs.descendDirection == Vector3.down )
             {
-                _shadowVisuals.DOLocalMove(jumpDownArgs.landedRelativePosition, 0.9f)
+                _shadowVisuals.DOLocalMove( jumpDownArgs.landedRelativePosition , 0.9f )
                     .Play();
             }
             else
             {
-                float moveXPixels = 6f / 16;
-                Sequence lateralJumpSeq = DOTween.Sequence();
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveX(jumpDownArgs.descendDirection.x * moveXPixels, 0.1f));
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveY(jumpDownArgs.landedRelativePosition.y, 0f));
-                lateralJumpSeq.Append(_shadowVisuals.DOLocalMoveX(jumpDownArgs.landedRelativePosition.x, 0.7f));
+                var moveXPixels = 6f / 16;
+                var lateralJumpSeq = DOTween.Sequence();
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.descendDirection.x * moveXPixels , 0.1f ) );
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveY( jumpDownArgs.landedRelativePosition.y , 0f ) );
+                lateralJumpSeq.AppendInterval( 0.1f);
+                lateralJumpSeq.Append( _shadowVisuals.DOLocalMoveX( jumpDownArgs.landedRelativePosition.x , 0.9f ) )
+                    .SetEase(Ease.InQuad);
                 lateralJumpSeq.Play();
             }
 
@@ -115,7 +130,9 @@ namespace Player
         {
             PlayPlayer(IDLE);
 
-            Vector3 landPosition = new Vector3(_playerVisuals.position.x, _playerVisuals.position.y - _playerVisualInitialPos.y); // rectify relative to world
+            DOTween.KillAll();
+
+            var landPosition = new Vector3(_playerVisuals.position.x, _playerVisuals.position.y - _playerVisualInitialPos.y); // rectify relative to world
             _playerVisuals.localPosition = _playerVisualInitialPos;
             _shadowVisuals.localPosition = _shadowVisualInitialPos;
 
@@ -130,9 +147,10 @@ namespace Player
         {
             PlayPlayer(JUMP);
 
-            Vector3 endJumpRelativePos = new Vector3(0, 2.5f, 0);
+            var endJumpRelativePos = new Vector3(0, 2.5f, 0);
             float jumpPower = 2;
-            _playerVisuals.DOLocalJump(endJumpRelativePos, jumpPower, 1, 1)
+            _playerVisuals.DOLocalJump(endJumpRelativePos, jumpPower, 1, 1 )
+                .SetEase( _jumpCurve )
                 .OnComplete(HasLandedAfterJumpable_Callback)
                 .Play();
             _shadowVisuals.DOLocalMoveY(2.5f, 0.9f)

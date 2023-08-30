@@ -168,14 +168,13 @@ namespace Player
 
         private void CheckJumpDown( Vector2 lookDirection )
         {
-            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x ,
-                                          _colliderOffset.y + _transform.position.y );
+            var origin = new Vector2( _colliderOffset.x + _transform.position.x ,
+                                      _colliderOffset.y + _transform.position.y );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _currentFloorBitPosition );
+            var hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _currentFloorBitPosition );
 
             if ( hit )
             {
-                Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.yellow );
                 if ( _jumpDownTimer.HasTickOnce() )
                 {
                     JumpGroundDown( lookDirection );
@@ -187,8 +186,8 @@ namespace Player
         private void JumpGroundDown( Vector3 lookDirection )
         {
             int numOfFloors = 1;
-            Vector3 posToCheck = new();
-            Vector3 relativePos = new();
+            var posToCheck = new Vector3();
+            var relativePos = new Vector3();
             if ( lookDirection == Vector3.down )
             {
                 float maxNumOfFloors = 3;
@@ -210,15 +209,18 @@ namespace Player
             }
             else if ( lookDirection == Vector3.up )
             {
-                posToCheck = _transform.position + Vector3.up * 1.5f;
-                relativePos = Vector3.up * 1.5f;
+                var dist = 1.5f;
+                posToCheck = _transform.position + Vector3.up * dist;
+                relativePos = Vector3.up * dist;
             }
             else
             {
-                posToCheck = _transform.position + lookDirection * 1.5f + Vector3.down;
-                relativePos = lookDirection * 1.5f + Vector3.down;
+                var dist = 1.5f;
+                posToCheck = _transform.position + lookDirection * dist + Vector3.down;
+                relativePos = lookDirection * dist + Vector3.down;
 
-                if ( Physics2D.Raycast( posToCheck , Vector2.up , 1 , _currentFloorBitPosition ) ) 
+                dist = 1;
+                if ( Physics2D.Raycast( posToCheck , Vector2.up , dist , _currentFloorBitPosition ) ) 
                     return;
             }
 
@@ -227,8 +229,7 @@ namespace Player
 
             _jumpState = JumpState.Jumpable;
 
-            for ( int i = 0; i < numOfFloors; i++ )
-                _currentFloorBitPosition /= 2;
+            _currentFloorBitPosition /= 2 * numOfFloors;
 
             OnJumpDownStarted?.Invoke( new OnJumpDownStartedArgs() { 
                 numFloorsDescended = numOfFloors,
@@ -251,12 +252,10 @@ namespace Player
             float yRayOffset = lookDirection.x != 0 ? _rayCastOffset.y : 0;
 
 
-            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
-                                          _colliderOffset.y + _transform.position.y + yRayOffset );
+            var origin = new Vector2( _colliderOffset.x + _transform.position.x + xRayOffset,
+                                      _colliderOffset.y + _transform.position.y + yRayOffset );
 
-            RaycastHit2D hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
-
-            Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.red );
+            var hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -270,8 +269,6 @@ namespace Player
                                   _colliderOffset.y + _transform.position.y - yRayOffset );
 
             hit = Physics2D.Raycast( origin , lookDirection , _checkRayLength , _jumpableMask );
-
-            Debug.DrawLine( origin , origin + lookDirection * _checkRayLength , Color.red );
 
             if ( hit )
                 if ( hit.collider.TryGetComponent( out _jumpable ) )
@@ -304,12 +301,12 @@ namespace Player
         private bool CanJumpOnJumpable( out Vector3 jumpablePos )
         {
             jumpablePos = Vector3.zero;
-            float minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
+            var minJumpableHeight = _maxJumpHeight * 0.4375f; // 1 / 16 upp * 7 pixels = 0.4375
             
-            Vector2 origin = new Vector2( _colliderOffset.x + _transform.position.x ,
-                                          _colliderOffset.y + _transform.position.y );
-            float radius = 0.05f;
-            RaycastHit2D hit = Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
+            var origin = new Vector2( _colliderOffset.x + _transform.position.x ,
+                                      _colliderOffset.y + _transform.position.y );
+            var radius = 0.05f;
+            var hit = Physics2D.CircleCast( origin, radius , Vector2.zero , 0 , _jumpableMask );
             if ( hit )
                 jumpablePos = hit.collider.GetComponent<Transform>().position +
                             new Vector3( hit.collider.offset.x , hit.collider.offset.y );
