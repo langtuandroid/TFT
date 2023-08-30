@@ -2389,7 +2389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d161b1f64e0124f90b648626ecaa06e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: 4_WoodsScene_Propuesta
+  sceneName: S14_Z4_WoodsScene
 --- !u!4 &432813844
 Transform:
   m_ObjectHideFlags: 0
@@ -4944,8 +4944,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 0.999747
+    width: 0.999802
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34

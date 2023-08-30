@@ -17,6 +17,8 @@ public class SpikeBallReturnState : FsmSpikeBall
     
     bool IsInitialPosition(SpikeBall agent)
     {
+        //float distanceToInitial = Vector2.Distance(agent.transform.position, agent.InitialPosition);
+        //return distanceToInitial < agent.InitialPosition;
         return false;
     }
 }

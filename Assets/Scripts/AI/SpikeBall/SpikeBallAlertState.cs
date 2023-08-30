@@ -8,7 +8,7 @@ public class SpikeBallAlertState : FsmSpikeBall
     private bool movingRight = true; 
     public float patrolSpeed = 2.0f;
     private float detectionTime = 0.3f;
-    private float detectionTimeTmp = 0.3f;
+    private float detectionTimeTmp = 1f;
     
     public override void Execute(SpikeBall agent)
     {
@@ -42,8 +42,7 @@ public class SpikeBallAlertState : FsmSpikeBall
     {
         Vector2 patrolDirection = movingRight ? Vector2.right : Vector2.left;
         agent.transform.Translate(patrolDirection * patrolSpeed * Time.deltaTime);
-
-        // Cambiar de dirección si llega a un límite
+        
         if (CheckPatrolLimits(agent))
         {
             movingRight = !movingRight;

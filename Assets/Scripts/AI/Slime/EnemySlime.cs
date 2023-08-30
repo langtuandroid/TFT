@@ -117,6 +117,11 @@ public class EnemySlime : MonoBehaviour
             PrepareComponent();
             Init();
         }
+        else
+        {
+            Transform slimeRotation = transform.Find("Render");
+            slimeRotation.rotation = Quaternion.identity;
+        }
     }
     
     void Update()
