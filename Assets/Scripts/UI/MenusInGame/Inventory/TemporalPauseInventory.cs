@@ -23,7 +23,7 @@ public class TemporalPauseInventory : MonoBehaviour
 
 
         _gameStatus = ServiceLocator.GetService<GameStatus>();
-        _gameStatus.AskChangeToMenuUIState();
+        _gameStatus.AskChangeToMenuPauseState();
         _gameStatus.AskChangeToGamePlayState();
         _gameStatus.OnGameStateChanged += GameStatus_OnGameStateChanged;
     }
@@ -36,7 +36,7 @@ public class TemporalPauseInventory : MonoBehaviour
     private void OnPausePerformed()
     {
         if (!_isPaused)
-            _gameStatus.AskChangeToMenuUIState();
+            _gameStatus.AskChangeToMenuPauseState();
         else
             _gameStatus.AskChangeToGamePlayState();
     }
@@ -45,14 +45,14 @@ public class TemporalPauseInventory : MonoBehaviour
     {
         switch (gameState)
         {
-            case GameStatus.GameState.MenuUI:
+            case GameStatus.GameState.MenuPause:
                 _pause.SetActive(true);
                 _isPaused = true;
                 break;
             case GameStatus.GameState.GamePlay:
                 _isPaused = false;
                 break;
-            case GameStatus.GameState.Inactive:
+            default:
                 // No hace nada
                 break;
         }
