@@ -100,8 +100,11 @@ public class SettingsMenu : MonoBehaviour
     {
         switch (gameState)
         {
-            case GameStatus.GameState.MenuUI:
+            case GameStatus.GameState.MenuPause:
                 // No hace nada
+                break;
+            case GameStatus.GameState.MenuUI:
+                gameObject.SetActive(false);
                 break;
             case GameStatus.GameState.GamePlay:
                 // Desactiva elemento
