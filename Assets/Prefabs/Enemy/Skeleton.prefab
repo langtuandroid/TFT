@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7641441617421796370}
   - component: {fileID: 7641441617421796375}
-  - component: {fileID: 7641441617421796368}
   - component: {fileID: 7641441617421796369}
+  - component: {fileID: 8782259830304100134}
   m_Layer: 6
   m_Name: Skeleton
   m_TagString: Untagged
@@ -56,7 +56,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &7641441617421796368
+--- !u!114 &7641441617421796369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7641441617421796371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebce13452762f4144afae4746c32f269, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _skeletonDataSO: {fileID: 11400000, guid: 68dd5d6abe7d2fa45b9aa148f3f7fdb8, type: 2}
+--- !u!61 &8782259830304100134
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,19 +95,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7641441617421796369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7641441617421796371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebce13452762f4144afae4746c32f269, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _skeletonDataSO: {fileID: 11400000, guid: 68dd5d6abe7d2fa45b9aa148f3f7fdb8, type: 2}
 --- !u!1 &7641441617907923836
 GameObject:
   m_ObjectHideFlags: 0
