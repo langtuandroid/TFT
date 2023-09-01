@@ -48,6 +48,7 @@ public class SkeletonController : MonoBehaviour, IBurnable, IDungeonInstantiable
             var deathAnimationSeconds = _anim.GetCurrentAnimatorStateInfo( 0 ).length + 1f;
             if ( _actionSeconds > deathAnimationSeconds )
             {
+                _bonePool.DestroyPool();
                 Destroy( gameObject );
             }
         }
