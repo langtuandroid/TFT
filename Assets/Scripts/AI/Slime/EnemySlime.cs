@@ -6,7 +6,7 @@ using UnityEngine.AI;
 using Utils;
 using Random = UnityEngine.Random;
 
-public class EnemySlime : MonoBehaviour
+public class EnemySlime : MonoBehaviour, IDungeonInstantiable
 {
     #region CONFIGURATION
     [Header("Tags Necesarios:\n" +

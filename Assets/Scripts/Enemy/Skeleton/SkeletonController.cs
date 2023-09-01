@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkeletonController : MonoBehaviour, IBurnable
+public class SkeletonController : MonoBehaviour, IBurnable, IDungeonInstantiable, IEnemyDeath
 {
     [SerializeField] private SkeletonDataSO _skeletonDataSO;
 
@@ -20,6 +20,8 @@ public class SkeletonController : MonoBehaviour, IBurnable
     private ObjectPool _bonePool;
     private int _currentHealth;
     private bool _isAlive = true;
+
+    public event System.Action OnDeath;
 
     private void Awake()
     {
@@ -189,11 +191,19 @@ public class SkeletonController : MonoBehaviour, IBurnable
             _anim.Play( "Death" );
             _isAlive = false;
             _actionSeconds = 0;
+            OnDeath?.Invoke();
         }
     }
 
     public void Burn( int damage )
     {
         TakeDamage( damage );
+    }
+
+    public void SetAsProceduralEnemy( Transform playerTransform ) { }
+
+    public void OnEnemyDeath( System.Action functionToCall )
+    {
+        OnDeath += functionToCall;
     }
 }
