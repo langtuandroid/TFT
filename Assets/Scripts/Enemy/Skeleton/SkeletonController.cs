@@ -43,7 +43,8 @@ public class SkeletonController : MonoBehaviour, IBurnable
         else
         {
             _actionSeconds += Time.deltaTime;
-            if ( _actionSeconds > _anim.GetCurrentAnimatorStateInfo( 0 ).length + 1f )
+            var deathAnimationSeconds = _anim.GetCurrentAnimatorStateInfo( 0 ).length + 1f;
+            if ( _actionSeconds > deathAnimationSeconds )
             {
                 Destroy( gameObject );
             }
@@ -79,7 +80,7 @@ public class SkeletonController : MonoBehaviour, IBurnable
         if ( CanMove() )
             _rb.MovePosition( _rb.position + Time.deltaTime * _skeletonDataSO.Speed * _moveDir );
         else
-            _moveDir = _directionArray[Random.Range( 0 , _directionArray.Length )];
+            _moveDir = SelectRandomDirection();
 
         MoveAnimation();
     }
