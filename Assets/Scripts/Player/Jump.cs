@@ -77,7 +77,7 @@ namespace Player
             _jumpState = JumpState.Grounded;
             _currentFloorBitPosition = _initialFloorBitPos;
         }
-
+        float _lastZ;
         public void JumpAction( bool jumpInput , Vector2 lookDirection , Vector2 moveDirection )
         {
             switch ( _jumpState )
@@ -98,10 +98,53 @@ namespace Player
 
                     CheckJumpable( lookDirection );
 
-                    if ( jumpInput && _z < _maxJumpHeight )
-                        JumpAction();
+                    if ( jumpInput )
+                    {
+                        if ( _z < _maxJumpHeight )
+                        {
+                            JumpAction();
+                            _lastZ = _z;
+                        }
+                        else
+                            _jumpState = JumpState.Falling;
+                    }
                     else
-                        _jumpState = JumpState.Falling;
+                    {
+                        var minJumpRatio = 0.5f;
+                        var middleJumpRatio = 0.75f;
+                        if ( _lastZ < _maxJumpHeight * minJumpRatio )
+                        {
+                            if ( _z < _maxJumpHeight * minJumpRatio )
+                                JumpAction();
+                            else
+                                _jumpState = JumpState.Falling;
+                        }
+                        else 
+                        if ( _lastZ < _maxJumpHeight * middleJumpRatio )
+                        {
+                            if ( _z < _maxJumpHeight * middleJumpRatio )
+                                JumpAction();
+                            else
+                                _jumpState = JumpState.Falling;
+                        }
+                        else
+                        {
+                            if ( _z < _maxJumpHeight )
+                                JumpAction();
+                            else
+                                _jumpState = JumpState.Falling;
+                        }
+
+                        //if ( _z < _maxJumpHeight * minJumpRatio )
+                        //    JumpAction();
+                        //else
+                        //    _jumpState = JumpState.Falling;
+                    }
+
+                    //if ( jumpInput && _z < _maxJumpHeight )
+                    //    JumpAction();
+                    //else
+                    //    _jumpState = JumpState.Falling;
 
                     break;
 
@@ -132,6 +175,7 @@ namespace Player
 
         private void StartJump()
         {
+            _lastZ = 0;
             _jumpState = JumpState.Jumping;
             _audioSpeaker.PlaySound( AudioID.G_PLAYER , AudioID.S_JUMP );
             _jumpDownTimer.Restart();
