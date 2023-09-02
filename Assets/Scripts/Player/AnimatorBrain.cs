@@ -37,6 +37,7 @@ namespace Player
         [Header("States")]
         private const string IDLE = "IdleTree";
         private const string JUMP = "JumpTree";
+        private const string SOMERSAULT = "SomersaultTree";
         private const string DEATH = "DeathTree";
         private const string FALL = "FallTree";
         private const string PICKUP = "PickItUpTree";
@@ -145,7 +146,7 @@ namespace Player
 
         private void Jump_OnJumpableActionStarted()
         {
-            PlayPlayer(JUMP);
+            PlayPlayer(SOMERSAULT);
 
             var endJumpRelativePos = new Vector3(0, 2.5f, 0);
             float jumpPower = 2;
