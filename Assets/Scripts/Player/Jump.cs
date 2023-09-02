@@ -134,17 +134,7 @@ namespace Player
                             else
                                 _jumpState = JumpState.Falling;
                         }
-
-                        //if ( _z < _maxJumpHeight * minJumpRatio )
-                        //    JumpAction();
-                        //else
-                        //    _jumpState = JumpState.Falling;
                     }
-
-                    //if ( jumpInput && _z < _maxJumpHeight )
-                    //    JumpAction();
-                    //else
-                    //    _jumpState = JumpState.Falling;
 
                     break;
 
