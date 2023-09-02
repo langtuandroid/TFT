@@ -326,11 +326,11 @@ namespace MoreMountains.Tools
 			float timeLeft = duration;
 			while (timeLeft > 0f)
 			{
-				targetTransform.transform.position = MMTween.Tween(duration - timeLeft, 0f, duration, origin, destination, curve);
+				//targetTransform.transform.position = MMTween.Tween(duration - timeLeft, 0f, duration, origin, destination, curve);
 				timeLeft -= ignoreTimescale ? Time.unscaledDeltaTime : Time.deltaTime;
 				yield return null;
 			}
-			targetTransform.transform.position = destination;
+			//targetTransform.transform.position = destination;
 		}
 
 		protected static IEnumerator MoveTransformCo(Transform targetTransform, Transform origin, Transform destination, WaitForSeconds delay, float delayDuration, float duration, 

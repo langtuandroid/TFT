@@ -78,10 +78,11 @@ namespace MoreMountains.Feel
 		/// </summary>
 		protected virtual void HandleInput()
 		{
-			if (FeelDemosInputHelper.CheckMainActionInputPressedThisFrame())
+			/*if (FeelDemosInputHelper.CheckMainActionInputPressedThisFrame())
 			{
 				Attack();
-			}
+			}*/
+			if(Input.GetKeyDown(KeyCode.Z)) Attack();
 		}
 
 		/// <summary>
