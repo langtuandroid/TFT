@@ -36,6 +36,7 @@ namespace Player
 
         [Header("States")]
         private const string IDLE = "IdleTree";
+        private const string START_JUMP = "StartJumpTree";
         private const string JUMP = "JumpTree";
         private const string SOMERSAULT = "SomersaultTree";
         private const string DEATH = "DeathTree";
@@ -179,7 +180,7 @@ namespace Player
 
         private void Jump_OnJumpStarted()
         {
-            PlayPlayer(JUMP);
+            PlayPlayer(START_JUMP);
         }
 
         private void MaxPower_OnUsed(float value)
