@@ -220,7 +220,7 @@ namespace Player
         private void JumpGroundDown( Vector3 lookDirection )
         {
             int numOfFloors = 1;
-            var posToCheck = new Vector3();
+            var posToCheck  = new Vector3();
             var relativePos = new Vector3();
             if ( lookDirection == Vector3.down )
             {
@@ -250,10 +250,10 @@ namespace Player
             else
             {
                 var dist = 1.5f;
-                posToCheck = _transform.position + lookDirection * dist + Vector3.down;
+                posToCheck = _transform.position + lookDirection * dist + Vector3.down * dist;
                 relativePos = lookDirection * dist + Vector3.down;
 
-                dist = 1;
+                //dist = 1;
                 if ( Physics2D.Raycast( posToCheck , Vector2.up , dist , _currentFloorBitPosition ) ) 
                     return;
             }
