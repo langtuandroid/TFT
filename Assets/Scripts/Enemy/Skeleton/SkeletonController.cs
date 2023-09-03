@@ -1,8 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SkeletonController : MonoBehaviour, IBurnable, IDungeonInstantiable, IEnemyDeath
 {
     [SerializeField] private SkeletonDataSO _skeletonDataSO;
+
+    public UnityEvent OnSkeletonDeath;
+
 
     public SkeletonBaseState CurrentState;
 
@@ -49,6 +53,7 @@ public class SkeletonController : MonoBehaviour, IBurnable, IDungeonInstantiable
             if ( _actionSeconds > deathAnimationSeconds )
             {
                 _bonePool.DestroyPool();
+                OnSkeletonDeath.Invoke();
                 Destroy( gameObject );
             }
         }
