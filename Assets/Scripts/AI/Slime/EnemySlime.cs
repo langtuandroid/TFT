@@ -87,9 +87,17 @@ public class EnemySlime : MonoBehaviour, IDungeonInstantiable
 
     private void OnDestroy()
     {
-        _lifeEvents.OnDeathValue -= OnStopFollow;
-        _slimeHealth.OnDeath -= SlimeDead;
+        if (_lifeEvents != null)
+        {
+            _lifeEvents.OnDeathValue -= OnStopFollow;
+        }
+
+        if (_slimeHealth != null)
+        {
+            _slimeHealth.OnDeath -= SlimeDead;
+        }
     }
+
 
     private void Awake()
     {
@@ -108,6 +116,11 @@ public class EnemySlime : MonoBehaviour, IDungeonInstantiable
             boundsCollider = GetComponentInParent<Collider2D>(); // si queremos que el slime este dentro de un area hay que añadir un collider al padre
             PrepareComponent();
             Init();
+        }
+        else
+        {
+            Transform slimeRotation = transform.Find("Render");
+            slimeRotation.rotation = Quaternion.identity;
         }
     }
     

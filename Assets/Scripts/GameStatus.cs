@@ -14,7 +14,8 @@ public class GameStatus
 
     public enum GameState
     {
-        MenuUI,   // menu pausa, main menu, cuando hay texto en pantalla
+        MenuPause, // pause (inventario y demás)
+        MenuUI,   // main menu, cuando hay texto en pantalla
         GamePlay, // Jugando normalmente
         Inactive  // Durante el juego los objetos no se mueven -> ataque definitivo, cambio de escena
     }
@@ -35,7 +36,9 @@ public class GameStatus
             case GameState.GamePlay:
                 ChangeState( GameState.MenuUI );
                 break;
-
+            case GameState.MenuPause:
+                ChangeState(GameState.MenuUI);
+                break;
             // En cualquier otro caso no podemos cambiar de estado
             default:
                 CannotChangeState( GameState.MenuUI ); break;
@@ -50,7 +53,9 @@ public class GameStatus
             case GameState.MenuUI:
                 ChangeState( GameState.GamePlay );
                 break;
-
+            case GameState.MenuPause:
+                ChangeState(GameState.GamePlay);
+                break;
             // Si el estado YA es GamePlay no pasa nada
             case GameState.GamePlay: 
                 ConfirmState(); 
@@ -81,6 +86,22 @@ public class GameStatus
 
             default:
                 CannotChangeState( GameState.Inactive ); break;
+        }
+    }
+
+    public void AskChangeToMenuPauseState()
+    {
+        switch (state)
+        {
+            case GameState.MenuPause:
+                ConfirmState();
+                break;
+            case GameState.GamePlay:
+                ChangeState(GameState.MenuPause);
+                break;
+            default:
+                CannotChangeState(GameState.MenuPause);
+                break;
         }
     }
 

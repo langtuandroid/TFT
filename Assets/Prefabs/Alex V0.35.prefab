@@ -384,6 +384,7 @@ MonoBehaviour:
   _statusSaveSO: {fileID: 11400000, guid: c6d2c3298bc7c7d4fb6b66db410c15d2, type: 2}
   _magicSettingsSO:
   - {fileID: 11400000, guid: c976d583186f3134e8b68bce3d8d1107, type: 2}
+  - {fileID: 11400000, guid: b89b959cec1f84240a2396752a46159c, type: 2}
 --- !u!114 &-8445913559464523252
 MonoBehaviour:
   m_ObjectHideFlags: 0

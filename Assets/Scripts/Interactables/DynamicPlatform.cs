@@ -6,8 +6,8 @@ using Utils;
 
 public class DynamicPlatform : MonoBehaviour
 {
-    [SerializeField] private Transform _pointA;
-    [SerializeField] private Transform _pointB;
+    [SerializeField] private List<Transform> _pointsList;
+    
     [SerializeField] private float _speed;
     public float PlayerDetectionRadious;
 
@@ -16,12 +16,10 @@ public class DynamicPlatform : MonoBehaviour
     private Transform _target;
     private Transform _playerOnPlatform;
     private PlayerController _playerController;
-    
-    private void Start()
-    {
-        _target = _pointA;
-    }
 
+    private int pointIndex = 0;
+    private bool _moveToEnd = true;
+    
     private void Update()
     {
         if (CanMove)
@@ -50,28 +48,42 @@ public class DynamicPlatform : MonoBehaviour
     
     private void Move()
     {
-        float distanceToTarget = Vector3.Distance(transform.position, _target.position);
-        
-        if (distanceToTarget < 0.1f)
-        {
-            if (_target == _pointA)
-            {
-                _target = _pointB;
-            }
-            else
-            {
-                _target = _pointA;
-            }
-        }
-
         float step = _speed * Time.deltaTime;
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, _target.position, step);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, _pointsList[pointIndex].position, step);
 
         // Player Position
         if (_playerOnPlatform != null)
         {
             Vector3 deltaMovement = newPosition - transform.position;
             _playerOnPlatform.position += deltaMovement;
+        }
+
+        if (Vector3.Distance(transform.position, _pointsList[pointIndex].position) < 0.1f)
+        {
+            if (_moveToEnd)
+            {
+                if (pointIndex == _pointsList.Count - 1)
+                {
+                    _moveToEnd = false;
+                    pointIndex--;
+                }
+                else
+                {
+                    pointIndex++;
+                }
+            }
+            else
+            {
+                if (pointIndex == 0)
+                {
+                    _moveToEnd = true;
+                    pointIndex++;
+                }
+                else
+                {
+                    pointIndex--;
+                }
+            }
         }
 
         transform.position = newPosition;

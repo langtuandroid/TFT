@@ -9,6 +9,7 @@ namespace Utils
         #endregion
 
         #region Enemies
+        public const string TAG_ENEMY = "Enemy";
         public const string TAG_WAYPOINT = "Waypoint";
         public const string TAG_PATROL_COLLIDER = "PatrolCollider";
 

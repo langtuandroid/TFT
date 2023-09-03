@@ -81,11 +81,10 @@ public class InventoryMenu : MonoBehaviour
 
     #region Unity methods
 
-    private void Awake() //TODO quitar solo es de prueba
+    private void Awake()
     {
         _primarySkillSelected = -1;
         _secondarySkillSelected = -1;
-
     }
 
     private void Start()
@@ -404,7 +403,9 @@ public class InventoryMenu : MonoBehaviour
 
     private void OnChangePrimarySkill(int skill)
     {
-        if (skill == _primarySkillSelected)
+        bool canBeAsign = CheckIfHasPrimarySkill(skill);
+
+        if (!canBeAsign || skill == _primarySkillSelected)
             return;
 
         if (_primarySkillSelected >= 0)
@@ -414,9 +415,31 @@ public class InventoryMenu : MonoBehaviour
         _primarySkillSelected = skill;
     }
 
+    private bool CheckIfHasPrimarySkill(int skill)
+    {
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
+        bool res = false;
+        switch (skill)
+        {
+            case 0: // Fuego
+                res = ps.isFireWeakUnlocked;
+                break;
+            case 1: // Planta
+                res = ps.isPlantWeakUnlocked;
+                break;
+            case 2: // Agua
+                res = ps.isWaterWeakUnlocked;
+                break;
+        }
+
+        return res;
+    }
+
     private void OnChangeSecondarySkill(int skill)
     {
-        if (skill == _secondarySkillSelected)
+        bool canBeAsign = CheckIfHasSecondarySkill(skill);
+
+        if (!canBeAsign || skill == _secondarySkillSelected)
             return;
 
         if (_secondarySkillSelected > 2)
@@ -430,6 +453,36 @@ public class InventoryMenu : MonoBehaviour
             _secondaryMagicButtons[skill].GetComponent<Image>().color = Color.yellow;
 
         _secondarySkillSelected = skill;
+    }
+
+    private bool CheckIfHasSecondarySkill(int skill)
+    {
+        bool res = false;
+        PlayerStatusSave ps = _playerStatusSO.playerStatusSave;
+
+        switch(skill)
+        {
+            case 0: // Bola de luz
+                res = ps.isLightUnlocked;
+                break;
+            case 1: // Contenedor de aire
+                res = ps.isAirUnlocked;
+                break;
+            case 2: // Mover objetos pesados
+                res = ps.isHeavyMovementUnlocked;
+                break;
+            case 3: // Baya curativa
+                res = ps.lifeBerryUnlocked;
+                break;
+            case 4: // Baya mágica
+                res = ps.magicBerryUnlocked;
+                break;
+            case 5: // Baya bomba
+                res = ps.bombBerryUnlocked;
+                break;
+        }
+
+        return res;
     }
 
     #endregion
@@ -719,11 +772,14 @@ public class InventoryMenu : MonoBehaviour
     {
         switch (gameState)
         {
-            case GameStatus.GameState.MenuUI:
+            case GameStatus.GameState.MenuPause:
                 // No hace nada
                 break;
             case GameStatus.GameState.GamePlay:
                 // Desactiva elemento
+                gameObject.SetActive(false);
+                break;
+            case GameStatus.GameState.MenuUI:
                 gameObject.SetActive(false);
                 break;
             case GameStatus.GameState.Inactive:

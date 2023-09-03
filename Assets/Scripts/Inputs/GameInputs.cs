@@ -56,6 +56,10 @@ public class GameInputs
                 _playerInputActions.UI.Enable();
                 _playerInputActions.PlayerGround.Disable();
                 break;
+            case GameStatus.GameState.MenuPause:
+                _playerInputActions.UI.Enable();
+                _playerInputActions.PlayerGround.Disable();
+                break;
             case GameStatus.GameState.GamePlay:
                 _playerInputActions.UI.Disable();
                 _playerInputActions.PlayerGround.Enable();
