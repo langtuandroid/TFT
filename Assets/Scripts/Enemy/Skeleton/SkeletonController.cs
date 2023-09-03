@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkeletonController : MonoBehaviour, IBurnable
+public class SkeletonController : MonoBehaviour, IBurnable, IDungeonInstantiable, IEnemyDeath
 {
     [SerializeField] private SkeletonDataSO _skeletonDataSO;
 
@@ -19,13 +19,16 @@ public class SkeletonController : MonoBehaviour, IBurnable
     private Transform _playerTrans;
     private ObjectPool _bonePool;
     private int _currentHealth;
+    private bool _isAlive = true;
+
+    public event System.Action OnDeath;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _anim = GetComponentInChildren<Animator>();
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _bonePool = new ObjectPool( _skeletonDataSO.BonePrefab , 3 );
+        _bonePool = new ObjectPool( _skeletonDataSO.BonePrefab , _skeletonDataSO.NumOfBones );
         var skeletonStateFactory = new SkeletonStateFactory( this );
         CurrentState = skeletonStateFactory.Idle();
 
@@ -33,7 +36,23 @@ public class SkeletonController : MonoBehaviour, IBurnable
     }
 
     private void Start()  { CurrentState.EnterState(); }
-    private void Update() { CurrentState.UpdateState(); }
+    private void Update() 
+    {
+        if ( _isAlive )
+        {
+            CurrentState.UpdateState();
+        }
+        else
+        {
+            _actionSeconds += Time.deltaTime;
+            var deathAnimationSeconds = _anim.GetCurrentAnimatorStateInfo( 0 ).length + 1f;
+            if ( _actionSeconds > deathAnimationSeconds )
+            {
+                _bonePool.DestroyPool();
+                Destroy( gameObject );
+            }
+        }
+    }
 
     public bool CanChangeMoveDirection()
     {
@@ -64,7 +83,7 @@ public class SkeletonController : MonoBehaviour, IBurnable
         if ( CanMove() )
             _rb.MovePosition( _rb.position + Time.deltaTime * _skeletonDataSO.Speed * _moveDir );
         else
-            _moveDir = _directionArray[Random.Range( 0 , _directionArray.Length )];
+            _moveDir = SelectRandomDirection();
 
         MoveAnimation();
     }
@@ -147,21 +166,45 @@ public class SkeletonController : MonoBehaviour, IBurnable
 
     public void Attack()
     {
+        _anim.Play( "Attack" );
+
+        _spriteRenderer.flipX = transform.position.x - _playerTrans.position.x > 0;
+
         _attackCounterSeconds = _skeletonDataSO.AttackIntervalSeconds;
+        _actionSeconds = 0;
+
         var bone = _bonePool.GetPooledObject();
         bone.transform.position = transform.position;
         bone.GetComponent<BoneProjectile>().Launch( _playerTrans , _skeletonDataSO.Damage );
+    }
+
+    public bool HasEndAttack()
+    {
+        _actionSeconds += Time.deltaTime;
+        return _actionSeconds > _anim.GetCurrentAnimatorStateInfo( 0 ).length + 0.1f;
     }
 
     private void TakeDamage( int damage )
     {
         _currentHealth -= damage;
         if ( _currentHealth <= 0 )
-            Destroy( gameObject );
+        {
+            _anim.Play( "Death" );
+            _isAlive = false;
+            _actionSeconds = 0;
+            OnDeath?.Invoke();
+        }
     }
 
     public void Burn( int damage )
     {
         TakeDamage( damage );
+    }
+
+    public void SetAsProceduralEnemy( Transform playerTransform ) { }
+
+    public void OnEnemyDeath( System.Action functionToCall )
+    {
+        OnDeath += functionToCall;
     }
 }

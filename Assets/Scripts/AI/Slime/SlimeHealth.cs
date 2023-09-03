@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-public class SlimeHealth : MonoBehaviour, IBurnable, IPunchable
+public class SlimeHealth : MonoBehaviour, IBurnable, IPunchable, IEnemyDeath
 {
     // Esto tiene que estar en un EnemyHealth generico que se comparta por todos los enemigos
     public event Action OnDeath;
@@ -103,5 +103,10 @@ public class SlimeHealth : MonoBehaviour, IBurnable, IPunchable
             PlayDeathAnimation();
         else
             PlayDamageAnimation(2f, 3);
+    }
+
+    public void OnEnemyDeath( Action functionToCall )
+    {
+        OnDeath += functionToCall;
     }
 }

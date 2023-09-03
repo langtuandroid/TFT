@@ -2043,9 +2043,10 @@ MonoBehaviour:
   _southDoorController: {fileID: 2841450470309367793}
   _westDoorController: {fileID: 4104755591368016004}
   _bossRoomTransporterPrefab: {fileID: 5165796927515434003, guid: e17b2b90f75b332409859eb3754b4fc3, type: 3}
-  _miniBossPrefab: {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+  _miniBossPrefab: {fileID: 7641441617421796371, guid: a620e5a5715e9ed42b96831befd5604b, type: 3}
   _enemyPrefabList:
   - {fileID: 6274960950981788598, guid: 5fdd9fd48c1c74ed791afe5eb71374be, type: 3}
+  - {fileID: 7641441617421796371, guid: a620e5a5715e9ed42b96831befd5604b, type: 3}
   _treasureKeyPrefab: {fileID: 2924791837780079142, guid: 0063eebcac3433a4a966289f2c526db8, type: 3}
 --- !u!1 &9113138669282639378
 GameObject:
