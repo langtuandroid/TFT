@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using Utils;
@@ -9,6 +10,11 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
     [SerializeField]
     [Tooltip("Llama de la antorcha")]
     private GameObject _fire;
+
+    [SerializeField] private bool _canAutoDeactivate;
+    [SerializeField] private float _autodeactivationSeconds;
+    [Tooltip("Introducir los gameObjects tipo Torch que al estar encendidos deja de hacer efecto el autodeactivate")]
+    [SerializeField] private Torch[] _stopAutoDeactivateConditions; 
 
     [Header("Events on fire on/off effects")]
     public UnityEvent OnFireActivation;
@@ -69,6 +75,9 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
         // E indicamos que se ha activado
         _activated = true;
 
+        if ( _canAutoDeactivate && CanAutoDeactivate() )
+            StartCoroutine( AutoDeactivation() );
+
         OnFireActivation?.Invoke();
     }
 
@@ -87,6 +96,18 @@ public class Torch : MonoBehaviour, IBurnable, IInteractable
 
     #endregion
 
+    private IEnumerator AutoDeactivation()
+    {
+        var wait = new WaitForSeconds(_autodeactivationSeconds);
+        yield return wait;
+        DeactivateTorch();
+    }
 
-
+    private bool CanAutoDeactivate()
+    {
+        foreach ( var torch in _stopAutoDeactivateConditions )
+            if ( !torch.Activated ) 
+                return true;
+        return false;
+    }
 }
