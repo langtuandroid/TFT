@@ -93,12 +93,12 @@ namespace Attack
             // Activamos el uso de la magia débil
             _isUsingWeakAttack = true;
 
-            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f - .375f);
 
             // Instanciamos bola de fuego
             GameObject fireball = MonoBehaviour.Instantiate(
                 _fireSettingsSO.WeakPrefab, // Prefab de la bola
-                position, // Posición del player (desplazada un poco arriba)
+                position, // Posición del player (desplazada un poco arriba y un poco hacia abajo por el pivote)
                 Quaternion.identity // Quaternion identity
                 );
 
@@ -128,11 +128,11 @@ namespace Attack
 
             // Activamos el uso de la magia media
             _isUsingMediumAttack = true;
-            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f);
+            Vector2 position = new Vector2(_transform.position.x, _transform.position.y + .8125f - .375f);
 
             GameObject flame = MonoBehaviour.Instantiate(
                 _fireSettingsSO._mediumPrefab, // Prefab
-                position + direction, // Posición del player (un poco desplazada hacia arriba)
+                position + direction, // Posición del player (un poco desplazada hacia arriba y ajustada al pivote)
                 Quaternion.identity // Quaternion identity
             );
 
