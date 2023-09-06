@@ -21,6 +21,8 @@ public class Fireball : MonoBehaviour
     private Animator _anim;
     private Vector3 _direction; // Dirección de movimiento
     private float _timer; // Temporizador
+
+    private Rigidbody2D _rb;
     #endregion
 
 
@@ -28,7 +30,8 @@ public class Fireball : MonoBehaviour
 
     private void Awake()
     {
-        _anim = GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
+        _rb = GetComponent<Rigidbody2D>();
         // Ponemos una dirección de movimiento por defecto
         // (p. ej. hacia arriba)
         _direction = Vector3.up;
@@ -38,10 +41,14 @@ public class Fireball : MonoBehaviour
 
     private void Update()
     {
+        // Incrementamos su tiempo
+        IncrementTime();
+    }
+
+    private void FixedUpdate()
+    {
         // Movemos el objeto
         Move();
-        // E incrementamos su tiempo
-        IncrementTime();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -63,7 +70,7 @@ public class Fireball : MonoBehaviour
     private void Move()
     {
         // Vamos incrementando la posición en la dirección dada
-        transform.position += _speed * Time.deltaTime * _direction;
+        _rb.MovePosition(_rb.position + _speed * Time.deltaTime * (Vector2)_direction);
     }
 
     /// <summary>
