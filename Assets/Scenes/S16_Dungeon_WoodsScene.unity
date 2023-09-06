@@ -677,6 +677,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -45
       objectReference: {fileID: 0}
+    - target: {fileID: 2122995242, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8864211368987287566, guid: 2aef824110b0e2048a0a8f7e663a48f6, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -953,7 +957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 252e43423dde8d242a7cb53ba213fc89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsRealMusicPlaying: 0
 --- !u!4 &1894208113
 Transform:
   m_ObjectHideFlags: 0

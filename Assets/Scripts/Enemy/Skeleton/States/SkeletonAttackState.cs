@@ -11,6 +11,7 @@ public class SkeletonAttackState : SkeletonBaseState
 
     public override void UpdateState()
     {
-        SwitchState( ctx.HasDetectPlayer() ? states.Pursuit() : states.Idle() );
+        if ( ctx.HasEndAttack() )
+            SwitchState( ctx.HasDetectPlayer() ? states.Pursuit() : states.Idle() );
     }
 }

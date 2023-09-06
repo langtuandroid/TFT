@@ -32,4 +32,10 @@ public class ObjectPool
         go.SetActive( true );
         return go;
     }
+
+    public void DestroyPool()
+    {
+        foreach ( var item in _pool )
+            MonoBehaviour.Destroy( item );
+    }
 }

@@ -24,3 +24,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 966720
   <BonePrefab>k__BackingField: {fileID: 1473645290797137431, guid: 7be44f46df6718b4c91d50de8c445e2c, type: 3}
+  <NumOfBones>k__BackingField: 3

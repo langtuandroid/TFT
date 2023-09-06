@@ -48,8 +48,8 @@ namespace Procedural
 
             if ( roomData.IsStartRoom )
             {
-                Vector3 startPos = new( transform.position.x , transform.position.y - 0.5f , transform.position.z );
-                GameObject playerObj = Instantiate( _playerPrefab , startPos , Quaternion.identity );
+                var startPos = new Vector3( transform.position.x , transform.position.y - 0.5f , transform.position.z );
+                var playerObj = Instantiate( _playerPrefab , startPos , Quaternion.identity );
                 playerObj.GetComponent<PlayerController>().Init( Vector2.down , 0 );
 
                 _playerTransform = playerObj.transform;
@@ -90,7 +90,7 @@ namespace Procedural
                 {
                     _doorControllerArray[i].gameObject.SetActive( true );
 
-                    bool isBossDoor = ( bossDoorMask & 1 << i ) > 0;
+                    var isBossDoor = ( bossDoorMask & 1 << i ) > 0;
                     _doorControllerArray[i].SetDoor( isBossDoor , this );
                 }
                 else
@@ -106,27 +106,23 @@ namespace Procedural
             if ( _isMiniBossRoom )
             {
                 enemyInstantiated = Instantiate( _miniBossPrefab , transform.position , Quaternion.identity );
-                enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
-                enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
+                enemyInstantiated.GetComponent<IDungeonInstantiable>().SetAsProceduralEnemy( _playerTransform );
+                enemyInstantiated.GetComponent<IEnemyDeath>().OnEnemyDeath( EnemiesInRoomCount );
             }
             else
             {
-                int numOfEnemies = Random.Range( 1 , 2 );
-                for ( int i = 0; i < numOfEnemies; i++ )
+                _enemiesLeftInRoom = Random.Range( 1 , 4 );
+                for ( int i = 0; i < _enemiesLeftInRoom; i++ )
                 {
-                    Debug.Log( "create enemy" );
-                    int randIndex = Random.Range( 0 , _enemyPrefabList.Count - 1 );
+                    var randIndex = Random.Range( 0 , _enemyPrefabList.Count );
 
-                    float x = Random.Range( -5 , 5 );
-                    float y = Random.Range( -2 , 2 );
-                    Vector3 position = transform.position + new Vector3( x, y );
+                    var x = Random.Range( -5 , 5f );
+                    var y = Random.Range( -2 , 2f );
+                    var position = transform.position + new Vector3( x, y );
 
                     enemyInstantiated = Instantiate( _enemyPrefabList[randIndex] , position , Quaternion.identity );
-                    Debug.Log( "instantiated enemy" );
-                    enemyInstantiated.GetComponent<EnemySlime>().SetAsProceduralEnemy( _playerTransform );
-                    enemyInstantiated.GetComponent<SlimeHealth>().OnDeath += EnemiesInRoomCount;
-
-                    _enemiesLeftInRoom++;
+                    enemyInstantiated.GetComponent<IDungeonInstantiable>().SetAsProceduralEnemy( _playerTransform );
+                    enemyInstantiated.GetComponent<IEnemyDeath>().OnEnemyDeath( EnemiesInRoomCount );
                 }
             }
         }
